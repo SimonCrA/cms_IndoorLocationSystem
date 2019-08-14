@@ -1,0 +1,17 @@
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+
+var rawDataSchema = new Schema(
+	{
+		macRpi: {type: String,  max: 100},
+		macTag: {type: String , max: 100},        
+        rssi: {type: Number},
+		rpidate: {type: Boolean},
+		beacontype:{type:String},
+		sampleId:{type:String}
+	}
+);  
+
+//Export model
+module.exports = mongoose.model('RawData', rawDataSchema);
