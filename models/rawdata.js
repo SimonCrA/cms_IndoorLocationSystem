@@ -7,7 +7,7 @@ var rawDataSchema = new Schema(
 		macRpi: {type: String,  max: 100},
 		macTag: {type: String , max: 100},        
         rssi: {type: Number},
-		rpidate: {type: Boolean},
+		rpidate: {type: Date, unique:true},
 		beacontype:{type:String},
 		sampleId:{type:String}
 	}
