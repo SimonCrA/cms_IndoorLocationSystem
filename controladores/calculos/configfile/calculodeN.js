@@ -9,6 +9,16 @@ function calculoDeN(muestras, sample, mac) {
     ////console.log('s='+muestras+ sample+ mac)
 
 
+
+    
+/////////////////////////////////////////////////////////////////////
+//////////////////////////SIMOOOON/////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+// NO ES SOLO COPIAR, PEGAR Y SEPARAR, ALGUNAS LINEAS NO FUNCIONAN EN ESTA PARTE DEL CODIGO
+// POR EJEPLO LA LINEA DE ABAJO ESTO ES JQUERY PARA USARSE EN UN NAVEGADOR.
+// ESTA LINEA SE DEBE CAMBIAR POR UNA CONSULTA DE BASE DE DATOS (YA QUE ELLA LLAMA A UNA API QUE HACE LA CONSULTA)
+// Y LOS MESHUNO[0] SON VARIABLES GLOBALES YA NO USAMOS ESE TIPO DE VARIABLES. 
+// Y POR ULTIMO CAMBIAR EL (VAR -> LET) 
     var consulta = $.get("../../../../api/rssiprom/" + muestras + "/" + sample + "/" + mac, function () {
         data = consulta.responseJSON;
         if (mac == meshUno[0].mac) {
