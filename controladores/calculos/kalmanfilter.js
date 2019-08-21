@@ -31,10 +31,16 @@ let filtrado = (cont) =>{
     vector[i].kalmanT= 0.0;        //kt^
     RawData.find().limit(5).sort({_id:-1})
         .exec(function (err, device) {
-        if (err) {console.log("ER_dataR_Ln:13")}
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+        
         prueba= device[cont].rssi + 10;
         for(let i = (device.length)-1; i >-1; i--){
-            
+             
 
 
             meshEvaluate[i].Xt_predictiva = meshEvaluate[i].Xt_1;
@@ -47,6 +53,7 @@ let filtrado = (cont) =>{
 
             console.log(`${device[i].rpidate}`);
         }
+        
 
     });
     

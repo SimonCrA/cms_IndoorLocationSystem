@@ -1,7 +1,12 @@
 const configfile = require('../configfile/configfile');
 
-// var desviaT =[0,0,0,0,0]
-function desviacion(muestras, sample, mac) {
+let params = configfile.ejecucionFnEnSerie;
+
+muestras = params.muestras;
+sample = params.sample;
+mac = params.mac;
+
+let desviacion = (muestras, sample, mac) =>  {
     var rssiprom = 0
     var rssisum = 0
     var a = 10;
@@ -9,28 +14,29 @@ function desviacion(muestras, sample, mac) {
     ////console.log('s='+muestras+ sample+ mac)
 
 
-    var consulta = $.get("../../../../api/rssiprom/" + muestras + "/" + sample + "/" + mac, function () {
         // //console.log(desviap)
 
-        data = consulta.responseJSON;
-        if (mac == meshUno[0].mac) {
-            a = 0
+    RawData.find({sampleId: sample, macBeacon:mac })
+                .limit(muestras)
+                .sort({_id:-1})
+                .exec( (err,rawdata) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
         }
-        if (mac == meshUno[1].mac) {
-            a = 1
-        }
-        if (mac == meshUno[2].mac) {
-            a = 2
-        }
-        if (mac == '') {
-            a = 3
-        }
-        if (mac == '') {
-            a = 4
-        }
-        if (mac == '') {
-            a = 5
-        }
+
+        if (mac == meshUno[0].mac) {a = 0}
+        if (mac == meshUno[1].mac) {a = 1}
+        if (mac == meshUno[2].mac) {a = 2}
+        if (mac == '') {a = 3}
+        if (mac == '') {a = 4}
+        if (mac == '') {a = 5}
+
+        data = rawdata;
+
 
         for (var i = 0; i < muestras; i++) {
             ////console.log('s')
@@ -63,7 +69,6 @@ function desviacion(muestras, sample, mac) {
         //console.log(Cofing[a])
 
     });
-
 }
 
 /***************************************

@@ -1,7 +1,9 @@
 
 const RSSIprom = require('../configfile/rssiprom');
 const calculoDeN = require('../configfile/calculodeN');
-const desviacion = require('../configfile/gaussiandesviaprom')
+const desviacion = require('../configfile/gaussiandesviaprom');
+const macTags = require('../../regions');
+const RawData = require('../../../models/rawdata');
 
 function inicializarVariables() {
     varsConfFile[0].rssiprom = 0;
@@ -22,25 +24,23 @@ function inicializarVariables() {
     varsConfFile[2].Cprom = 0;
     varsConfFile[2].desviap = 0;
     varsConfFile[2].nAcum = 0;
+
+    //validar ubicacion de esta función.
 };
 
 
 function ejecucionFnEnSerie() {
     inicializarVariables()
-    var muestras = 200;
-    var sample = '';
-    var mac = '';
-    var getSample = document.getElementById('SampleId').value
-    var getMuestras = document.getElementById('Muestras').value
-    sample = getSample
-    muestras = parseInt(getMuestras)
+    muestras= '200',
+    sample= ''
+    let mac = macTags.addDevicesToMesh.mac;
     console.log('SE HA INICIADO EL CALCULO DE LAS CONSTANTES...', sample, muestras)
 
     const doLemon = async (qwert) => {
         console.log(qwert)
         await sleep(5000)
         console.log('1/30')
-        mac = meshUno[0].mac
+        mac = meshUno[0].mac;
         RSSIprom(muestras, sample + 1, mac)
         await sleep(5000)
         console.log('2/30')
@@ -177,5 +177,5 @@ const sleep = (milliseconds) => {
 
  module.exports = {
      inicializarVariables,
-     ejecucionFnEnSerie
+     ejecucionFnEnSerie 
  }
