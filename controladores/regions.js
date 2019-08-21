@@ -127,7 +127,7 @@ var globalIteracion = 0;
 
 
 
-function addDevicesToMesh(arr) {
+let addDevicesToMesh = (arr) => {
     console.log('aniadiendo --->', arr)
     var meshE = new Array();
     for (var i = 0; i < arr.length; i++) {
@@ -150,11 +150,16 @@ function addDevicesToMesh(arr) {
     return meshE;
 }
 
-function sameMeshValidate(arr) {
+let sameMeshValidate = (arr) => {
     for (var i = 1; i < arr.length; i++) {
         var idMesh = arr[i].mesh;
         if (arr[i - 1].mesh != idMesh)
             return false;
     }
     return true;
+}
+
+module.exports = {
+    addDevicesToMesh,
+    sameMeshValidate
 }

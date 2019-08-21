@@ -9,7 +9,8 @@ var rawDataSchema = new Schema(
         rssi: {type: Number},
 		rpidate: {type: Date, unique:true},
 		beacontype:{type:String},
-		sampleId:{type:String}
+		sampleId:{type:String},
+		muestras:{type:Number}
 	}
 );  
 
