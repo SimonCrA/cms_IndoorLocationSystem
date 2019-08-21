@@ -1,24 +1,20 @@
 const configfile = require('../configfile/configfile');
 const RawData = require('../../../models/rawdata');
+const RSSIprom = require('../configfile/rssiprom');
 
-let parametros = configfile.ejecucionFnEnSerie;
+let resN = new Array();
 
-muestras = parametros.muestras;
-sample = parametros.sample;
-mac = parametros.mac;
-
+rx = RSSIprom.resRssi;
 
 
-let calculoDeN = (muestras, sample, mac) => {
 
-        let a = 10;
-        let data;
-        let total = 0
+let  calculoDeN = async (muestras, distancia, macrpi, mactag ) => {
+    console.log("ENTRAMOS A calcul0DeN")
 
-        RawData.find({sampleId: sampleId, macRpi:macRpi, macTag: macTag })
-                    .limit(muestras)
-                    .sort({_id:-1})
-                    .exec( (err,rawdata) => {
+    RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
+                .limit(muestras)
+                .sort({_id:-1})
+                .exec( (err,rawdata) => {
 
             if (err) {
                 return res.status(400).json({
@@ -27,20 +23,10 @@ let calculoDeN = (muestras, sample, mac) => {
                 });
             }
 
-            data = rawdata;
-
-            if (mac == meshUno[0].mac) {a = 0}
-            if (mac == meshUno[1].mac) {a = 1}
-            if (mac == meshUno[2].mac) {a = 2}
-            if (mac == '') {a = 3}
-            if (mac == '') {a = 4}
-            if (mac == '') {a = 5}
-        
-            // //console.log(data.rssi[0].conditions.distance)
             var nsum = 0;
             for (var j = 0; j < muestras; j++) {
                 if (data.rssi[j].distance > 1) {
-                    nsum += (-(data.rssi[j].rssi) + Cofing[a].rssiprom + Cofing[a].C) / (10 * Math.log10(data.rssi[j].distance))
+                    nsum += (-(data.rssi[j].rssi) + [a].rssiprom + Cofing[a].C) / (10 * Math.log10(data.rssi[j].distance))
                     // console.log('rssi= '+data.rssi[j].rssi+'rssiprom= '+Cofing[a].rssiprom+'C='+Cofing[a].C+'Distance= '+data.rssi[j].conditions.distance)
         
                 }
@@ -57,7 +43,7 @@ let calculoDeN = (muestras, sample, mac) => {
         
             console.log(Cofing[a].nAcum, mac)
             console.log('********************************')
-            Cofing[a].n = Cofing[a].nAcum / 4;
+            resN[0].n = Cofing[a].nAcum / 4;
             console.log(Cofing[a]) 
 
         });
@@ -77,5 +63,6 @@ let calculoDeN = (muestras, sample, mac) => {
  **************************************/
 
 module.exports = {
-    calculoDeN
+    calculoDeN,
+    resN
 }

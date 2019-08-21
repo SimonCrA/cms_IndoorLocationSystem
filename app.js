@@ -8,7 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 console.log(`aca ES EL APP`);
-inicio.tiempoEspera();
+// inicio.tiempoEspera();
 var app = express();
 
 

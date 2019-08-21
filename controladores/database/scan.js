@@ -1,11 +1,17 @@
 
 var RaspData = require('../../models/rawdata');
+var Rawdatamuestras = require('../../models/rawdatamuestras');
 var async = require('async');
 
 exports.dato = function(req,res,next){
     let dato = new Date().getTime();
     console.log(`dato ${dato}`);
 }
+
+
+
+
+
 exports.rpi = function(req, res, next) {	
     console.log(`hey u`);
 	// console.log('resivo esto:\nMAC: ', req.params.mac,'\nRssi: ',req.params.rssi,'\nMac Rpi: ',req.params.macRpi,'\nFecha: ',req.params.date,'\n BeaconType: ',req.params.beaconType)
@@ -34,9 +40,34 @@ exports.rpi = function(req, res, next) {
 		
 	});
 
+};
+
+
+
+
+
+exports.guardarRawDataMuestras = function(req, res, next) {	
+    console.log(`raw data muestras`);
+	// console.log('resivo esto:\nMAC: ', req.params.mac,'\nRssi: ',req.params.rssi,'\nMac Rpi: ',req.params.macRpi,'\nFecha: ',req.params.date,'\n BeaconType: ',req.params.beaconType)
+	
+	var rawdatamuestras = new Rawdatamuestras({
+		macRpi: req.params.macRpi,
+		macTag: req.params.macTag,
+		rssi: parseInt(req.params.rssi),
+		distancia: parseInt(req.params.distancia),
+	});
+	rawdatamuestras.save(function (err) {
+		if (err) { 
+			console.log("....:\n"+rawdatamuestras+"\n");
+
+			console.log(err);
+			return next(err); 
+			
+		}
+		console.log("guarde Esto:\n"+rawdatamuestras+"\n");
+		// Successful - redirect to new author record.	
+		res.status(200).jsonp({result:'SAVED'});	
 		
-	
-	
-	
+	});
 
 };

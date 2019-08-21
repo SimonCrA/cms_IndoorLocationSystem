@@ -1,24 +1,14 @@
 const configfile = require('../configfile/configfile');
-const RawData = require('../../../models/rawdata');
+const RawDataM = require('../../../models/rawdatamuestras');
 
-let params = configfile;
-
-muestras = params.muestras;
-sample = params.sample;
-mac = params.mac;
-
-let  RSSIprom = (muestras,sample,mac) => {
-    // //console.log("ENTRAMOS A RSSIPROM")
-
-    let RSSIdataFromDB = (req, res) => {
-
-    var rssiprom1 = 0
-    var rssisum1 = 0
-    var data;
-    var a = 10;
+let resRssi = new Array();
 
 
-    RawData.find({sampleId: sample, macBeacon:mac })
+let  rssiProm = async (muestras, distancia, macrpi, mactag ) => {
+    console.log("ENTRAMOS A RSSIPROM")
+
+    let rssisum1 = 0;
+    RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
                 .limit(muestras)
                 .sort({_id:-1})
                 .exec( (err,rawdata) => {
@@ -29,29 +19,25 @@ let  RSSIprom = (muestras,sample,mac) => {
                     err
                 });
             }
+   
 
-            data = rawdata;
-            datrssi = data.rssi[1].rssi;
-    
-            if (mac === meshUno[0].mac) {a = 0}
-            if (mac === meshUno[1].mac) {a = 1}
-            if (mac === meshUno[2].mac) {a = 2}
-            if (mac === '') {a = 3}
-            if (mac === '') {a = 4}
-            if (mac === '') {a = 5}
-            //console.log(data)
+            // console.log(rawdata)
             for (var i = 0; i < muestras; i++) {
                 ////console.log('s')
-                rssisum1 += data.rssi[i].rssi
-    
+                rssisum1 += rawdata[i].rssi;
             }
-            rssiprom1 = rssisum1 / muestras
-            cofing[a].rssiprom = rssiprom1;
+            let rssiprom = rssisum1 / muestras
+            // console.log(rssiprom);
+
+            resRssi[0] = rssiprom;
+            return rssiprom;
     
-            // console.log(Cofing[a])
+
 
         });
-    };
+
+    // return rssisum1;
+
 };
 
 
@@ -68,6 +54,7 @@ let  RSSIprom = (muestras,sample,mac) => {
  **************************************/
 
 module.exports = {
-    RSSIprom,
-    RSSIdataFromDB
+    rssiProm,
+    resRssi
+    // RSSIdataFromDB 
 }
