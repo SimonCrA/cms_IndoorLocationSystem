@@ -3,16 +3,7 @@ const ConstDistancia= require('../../models/constantesdistancia');
 
 
 
-<<<<<<< HEAD
-    
-
-    let mac = req.mac;
-    let RSSIXe = req.rssi;
-    await ConstDistancia.find().limit(3).sort({_id: -1})
-        .exec((err, device) => {
-=======
 let distancia = async (mac, rssi) => {
->>>>>>> ed21c7fb1ad54aab7009ad7645f52b185c608246
 
     // // let mac = req.mac;
     // // let RSSIXe = req.rssi;
