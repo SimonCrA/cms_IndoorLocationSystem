@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 
 var ubicacionSchema = new Schema({
 	
+		nombre: {type: String},
 		macRpi: {type: String},
 		axis: {type: String },        
         xpos: {type: Number},
@@ -16,4 +17,4 @@ var ubicacionSchema = new Schema({
 );  
 
 //Export model
-module.exports = mongoose.model('Ubicacion', ubicacionSchema);
+module.exports = mongoose.model('InfoUbicacion', ubicacionSchema);

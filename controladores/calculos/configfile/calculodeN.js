@@ -1,30 +1,21 @@
 const configfile = require('../configfile/configfile');
 const RawData = require('../../../models/rawdata');
 
-let params = configfile.ejecucionFnEnSerie;
+let parametros = configfile.ejecucionFnEnSerie;
 
-muestras = params.muestras;
-sample = params.sample;
-mac = params.mac;
+muestras = parametros.muestras;
+sample = parametros.sample;
+mac = parametros.mac;
 
 
 
 let calculoDeN = (muestras, sample, mac) => {
-    // console.log("ENTRAMOS A calN")
-    //console.log('s='+muestras+ sample+ mac)
-
-    let tagDataFromDB = (req, res) => {
-        // let gf = req.mac; 
-        // let fg = req.sample;
-        // let gh = req.muestras;
-        //nota: ^^^^ preguntar a alberto sobre la posibilidad de importar 
-        //      los parametros de esa manera.
 
         let a = 10;
         let data;
         let total = 0
 
-        RawData.find({sampleId: sample, macBeacon:mac })
+        RawData.find({sampleId: sampleId, macRpi:macRpi, macTag: macTag })
                     .limit(muestras)
                     .sort({_id:-1})
                     .exec( (err,rawdata) => {
@@ -70,7 +61,6 @@ let calculoDeN = (muestras, sample, mac) => {
             console.log(Cofing[a]) 
 
         });
-    };
 };
 
     

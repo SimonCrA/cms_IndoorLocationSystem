@@ -36,7 +36,8 @@ function ejecucionFnEnSerie() {
     let mac = macTags.addDevicesToMesh.mac;
     console.log('SE HA INICIADO EL CALCULO DE LAS CONSTANTES...', sample, muestras)
 
-    const doLemon = async (qwert) => {
+    const llamarArchivosDeConfig = async (qwert) => {
+        
         console.log(qwert)
         await sleep(5000)
         console.log('1/30')
@@ -153,7 +154,7 @@ function ejecucionFnEnSerie() {
                                 '/' + sample, function () {data = consulta.responseJSON;})
 
     }
-    doLemon('hola soy qqwery')
+    llamarArchivosDeConfig('hola soy qqwery')
     // console.log(varsConfFile[3])
 }
 
@@ -168,6 +169,7 @@ const sleep = (milliseconds) => {
  * cofing = varsconfFile
  * inicializar = incializarVariables
  * conf = ejecucionFnEnSerie
+ * doLemon = llamarArchivosDeConfig
  * 
  * 
  * El documento ahora quedará

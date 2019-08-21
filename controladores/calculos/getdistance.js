@@ -7,6 +7,8 @@ const configfile = require('../configfile/configfile');
 
 let distancia = async (req, res) => {
 
+    
+
     let mac = req.mac;
     let RSSIXe = req.rssi;
     await ConstDistancia.find().limit(3).sort({_id: -1})

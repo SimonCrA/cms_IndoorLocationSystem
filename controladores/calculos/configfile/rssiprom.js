@@ -33,24 +33,12 @@ let  RSSIprom = (muestras,sample,mac) => {
             data = rawdata;
             datrssi = data.rssi[1].rssi;
     
-            if (mac === meshUno[0].mac) {
-                a = 0
-            }
-            if (mac === meshUno[1].mac) {
-                a = 1
-            }
-            if (mac === meshUno[2].mac) {
-                a = 2
-            }
-            if (mac === '') {
-                a = 3
-            }
-            if (mac === '') {
-                a = 4
-            }
-            if (mac === '') {
-                a = 5
-            }
+            if (mac === meshUno[0].mac) {a = 0}
+            if (mac === meshUno[1].mac) {a = 1}
+            if (mac === meshUno[2].mac) {a = 2}
+            if (mac === '') {a = 3}
+            if (mac === '') {a = 4}
+            if (mac === '') {a = 5}
             //console.log(data)
             for (var i = 0; i < muestras; i++) {
                 ////console.log('s')

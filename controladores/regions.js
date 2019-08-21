@@ -1,77 +1,30 @@
-var beaconM11 = {
-    name: "Lemon O",
-    mac: "D2:61:39:CF:C1:26",
-    axis: "o",
-    xpos: 0,
-    ypos: 0,
-    mesh: 0
-};
-var beaconM12 = {
-    name: "Candy X",
-    mac: "DA:93:A5:A9:62:1F",
-    axis: "x",
-    xpos: 2.10,
-    ypos: 0,
-    mesh: 0
-};
-var beaconM13 = {
-    name: "Beetroot Y",
-    mac: "E0:32:1F:95:E5:62",
-    axis: "y",
-    xpos: 0,
-    ypos: 2.40,
-    mesh: 0
-};
+const InfoUbicacion = require('../models/ubicacion');
 
-var beaconM21 = {
-    name: "Beetroot O",
-    mac: "ED:22:F2:71:55:16",
-    axis: "o",
-    xpos: 0,
-    ypos: 0,
-    mesh: 1
-};
-var beaconM22 = {
-    name: "Candy X",
-    mac: "E4:56:FD:95:D5:F7",
-    axis: "x",
-    xpos: 4.0,
-    ypos: 0,
-    mesh: 1
-};
-var beaconM23 = {
-    name: "Limon Y",
-    mac: "C3:2E:EA:43:2B:E9",
-    axis: "y",
-    xpos: 0,
-    ypos: 4.0,
-    mesh: 1
-};
 
-var beaconRP1 = {
-    name: "beetroot",
-    mac: "ee:23:f3:72:56:17",
-    axis: "o",
-    xpos: 0,
-    ypos: 0,
-    mesh: 1
-};
-var beaconRP2 = {
-    name: "Lemon  ",
-    mac: "c4:2f:eb:44:2c:ea",
-    axis: "x",
-    xpos: 4.0,
-    ypos: 0,
-    mesh: 1
-};
-var beaconRP3 = {
-    name: "Candy  ",
-    mac: "e5:57:fe:96:d6:f8",
-    axis: "y",
-    xpos: 0,
-    ypos: 4.0,
-    mesh: 1
-};
+
+        let da= InfoUbicacion.find({ })
+                    .exec( (err,infoUbicacion) => {
+
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            data = {
+                name:infoUbicacion[9].name,
+                
+                mac: macRpi,
+                axis,
+                xpos,
+                ypos,
+                idzona,
+                region
+            };
+
+
+        });
 
 var beaconESP1 = {
     name: "ESP 32-1",
