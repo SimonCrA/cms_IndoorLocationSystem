@@ -16,6 +16,7 @@ exports.rpi = function(req, res, next) {
         // tx: parseInt(req.params.txPower),
 		rssi: parseInt(req.params.rssi),
 		rpidate: new Date(parseInt(req.params.date)),
+		// rpidate: new Date().getTime(),
         beacontype: req.params.beaconType,
         sampleId: req.params.sampleId
 	});
