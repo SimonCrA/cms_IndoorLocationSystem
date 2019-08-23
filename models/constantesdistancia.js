@@ -4,11 +4,11 @@ var Schema = mongoose.Schema;
 
 var constantesDistanciaSchema = new Schema({
 
-		macTag: {type: String,  max: 100},
+		macrpi: {type: String, max: 50},
+		mactag: {type: String,  max: 50},
 		nPropagacion: {type: Number },        
         rssiProm: {type: Number},
-		desviacionEstandar: {type: Number},
-		sampleId:{type:String}
+		desviacionEstandar: {type: Number}
 		
 
 	}

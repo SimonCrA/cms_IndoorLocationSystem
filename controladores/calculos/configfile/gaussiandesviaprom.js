@@ -1,25 +1,18 @@
 const configfile = require('../configfile/configfile');
+const RawDataM = require('../../../models/rawdatamuestras');
+const RSSIprom = require('../configfile/rssiprom');
 
-let params = configfile.ejecucionFnEnSerie;
+let vgcde = new Array();
 
-muestras = params.muestras;
-sample = params.sample;
-mac = params.mac;
+let rx = RSSIprom.respRssi;
 
-let desviacion = (muestras, sample, mac) =>  {
-    var rssiprom = 0
-    var rssisum = 0
-    var a = 10;
-    var data;
-    ////console.log('s='+muestras+ sample+ mac)
+let desviacionEstandarGaussiana = async (muestras, distancia, macrpi, mactag) => {
+    console.log("ENTRAMOS A CALCULODEN");
 
-
-        // //console.log(desviap)
-
-    RawData.find({sampleId: sample, macBeacon:mac })
-                .limit(muestras)
-                .sort({_id:-1})
-                .exec( (err,rawdata) => {
+    RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
+            .limit(muestras)
+            .sort({_id:-1})
+            .exec( (err,rawdata) => {
 
         if (err) {
             return res.status(400).json({
@@ -28,43 +21,30 @@ let desviacion = (muestras, sample, mac) =>  {
             });
         }
 
-        if (mac == meshUno[0].mac) {a = 0}
-        if (mac == meshUno[1].mac) {a = 1}
-        if (mac == meshUno[2].mac) {a = 2}
-        if (mac == '') {a = 3}
-        if (mac == '') {a = 4}
-        if (mac == '') {a = 5}
-
-        data = rawdata;
-
-
         for (var i = 0; i < muestras; i++) {
-            ////console.log('s')
-            rssisum += data.rssi[i].rssi
+            rssisum += rawdata[i].rssi;
+        };
 
+        rssiprom = rssisum / muestras;
+
+        //console.log(rssiprom);
+
+        let desviacion = 0;
+        for (let i = 0; i < muestras; i++) {
+            desviacion += Math.pow(rx - rssiprom, 2);
         }
-        rssiprom = rssisum / muestras
-        var desvia = 0
-        //console.log(rssiprom)
-        for (var i = 0; i < muestras; i++) {
-            desvia += Math.pow(data.rssi[i].rssi - rssiprom, 2);
-        }
-        desviaT = Math.sqrt(desvia / muestras)
+        desviacionT = Math.sqrt(desviacion / muestras)
         // console.log('esto es DesviaT= ',desviaT,' de la mac=',mac)
 
 
 
-        Cofing[a].desviap += desviaT
+        desviacionSum += desviacionT
 
-        var prom = Cofing[a].desviap / 5
+        let promedioDesviacion = desviacionSum / 5;
+        let z = 1.65;
+        let zmgvwsd = z * promedioDesviacion;
 
-        // console.log(prom)
-        var z = 1.65;
-        var Cc = z * prom;
-
-        // console.log(Cc)
-        Cofing[a].Cprom = prom;
-        Cofing[a].C = Cc;
+        respvgcde[0] = zmgvwsd;
 
         //console.log(Cofing[a])
 
@@ -74,6 +54,8 @@ let desviacion = (muestras, sample, mac) =>  {
 /***************************************
  * variable modificadas
  * desviasion = desviacion
+ * respvgcde= resppuesta de variable gaussiana con desviacion estandar
+ * zmgvwsd = zero mean gaussian variable with standard deviation
  * 
  * 
  * El documento ahora quedará
@@ -82,5 +64,6 @@ let desviacion = (muestras, sample, mac) =>  {
  **************************************/
 
 module.exports = {
-    desviacion
+    desviacionEstandarGaussiana,
+    respvgcde
 }

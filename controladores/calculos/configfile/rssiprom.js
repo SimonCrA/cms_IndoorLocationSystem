@@ -1,7 +1,7 @@
 const configfile = require('../configfile/configfile');
 const RawDataM = require('../../../models/rawdatamuestras');
 
-let resRssi = new Array();
+let respRssi = new Array();
 
 
 let  rssiProm = async (muestras, distancia, macrpi, mactag ) => {
@@ -19,8 +19,6 @@ let  rssiProm = async (muestras, distancia, macrpi, mactag ) => {
                     err
                 });
             }
-   
-
             // console.log(rawdata)
             for (var i = 0; i < muestras; i++) {
                 ////console.log('s')
@@ -29,14 +27,10 @@ let  rssiProm = async (muestras, distancia, macrpi, mactag ) => {
             let rssiprom = rssisum1 / muestras
             // console.log(rssiprom);
 
-            resRssi[0] = rssiprom;
+            respRssi[0] = rssiprom;
             return rssiprom;
-    
-
 
         });
-
-    // return rssisum1;
 
 };
 
@@ -55,6 +49,5 @@ let  rssiProm = async (muestras, distancia, macrpi, mactag ) => {
 
 module.exports = {
     rssiProm,
-    resRssi
-    // RSSIdataFromDB 
+    respRssi 
 }
