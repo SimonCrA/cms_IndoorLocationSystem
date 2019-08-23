@@ -1,15 +1,17 @@
 const configfile = require('../configfile/configfile');
-const RawData = require('../../../models/rawdata');
+const RawDataM = require('../../../models/rawdatamuestras');
 const RSSIprom = require('../configfile/rssiprom');
+const gaussDesviaProm = require('../configfile/gaussiandesviaprom');
 
-let resN = new Array();
+let respN = new Array();
 
-rx = RSSIprom.resRssi;
+rx = RSSIprom.respRssi;
+vgcde= gaussDesviaProm.respvgcde;
 
 
 
 let  calculoDeN = async (muestras, distancia, macrpi, mactag ) => {
-    console.log("ENTRAMOS A calcul0DeN")
+    console.log("ENTRAMOS A calcul0DeN");
 
     RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
                 .limit(muestras)
@@ -25,36 +27,33 @@ let  calculoDeN = async (muestras, distancia, macrpi, mactag ) => {
 
             var nsum = 0;
             for (var j = 0; j < muestras; j++) {
-                if (data.rssi[j].distance > 1) {
-                    nsum += (-(data.rssi[j].rssi) + [a].rssiprom + Cofing[a].C) / (10 * Math.log10(data.rssi[j].distance))
+                if (rawdata.distancia > 1) {
+                    nsum += (-(rawdata.rssi) + rx + vgcde) / (10 * Math.log10(rawdata.distancia))
                     // console.log('rssi= '+data.rssi[j].rssi+'rssiprom= '+Cofing[a].rssiprom+'C='+Cofing[a].C+'Distance= '+data.rssi[j].conditions.distance)
         
                 }
         
             }
             // console.log('HEPA MENOL!')
-            console.log(nsum, mac)
-            total = nsum / muestras;
-            console.log(total)
-            Cofing[a].nAcum += total
-            // console.log(cont)
-        
-        
-        
-            console.log(Cofing[a].nAcum, mac)
+            // console.log(nsum, mac)
+            totalN = nsum / muestras;
+            console.log(totalN);
+            respN[0] += totalN;
+            console.log(respN[0], mac)
             console.log('********************************')
-            resN[0].n = Cofing[a].nAcum / 4;
-            console.log(Cofing[a]) 
+            resN[1] = respN[0] / 4;
+            console.log(respN[1]);
 
         });
 };
 
-    
-    // //console.log(consulta)
-
 /***************************************
  * variable modificadas
  * calN = calculoDeN
+ * respN[0] = sumatoria de n
+ * respN[1] = promedio de n
+ * rx = valor que se obtiene de RSSIprom
+ * vgdc= valor que se obtiene de gaussiandesviaprom
  * 
  * 
  * El documento ahora quedará
@@ -64,5 +63,5 @@ let  calculoDeN = async (muestras, distancia, macrpi, mactag ) => {
 
 module.exports = {
     calculoDeN,
-    resN
+    respN
 }

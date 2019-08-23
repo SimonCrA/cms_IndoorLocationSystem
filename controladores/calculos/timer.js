@@ -1,5 +1,5 @@
-const filtrar = require('./kalmanfilter')
-const colors = require ('colors')
+const filtrar = require('./kalmanfilter');
+const colors = require ('colors');
 const RawData = require('../../models/rawdata');
 
 
