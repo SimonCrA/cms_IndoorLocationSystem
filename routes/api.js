@@ -20,7 +20,9 @@ router.get('/constantes/:region/:mactag', apiConfigFile.ejecucionFnEnSerie );
 router.get('/constantes/zona/:edif/:piso/:oficina/:tipo', apiConfigFile.guardarzona );
 
 router.get('/constantes/ubicacion/:edif/:macrpi', apiConfigFile.guardarubicacion );
-router.get('/rawData/:macRpi/:macTag/:rssi/:distancia', apiScanner.guardarRawDataMuestras );
+
+
+router.get('/rawdatam/:macRpi/:mactag/:distancia', apiScanner.guardarRawDataMuestras );
 
 
 

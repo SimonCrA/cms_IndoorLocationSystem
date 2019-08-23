@@ -313,5 +313,5 @@ const sleep = (milliseconds) => {
     //  inicializarVariables,
      ejecucionFnEnSerie ,
      guardarzona,
-     guardarubicacion
+     guardarubicacion,sleep
  }
