@@ -10,11 +10,10 @@ router.get('/dato/:datp',apiScanner.dato)
 
 router.get('/rpi/:rssi/:macBeacon/:macRpi/:date/:beaconType/:sampleId', apiScanner.rpi);
 
+router.post('/rpi/post', apiScanner.rasptest);
 
 
-router.get('/constantes/:region/:mactag', apiConfigFile.ejecucionFnEnSerie );
-
-
+router.get('/configuracion/:mactag/:region/:cantm', apiConfigFile.ejecucionEnSerie);
 
 
 router.get('/constantes/zona/:edif/:piso/:oficina/:tipo', apiConfigFile.guardarzona );

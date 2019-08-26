@@ -6,6 +6,7 @@ const gaussDesviaProm = require('../configfile/gaussiandesviaprom');
 // const desviacion = require('../configfile/gaussiandesviaprom');
 // const macTags = require('../../regions');
 const ConstsDistancia = require('../../../models/constantesdistancia');
+const colors = require('colors')
 
 let guardarzona = (req, res, next) =>{
 
@@ -65,56 +66,102 @@ let guardarubicacion = (req, res, next) =>{
     })
 }
 
-let ejecucionFnEnSerie = (req, res, next) =>{
+let ejecucionEnSerie = (req, res, next) =>{
 
     let region = req.params.region;
     let tag =  req.params.mactag;
-    let muestras = 5;
+    let muestras = 3;
+    let cantidad_Muestras = req.params.cantm
    
    console.log(region);
 
    infoUbicacionRpi.find({idZona:region}).exec( async (err,macrpi) => {
         if(err){console.log(err);}
-
+        let cont=0;
         // console.log(macrpi);
         for(let i=0; i<macrpi.length;i++){
+            /* *****************************************
+            *	Calculo de Rssi Promedio
+            /* *****************************************/
+            cont++;
+            console.log(`${cont}/30`.blue);
+            RSSIprom.rssiProm(muestras, 1, macrpi[i].macRpi, tag, i);
+            await sleep(5000);
+            cont++;
+            console.log(RSSIprom.respRssi);
+            console.log(`${cont}/30`.blue);
+
+            /* *****************************************
+            *	            CALCULO DE
+            *	Desviacion Estandar Gaussiana
+            /* *****************************************/
+
+            for (let j = 0 ; j<cantidad_Muestras; j ++){
+                gaussDesviaProm.desviacionEstandarGaussiana(muestras, j+ 1, macrpi[i].macRpi, tag,i);
+                await sleep(5000);
+                cont++;
+                console.log(`${cont}/30`.blue);
+                
+            } ;
+
             
-            console.log('1/30');
-            RSSIprom.rssiProm(muestras, 1, macrpi[i].macRpi, tag);
-            console.log('2/30');
-            await sleep(5000);
-            gaussDesviaProm.desviacionEstandarGaussiana(muestras, 1, macrpi[i].macRpi, tag);
-            console.log('3/30');
-            await sleep(5000);
-            calculoDeN.calculoDeN(muestras, 1, macrpi[i].macRpi, tag);
-            console.log('4/30');
-            await sleep(5000);
 
-        };
+            let promedioDesviacion = gaussDesviaProm.respvgcde[i].sumatoria / cantidad_Muestras;
+            let z = 1.65;
+            gaussDesviaProm.respvgcde[i].zmgvwsd = z * promedioDesviacion;
 
-        let constantesDeBD = new ConstsDistancia({
+            console.log(gaussDesviaProm.respvgcde[i].zmgvwsd);
 
-            macrpi: macrpi,
-            mactag:  mactag,
-            nPropagacion: calculoDeN.calculoDeN,
-            rssiProm: RSSIprom.rssiProm,
-            desviacionEstandar: gaussDesviaProm.desviacionEstandarGaussiana,
+            /* *****************************************
+            *	            CALCULO DE
+            *	Constante de Propagacion { [ ( N ) ] }
+            /* *****************************************/
+            for (let j = 0 ; j<cantidad_Muestras; j ++){
+                
+                calculoDeN.calculoDeN(muestras, j+1, macrpi[i].macRpi, tag,i);
+                await sleep(5000);
+                cont++;
+                console.log(`${cont}/30`.blue);
+            
+            }
 
-        });
+            calculoDeN.respN[i].totalN = calculoDeN.respN[i].sumatoriaN / cantidad_Muestras;
+            console.log(`Total N es: ${calculoDeN.respN[i].totalN}`);
 
-        constantesDeBD.save(function (err){
-            if(err){
-                console.log(err);
-                return next(err);
-            };
 
-            console.log("guarde Esto:\n" + ubicacion + "\n");
-            // Successful - redirect to new author record.	
-            res.status(200).jsonp({
-                result: 'SAVED'
+            /* *****************************************
+            *	Guardar en Base de datos las constantes
+            *	para realizar el calculo de distancia
+            /* *****************************************/
+
+            
+            let constantesDeBD = new ConstsDistancia({
+    
+                macRpi: macrpi[i].macRpi,
+                macTag:  tag,
+                rssiProm: RSSIprom.respRssi[i],
+                nPropagacion: calculoDeN.respN[i].totalN,
+                desviacionEstandar: gaussDesviaProm.respvgcde[i].zmgvwsd,
+    
+            });
+    
+            constantesDeBD.save(function (err){
+                if(err){
+                    console.log(err);
+                    return next(err);
+                };
+    
+                console.log("guarde Esto:\n" + constantesDeBD + "\n");
+                // Successful - redirect to new author record.	
+
+            
             });
         
+        }
+        res.status(200).jsonp({
+            result: 'SAVED'
         });
+
 
     });
 
@@ -140,7 +187,7 @@ const sleep = (milliseconds) => {
  **************************************/
 
  module.exports = {
-     ejecucionFnEnSerie ,
+     ejecucionEnSerie ,
      guardarzona,
      guardarubicacion,sleep
  }

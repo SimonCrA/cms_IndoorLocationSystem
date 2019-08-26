@@ -1,13 +1,22 @@
-const configfile = require('../configfile/configfile');
 const RawDataM = require('../../../models/rawdatamuestras');
 const RSSIprom = require('../configfile/rssiprom');
 
-let vgcde = new Array();
+let respvgcde = [{
+    sumatoria:0,
+    zmgvwsd:0
+},{
+    sumatoria:0,
+    zmgvwsd:0
+},{
+    sumatoria:0,
+    zmgvwsd:0
+}]
 
-let rx = RSSIprom.respRssi;
+// respvgcde[0] ={sumatoria:0,zmgvwsd:0}
 
-let desviacionEstandarGaussiana = async (muestras, distancia, macrpi, mactag) => {
-    console.log("ENTRAMOS A CALCULODEN");
+
+let desviacionEstandarGaussiana = async (muestras, distancia, macrpi, mactag, iteracion) => {
+    console.log("ENTRAMOS A CALCULO DE DesviacionEstandarGaussiana");
 
     RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
             .limit(muestras)
@@ -20,33 +29,38 @@ let desviacionEstandarGaussiana = async (muestras, distancia, macrpi, mactag) =>
                 err
             });
         }
+        if(rawdata[0] === undefined){
+            console.log(`No se puede realizar calculos de respvgcde para;
+            \n macRasp:${macrpi} ,  MacTag:${mactag} ,  Distancia:${distancia}`);
+        }else{
+            let rssisum = 0;
+            let rssiprom = 0;
+            let desviacion = 0;
+            let desviacionT = 0;
+            
+            for (let i = 0; i < muestras; i++) {
+                rssisum += rawdata[i].rssi;
+            };
+    
+            rssiprom = rssisum / muestras;
+    
+            //console.log(rssiprom);
+    
+            for (let i = 0; i < muestras; i++) {
+                desviacion += Math.pow(RSSIprom.respRssi[iteracion] - rssiprom, 2);
+            }
+            desviacionT = Math.sqrt(desviacion / muestras)
+            // console.log('esto es DesviaT= ',desviaT,' de la mac=',mac)
+    
+    
+    
+            respvgcde[iteracion].sumatoria += desviacionT
+    
+          
+    
 
-        for (var i = 0; i < muestras; i++) {
-            rssisum += rawdata[i].rssi;
-        };
-
-        rssiprom = rssisum / muestras;
-
-        //console.log(rssiprom);
-
-        let desviacion = 0;
-        for (let i = 0; i < muestras; i++) {
-            desviacion += Math.pow(rx - rssiprom, 2);
         }
-        desviacionT = Math.sqrt(desviacion / muestras)
-        // console.log('esto es DesviaT= ',desviaT,' de la mac=',mac)
 
-
-
-        desviacionSum += desviacionT
-
-        let promedioDesviacion = desviacionSum / 5;
-        let z = 1.65;
-        let zmgvwsd = z * promedioDesviacion;
-
-        respvgcde[0] = zmgvwsd;
-
-        //console.log(Cofing[a])
 
     });
 }

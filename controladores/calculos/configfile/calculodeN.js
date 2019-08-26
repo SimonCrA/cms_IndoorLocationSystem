@@ -1,17 +1,17 @@
-const configfile = require('../configfile/configfile');
 const RawDataM = require('../../../models/rawdatamuestras');
 const RSSIprom = require('../configfile/rssiprom');
 const gaussDesviaProm = require('../configfile/gaussiandesviaprom');
 
 let respN = new Array();
 
-rx = RSSIprom.respRssi;
-vgcde= gaussDesviaProm.respvgcde;
+respN[0] = {sumatoriaN:0, totalN:0}
+respN[1] = {sumatoriaN:0, totalN:0}
+respN[2] = {sumatoriaN:0, totalN:0}
 
 
 
-let  calculoDeN = async (muestras, distancia, macrpi, mactag ) => {
-    console.log("ENTRAMOS A calcul0DeN");
+let  calculoDeN = async (muestras, distancia, macrpi, mactag, iteracion ) => {
+    console.log("ENTRAMOS A calculo De Constante de Propagacion N");
 
     RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
                 .limit(muestras)
@@ -25,30 +25,25 @@ let  calculoDeN = async (muestras, distancia, macrpi, mactag ) => {
                 });
             }
 
-            var nsum = 0;
-            for (var j = 0; j < muestras; j++) {
-                if (rawdata.distancia > 1) {
-                    nsum += (-(rawdata.rssi) + rx + vgcde) / (10 * Math.log10(rawdata.distancia))
-                    // console.log('rssi= '+data.rssi[j].rssi+'rssiprom= '+Cofing[a].rssiprom+'C='+Cofing[a].C+'Distance= '+data.rssi[j].conditions.distance)
-        
+            let nsum = 0;
+            let totalN =0;
+            for (let j = 0; j < muestras; j++) {
+                if (rawdata[j].distancia > 1) {
+                    nsum += (-(rawdata[j].rssi) + RSSIprom.respRssi[iteracion] + gaussDesviaProm.respvgcde[iteracion].zmgvwsd) / (10 * Math.log10(rawdata[j].distancia))
+                    console.log(`(-(${rawdata[j].rssi}) + ${RSSIprom.respRssi[iteracion]} + ${gaussDesviaProm.respvgcde[iteracion].zmgvwsd}) / (10 * ${Math.log10(rawdata[j].distancia)})`);
                 }
         
             }
-            // console.log('HEPA MENOL!')
-            // console.log(nsum, mac)
+            console.log(`Muestra nsum: ${nsum}`);
             totalN = nsum / muestras;
-            console.log(totalN);
-            respN[0] += totalN;
-            console.log(respN[0], mac)
-            console.log('********************************')
-            resN[1] = respN[0] / 4;
-            console.log(respN[1]);
+            respN[iteracion].sumatoriaN += totalN;
 
+ 
         });
 };
 
 /***************************************
- * variable modificadas
+ * letiable modificadas
  * calN = calculoDeN
  * respN[0] = sumatoria de n
  * respN[1] = promedio de n
