@@ -64,6 +64,7 @@ let tiempoScanner =async () =>{
         console.log(`STOP`.red);
         clearInterval(dato);
         tiempoEspera();
+        clearTimeout
     }, 5100);
 
 }
