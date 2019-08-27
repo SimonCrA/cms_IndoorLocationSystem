@@ -1,8 +1,11 @@
 
-var RawData = require('../../models/rawdata');
+const RawData = require('../../models/rawdata');
 var Rawdatamuestras = require('../../models/rawdatamuestras');
 const Fileconfig = require('../calculos/configfile/configfile');
-var async = require('async');
+const filtroKalman = require('../calculos/kalmanfilter');
+const async = require('async');
+
+
 
 exports.dato = function(req,res,next){
     let dato = new Date().getTime();
@@ -10,8 +13,50 @@ exports.dato = function(req,res,next){
 }
 
 
-exports.rasptest = function(req, res, next) {
-	console.log(req.body);
+exports.dataRaspi = async (req, res, next)=>{
+	
+	let rawDataRaspi = new Array();
+	const categoriaFiltrada = [];
+	rawDataRaspi = req.body;
+	// console.log(rawDataRaspi)
+	// rawDataRaspi[0].mac
+	rawDataRaspi.forEach(categoria => {
+		
+		if (!categoriaFiltrada.find(data => data.mactag === categoria.mactag)) {
+			const  { mactag } = categoria;
+			categoriaFiltrada.push({mactag})
+			
+		}
+	});
+	console.log(categoriaFiltrada);
+
+	for (let i = 0; i < categoriaFiltrada.length; i++) {
+
+			let dataToSendToKalmanF = rawDataRaspi.filter(data => data.mactag == categoriaFiltrada[i].mactag);
+
+			// console.log(dataToSend.length);
+			
+			let resp = await filtroKalman.filtrado(dataToSendToKalmanF);
+			
+			if(resp === true){
+				res.status(200).json({
+					ok: true,
+					status: 200
+				})
+			}else{
+				res.status(400).json({
+					ok: false,
+					status: 400
+				})
+
+			}
+
+		
+	}
+	
+	res.status(200).json({
+		ok: true,
+	})
 }
 
 

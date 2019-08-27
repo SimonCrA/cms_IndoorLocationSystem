@@ -8,7 +8,8 @@ var constantesDistanciaSchema = new Schema({
 		macTag: {type: String,  max: 100},
 		nPropagacion: {type: Number },        
         rssiProm: {type: Number},
-		desviacionEstandar: {type: Number}
+		desviacionEstandar: {type: Number},
+		idRegion: {type: String}
 		
 
 	}

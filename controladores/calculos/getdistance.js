@@ -1,26 +1,52 @@
 const ConstDistancia= require('../../models/constantesdistancia');
+const DistanciaTag= require('../../models/distancias');
 
 
 
 
 let distancia = async (req) => {
 
+    // console.log(req);
+
     
 
     ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag})
-    .exec( (err, callback) => {
+    .exec( (err, constsDataFromDB) => {
         if(err) {
             console.log(err);
         }
-        if(device[device.length-1] !== undefined){
-            console.log(`${constant}`);
-            let pot = (-req.rssi + callback[0].rssiProm + callback[0].desviacionEstandar) / (10 * callback[0].nPropagacion);
+        if(constsDataFromDB[0] !== undefined){
+            // console.log(`${constant}`);
+            let pot = (-req.rssi + constsDataFromDB[0].rssiProm + constsDataFromDB[0].desviacionEstandar) / (10 * constsDataFromDB[0].nPropagacion);
             let distancia = Math.pow(10, pot);
+            console.log(distancia);
+
             /* *****************************************n
-            *	siguiene modulo es TRILATERACION, para esto se deben enviar tres distancias
-            *	como hacer que envie tres distancias el modulo de getDistancia si solo resive
-            *   1 paramtro de busqueda...hb
+            *	Guardado en bse de datos de las distancias de los Tags.
             /* *****************************************/
+
+            let distanciasTags = new DistanciaTag({
+
+                macRpi: req.macrpi,
+                macTag: req.mactag,
+                distanciaTag: distancia,
+                region: constsDataFromDB[0].idRegion
+            });
+
+            distanciasTags.save(function (err) {
+                if (err) {
+                    console.log(err);
+                    return  {
+                        ok: false,
+                        status: 400
+                    }
+
+                }else{
+
+                    return {ok:true, status:200}
+                }
+
+            });
 
         }else{
             console.log(`--------------\n`+
