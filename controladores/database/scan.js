@@ -11,7 +11,7 @@ exports.dato = function(req,res,next){
 
 
 exports.rasptest = function(req, res, next) {
-	console.log(req.body);
+	console.log(req.body[0].rssi);
 }
 
 

@@ -1,3 +1,6 @@
+const bodyParser = require('body-parser')
+
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -26,9 +29,17 @@ console.log("Establecienda la conexion con MongoDB Server");
 //----------------------------------------------------------------------------
 
 
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+)
 
+app.use(bodyParser.json())
 
-
+app.post('/post', (req, res) => {
+  console.log(req.body[0].rssi)
+})
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
