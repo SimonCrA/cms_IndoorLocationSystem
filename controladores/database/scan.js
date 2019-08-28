@@ -6,12 +6,21 @@ var async = require('async');
 
 exports.dato = function(req,res,next){
     let dato = new Date().getTime();
-    console.log(`dato ${dato}`);
+	console.log(`dato ${dato}`);
+	
 }
 
 
 exports.rasptest = function(req, res, next) {
-	console.log(req.body[0].rssi);
+	console.log(req.body.length)
+	// console.log(req.body);
+
+
+	return res.json({
+		ok:true
+	})
+
+
 }
 
 
