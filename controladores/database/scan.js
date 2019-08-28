@@ -14,18 +14,6 @@ exports.dato = function(req,res,next){
 }
 
 
-<<<<<<< HEAD
-exports.rasptest = function(req, res, next) {
-	console.log(req.body.length)
-	// console.log(req.body);
-
-
-	return res.json({
-		ok:true
-	})
-
-
-=======
 exports.dataRaspi = async (req, res, next)=>{
 	
 	let rawDataRaspi = new Array();
@@ -70,7 +58,6 @@ exports.dataRaspi = async (req, res, next)=>{
 	res.status(200).json({
 		ok: true,
 	})
->>>>>>> 57e7e88ecb36c2c8bef0e81baf872a9cf8e7023f
 }
 
 
