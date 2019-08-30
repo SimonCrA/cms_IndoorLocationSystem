@@ -19,7 +19,7 @@ try {
     }
 
     let result = await myPromise();
-    console.log(result);
+    // console.log(result);
     let pot = (-req.rssi + result.rssiProm + result.desviacionEstandar) / (10 * result.nPropagacion);
             let distancia = await Math.pow(10, pot);
             console.log(`Distancia:${distancia}`);

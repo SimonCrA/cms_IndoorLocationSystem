@@ -12,6 +12,7 @@ let constantes =  (req, res, next) =>{
                 rssiProm: req.body.rssiprom,
                 nPropagacion: req.body.n,
                 desviacionEstandar: req.body.desvia,
+                idRegion:req.body.idregion
 
             });
 

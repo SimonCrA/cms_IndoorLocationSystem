@@ -31,32 +31,32 @@ exports.dataRaspi = async (req, res, next)=>{
 		}
 	});
 	console.log(categoriaFiltrada);
-
+	let resp;
 	for (let i = 0; i < categoriaFiltrada.length; i++) {
 
 			let dataToSendToKalmanF = rawDataRaspi.filter(data => data.mactag == categoriaFiltrada[i].mactag);
 
 			// console.log(dataToSend.length);
 			
-			let resp = await filtroKalman.filtrado(dataToSendToKalmanF);
+			resp = await filtroKalman.filtrado(dataToSendToKalmanF);
 			console.log(`scan ${JSON.stringify(resp, null, 2)}`);
-			if(resp.ok === true){
-				validacion_Trilateracion();
-				res.status(200).json({
-					ok: true,
-					status: 200
-				})
-			}else{
-				res.status(400).json({
-					ok: false,
-					status: 400
-				})
-
-			}
-
+			
+			
+		}
 		
-	}
-	
+		if(resp.ok === true){
+			validacion_Trilateracion();
+			res.status(200).json({
+				ok: true,
+				status: 200
+			})
+		}else{
+			res.status(400).json({
+				ok: false,
+				status: 400
+			})
+
+		}
 
 }
 

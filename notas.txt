@@ -1,0 +1,10 @@
+
+rasp1 (fisherman)origin = "b8:27:eb:de:9f:60"
+
+rasp2 (road) X = "b8:27:eb:bd:36:61"
+
+rasp3 (forest) Y = "b8:27:eb:d4:04:c9"
+
+
+
+tag = "cc:50:e3:a9:8e:d6"
