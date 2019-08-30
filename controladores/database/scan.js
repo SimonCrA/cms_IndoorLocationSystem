@@ -3,6 +3,7 @@ const RawData = require('../../models/rawdata');
 var Rawdatamuestras = require('../../models/rawdatamuestras');
 const Fileconfig = require('../calculos/configfile/configfile');
 const filtroKalman = require('../calculos/kalmanfilter');
+const {validacion_Trilateracion} = require('../calculos/validacion');
 const async = require('async');
 
 
@@ -38,8 +39,9 @@ exports.dataRaspi = async (req, res, next)=>{
 			// console.log(dataToSend.length);
 			
 			let resp = await filtroKalman.filtrado(dataToSendToKalmanF);
-			
-			if(resp === true){
+			console.log(`scan ${JSON.stringify(resp, null, 2)}`);
+			if(resp.ok === true){
+				validacion_Trilateracion();
 				res.status(200).json({
 					ok: true,
 					status: 200
@@ -55,9 +57,7 @@ exports.dataRaspi = async (req, res, next)=>{
 		
 	}
 	
-	res.status(200).json({
-		ok: true,
-	})
+
 }
 
 

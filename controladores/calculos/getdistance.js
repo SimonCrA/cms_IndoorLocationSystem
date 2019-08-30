@@ -3,23 +3,26 @@ const DistanciaTag= require('../../models/distancias');
 
 
 
+var respuesta= '';
+let distancia =  async (req) => {
+try {
+    let myPromise = () =>{
+        return new Promise((resolve, reject)=>{
+            ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag})
+            .exec(function (err, data){
+                err 
+                ? reject(err) 
+                : resolve(data[0])
+            });
 
-let distancia = async (req) => {
+        });
+    }
 
-    // console.log(req);
-
-    
-
-    ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag})
-    .exec( (err, constsDataFromDB) => {
-        if(err) {
-            console.log(err);
-        }
-        if(constsDataFromDB[0] !== undefined){
-            // console.log(`${constant}`);
-            let pot = (-req.rssi + constsDataFromDB[0].rssiProm + constsDataFromDB[0].desviacionEstandar) / (10 * constsDataFromDB[0].nPropagacion);
-            let distancia = Math.pow(10, pot);
-            console.log(distancia);
+    let result = await myPromise();
+    console.log(result);
+    let pot = (-req.rssi + result.rssiProm + result.desviacionEstandar) / (10 * result.nPropagacion);
+            let distancia = await Math.pow(10, pot);
+            console.log(`Distancia:${distancia}`);
 
             /* *****************************************n
             *	Guardado en bse de datos de las distancias de los Tags.
@@ -30,59 +33,75 @@ let distancia = async (req) => {
                 macRpi: req.macrpi,
                 macTag: req.mactag,
                 distanciaTag: distancia,
-                region: constsDataFromDB[0].idRegion
+                region: result.idRegion
             });
+            respuesta ={
+                ok:true, status:200
+            }
 
-            distanciasTags.save(function (err) {
+            distanciasTags.save((err) => {
                 if (err) {
                     console.log(err);
-                    return  {
+                        respuesta={
                         ok: false,
                         status: 400
                     }
-
-                }else{
-
-                    return {ok:true, status:200}
-                }
+                }              
 
             });
-
-        }else{
-            console.log(`--------------\n`+
-            `No existe registro de constantes para esta busqueda "\nMacRasp: ${req.macrpi} , MacTag: ${req.mactag}"`+
-            `\n--------------`);
-        }
-
-    });
+        
 
 
+    
+    return respuesta
+} catch (error) {
+    
+console.log(error);
+return respuesta ={ok:false,status:400}
+}
+    // // console.log(req);
+    
 
-    // // let mac = req.mac;
-    // // let RSSIXe = req.rssi;
-    // await ConstDistancia.find({macTag:mac, sampleId}).limit(3).sort({sampleId})
-    //     .exec((err, device) => {
 
-    //         if (err) {
-    //             return res.status(400).json({
-    //                 ok: false,
-    //                 err
-    //             });
+
+    //     ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag})
+    //     // .exec(  (err, constsDataFromDB) => {
+    //     .then(  (constsDataFromDB) => {
+    //         // if(err) {
+    //         //     console.log(err);
+    //         // }
+    //         if(constsDataFromDB[0] !== undefined){
+    //             // console.log(`${constant}`);
+                
+    
+    //         }else{
+    //             console.log(`--------------\n`+
+    //             `No existe registro de constantes para esta busqueda "\nMacRasp: ${req.macrpi} , MacTag: ${req.mactag}"`+
+    //             `\n--------------`);
+    
+    //             res={
+    //                 ok: true,
+    //                 status: 200
+    //             }
+    
     //         }
-
-    //         ConstsFromDB = device;
-
-    //         var a = 10;
-
-
-
-    //         return distancia;
-
+            
     //     });
+    // })
+
+    // return   res
+    
+
 }
 
 
-
+let test = async(dato) =>{
+    for (let index = 0; index < 20000000; index++) {
+        dato+=index;
+        
+    }
+    return dato +1
+}
 
 /***************************************
  * variable modificadas

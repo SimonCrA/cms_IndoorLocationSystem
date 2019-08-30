@@ -1,15 +1,15 @@
 //==========================================================================
 //==========================================================================
-var c1c2 = new Array();
-var c1c3 = new Array();
-var c2c3 = new Array();
-var ret = new Array()
+// var c1c2 = new Array();
+// var c1c3 = new Array();
+// var c2c3 = new Array();
+// var ret = new Array()
 
-function getCrosC1C2(r1, r2, x2) {
+let getCrosC1C2 =(r1, r2, x2) =>{
 
-    var x = 0.0;
-    var ya = 0.0;
-    var yb = 0.0;
+    let x = 0.0;
+    let ya = 0.0;
+    let yb = 0.0;
 
     //x=(Math.pow(x2,2) - Math.pow(r1,2) +Math.pow(r2,2) ) / (2*x2);
 
@@ -19,17 +19,17 @@ function getCrosC1C2(r1, r2, x2) {
     yb = -Math.sqrt(Math.pow(r1, 2) - Math.pow(x, 2));
 
 
-    // var v=[x,ya,x,yb];
-    var v = [x.toFixed(2), ya.toFixed(2)];
+    // let v=[x,ya,x,yb];
+    let poitn_x_y = [x.toFixed(2), ya.toFixed(2)];
 
-    return v;
+    return poitn_x_y;
 }
 
-function getCrosC1C3(r1, r3, y2) {
+let getCrosC1C3 = (r1, r3, y2) => {
 
-    var y = 0.0;
-    var xa = 0.0;
-    var xb = 0.0;
+    let y = 0.0;
+    let xa = 0.0;
+    let xb = 0.0;
 
     //y=(Math.pow(y2,2) - Math.pow(r1,2) +Math.pow(r3,2) ) / (2*y2);
 
@@ -40,27 +40,19 @@ function getCrosC1C3(r1, r3, y2) {
 
 
 
-    // var v=[xa,y,xb,y];
-    var v = [xa.toFixed(2), y.toFixed(2)];
+    // let v=[xa,y,xb,y];
+    let poitn_x_y = [xa.toFixed(2), y.toFixed(2)];
 
-    return v;
+    return poitn_x_y;
 }
 
 
 
-function getCrosC2C3(r2, r3, y2, x1) {
+let getCrosC2C3 = (r2, r3, y2, x1) =>{
 
-    var ya = 0.0;
-    var yb = 0.0;
-    var yc = 0.0;
-    var yd = 0.0;
-    var xa = 0.0;
-    var xb = 0.0;
-
-    var a = 0;
-    var b = 0;
-    var c = 0;
-    var z = 0;
+    let ya = 0.0;    let yb = 0.0;    let yc = 0.0;    let yd = 0.0;
+    let xa = 0.0;    let xb = 0.0;    let a = 0;    let b = 0;
+    let c = 0;    let z = 0;
 
     //z=(-Math.pow(x1, 2) + Math.pow(r2, 2) +Math.pow(y2, 2)-Math.pow(r3,2));
 
@@ -93,25 +85,25 @@ function getCrosC2C3(r2, r3, y2, x1) {
 
 
 
-    // var v=[xa,ya,    xa,yb   , xb,yc   ,xb, yd];
-    var v = [xb, yc, xa, ya];
+    // let v=[xa,ya,    xa,yb   , xb,yc   ,xb, yd];
+    let poitn_x_y = [xb, yc, xa, ya];
 
-    return v;
+    return poitn_x_y;
 }
 
-function equa(x1, y1, x2, y2, r3, y0) {
-    ////console.log('x y x y')
-    ////console.log(x1,y1,x2,y2, r3, y0)
-    ////console.log(r3)
-    var ecua = 0
-    var x = Array()
-    var y = Array()
-    var reton = Array()
+
+
+let  equa = (x1, y1, x2, y2, r3, y0) => {
+
+    let ecua = 0
+    let x = Array()
+    let y = Array()
+    let reton = Array()
     x.push(x1)
     x.push(x2)
     y.push(y1)
     y.push(y2)
-    var r = Math.pow(r3, 2).toFixed(2)
+    let r = Math.pow(r3, 2).toFixed(2)
 
 
     ecua = Math.pow(x1, 2) + Math.pow((y1 - y0), 2)
@@ -137,39 +129,40 @@ function equa(x1, y1, x2, y2, r3, y0) {
 
 }
 
-var ddd = new Array()
+var punto_X_Y = new Array()
 
-function trilateracion(r1, r2, r3, x, y) {
+let trilateracion = (r1, r2, r3, x, y) =>{
     // console.log('Hola soy trilateracion');
-    var x1 = x;
-    var y2 = y;
-    var xx1 = 0;
-    var yy1 = 0;
-    var xx2 = 0;
-    var yy2 = 0;
-    var d1 = 0
-    var d2 = 0
-    var di = false
-    var C1C2 = 0
-    var C1C3 = 0
-    var C2C3 = 0
-    c1c2 = getCrosC1C2(r1, r2, x1); //Esta funcion me da 3 valores
-    c1c3 = getCrosC1C3(r1, r3, y2); //Esta funcion me da 3 valores
-    c2c3 = getCrosC2C3(r2, r3, y2, x1); //Esta funcion me da 8 valores
+    let x1 = x;
+    let y2 = y;
+    let xx1 = 0;
+    let yy1 = 0;
+    let xx2 = 0;
+    let yy2 = 0;
+    let d1 = 0
+    let d2 = 0
+    let di = false
+    let C1C2 = 0
+    let C1C3 = 0
+    let C2C3 = 0
+    
+    let c1c2 = getCrosC1C2(r1, r2, x1); //Esta funcion me da 3 valores
+    let c1c3 = getCrosC1C3(r1, r3, y2); //Esta funcion me da 3 valores
+    let c2c3 = getCrosC2C3(r2, r3, y2, x1); //Esta funcion me da 8 valores
 
     C1C2 = parseFloat(c1c2[0] * c1c2[1])
     C1C3 = parseFloat(c1c3[0] * c1c3[1])
     C2C3 = parseFloat(c2c3[0] * c2c3[1] * c2c3[2] * c2c3[3])
     //console.log('EVALUACIONES')
     //console.log(isNaN(C1C2), isNaN(C1C3), isNaN(C2C3))
-    ddd[0] = (-10000)
-    ddd[1] = (-10000)
-    ddd[2] = (-10000)
-    ddd[3] = (-10000)
-    ddd[4] = (-10000)
-    ddd[5] = (-10000)
-    ddd[6] = (-10000)
-    ddd[7] = (-10000)
+    punto_X_Y[0] = (-10000)
+    punto_X_Y[1] = (-10000)
+    punto_X_Y[2] = (-10000)
+    punto_X_Y[3] = (-10000)
+    punto_X_Y[4] = (-10000)
+    punto_X_Y[5] = (-10000)
+    punto_X_Y[6] = (-10000)
+    punto_X_Y[7] = (-10000)
 
     //=================================================================
     //=============TODAS LAS CIRCUNFERENCIAS SE INTERSECTAN============
@@ -186,8 +179,8 @@ function trilateracion(r1, r2, r3, x, y) {
         if (ret.length == 2) {
             xx1 = (parseFloat(c1c2[0]) + parseFloat(c1c3[0]) + parseFloat(ret[0])) / 3;
             yy1 = (parseFloat(c1c2[1]) + parseFloat(c1c3[1]) + parseFloat(ret[1])) / 3;
-            ddd[0] = (xx1)
-            ddd[1] = (yy1)
+            punto_X_Y[0] = (xx1)
+            punto_X_Y[1] = (yy1)
         }
         if (ret.length == 4) {
             xx1 = (parseFloat(c1c2[0]) + parseFloat(c1c3[0]) + parseFloat(ret[0])) / 3;
@@ -199,21 +192,21 @@ function trilateracion(r1, r2, r3, x, y) {
             d1 = Math.sqrt(Math.pow((parseFloat(xx1) - parseFloat(ret[0])), 2) + Math.pow((parseFloat(yy1) - parseFloat(ret[1])), 2))
             d2 = Math.sqrt(Math.pow((parseFloat(xx2) - parseFloat(ret[2])), 2) + Math.pow((parseFloat(yy2) - parseFloat(ret[3])), 2))
             if (d1 < d2) {
-                ddd[0] = (xx1)
-                ddd[1] = (yy1)
+                punto_X_Y[0] = (xx1)
+                punto_X_Y[1] = (yy1)
 
             } else {
-                ddd[0] = (xx2)
-                ddd[1] = (yy2)
+                punto_X_Y[0] = (xx2)
+                punto_X_Y[1] = (yy2)
             }
 
 
         }
         if (ret.length == 0) {
-            ddd[0] = (0)
-            ddd[1] = (0)
-            ddd[2] = (0)
-            ddd[3] = (0)
+            punto_X_Y[0] = (0)
+            punto_X_Y[1] = (0)
+            punto_X_Y[2] = (0)
+            punto_X_Y[3] = (0)
         }
 
 
@@ -231,8 +224,8 @@ function trilateracion(r1, r2, r3, x, y) {
 
         //console.log(xx1, yy1)
 
-        ddd[0] = (xx1)
-        ddd[1] = (yy1)
+        punto_X_Y[0] = (xx1)
+        punto_X_Y[1] = (yy1)
 
 
     }
@@ -251,8 +244,8 @@ function trilateracion(r1, r2, r3, x, y) {
 
         //console.log(xx1, yy1)
 
-        ddd[0] = (xx1)
-        ddd[1] = (yy1)
+        punto_X_Y[0] = (xx1)
+        punto_X_Y[1] = (yy1)
     }
 
     //=================================================================
@@ -265,8 +258,8 @@ function trilateracion(r1, r2, r3, x, y) {
         xx2 = parseFloat(c1c2[0]);
         yy2 = parseFloat(c1c2[1]);
 
-        ddd[0] = (xx2)
-        ddd[1] = (yy2)
+        punto_X_Y[0] = (xx2)
+        punto_X_Y[1] = (yy2)
     }
 
     //=================================================================
@@ -283,8 +276,8 @@ function trilateracion(r1, r2, r3, x, y) {
 
         //console.log(xx1, yy1)
 
-        ddd[0] = (xx1)
-        ddd[1] = (yy1)
+        punto_X_Y[0] = (xx1)
+        punto_X_Y[1] = (yy1)
 
 
 
@@ -300,8 +293,8 @@ function trilateracion(r1, r2, r3, x, y) {
         xx2 = parseFloat(c1c3[0]);
         yy2 = parseFloat(c1c3[1]);
 
-        ddd[0] = (xx2)
-        ddd[1] = (yy2)
+        punto_X_Y[0] = (xx2)
+        punto_X_Y[1] = (yy2)
 
     }
     //=================================================================
@@ -312,8 +305,8 @@ function trilateracion(r1, r2, r3, x, y) {
         xx2 = parseFloat(c2c3[0]);
         yy2 = parseFloat(c2c3[1]);
 
-        ddd[0] = (xx2)
-        ddd[1] = (yy2)
+        punto_X_Y[0] = (xx2)
+        punto_X_Y[1] = (yy2)
 
     }
 
@@ -328,16 +321,16 @@ function trilateracion(r1, r2, r3, x, y) {
 
         //console.log('(8).-NO SE INTERSECTAN NINGUNA')
 
-        var m = (parseFloat(0) - parseFloat(y2)) / (parseFloat(x1) - parseFloat(0))
-        var a = (1 / Math.pow(m, 2)) + 1
+        let m = (parseFloat(0) - parseFloat(y2)) / (parseFloat(x1) - parseFloat(0))
+        let a = (1 / Math.pow(m, 2)) + 1
 
-        var b = (-2 * y2 / Math.pow(m, 2)) - (2 * y2)
-        var c = (Math.pow(y2, 2) / Math.pow(m, 2)) + Math.pow(y2, 2) - Math.pow(r3, 2)
+        let b = (-2 * y2 / Math.pow(m, 2)) - (2 * y2)
+        let c = (Math.pow(y2, 2) / Math.pow(m, 2)) + Math.pow(y2, 2) - Math.pow(r3, 2)
         //console.log(a,b,c)
-        var U = (-b - Math.sqrt(Math.pow(b, 2) - 4 * a * c)) / (2 * a) //Y
+        let U = (-b - Math.sqrt(Math.pow(b, 2) - 4 * a * c)) / (2 * a) //Y
 
-        var V = (U - y2) / (m) //X
-        // var V=Math.sqrt( Math.pow(r3,2) -Math.pow((U-y2),2))//X
+        let V = (U - y2) / (m) //X
+        // let V=Math.sqrt( Math.pow(r3,2) -Math.pow((U-y2),2))//X
         //console.log('y-y2, 2')
         //console.log('ESTO ES U= '+U)
         //console.log(y2)
@@ -347,16 +340,16 @@ function trilateracion(r1, r2, r3, x, y) {
 
 
 
-        var aa = 1 + Math.pow(m, 2)
-        var bb = -2 * x1 + 2 * m * y2
-        var cc = Math.pow(x1, 2) + Math.pow(y2, 2) - Math.pow(r2, 2)
-        var UU = (-bb - Math.sqrt(Math.pow(bb, 2) - 4 * aa * cc)) / (2 * aa) //X
+        let aa = 1 + Math.pow(m, 2)
+        let bb = -2 * x1 + 2 * m * y2
+        let cc = Math.pow(x1, 2) + Math.pow(y2, 2) - Math.pow(r2, 2)
+        let UU = (-bb - Math.sqrt(Math.pow(bb, 2) - 4 * aa * cc)) / (2 * aa) //X
 
-        var VV = Math.sqrt(Math.pow(r2, 2) - Math.pow((UU - x1), 2)) //Y
+        let VV = Math.sqrt(Math.pow(r2, 2) - Math.pow((UU - x1), 2)) //Y
 
-        var m2 = ((U + VV) / 2) / ((V + UU) / 2)
-        var UUU = Math.sqrt((Math.pow(r1, 2)) / (1 + Math.pow(m2, 2))) //x
-        var VVV = Math.sqrt(Math.pow(r1, 2) - ((Math.pow(r1, 2)) / (1 + Math.pow(m2, 2)))) //y
+        let m2 = ((U + VV) / 2) / ((V + UU) / 2)
+        let UUU = Math.sqrt((Math.pow(r1, 2)) / (1 + Math.pow(m2, 2))) //x
+        let VVV = Math.sqrt(Math.pow(r1, 2) - ((Math.pow(r1, 2)) / (1 + Math.pow(m2, 2)))) //y
 
         xx1 = (V + UU + UUU) / 3
         yy1 = (U + VV + VVV) / 3
@@ -364,18 +357,18 @@ function trilateracion(r1, r2, r3, x, y) {
 
 
 
-        // ddd[0]=(V)
-        // ddd[1]=(U)
+        // punto_X_Y[0]=(V)
+        // punto_X_Y[1]=(U)
 
 
-        // ddd[2]=(UU)
-        // ddd[3]=(VV)
-        // ddd[4]=(UUU)
-        // ddd[5]=(VVV)
-        ddd[0] = (xx1)
-        ddd[1] = (yy1)
+        // punto_X_Y[2]=(UU)
+        // punto_X_Y[3]=(VV)
+        // punto_X_Y[4]=(UUU)
+        // punto_X_Y[5]=(VVV)
+        punto_X_Y[0] = (xx1)
+        punto_X_Y[1] = (yy1)
 
-        // //console.log(ddd)
+        // //console.log(punto_X_Y)
 
 
     }
@@ -385,31 +378,31 @@ function trilateracion(r1, r2, r3, x, y) {
 
     //QUIEN ES X , Y?????
     //console.log(x,y)
-    var e = 0;
-    if (ddd[0] > 0 && ddd[1] > 0) {
-        $('#Target').html('[X: ' + parseFloat(ddd[0]).toFixed(2) + ', Y: ' + parseFloat(ddd[1]).toFixed(2) + ']').value
+    let e = 0;
+    if (punto_X_Y[0] > 0 && punto_X_Y[1] > 0) {
+        $('#Target').html('[X: ' + parseFloat(punto_X_Y[0]).toFixed(2) + ', Y: ' + parseFloat(punto_X_Y[1]).toFixed(2) + ']').value
 
-        e = Math.sqrt((Math.pow(2.0 - parseFloat(ddd[0]), 2)) + ((Math.pow(1.10 - parseFloat(ddd[1]), 2))))
+        e = Math.sqrt((Math.pow(2.0 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(1.10 - parseFloat(punto_X_Y[1]), 2))))
         $('#error404').html('Margen de Error: ' + e).value
-        dot('red', parseFloat(ddd[0]), parseFloat(ddd[1]), e)
+        dot('red', parseFloat(punto_X_Y[0]), parseFloat(punto_X_Y[1]), e)
 
 
     }
-    if (ddd[0] > x1 || ddd[1] > y2) {
-        $('#Target').html('[X: ' + parseFloat(ddd[0]).toFixed(2) + ', Y: ' + parseFloat(ddd[1]).toFixed(2) + ']').value
+    if (punto_X_Y[0] > x1 || punto_X_Y[1] > y2) {
+        $('#Target').html('[X: ' + parseFloat(punto_X_Y[0]).toFixed(2) + ', Y: ' + parseFloat(punto_X_Y[1]).toFixed(2) + ']').value
 
-        e = Math.sqrt((Math.pow(2.0 - parseFloat(ddd[0]), 2)) + ((Math.pow(1.10 - parseFloat(ddd[1]), 2))))
+        e = Math.sqrt((Math.pow(2.0 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(1.10 - parseFloat(punto_X_Y[1]), 2))))
         $('#error404').html('Margen de Error: ' + e).value
-        dot('gray', parseFloat(ddd[0]), parseFloat(ddd[1]), e)
+        dot('gray', parseFloat(punto_X_Y[0]), parseFloat(punto_X_Y[1]), e)
 
 
     }
-    if (ddd[0] < 0 || ddd[1] < 0) {
-        $('#Target').html('[X: ' + parseFloat(ddd[0]).toFixed(2) + ', Y: ' + parseFloat(ddd[1]).toFixed(2) + ']').value
+    if (punto_X_Y[0] < 0 || punto_X_Y[1] < 0) {
+        $('#Target').html('[X: ' + parseFloat(punto_X_Y[0]).toFixed(2) + ', Y: ' + parseFloat(punto_X_Y[1]).toFixed(2) + ']').value
 
-        e = Math.sqrt((Math.pow(2.0 - parseFloat(ddd[0]), 2)) + ((Math.pow(1.10 - parseFloat(ddd[1]), 2))))
+        e = Math.sqrt((Math.pow(2.0 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(1.10 - parseFloat(punto_X_Y[1]), 2))))
         $('#error404').html('Margen de Error: ' + e).value
-        dot('rgb(0, 0, 0)', parseFloat(ddd[0]), parseFloat(ddd[1]), e)
+        dot('rgb(0, 0, 0)', parseFloat(punto_X_Y[0]), parseFloat(punto_X_Y[1]), e)
 
 
     }
@@ -418,5 +411,13 @@ function trilateracion(r1, r2, r3, x, y) {
         x: x,
         y: y
     };
+
+}
+
+
+module.exports = {
+    trilateracion,
+    getCrosC1C2,
+    getCrosC1C3
 
 }

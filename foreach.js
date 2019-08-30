@@ -154,8 +154,8 @@ const categories = [{
     },
     {
         rssi: -40,
-        id: 'c4:4f:33:0b:aa:1b',
-        macrpi: 'b8:27:eb:d4:04:c9',
+        id: 'c4:4f:33:0b:aa:14',
+        macrpi: 'c4:4f:33:0b:aa:14',
         fecha: 1566930132035,
         fechaRpi: '1566930132035',
         beacontype: 'eddystoneUid',
@@ -163,19 +163,31 @@ const categories = [{
     }
 ]
 
-categories.forEach(category => {
-    if (!filteredCategories.find(cat => cat.id == category.id && cat.macrpi == category.macrpi)) {
-        const {
-            id,
-            macrpi
+
+
+let func =async () =>{
+    datoprueba =  await categories.find(dato => dato.macrpi == 'c4:4f:33:0b:aa:14')
+    
+    
+}
+
+let test = async ()=>{}
+let datoprueba = 0
+
+console.log(datoprueba);
+// categories.forEach(category => {
+//     if (!filteredCategories.find(cat => cat.id == category.id && cat.macrpi == category.macrpi)) {
+//         const {
+//             id,
+//             macrpi
             
-        } = category;
-        filteredCategories.push({
-         id,
-         macrpi
-        });
-    }
-});
+//         } = category;
+//         filteredCategories.push({
+//          id,
+//          macrpi
+//         });
+//     }
+// });
 
 
-console.log(filteredCategories);
+// console.log(filteredCategories);

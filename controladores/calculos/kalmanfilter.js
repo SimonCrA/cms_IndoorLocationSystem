@@ -15,7 +15,7 @@ const Distancia = require('../calculos/getdistance');
 // vector[i].P_Covar_s= 0.0;      //pt^
 // vector[i].kalmanT= 0.0;        //kt^ 
 
-var prueba=0;
+var respuesta='';
 let filtrado = async ( scan ) =>{
 
     console.log(`estoy filtrando`);
@@ -58,22 +58,27 @@ let filtrado = async ( scan ) =>{
             rssi: Xt_s
         };
 
-        let resp = await Distancia.distancia( dataToSendToDistance)
+        let resp = await Distancia.distancia( dataToSendToDistance);
+        console.log(`filtro ${JSON.stringify(resp, null, 2)}`);
         if(resp.ok === true){
-            return {
+            respuesta= {
                 ok: true,
                 status: 200
             }
         }else{
-            return {
+            respuesta= {
                 ok: false,
                 status: 400
             }
         }
     }else{
+        respuesta= {
+            ok: false,
+            status: 400
+        }
         console.log(`No se encontro Registros para macRpi:${scan[1].macrpi} && macTag:${scan[1].mactag}`);
     }
-
+return respuesta;
 }
 module.exports = {
     filtrado
