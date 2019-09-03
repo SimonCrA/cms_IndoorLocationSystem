@@ -1,0 +1,37 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  meta(http-equiv='X-UA-Compatible' content='ie=edge')
+  title Caracterizaci&oacute;n
+  // Bootstrap 4
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
+section#testimonial
+  .container.text-black
+    p.h1 Caracterizaci&oacute;n
+    p.h2.mb-2
+      | Esto permite conectarnos a los Raspberry pi disponibles y listarlos.
+section
+  .container
+    .row
+      .cards.col-md-10.my-3
+        .container
+          .card.py-4.h-100
+            .card-body.text-center
+              form.form-inline(onsubmit='return addMessage(this)')
+                .form-group.mb-2
+                  label(for='maclist') MACs
+                  select#maclist.form-control.mx-3
+                    
+
+                .form-group.mx-sm-3.mb-2
+                  label.sr-only(for='mensaje') texto mensaje
+                  input#mensaje.form-control(type='text' placeholder='Mensaje')
+                button.btn.btn-primary.mb-2(type='submit') enviar
+// Bootstrap 4 scripts
+script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
+script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
+script(src="/socket.io/socket.io.js") 
+
+script(src='../../../javascripts/main.js')
