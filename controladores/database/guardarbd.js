@@ -2,34 +2,34 @@
 const  ConstsDistancia = require("../../models/constantesdistancia");
 const  InfoUbicacionRpi = require("../../models/ubicacion");
 const Region = require ('../../models/zona')
-// const {findZona} = require ('../database/getdb')
+const RawMuestras = require ('../../models/rawdatamuestras')
             
 let constantes =  (req, res, next) =>{            
-            let constantesDeBD = new ConstsDistancia({
+    let constantesDeBD = new ConstsDistancia({
 
-                macRpi: req.body.macrpi,
-                macTag: req.body.mactag,
-                rssiProm: req.body.rssiprom,
-                nPropagacion: req.body.n,
-                desviacionEstandar: req.body.desvia,
-                idRegion:req.body.idregion
+        macRpi: req.body.macrpi,
+        macTag: req.body.mactag,
+        rssiProm: req.body.rssiprom,
+        nPropagacion: req.body.n,
+        desviacionEstandar: req.body.desvia,
+        idRegion:req.body.idregion
 
-            });
+    });
 
-            constantesDeBD.save(function (err) {
-                if (err) {
-                    console.log(err);
-                    return next(err);
-                };
-            
-                console.log("guarde Esto:\n" + constantesDeBD + "\n");
-                // Successful - redirect to new author record.	
-                res.status(202).jsonp({
-                    ok: true,
-                    constantesDeBD
-                });
+    constantesDeBD.save(function (err) {
+        if (err) {
+            console.log(err);
+            return next(err);
+        };
+    
+        console.log("guarde Esto:\n" + constantesDeBD + "\n");
+        // Successful - redirect to new author record.	
+        res.status(202).jsonp({
+            ok: true,
+            constantesDeBD
+        });
 
-            });
+    });
 
 };
 
@@ -93,10 +93,36 @@ let zona = (req, res, next) =>{
 
 }
 
+
+
+let rawCaracterizacion = (req, res, next) =>{
+    let rawMuestras = new RawMuestras({
+
+        macRpi:req.body.macrpi,
+		macTag:req.body.mactag,  
+        rssi:req.body.rssi,
+        distancia:req.body.distancia
+        
+    });
+
+    rawMuestras.save(function (err) {
+        if (err) {
+            console.log(err);
+            return next(err);
+        };
+        console.log(`Saved: ${JSON.stringify(rawMuestras, null, 2)}`);
+        // Successful - redirect to new author record.	
+        res.status(202).jsonp({
+            ok: true,
+            rawMuestras
+        });
+    });
+}
 module.exports = {
     constantes,
     ubicacion,
-    zona
+    zona,
+    rawCaracterizacion
 }
 
 
