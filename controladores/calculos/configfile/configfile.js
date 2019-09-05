@@ -8,63 +8,7 @@ const gaussDesviaProm = require('../configfile/gaussiandesviaprom');
 const ConstsDistancia = require('../../../models/constantesdistancia');
 const colors = require('colors')
 
-let guardarzona = (req, res, next) =>{
 
-    var zona = new Zona({
-		edificio: req.params.edif,
-		piso: req.params.piso,        
-		oficina: req.params.oficina,
-		tipodeZona: req.params.tipo
-		
-	});
-	zona.save(function (err) {
-		if (err) { 
-			
-
-			console.log(err);
-			return next(err); 
-			
-		}
-		console.log("guarde Esto:\n"+zona+"\n");
-		// Successful - redirect to new author record.	
-		res.status(200).jsonp({result:'SAVED'});	
-		
-	});
-
-}
-
-let guardarubicacion = (req, res, next) =>{
-
-
-    Zona.find({edificio:req.params.edif}).exec((err, dato)=>{
-        if(err){console.log(err);}
-
-        let ubicacion = new infoUbicacionRpi ({
-            macRpi: req.params.macrpi,
-            axis: "x",
-            xpos: 1.10,
-            ypos: 0,
-            idZona:dato[0]._id
-    
-    
-        });
-
-        ubicacion.save(function (err) {
-            if (err) { 
-                
-    
-                console.log(err);
-                return next(err); 
-                
-            }
-            console.log("guarde Esto:\n"+ubicacion+"\n");
-            // Successful - redirect to new author record.	
-            res.status(200).jsonp({result:'SAVED'});	
-            
-        });
-
-    })
-}
 
 let ejecucionEnSerie = (req, res, next) =>{
 
@@ -187,7 +131,6 @@ const sleep = (milliseconds) => {
  **************************************/
 
  module.exports = {
-     ejecucionEnSerie ,
-     guardarzona,
-     guardarubicacion,sleep
+    ejecucionEnSerie ,
+    sleep
  }
