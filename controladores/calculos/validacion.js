@@ -16,7 +16,9 @@ var x3=0;
 var y1=0;
 var y2=0;
 var y3=0;
+// var fecha_actual =  new Date()
 
+// var fecha_vieja = new Date () -10min
 let validacion_Trilateracion = async ()=>{
     try{
 
@@ -76,12 +78,13 @@ let validacion_Trilateracion = async ()=>{
         
             });
         }
-        let promesa_mactag = (region) =>{
+        let promesa_mactag = (region_) =>{
             return new Promise((resolve, reject) => {
 
-            Distancia.aggregate([{
-                $match: {
-                    region: region
+            Distancia.aggregate([
+            {
+                "$match": {
+                    "region": region_
                 }
             },
             {
@@ -105,7 +108,9 @@ let validacion_Trilateracion = async ()=>{
 
         let promise_findDistancia = (pMacRpi,pMacTag) => {
             return new Promise ((resolve, reject) =>{
+                // var fecha_actual =  new Date()
 
+                // var fecha_vieja = new Date () - 10min
                 Distancia.find({macTag:pMacTag, macRpi:pMacRpi}).sort({_id:-1}).limit(1)
                 .exec( (err, distancia) =>{
                     err 
@@ -155,13 +160,13 @@ let validacion_Trilateracion = async ()=>{
         }
         
         let resultRegion = await promesa_AggregateRegion()
-
+        console.log(`Esto es el result Region length: ${JSON.stringify(resultRegion)}`);
         for (let i = 0; i < resultRegion.length; i++) {
             let resultrpi = await promesa_macrpi(resultRegion[i]._id);
             let resulttag = await promesa_mactag(resultRegion[i]._id);
             // console.log(resultrpi);
 
-            // console.log(resulttag);
+            console.log(`resultTag: ${JSON.stringify(resulttag,null, 1)}`);
             // console.log(resultRegion.length);
             
                     for (let k = 0; k < resulttag.length; k++) {// se ejecuta segun la cantidad de tag que existen
@@ -209,6 +214,10 @@ let validacion_Trilateracion = async ()=>{
                         
                         let punto =trilateracion(r1, r2, r3, x2, y3);
                         let punto2 =trilateracionMatriz(datosPuntoXY);
+                        console.log(resulttag[k]._id);
+                        console.log(`T_1: d1=${r1}, d2=${r2}, d3=${r3},`+`Error=${punto.e}`.red);
+                        console.log(`T_2: d1=${r1}, d2=${r2}, d3=${r3}, `+`Error=${punto2.e}`.red);
+
                         console.log(punto);
                         console.log(punto2);
 
@@ -257,7 +266,7 @@ let validacion_Trilateracion = async ()=>{
 
 
 
-        
+    console.log(`======================FINALIZO=========================`.rainbow);
     }catch(e){
         console.log("hola SOY UN HERRROR");
         console.log(e)
