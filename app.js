@@ -6,15 +6,17 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const inicio = require('./controladores/calculos/timer')
+const {tiempoEspera} = require('./controladores/calculos/timer')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 var postRouter = require('./routes/post');
 console.log(`aca ES EL APP`);
-// inicio.tiempoEspera();
+tiempoEspera();
 var app = express();
+const {validacion_Trilateracion} = require('./controladores/calculos/validacion');
 
+// validacion_Trilateracion();
 
 // -------- Set up mongoose connection ---------------------------------------
 console.log("Estableciendo conexion MongoDB Server...");
