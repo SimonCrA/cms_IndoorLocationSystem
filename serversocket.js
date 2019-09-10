@@ -36,16 +36,21 @@ io.on('connection', function(socket){
         
     })
     
-    socket.on('accion', data =>{
+    socket.on('accions', data =>{
         console.log(data);
         let resul = libreta.find(fin=>fin.mac === data.mac )
-        let js={
-            id:resul.socketID,
-            distancia:data.distancia
+        if(resul.socketID === undefined){
+            console.log(`ERROR: result= ${resul}\n Data= ${data}`);
+        }else{
+            
+            let js={
+                id:resul.socketID,
+                distancia:data.distancia
+            }
+            // console.log(resul);
+            sendAccion(js)
+            console.log(`ID:${socket.id} dice ${JSON.stringify(data,null, 2)}`);
         }
-        // console.log(resul);
-        sendAccion(js)
-        console.log(`ID:${socket.id} dice ${JSON.stringify(data,null, 2)}`);
     })
     
     
