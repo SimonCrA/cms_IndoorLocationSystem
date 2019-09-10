@@ -3,6 +3,34 @@ const  ConstsDistancia = require("../../models/constantesdistancia");
 const  InfoUbicacionRpi = require("../../models/ubicacion");
 const Region = require ('../../models/zona')
 const RawMuestras = require ('../../models/rawdatamuestras')
+const TagInfo = require ('../../models/tagInfo')
+
+let dataTag =  (req, res, next) =>{            
+    let tagInfo = new TagInfo({
+        
+        mactag: req.body.mactag,
+        nombre: req.body.nombre,
+        tipo: req.body.tipo,
+        estado:req.body.estado
+
+    });
+
+    tagInfo.save(function (err) {
+        if (err) {
+            console.log(err);
+            return next(err);
+        };
+    
+        console.log("guarde Esto:\n" + tagInfo + "\n");
+        // Successful - redirect to new author record.	
+        res.status(202).jsonp({
+            ok: true,
+            tagInfo
+        });
+
+    });
+
+};
             
 let constantes =  (req, res, next) =>{            
     let constantesDeBD = new ConstsDistancia({
@@ -96,30 +124,38 @@ let zona = (req, res, next) =>{
 
 
 let rawCaracterizacion = (req, res, next) =>{
-    let rawMuestras = new RawMuestras({
 
-        macRpi:req.body.macrpi,
-		macTag:req.body.mactag,  
-        rssi:req.body.rssi,
-        distancia:req.body.distancia
+    // console.log(req.body);
+    let rawMuestras ;
+    for (let i = 0; i < req.body.length; i++) {
         
-    });
-
-    rawMuestras.save(function (err) {
-        if (err) {
-            console.log(err);
-            return next(err);
-        };
-        console.log(`Saved: ${JSON.stringify(rawMuestras, null, 2)}`);
-        // Successful - redirect to new author record.	
-        res.status(202).jsonp({
-            ok: true,
-            rawMuestras
+        rawMuestras = new RawMuestras({
+    
+            macRpi:req.body[i].macrpi,
+            macTag:req.body[i].mactag,  
+            rssi:parseInt(req.body[i].rssi),
+            distancia:parseInt(req.body[i].distancia)
+            
         });
+    
+        rawMuestras.save(function (err) {
+            if (err) {
+                console.log(err);
+                return next(err);
+            };
+            console.log(`Saved: ${JSON.stringify(rawMuestras, null, 2)}`);
+            // Successful - redirect to new author record.	
+        });
+        
+    }
+    res.status(202).jsonp({
+        ok: true,
+        rawMuestras
     });
 }
 module.exports = {
     constantes,
+    dataTag,
     ubicacion,
     zona,
     rawCaracterizacion
