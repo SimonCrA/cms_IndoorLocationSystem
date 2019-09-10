@@ -30,11 +30,11 @@ let  calculoDeN = async (muestras, distancia, macrpi, mactag, iteracion ) => {
             for (let j = 0; j < muestras; j++) {
                 if (rawdata[j].distancia > 1) {
                     nsum += (-(rawdata[j].rssi) + RSSIprom.respRssi[iteracion] + gaussDesviaProm.respvgcde[iteracion].zmgvwsd) / (10 * Math.log10(rawdata[j].distancia))
-                    console.log(`(-(${rawdata[j].rssi}) + ${RSSIprom.respRssi[iteracion]} + ${gaussDesviaProm.respvgcde[iteracion].zmgvwsd}) / (10 * ${Math.log10(rawdata[j].distancia)})`);
+                    // console.log(`(-(${rawdata[j].rssi}) + ${RSSIprom.respRssi[iteracion]} + ${gaussDesviaProm.respvgcde[iteracion].zmgvwsd}) / (10 * ${Math.log10(rawdata[j].distancia)})`);
                 }
         
             }
-            console.log(`Muestra nsum: ${nsum}`);
+            // console.log(`Muestra nsum: ${nsum}`);
             totalN = nsum / muestras;
             respN[iteracion].sumatoriaN += totalN;
 

@@ -11,13 +11,13 @@ const colors = require('colors')
 
 
 let ejecucionEnSerie = (req, res, next) =>{
+    console.log(req.params);
 
-    let region = req.params.region;
-    let tag =  req.params.mactag;
-    let muestras = 3;
-    let cantidad_Muestras = req.params.cantm
+    let region = req.params.zona;
+    let tag =  req.params.tags;
+    let muestras = 100;
+    let cantidad_Muestras = req.params.cantmuestras
    
-   console.log(region);
 
    infoUbicacionRpi.find({idZona:region}).exec( async (err,macrpi) => {
         if(err){console.log(err);}
@@ -28,12 +28,13 @@ let ejecucionEnSerie = (req, res, next) =>{
             *	Calculo de Rssi Promedio
             /* *****************************************/
             cont++;
-            console.log(`${cont}/30`.blue);
+            console.log(`${cont}`.blue);
+            console.log(`MACRPI:${macrpi[i].macRpi}`.green);
             RSSIprom.rssiProm(muestras, 1, macrpi[i].macRpi, tag, i);
             await sleep(5000);
             cont++;
             console.log(RSSIprom.respRssi);
-            console.log(`${cont}/30`.blue);
+            console.log(`${cont}`.blue);
 
             /* *****************************************
             *	            CALCULO DE
@@ -44,7 +45,7 @@ let ejecucionEnSerie = (req, res, next) =>{
                 gaussDesviaProm.desviacionEstandarGaussiana(muestras, j+ 1, macrpi[i].macRpi, tag,i);
                 await sleep(5000);
                 cont++;
-                console.log(`${cont}/30`.blue);
+                console.log(`${cont}`.blue);
                 
             } ;
 
@@ -65,7 +66,7 @@ let ejecucionEnSerie = (req, res, next) =>{
                 calculoDeN.calculoDeN(muestras, j+1, macrpi[i].macRpi, tag,i);
                 await sleep(5000);
                 cont++;
-                console.log(`${cont}/30`.blue);
+                console.log(`${cont}`.blue);
             
             }
 
@@ -86,6 +87,7 @@ let ejecucionEnSerie = (req, res, next) =>{
                 rssiProm: RSSIprom.respRssi[i],
                 nPropagacion: calculoDeN.respN[i].totalN,
                 desviacionEstandar: gaussDesviaProm.respvgcde[i].zmgvwsd,
+                idRegion:region
     
             });
     
@@ -102,6 +104,7 @@ let ejecucionEnSerie = (req, res, next) =>{
             });
         
         }
+
         res.status(200).jsonp({
             result: 'SAVED'
         });
