@@ -38,10 +38,12 @@ let trilateracionMatriz = (data) =>{
     
     
     // console.log(z);
+    let e = Math.sqrt((Math.pow( 1.70- parseFloat(z[0][0]), 2)) + ((Math.pow(1.70 - parseFloat(z[1][0]), 2))))
 
     return {
         x:z[0][0],
-        y:z[1][0]
+        y:z[1][0], 
+        e
     };
 
 
