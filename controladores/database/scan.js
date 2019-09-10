@@ -34,31 +34,33 @@ exports.dataRaspi = async (req, res, next)=>{
 	let resp;
 	for (let i = 0; i < categoriaFiltrada.length; i++) {
 
-			let dataToSendToKalmanF = rawDataRaspi.filter(data => data.mactag == categoriaFiltrada[i].mactag);
+		let dataToSendToKalmanF = rawDataRaspi.filter(data => data.mactag == categoriaFiltrada[i].mactag);
 
-			// console.log(dataToSend.length);
-			
-			resp = await filtroKalman.filtrado(dataToSendToKalmanF);
-			console.log(`scan ${JSON.stringify(resp, null, 2)}`);
-			
-			
-		}
+		// console.log(dataToSend.length);
 		
-		if(resp.ok === true){
-			validacion_Trilateracion();
-			res.status(200).json({
-				ok: true,
-				status: 200
-			})
-		}else{
-			res.status(400).json({
-				ok: false,
-				status: 400
-			})
+		resp = await filtroKalman.filtrado(dataToSendToKalmanF);
+		// console.log(`scan ${JSON.stringify(resp, null, 2)}`);
+			
+			
+	}
+		
+	if(resp.ok === true){
+		// validacion_Trilateracion();
+		res.status(200).json({
+			ok: true,
+			status: 200
+		})
+	}else{
+		res.status(400).json({
+			ok: false,
+			status: 400
+		})
 
-		}
+	}
 
 }
+
+
 
 
 exports.rpi = function(req, res, next) {	

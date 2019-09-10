@@ -1,12 +1,13 @@
 const ConstDistancia= require('../../models/constantesdistancia');
 const DistanciaTag= require('../../models/distancias');
+const colors = require('colors')
 
 
 
 var respuesta= '';
 let distancia =  async (req) => {
 try {
-    let myPromise = () =>{
+    let getConstantes = () =>{
         return new Promise((resolve, reject)=>{
             ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag})
             .exec(function (err, data){
@@ -18,11 +19,11 @@ try {
         });
     }
 
-    let result = await myPromise();
+    let result = await getConstantes();
     // console.log(result);
     let pot = (-req.rssi + result.rssiProm + result.desviacionEstandar) / (10 * result.nPropagacion);
-            let distancia = await Math.pow(10, pot);
-            console.log(`Distancia:${distancia}`);
+            let distancia = Math.pow(10, pot);
+            console.log(`Distancia:`.blue +`  ${distancia}`.green);
 
             /* *****************************************n
             *	Guardado en bse de datos de las distancias de los Tags.

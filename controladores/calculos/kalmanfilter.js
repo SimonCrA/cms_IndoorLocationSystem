@@ -59,7 +59,7 @@ let filtrado = async ( scan ) =>{
         };
 
         let resp = await Distancia.distancia( dataToSendToDistance);
-        console.log(`filtro ${JSON.stringify(resp, null, 2)}`);
+        // console.log(`filtro ${JSON.stringify(resp, null, 2)}`);
         if(resp.ok === true){
             respuesta= {
                 ok: true,
