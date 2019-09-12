@@ -408,7 +408,7 @@ let trilateracion = (r1, r2, r3, x, y) =>{
     
     // console.log(punto_X_Y);
     //console.log('Interception B1B2:'+c1c2+'\nInterception B1B3:'+c1c3+'\nInterception B2B3:'+c2c3+"\n********************");
-    e = Math.sqrt((Math.pow(1.70 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(1.70 - parseFloat(punto_X_Y[1]), 2))))
+    e = Math.sqrt((Math.pow(2.10 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(1.75 - parseFloat(punto_X_Y[1]), 2))))
     return {
         x: punto_X_Y[0],
         y: punto_X_Y[1],

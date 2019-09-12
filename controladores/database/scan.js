@@ -34,7 +34,7 @@ let dataRaspi = async (req, res, next)=>{
 			
 		}
 	});
-	console.log(categoriaFiltrada);
+	// console.log(categoriaFiltrada);
 	let resp;
 	for (let i = 0; i < categoriaFiltrada.length; i++) {
 

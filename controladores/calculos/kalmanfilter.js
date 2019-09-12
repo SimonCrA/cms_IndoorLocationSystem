@@ -18,7 +18,7 @@ const Distancia = require('../calculos/getdistance');
 var respuesta='';
 let filtrado = async ( scan ) =>{
 
-    console.log(`estoy filtrando`);
+    // console.log(`estoy filtrando`);
     // console.log(scan);
 
 
@@ -36,7 +36,7 @@ let filtrado = async ( scan ) =>{
         let P_Covar_1= 0.0;      //pt~1   
         let P_Covar_s= 0.0;      //pt^
         let kalmanT= 0.0;        //kt^
-        console.log(`el primer dato es: ${Xt_1}`);
+        // console.log(`el primer dato es: ${Xt_1}`);
 
         for(let i = 0; i < scan.length; i++){
 
@@ -51,7 +51,7 @@ let filtrado = async ( scan ) =>{
                 
             // console.log(`${device[i].rpidate}`);
         }
-        console.log(`rssi filtrado para macRpi:${scan[2].macrpi} && macTag:${scan[1].mactag}, es de rssi:${Xt_s}`);
+        // console.log(`rssi filtrado para macRpi:${scan[2].macrpi} && macTag:${scan[1].mactag}, es de rssi:${Xt_s}`);
         let dataToSendToDistance = {
             mactag: scan[1].mactag,
             macrpi: scan[2].macrpi,

@@ -23,7 +23,7 @@ try {
     // console.log(result);
     let pot = (-req.rssi + result.rssiProm + result.desviacionEstandar) / (10 * result.nPropagacion);
             let distancia = Math.pow(10, pot);
-            console.log(`Distancia:`.blue +`  ${distancia}`.green);
+            // console.log(`Distancia:`.blue +`  ${distancia}`.green);
 
             /* *****************************************n
             *	Guardado en bse de datos de las distancias de los Tags.
