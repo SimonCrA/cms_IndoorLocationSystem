@@ -19,6 +19,12 @@ let sendAccion = (js)=>{
     io.to(js.id).emit('accion', js.distancia)
 }
 
+let startTracking= () =>{
+    let aviso = 'Inicio el despliegue';
+    console.log(aviso);
+    io.emit('asset-tracking', aviso);
+}
+
 let setlist = ()=>{
     
     io.emit('libreta-list', libreta)
@@ -37,22 +43,30 @@ io.on('connection', function(socket){
     })
     
     socket.on('accions', data =>{
-        console.log(data);
-        let resul = libreta.find(fin=>fin.mac === data.mac )
-        if(resul.socketID === undefined){
-            console.log(`ERROR: result= ${resul}\n Data= ${data}`);
-        }else{
+        // console.log(data);
+
+        for (let i = 0; i < data.length; i++) {
             
-            let js={
-                id:resul.socketID,
-                distancia:data.distancia
+            let resul = libreta.find(fin=>fin.mac === data[i].mac )
+            if(resul.socketID === undefined){
+                console.log(`ERROR: result= ${resul}\n Data= ${data[i]}`);
+            }else{
+                
+                let js={
+                    id:resul.socketID,
+                    distancia:data[i].distancia
+                }
+                // console.log(resul);
+                sendAccion(js)
+                console.log(`ID:${socket.id} dice ${JSON.stringify(data,null, 2)}`);
             }
-            // console.log(resul);
-            sendAccion(js)
-            console.log(`ID:${socket.id} dice ${JSON.stringify(data,null, 2)}`);
+            
         }
     })
-    
+    socket.on('despliegue', data =>{
+        console.log(data);
+        startTracking()
+    })
     
     
     

@@ -4,18 +4,28 @@ const RawData = require('../../models/rawdata');
 
 
 const {validacion_Trilateracion} = require('./validacion');
+const {avisar} = require ('../database/scan')
 
+let Xgloball=false;
+console.log(`esta es la variable global ${avisar}`);
 
+let con=0
 let tiempoEspera = () =>{
-    
+
+    if(con === 0 ){
+        con=1;
+        iniciar()   
+    }
+}
+let iniciar = ()=>{
     setInterval(() => {
+        console.log(`esta es ============================================`);
         console.log(`START`.green);
         validacion_Trilateracion();
-        
+            
+            
     }, 10000);
-    
 }
-
 
 // let tiempoScanner =async () =>{
 //     let cont = 5;
@@ -74,6 +84,7 @@ let tiempoEspera = () =>{
 
 
 module.exports = {
-    tiempoEspera
+    tiempoEspera,
+    Xgloball
     // tiempoScanner
 }
