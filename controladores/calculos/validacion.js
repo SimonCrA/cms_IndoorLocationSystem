@@ -6,22 +6,14 @@ const {trilateracion} = require('../calculos/trilateracion')
 const {trilateracionMatriz} = require('../calculos/trilateracion2')
 const Graficar = require('../../models/graficar')
 
-
-var r1=0;
-var r2=0;
-var r3=0;
-var x1=0;
-var x2=0;
-var x3=0;
-var y1=0;
-var y2=0;
-var y3=0;
+var r1=0, r2=0, r3=0, x1=0, x2=0, x3=0, y1=0, y2=0, y3=0;
 // var fecha_actual =  new Date()
 
 // var fecha_vieja = new Date () -10min
 let validacion_Trilateracion = async ()=>{
     try{
 
+        let fecha = new Date().getTime();
 
         let promesa_ubicacion = () =>{
             return new Promise((resolve, reject) => {
@@ -119,23 +111,17 @@ let validacion_Trilateracion = async ()=>{
                         resolve(distancia)
                         // console.log(distancia);
 
-
+                });
             });
-
-
-
-
-            });
-
         }
-
+///////////////////////////////////////////////////////////////////////////////////
         let promesa_puntoXY =(punto, mactag, region)=>{
             return new Promise((resolve, reject)=>{
                 
 
 
                 let graficar = new Graficar({
-                    date: new Date().getTime(),
+                    date: fecha,
                     x: punto.x,        
                     y: punto.y,
                     region,
@@ -154,9 +140,7 @@ let validacion_Trilateracion = async ()=>{
                             graficar
                     })
                 })
-
             });
-
         }
         
         let resultRegion = await promesa_AggregateRegion()
@@ -198,17 +182,8 @@ let validacion_Trilateracion = async ()=>{
                             }
                             
                             datosPuntoXY= {
-                                x1,
-                                x2,
-                                x3,
-                                y1,
-                                y2,
-                                y3,
-                                r1,
-                                r2,
-                                r3
+                                x1, x2, x3, y1, y2, y3, r1, r2, r3
                             }
-
 
                         }
                         
@@ -220,59 +195,21 @@ let validacion_Trilateracion = async ()=>{
 
                         console.log(punto);
                         console.log(punto2);
+                        if(punto.status === true){
+                            let guardarpuntoXY = await promesa_puntoXY(punto, resulttag[k]._id, resultRegion[i]._id);
+                            console.log(guardarpuntoXY.ok);
 
-                        let guardarpuntoXY = await promesa_puntoXY(punto, resulttag[k]._id, resultRegion[i]._id);
-                        console.log(guardarpuntoXY.ok);
+                        }
                     }
         }
-        
-        //     // console.log(agregate_macrpi[j]._id);
-            
-        //     Distancia.find({macTag:agregate_mactag[i]._id, macRpi:agregate_macrpi[j]._id}).sort({_id:-1}).limit(1)
-        //     .exec( (err, distancia) =>{
-        //         // console.log(`distancia: ${JSON.stringify(distancia, null, 2)}`);
-        //         if (err) {
-        //             console.log(`err`.red + err);
-        //         }
-        //         resultadoUbicacion = ubicacionRaspi.find(data => data.macRpi ===agregate_macrpi[j]._id );
-        //         console.log(resultadoUbicacion);
-        //         if(resultadoUbicacion.axis === 'o'){
-        //             d1 = distancia[0].distanciaTag
-    
-        //         }
-        //         if(resultadoUbicacion.axis === 'x'){
-        //             d2 = distancia[0].distanciaTag
-        //             x = resultadoUbicacion.xpos
-    
-        //         }if(resultadoUbicacion.axis === 'y'){
-        //             d3 = distancia[0].distanciaTag
-        //             y = resultadoUbicacion.ypos
-                    
-        //         }
-                
-        //         // console.log(`d1=${d1}, d2=${d2}, d3=${d3}, x=${x}, y=${y}`);
-    
-        //     });
-        // }
-    
-        // console.log(`d1=${d1}, d2=${d2}, d3=${d3}, x=${x}, y=${y}`);
-        // trilateracion(d1, d2, d3, x, y);                 
-
-
-
-
-
-
-
-
 
     console.log(`======================FINALIZO=========================`.rainbow);
+
     }catch(e){
         console.log("hola SOY UN HERRROR");
         console.log(e)
     }
 }
-    
     
 module.exports = {
     validacion_Trilateracion

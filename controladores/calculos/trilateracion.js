@@ -380,41 +380,29 @@ let trilateracion = (r1, r2, r3, x, y) =>{
     //console.log(x,y)
     let e = 0;
     if (punto_X_Y[0] > 0 && punto_X_Y[1] > 0) {
-        // $('#Target').html('[X: ' + parseFloat(punto_X_Y[0]).toFixed(2) + ', Y: ' + parseFloat(punto_X_Y[1]).toFixed(2) + ']').value
-
-        e = Math.sqrt((Math.pow(2.0 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(1.10 - parseFloat(punto_X_Y[1]), 2))))
-        // $('#error404').html('Margen de Error: ' + e).value
-        // dot('red', parseFloat(punto_X_Y[0]), parseFloat(punto_X_Y[1]), e)
+   
+        e = Math.sqrt((Math.pow(1.70 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(1.70 - parseFloat(punto_X_Y[1]), 2))))
+        return {
+            x: punto_X_Y[0],
+            y: punto_X_Y[1],
+            e,
+            status:true
+        };
 
 
     }
     if (punto_X_Y[0] > x1 || punto_X_Y[1] > y2) {
-        // $('#Target').html('[X: ' + parseFloat(punto_X_Y[0]).toFixed(2) + ', Y: ' + parseFloat(punto_X_Y[1]).toFixed(2) + ']').value
-
-        e = Math.sqrt((Math.pow(2.0 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(1.10 - parseFloat(punto_X_Y[1]), 2))))
-        // $('#error404').html('Margen de Error: ' + e).value
-        // dot('gray', parseFloat(punto_X_Y[0]), parseFloat(punto_X_Y[1]), e)
-
+        return {
+          status: false
+        };
 
     }
     if (punto_X_Y[0] < 0 || punto_X_Y[1] < 0) {
-        // $('#Target').html('[X: ' + parseFloat(punto_X_Y[0]).toFixed(2) + ', Y: ' + parseFloat(punto_X_Y[1]).toFixed(2) + ']').value
-
-        // $('#error404').html('Margen de Error: ' + e).value
-        // dot('rgb(0, 0, 0)', parseFloat(punto_X_Y[0]), parseFloat(punto_X_Y[1]), e)
-        
-        
+        return {
+            status: false
+        };
     }
-    
-    // console.log(punto_X_Y);
-    //console.log('Interception B1B2:'+c1c2+'\nInterception B1B3:'+c1c3+'\nInterception B2B3:'+c2c3+"\n********************");
-    e = Math.sqrt((Math.pow(2.10 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(1.75 - parseFloat(punto_X_Y[1]), 2))))
-    return {
-        x: punto_X_Y[0],
-        y: punto_X_Y[1],
-        e
-    };
-
+   
 }
 
 
