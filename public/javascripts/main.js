@@ -29,14 +29,34 @@ var consulta = $.get( "../../../api/zona", function() {
 
 
 function addMessage(e) { 
-    var json = { 
+    var array = [{ 
       distancia: document.getElementById('mensaje').value, 
       mac: document.getElementById('maclist1').value
-    }; 
-    socket.emit('accions', json); 
+    },{ 
+      distancia: document.getElementById('mensaje').value, 
+      mac: document.getElementById('maclist2').value
+    },{ 
+      distancia: document.getElementById('mensaje').value, 
+      mac: document.getElementById('maclist3').value
+    }]; 
+    socket.emit('accions', array); 
     console.log(json);
     return false;
 }
+
+
+
+function startDespliegue(e) { 
+    let aviso='Inicio el tracking desde client'
+    socket.emit('despliegue', aviso); 
+    console.log(aviso);
+    return false;
+}
+
+
+
+
+
 function GetFromPagefileconfigData(e) { 
     var json = { 
       cantMuestras: document.getElementById('cantMuestras').value, 

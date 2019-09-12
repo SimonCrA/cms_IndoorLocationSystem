@@ -6,16 +6,20 @@ const filtroKalman = require('../calculos/kalmanfilter');
 const {validacion_Trilateracion} = require('../calculos/validacion');
 const async = require('async');
 
+const d = require('../calculos/timer')
 
 
-exports.dato = function(req,res,next){
+
+// let datbul = false
+let avisar = false;
+let dato = function(req,res,next){
     let dato = new Date().getTime();
 	console.log(`dato ${dato}`);
 	
 }
 
 
-exports.dataRaspi = async (req, res, next)=>{
+let dataRaspi = async (req, res, next)=>{
 	
 	let rawDataRaspi = new Array();
 	const categoriaFiltrada = [];
@@ -35,17 +39,21 @@ exports.dataRaspi = async (req, res, next)=>{
 	for (let i = 0; i < categoriaFiltrada.length; i++) {
 
 		let dataToSendToKalmanF = rawDataRaspi.filter(data => data.mactag == categoriaFiltrada[i].mactag);
-
-		// console.log(dataToSend.length);
+		
+		console.log(dataToSendToKalmanF.length);
 		
 		resp = await filtroKalman.filtrado(dataToSendToKalmanF);
 		// console.log(`scan ${JSON.stringify(resp, null, 2)}`);
 			
-			
+		
 	}
 		
 	if(resp.ok === true){
 		// validacion_Trilateracion();
+		
+		d.tiempoEspera();
+		
+		// console.log(gobalabv.Xgloball);
 		res.status(200).json({
 			ok: true,
 			status: 200
@@ -63,7 +71,7 @@ exports.dataRaspi = async (req, res, next)=>{
 
 
 
-exports.rpi = function(req, res, next) {	
+let rpi = function(req, res, next) {	
     console.log(`hey u`);
 	// console.log('resivo esto:\nMAC: ', req.params.mac,'\nRssi: ',req.params.rssi,'\nMac Rpi: ',req.params.macRpi,'\nFecha: ',req.params.date,'\n BeaconType: ',req.params.beaconType)
 	
@@ -94,3 +102,9 @@ exports.rpi = function(req, res, next) {
 };
 
 
+module.exports = {
+	dataRaspi,
+	rpi,
+	dato, avisar
+
+}
