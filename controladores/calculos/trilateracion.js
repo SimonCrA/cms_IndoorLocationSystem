@@ -132,7 +132,7 @@ let  equa = (x1, y1, x2, y2, r3, y0) => {
 var punto_X_Y = new Array()
 
 let trilateracion = (r1, r2, r3, x, y) =>{
-    console.log('Hola soy trilateracion');
+    // console.log('Hola soy trilateracion');
     let x1 = x;
     let y2 = y;
     let xx1 = 0;
@@ -378,29 +378,49 @@ let trilateracion = (r1, r2, r3, x, y) =>{
 
     //QUIEN ES X , Y?????
     //console.log(x,y)
-    let e = 0;
+    var error = 0;
     if (punto_X_Y[0] > 0 && punto_X_Y[1] > 0) {
-   
-        e = Math.sqrt((Math.pow(1.70 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(1.70 - parseFloat(punto_X_Y[1]), 2))))
+        // console.log(`Estoy dentro de la region`);
+        error = Math.sqrt((Math.pow(2.10 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(6.10 - parseFloat(punto_X_Y[1]), 2))))
         return {
-            x: punto_X_Y[0],
-            y: punto_X_Y[1],
-            e,
+            punt_x: (punto_X_Y[0]).toFixed(3),
+            punt_y: (punto_X_Y[1]).toFixed(3),
+            error:(error).toFixed(3),
             status:true
         };
 
 
     }
-    if (punto_X_Y[0] > x1 || punto_X_Y[1] > y2) {
+    else if (punto_X_Y[0] > x1 || punto_X_Y[1] > y2) {
+        // console.log(`Estoy fuera de la region positivo`);
+
         return {
-          status: false
+            punt_x: (punto_X_Y[0]).toFixed(3),
+            punt_y: (punto_X_Y[1]).toFixed(3),
+            error:(error).toFixed(3),
+            status: false
         };
 
     }
-    if (punto_X_Y[0] < 0 || punto_X_Y[1] < 0) {
+    else if (punto_X_Y[0] < 0 || punto_X_Y[1] < 0) {
+        // console.log(`Estoy fuera de la region negativo`);
+
         return {
+            punt_x: (punto_X_Y[0]).toFixed(3),
+            punt_y: (punto_X_Y[1]).toFixed(3),
+            error:(error).toFixed(3),
             status: false
         };
+    }
+    else{
+        // console.log(`no soy ninguna condicion ${punto_X_Y[0]}`);
+    return {
+        punt_x: (punto_X_Y[0]).toFixed(3),
+        punt_y: (punto_X_Y[1]).toFixed(3),
+        error:(error).toFixed(3),
+        status: false
+    };
+
     }
    
 }

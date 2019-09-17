@@ -1,11 +1,12 @@
 
 const RawData = require('../../models/rawdata');
+var Rawdatamuestras = require('../../models/rawdatamuestras');
 const Fileconfig = require('../calculos/configfile/configfile');
 const filtroKalman = require('../calculos/kalmanfilter');
 const {validacion_Trilateracion} = require('../calculos/validacion');
 const async = require('async');
 
-const timer = require('../calculos/timer')
+const d = require('../calculos/timer')
 
 
 
@@ -39,7 +40,7 @@ let dataRaspi = async (req, res, next)=>{
 
 		let dataToSendToKalmanF = rawDataRaspi.filter(data => data.mactag == categoriaFiltrada[i].mactag);
 		
-		console.log(dataToSendToKalmanF.length);
+		// console.log(dataToSendToKalmanF.length);
 		
 		resp = await filtroKalman.filtrado(dataToSendToKalmanF);
 		// console.log(`scan ${JSON.stringify(resp, null, 2)}`);
@@ -50,8 +51,8 @@ let dataRaspi = async (req, res, next)=>{
 	if(resp.ok === true){
 		// validacion_Trilateracion();
 		
-		timer.tiempoEspera();
-
+		d.tiempoEspera();
+		
 		// console.log(gobalabv.Xgloball);
 		res.status(200).json({
 			ok: true,

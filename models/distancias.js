@@ -8,11 +8,14 @@ var distanceTags = new Schema({
 		macTag: {type: String,  max: 100},
 		distanciaTag: {type: Number },        
         region: {type: String},
-		date: {type: Date}
+		date: {type: Date},
+		status:{type: Boolean}
 		
 
 	}
 );  
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true)
 
 //Export model
 module.exports = mongoose.model('Distancia', distanceTags);

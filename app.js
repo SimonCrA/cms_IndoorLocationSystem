@@ -17,7 +17,7 @@ console.log(`aca ES EL APP`);
 var app = express();
 const {validacion_Trilateracion} = require('./controladores/calculos/validacion');
 
-// validacion_Trilateracion();
+validacion_Trilateracion();
 
 // -------- Set up mongoose connection ---------------------------------------
 console.log("Estableciendo conexion MongoDB Server...");

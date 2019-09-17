@@ -143,7 +143,7 @@ let rawCaracterizacion = (req, res, next) =>{
                 console.log(err);
                 return next(err);
             };
-            console.log(`Saved: ${JSON.stringify(rawMuestras, null, 2)}`);
+            // console.log(`Saved: ${JSON.stringify(rawMuestras, null, 2)}`);
             // Successful - redirect to new author record.	
         });
         

@@ -52,6 +52,18 @@ function startDespliegue(e) {
     console.log(aviso);
     return false;
 }
+function stopedAll(e) { 
+    let aviso='detener el tracking desde client'
+    socket.emit('stop-all', aviso); 
+    console.log(aviso);
+    return false;
+}
+function refresh(e) { 
+    let aviso='Actualizar data del Server'
+    socket.emit('refresh-client', aviso); 
+    console.log(aviso);
+    return false;
+}
 
 
 

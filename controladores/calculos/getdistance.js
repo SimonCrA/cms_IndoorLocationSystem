@@ -9,7 +9,7 @@ let distancia =  async (req) => {
 try {
     let getConstantes = () =>{
         return new Promise((resolve, reject)=>{
-            ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag})
+            ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag}).sort({_id:-1})
             .exec(function (err, data){
                 err 
                 ? reject(err) 
@@ -34,7 +34,8 @@ try {
                 macRpi: req.macrpi,
                 macTag: req.mactag,
                 distanciaTag: distancia,
-                region: result.idRegion
+                region: result.idRegion,
+                status: true
             });
             respuesta ={
                 ok:true, status:200

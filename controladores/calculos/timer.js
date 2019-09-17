@@ -1,4 +1,4 @@
-// const colors = require ('colors');
+const colors = require ('colors');
 // const RawData = require('../../models/rawdata');
 const Ubicacion = require('../../models/ubicacion');
 
@@ -41,10 +41,10 @@ let tiempoEspera = async () =>{
     contadorDePost ++;
 
 
-    console.log(resultrpi.length);
-
+    
     
     if (contadorDePost === resultrpi.length) {
+        // console.log(`ESTO ES CANTIDAD DE RPIS ${resultrpi.length}`.inverse);
         validacion_Trilateracion();
         contadorDePost = 0;
     }

@@ -6,17 +6,25 @@ let client_count=0
 
 const { io } = require('./bin/www');
 
-let libreta=[
-];
+let libreta=[];
 byClient = new Map();
 let dato = (id, mac) =>{
     let json={socketID:id, mac}
-    libreta.push(json)
-    console.log(libreta);
+
+    let findIt = libreta.findIndex(tarea =>tarea.socketID === id);
+    if(findIt>=0){
+        console.log(`No estoy Autorizado para guardar a este Sr(${id})`);
+    }else{
+        libreta.push(json)
+        console.log(libreta);
+        
+    }
+
 }
 let sendAccion = (js)=>{
     
-    io.to(js.id).emit('accion', js.distancia)
+    io.to(js.id).emit('accion', js.distancia);
+    
 }
 
 let startTracking= () =>{
@@ -24,12 +32,27 @@ let startTracking= () =>{
     console.log(aviso);
     io.emit('asset-tracking', aviso);
 }
+let stoped= () =>{
+    let aviso = 'detener el despliegue';
+    console.log(aviso);
+    io.emit('stoped-all', aviso);
+}
 
 let setlist = ()=>{
     
     io.emit('libreta-list', libreta)
 
 }
+let refresh = () =>{
+
+    let actualiza=`Actualizar libreta del server`
+    io.emit('refresh', actualiza)
+}
+
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+
 io.on('connection', function(socket){
     console.log('An user connected......');
     // console.log(socket);
@@ -40,6 +63,10 @@ io.on('connection', function(socket){
         dato(socket.id , data);
         setlist();
         
+    })
+    socket.on('refresh-client', data=>{
+        console.log(data);
+        refresh();
     })
     
     socket.on('accions', data =>{
@@ -66,6 +93,10 @@ io.on('connection', function(socket){
     socket.on('despliegue', data =>{
         console.log(data);
         startTracking()
+    })
+    socket.on('stop-all', data =>{
+        console.log(data);
+        stoped()
     })
     
     

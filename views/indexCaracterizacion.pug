@@ -5,7 +5,7 @@ head
   meta(http-equiv='X-UA-Compatible' content='ie=edge')
   title Caracterizaci&oacute;n
   // Bootstrap 4
-  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
+  //- link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
 section#testimonial
   .container.text-black
     p.h1 Caracterizaci&oacute;n
@@ -33,10 +33,6 @@ section
                 button.btn.btn-primary.mb-2(type='submit') enviar
       br
       br
-      br
-      br
-      br
-      br
       .cards.col-md-6.my-3
         .container
           .card.py-4.h-100
@@ -53,14 +49,27 @@ section
                   input#cantMuestras.form-control(type='text' placeholder='distancia')
                 button.btn.btn-primary.mb-2(type='submit') FileConfig
       br
-      br
-      br
+    
       .cards.col-md-6.my-3
         .container
           .card.py-4.h-100
             .card-body.text-center
               form.form-inline(onsubmit='return startDespliegue(this)')
-                button.btn.btn-primary.mb-2(type='submit') Start Despliegue
+                button.btn.btn-primary.mb-2(type='submit') Start Tracking
+      br
+      .cards.col-md-6.my-3
+        .container
+          .card.py-4.h-100
+            .card-body.text-center
+              form.form-inline(onsubmit='return stopedAll(this)')
+                button.btn.btn-primary.mb-2(type='submit') Stop Tracking
+      br
+      .cards.col-md-6.my-3
+        .container
+          .card.py-4.h-100
+            .card-body.text-center
+              form.form-inline(onsubmit='return refresh(this)')
+                button.btn.btn-primary.mb-2(type='submit') actualizar Libreta
 // Bootstrap 4 scripts
 link(href='../../../stylesheets/bootstrap.min.css', rel='stylesheet')
 //link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', rel='stylesheet')
