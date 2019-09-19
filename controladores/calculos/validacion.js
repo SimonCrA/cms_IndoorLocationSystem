@@ -51,7 +51,8 @@ let validacion_Trilateracion = async ()=>{
 
             Distancia.aggregate([{
                 $match: {
-                    region: region
+                    region: region,
+                    status:true
                 }
             },
             {
@@ -77,7 +78,8 @@ let validacion_Trilateracion = async ()=>{
             Distancia.aggregate([
             {
                 "$match": {
-                    "region": region_
+                    "region": region_, "status":true
+
                 }
             },
             {
@@ -177,6 +179,7 @@ let validacion_Trilateracion = async ()=>{
             // console.log(resultRegion.length);
             
                     for (let k = 0; k < resulttag.length; k++) {// se ejecuta segun la cantidad de tag que existen
+                        console.log(`Target=${resulttag[k]._id}`);
                         let datosPuntoXY = {};
                         for (let j = 0; j < resultrpi.length; j++) {// se ejecuta segun la cantidad
                             // console.log(resultrpi[j]._id);

@@ -381,11 +381,11 @@ let trilateracion = (r1, r2, r3, x, y) =>{
     var error = 0;
     if (punto_X_Y[0] > 0 && punto_X_Y[1] > 0) {
         // console.log(`Estoy dentro de la region`);
-        error = Math.sqrt((Math.pow(2.10 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(6.10 - parseFloat(punto_X_Y[1]), 2))))
+        error = Math.sqrt((Math.pow(2.0 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(4.0 - parseFloat(punto_X_Y[1]), 2))))
         return {
             punt_x: (punto_X_Y[0]).toFixed(3),
             punt_y: (punto_X_Y[1]).toFixed(3),
-            error:(error).toFixed(3),
+            // error:(error).toFixed(3),
             status:true
         };
 
@@ -397,7 +397,7 @@ let trilateracion = (r1, r2, r3, x, y) =>{
         return {
             punt_x: (punto_X_Y[0]).toFixed(3),
             punt_y: (punto_X_Y[1]).toFixed(3),
-            error:(error).toFixed(3),
+            // error:(error).toFixed(3),
             status: false
         };
 
@@ -408,7 +408,7 @@ let trilateracion = (r1, r2, r3, x, y) =>{
         return {
             punt_x: (punto_X_Y[0]).toFixed(3),
             punt_y: (punto_X_Y[1]).toFixed(3),
-            error:(error).toFixed(3),
+            // error:(error).toFixed(3),
             status: false
         };
     }
@@ -417,7 +417,7 @@ let trilateracion = (r1, r2, r3, x, y) =>{
     return {
         punt_x: (punto_X_Y[0]).toFixed(3),
         punt_y: (punto_X_Y[1]).toFixed(3),
-        error:(error).toFixed(3),
+        // error:(error).toFixed(3),
         status: false
     };
 

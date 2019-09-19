@@ -10,7 +10,7 @@ section#testimonial
   .container.text-black
     p.h1 Caracterizaci&oacute;n
     p.h2.mb-2
-      | Esto permite conectarnos a los Raspberry pi disponibles y listarlos.
+      | Esto permite conectarnos a los Raspberry pi disponibles y listarlos, para la recoleccion de muestras
 section
   .container
     .row
@@ -26,13 +26,20 @@ section
                   select#maclist2.form-control.mx-3
                   label(for='maclist3') MACs
                   select#maclist3.form-control.mx-3
-                    
+                br
                 .form-group.mx-sm-3.mb-2
                   label.sr-only(for='mensaje') texto mensaje
-                  input#mensaje.form-control(type='text' placeholder='Mensaje')
+                  input#mensaje.form-control(type='text' placeholder='Distancia')
                 button.btn.btn-primary.mb-2(type='submit') enviar
       br
-      br
+    
+section#testimonial
+  .container.text-black
+    p.h3.mb-3
+      | En esta seccion se ejecuta la serie de calculos para determinar las constantes de los Tag
+section
+  .container
+    .row
       .cards.col-md-6.my-3
         .container
           .card.py-4.h-100
@@ -44,26 +51,39 @@ section
                 .form-group.mb-2
                   label(for='tags') macTag
                   select#tags.form-control.mx-3
-                    
+                br
                 .form-group.mx-sm-3.mb-2
                   input#cantMuestras.form-control(type='text' placeholder='distancia')
                 button.btn.btn-primary.mb-2(type='submit') FileConfig
       br
+section#testimonial
+  .container.text-black
     
+    p.h3.mb-3
+      | Botones que permiten tener interaccion con los RaspberryPi
+section
+  .container
+    .row
       .cards.col-md-6.my-3
         .container
           .card.py-4.h-100
             .card-body.text-center
               form.form-inline(onsubmit='return startDespliegue(this)')
                 button.btn.btn-primary.mb-2(type='submit') Start Tracking
-      br
+br
+section
+  .container
+    .row
       .cards.col-md-6.my-3
         .container
           .card.py-4.h-100
             .card-body.text-center
               form.form-inline(onsubmit='return stopedAll(this)')
                 button.btn.btn-primary.mb-2(type='submit') Stop Tracking
-      br
+br
+section
+  .container
+    .row
       .cards.col-md-6.my-3
         .container
           .card.py-4.h-100
