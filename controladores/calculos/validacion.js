@@ -1,3 +1,12 @@
+/* *******************************************************************
+*   NOTA IMPORTANTE:
+*   
+*	SIMON TENEMOS UN PROBLEMA ACA CON LA VALIDACION Y EL STATUS TRUE DE DISTANCIA
+*	NO SE SI HALLA QUE ACOMODAR EL CODIGO DEL RPI O ESTE CODIGO DE VALIDACION...
+*   ESTABA REVISANDO Y AVECES QUEDA UN REGISTRO CON UN TAG Y UN RPI ESTO HACE QUE NO SE CONSIGAN
+*   LAS TRES DISTANCIAS Y NO SE TRILATERE, SI NO SE TRILATERA ESE REGISTRO EN DISTANCIA
+*   NUNCA SE ACTUALIZA A FALSE HACIENDO QUE APAREZCA SIEMPRE EN EL CONSOLE..... 
+/* *******************************************************************/
 
 const Distancia = require('../../models/distancias');
 const colors = require('colors');
@@ -177,6 +186,7 @@ let validacion_Trilateracion = async ()=>{
 
             // console.log(`resultTag: ${JSON.stringify(resulttag,null, 1)}`);
             // console.log(resultRegion.length);
+
             
                     for (let k = 0; k < resulttag.length; k++) {// se ejecuta segun la cantidad de tag que existen
                         console.log(`Target=${resulttag[k]._id}`);
