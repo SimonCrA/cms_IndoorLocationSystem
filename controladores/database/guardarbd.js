@@ -123,18 +123,18 @@ let zona = (req, res, next) =>{
 
 
 
-let rawCaracterizacion = (req, res, next) =>{
+let rawCaracterizacion = (data) => {
 
     // console.log(req.body);
     let rawMuestras ;
-    for (let i = 0; i < req.body.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         
         rawMuestras = new RawMuestras({
     
-            macRpi:req.body[i].macrpi,
-            macTag:req.body[i].mactag,  
-            rssi:parseInt(req.body[i].rssi),
-            distancia:parseInt(req.body[i].distancia)
+            macRpi:data[i].macrpi,
+            macTag:data[i].mactag,  
+            rssi:parseInt(data[i].rssi),
+            distancia:parseInt(data[i].distancia)
             
         });
     

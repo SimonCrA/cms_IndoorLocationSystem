@@ -68,9 +68,15 @@ io.on('connection', function(socket){
         console.log(data);
         refresh();
     })
-    socket.on('sendDataToServer', (data)=>{
-        console.log(data);
-        processDataFromRpi(data)
+    socket.on('sendDataToServer', (dataTracking)=>{
+        console.log(dataTracking);
+        processDataFromRpi(dataTracking);
+        
+    })
+    socket.on('sendDataCToServer', (dataCaracterizacion)=>{
+        console.log(dataCaracterizacion);
+        rawCaracterizacion(dataCaracterizacion);
+        
         
     })
     
