@@ -19,11 +19,11 @@ let dato = function(req,res,next){
 }
 
 
-let dataRaspi = async (req, res, next)=>{
+let processDataFromRpi = async (data) => {
 	
 	let rawDataRaspi = new Array();
 	const categoriaFiltrada = [];
-	rawDataRaspi = req.body;
+	rawDataRaspi = data;
 	// console.log(rawDataRaspi)
 	// rawDataRaspi[0].mac
 	rawDataRaspi.forEach(categoria => {
@@ -103,7 +103,7 @@ let rpi = function(req, res, next) {
 
 
 module.exports = {
-	dataRaspi,
+	processDataFromRpi,
 	rpi,
 	dato, avisar
 

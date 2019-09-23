@@ -68,6 +68,11 @@ io.on('connection', function(socket){
         console.log(data);
         refresh();
     })
+    socket.on('sendDataToServer', (data)=>{
+        console.log(data);
+        processDataFromRpi(data)
+        
+    })
     
     socket.on('accions', data =>{
         // console.log(data);
