@@ -236,16 +236,23 @@ let validacion_Trilateracion = async ()=>{
                         let punto2 =trilateracionMatriz(datosPuntoXY);
                         // let punto3 = trilateracionMatriz2(datosPuntoXY);
                         // console.log(resulttag[k]._id);
-                        // console.log(`T_1: d1=${r1}, d2=${r2}, d3=${r3},`+`Error=${punto.e}`.red);
-                        // console.log(`T_2: d1=${r1}, d2=${r2}, d3=${r3}, `+`Error=${punto2.e}`.red);
-                        console.log(`\n`);
-                        console.log(`Trilateracion_1:`);
-                        console.log(punto);
-                        console.log(`\n`);
-                        console.log(`Trilateracion_2:`);
+
+
+
+
+                        // console.log(`T_1: d1=${r1}, d2=${r2}, d3=${r3},`+`Error=${punto.error}`.red);
+                        // console.log(`T_2: d1=${r1}, d2=${r2}, d3=${r3}, `+`Error=${punto2.error}`.red);
                         // console.log(`\n`);
-                        console.log(punto2);
-                        console.log(`\n`);
+                        // console.log(`Trilateracion_1:`);
+                        // console.log(punto);
+                        // console.log(`\n`);
+                        // console.log(`Trilateracion_2:`);
+                        // // console.log(`\n`);
+                        // console.log(punto2);
+                        // console.log(`\n`);
+
+
+
                         // console.log(`Trilateracion_3:`);
                         // console.log(punto3);
                         // console.log(`\n`);

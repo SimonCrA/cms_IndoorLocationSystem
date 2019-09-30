@@ -40,8 +40,8 @@ let constantes =  (req, res, next) =>{
         rssiProm: req.body.rssiprom,
         nPropagacion: req.body.n,
         desviacionEstandar: req.body.desvia,
-        idRegion:req.body.idregion
-
+        idRegion:req.body.idregion,
+        test: req.body.tests
     });
 
     constantesDeBD.save(function (err) {
@@ -141,17 +141,18 @@ let rawCaracterizacion = (data) => {
         rawMuestras.save(function (err) {
             if (err) {
                 console.log(err);
-                return next(err);
+                // return next(err);
             };
             // console.log(`Saved: ${JSON.stringify(rawMuestras, null, 2)}`);
             // Successful - redirect to new author record.	
         });
         
     }
-    res.status(202).jsonp({
-        ok: true,
-        rawMuestras
-    });
+    console.log(`Se guardaron (${data.length})`);
+    // res.status(202).jsonp({
+    //     ok: true,
+    //     rawMuestras
+    // });
 }
 module.exports = {
     constantes,

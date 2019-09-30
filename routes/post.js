@@ -7,7 +7,7 @@ var apiGuardardb = require('../controladores/database/guardarbd');
 
 // guardar en base de datos desde RASPBERRYPI
 
-router.post('/rasp_data', apiScanner.dataRaspi);
+// router.post('/rasp_data', apiScanner.dataRaspi);
 router.post('/tag_data', apiGuardardb.dataTag);
 
 

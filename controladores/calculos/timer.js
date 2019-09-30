@@ -38,14 +38,15 @@ let tiempoEspera = async () =>{
     }
     
     let resultrpi = await promesa_macrpi();
+    
     contadorDePost ++;
 
-
+    console.log(`contador= ${contadorDePost},,,, result = ${resultrpi.length}`);
     
     
     if (contadorDePost === resultrpi.length) {
         // console.log(`ESTO ES CANTIDAD DE RPIS ${resultrpi.length}`.inverse);
-        validacion_Trilateracion();
+        //validacion_Trilateracion();
         contadorDePost = 0;
     }
 

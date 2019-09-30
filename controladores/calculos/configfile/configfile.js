@@ -137,3 +137,60 @@ const sleep = (milliseconds) => {
     ejecucionEnSerie ,
     sleep
  }
+
+
+
+
+
+
+//  {
+//     "_id" : ObjectId("5d8bdbd89338a508e858e09c"),
+//     "macRpi" : "b8:27:eb:bd:36:61",
+//     "macTag" : "c4:4f:33:0b:35:23",
+//     "rssiProm" : -59.13,
+//     "nPropagacion" : 4.55347085397453,
+//     "desviacionEstandar" : 13.3551,
+//     "idRegion" : "5d716b1a1d173a0d68dfc699",
+//     "__v" : 0
+// }
+
+
+
+
+
+
+
+
+// {
+    
+//     "macRpi" : "b8:27:eb:bd:36:61",
+//     "macTag" : "c4:4f:33:0b:35:23",
+//     "rssiProm" : -59.13,
+//     "nPropagacion" : 4.55347085397453,
+//     "desviacionEstandar" : 13.3551,
+//     "idRegion" : "5d68150b83e5ee05cc9a1eb3",
+//     "test" : "1"
+// }
+
+
+// {
+    
+//     "macRpi" : "b8:27:eb:d4:04:c9",
+//     "macTag" : "c4:4f:33:0b:35:23",
+//     "rssiProm" : -59.13,
+//     "nPropagacion" : 4.55347085397453,
+//     "desviacionEstandar" : 13.3551,
+//     "idRegion" : "5d68150b83e5ee05cc9a1eb3",
+//     "test" : "1"
+// }
+
+// {
+    
+//     "macRpi" : "b8:27:eb:de:9f:60",
+//     "macTag" : "c4:4f:33:0b:35:23",
+//     "rssiProm" : -59.13,
+//     "nPropagacion" : 4.55347085397453,
+//     "desviacionEstandar" : 13.3551,
+//     "idRegion" : "5d68150b83e5ee05cc9a1eb3",
+//     "test" : "1"
+// }

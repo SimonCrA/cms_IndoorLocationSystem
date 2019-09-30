@@ -2,6 +2,8 @@ const ConstDistancia= require('../../models/constantesdistancia');
 const DistanciaTag= require('../../models/distancias');
 const colors = require('colors')
 
+const {validarFiltro} = require('./kalmanfilter_distance')
+
 
 
 var respuesta= '';
@@ -9,7 +11,7 @@ let distancia =  async (req) => {
 try {
     let getConstantes = () =>{
         return new Promise((resolve, reject)=>{
-            ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag}).sort({_id:-1})
+            ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag, test:'1'}).sort({_id:-1})
             .exec(function (err, data){
                 err 
                 ? reject(err) 
@@ -23,7 +25,19 @@ try {
     // console.log(result);
     let pot = (-req.rssi + result.rssiProm + result.desviacionEstandar) / (10 * result.nPropagacion);
             let distancia = Math.pow(10, pot);
-            // console.log(`Distancia:`.blue +`  ${distancia}`.green);
+            // console.log(distancia);
+            // console.log(`********************\n`);
+            let datosJson = {
+                Distancia:distancia,
+                macRpi:req.macrpi,
+                macTag:req.mactag
+                
+            }
+            validarFiltro(datosJson);
+
+            let error = Math.sqrt((Math.pow(6 - parseFloat(distancia), 2)) )
+    
+            console.log(`Mcrpi= ${req.macrpi} && macTag= ${req.mactag}\nDistancia:`.blue +`  ${distancia}`.green +`Error:`+`${error}`.red);
 
             /* *****************************************n
             *	Guardado en bse de datos de las distancias de los Tags.
@@ -35,7 +49,8 @@ try {
                 macTag: req.mactag,
                 distanciaTag: distancia,
                 region: result.idRegion,
-                status: true
+                status: true,
+                setDist:2
             });
             respuesta ={
                 ok:true, status:200

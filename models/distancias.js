@@ -9,7 +9,8 @@ var distanceTags = new Schema({
 		distanciaTag: {type: Number },        
         region: {type: String},
 		date: {type: Date},
-		status:{type: Boolean}
+		status:{type: Boolean},
+		setDist:{type:Number}
 		
 
 	}

@@ -20,6 +20,7 @@ let dato = function(req,res,next){
 
 
 let processDataFromRpi = async (data) => {
+	let respuesta;
 	
 	let rawDataRaspi = new Array();
 	const categoriaFiltrada = [];
@@ -54,15 +55,17 @@ let processDataFromRpi = async (data) => {
 		d.tiempoEspera();
 		
 		// console.log(gobalabv.Xgloball);
-		res.status(200).json({
+		respuesta ={
 			ok: true,
 			status: 200
-		})
+		}
+		console.log(respuesta);
 	}else{
-		res.status(400).json({
+		respuesta = {
 			ok: false,
 			status: 400
-		})
+		}
+		console.log(respuesta);
 
 	}
 

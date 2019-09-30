@@ -40,7 +40,7 @@ function addMessage(e) {
       mac: document.getElementById('maclist3').value
     }]; 
     socket.emit('accions', array); 
-    console.log(json);
+    console.log(array);
     return false;
 }
 

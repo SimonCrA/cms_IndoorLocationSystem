@@ -4,6 +4,9 @@
 let client_countOld=0;
 let client_count=0
 
+const {processDataFromRpi} = require('./controladores/database/scan')
+const {rawCaracterizacion} = require('./controladores/database/guardarbd')
+
 const { io } = require('./bin/www');
 
 let libreta=[];
@@ -69,12 +72,16 @@ io.on('connection', function(socket){
         refresh();
     })
     socket.on('sendDataToServer', (dataTracking)=>{
-        console.log(dataTracking);
+        // console.log(`tracking! ${socket.id}`);
+        // console.log(dataTracking.length);
+        // clg
         processDataFromRpi(dataTracking);
         
     })
     socket.on('sendDataCToServer', (dataCaracterizacion)=>{
-        console.log(dataCaracterizacion);
+        console.log(`CARACTERIZACION ${socket.id}`);
+        console.log(dataCaracterizacion.length);
+        console.log(dataCaracterizacion[0].macrpi);
         rawCaracterizacion(dataCaracterizacion);
         
         
@@ -96,7 +103,7 @@ io.on('connection', function(socket){
                 }
                 // console.log(resul);
                 sendAccion(js)
-                console.log(`ID:${socket.id} dice ${JSON.stringify(data,null, 2)}`);
+                // console.log(`ID:${socket.id} dice ${JSON.stringify(data,null, 2)}`);
             }
             
         }

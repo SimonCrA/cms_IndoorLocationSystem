@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 var postRouter = require('./routes/post');
+const variables = require('./controladores/variables')
 console.log(`aca ES EL APP`);
 
 
@@ -17,7 +18,7 @@ console.log(`aca ES EL APP`);
 var app = express();
 const {validacion_Trilateracion} = require('./controladores/calculos/validacion');
 
-validacion_Trilateracion();
+// validacion_Trilateracion();
 
 // -------- Set up mongoose connection ---------------------------------------
 console.log("Estableciendo conexion MongoDB Server...");
