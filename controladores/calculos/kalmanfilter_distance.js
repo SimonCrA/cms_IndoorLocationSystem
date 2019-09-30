@@ -5,7 +5,7 @@ const Distancia = require('../calculos/getdistance');
 let {globalFilter} = require('../variables')
 
 
-var respuesta='';
+var respuesta=''; 
 
 
 
@@ -13,7 +13,7 @@ var respuesta='';
 
 let validarFiltro = (req)=>{
 
-    let kalmanVariance = 8.184352498;      //var REAL
+    let kalmanVariance = 3.2;      //var REAL
     let kalmanCovariance = 0.05;
 
 
@@ -26,8 +26,8 @@ let validarFiltro = (req)=>{
         Q : kalmanCovariance,
         R : kalmanVariance,
         Xt_predictiva : 0.0, //xt~
-        Xt_1 : req.Distancia,          // x~1           
-        Xt_s: req.Distancia,           //xt^
+        Xt_1 : req.Distancia, // x~1           
+        Xt_s: req.Distancia,  //xt^
         P_Covar_pre: 0.0,    //pt~
         P_Covar_1: 0.0,      //pt~1   
         P_Covar_s: 0.0,      //pt^
@@ -60,14 +60,6 @@ let filtradoDistance = async ( index ) =>{
     // console.log(index);    
     if(index !== undefined){
             
-        
-
-
-
-// console.log(`el primer dato es: ${Xt_1}`);
-
-
-
         globalFilter[index].Xt_predictiva = globalFilter[index].Xt_1;
         globalFilter[index].P_Covar_pre = globalFilter[index].P_Covar_1 + globalFilter[index].Q;
         globalFilter[index].kalmanT = (globalFilter[index].P_Covar_pre)/(globalFilter[index].P_Covar_pre + globalFilter[index].R);
@@ -82,33 +74,7 @@ let filtradoDistance = async ( index ) =>{
         globalFilter[index].contador ++;
 
         console.log(`Distancia Filtrada: ${globalFilter[index].Xt_s} ___cont=${globalFilter[index].contador}`);
-            // console.log(`${device[i].rpidate}`);
-       
-        // console.log(`rssi filtrado para macRpi:${scan[2].macrpi} && macTag:${scan[1].mactag}, es de rssi:${Xt_s}`);
-        
-        
-        
-        
-        // let dataToSendToDistance = {
-        //     mactag: scan[1].mactag,
-        //     macrpi: scan[2].macrpi,
-        //     rssi: Xt_s
-        // };
 
-        // let resp = await Distancia.distancia( dataToSendToDistance);
-        // console.log(`filtro ${JSON.stringify(resp, null, 2)}`);
-    //     if(resp.ok === true){
-    //         respuesta= {
-    //             ok: true,
-    //             status: 200
-    //         }
-    //     }else{
-    //         respuesta= {
-    //             ok: false,
-    //             status: 400
-    //         }
-    //     }
-    
     }else{
         respuesta= {
             ok: false,
@@ -116,8 +82,11 @@ let filtradoDistance = async ( index ) =>{
         }
         console.log(`No se encontro Registros para macRpi: && macTag:`);
     }
-return respuesta;
+
+    return respuesta;
 }
+
+
 module.exports = {
     filtradoDistance,validarFiltro
 }
