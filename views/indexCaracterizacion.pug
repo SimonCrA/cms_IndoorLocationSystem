@@ -3,6 +3,13 @@ head
   meta(charset='UTF-8')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
   meta(http-equiv='X-UA-Compatible' content='ie=edge')
+
+  script(src='../../../libs/jquery-3.3.1.slim.min.js')
+  script(src='../../../libs/raphael-min.js')
+  script(src='../../../libs/morris.min.js')
+  script(src='../../../libs/jquery.min.js')
+  link(rel='stylesheet' href='../../../libs/morris.css')
+
   title Caracterizaci&oacute;n
   // Bootstrap 4
   //- link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
@@ -90,6 +97,18 @@ section
             .card-body.text-center
               form.form-inline(onsubmit='return refresh(this)')
                 button.btn.btn-primary.mb-2(type='submit') actualizar Libreta
+br
+section
+  .container
+    h1 Graficas
+    hr
+    .row
+      .col-md-12
+        h2 Grafica de linea
+        hr
+        #myfirstchart
+    button#Data.btn.btn-primary(type='button')  Cargar Data
+    
 // Bootstrap 4 scripts
 link(href='../../../stylesheets/bootstrap.min.css', rel='stylesheet')
 //link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', rel='stylesheet')
@@ -98,5 +117,7 @@ link(href='../../../stylesheets/dataTables.bootstrap.min.css', rel='stylesheet')
 //- script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
 //- script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
 script(src="/socket.io/socket.io.js") 
+script(src='../../../libs/popper.min.js')
 script(src='../../../javascripts/jquery-3.3.1.js')
 script(src='../../../javascripts/main.js')
+script(src='../../../javascripts/lineas.js')
