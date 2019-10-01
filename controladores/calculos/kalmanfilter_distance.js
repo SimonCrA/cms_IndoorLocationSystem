@@ -14,7 +14,7 @@ var respuesta='';
 let validarFiltro = (req)=>{
 
     let kalmanVariance = 3.2;      //var REAL
-    let kalmanCovariance = 0.05;
+    let kalmanCovariance = 0.09;
 
 
     let datosJs= {
@@ -74,6 +74,9 @@ let filtradoDistance = async ( index ) =>{
         globalFilter[index].contador ++;
 
         console.log(`Distancia Filtrada: ${globalFilter[index].Xt_s} ___cont=${globalFilter[index].contador}`);
+
+
+        
 
     }else{
         respuesta= {

@@ -39,33 +39,33 @@ try {
     
             console.log(`Mcrpi= ${req.macrpi} && macTag= ${req.mactag}\nDistancia:`.blue +`  ${distancia}`.green +`Error:`+`${error}`.red);
 
-            /* *****************************************n
-            *	Guardado en bse de datos de las distancias de los Tags.
-            /* *****************************************/
+            // /* *****************************************n
+            // *	Guardado en bse de datos de las distancias de los Tags.
+            // /* *****************************************/
 
-            let distanciasTags = new DistanciaTag({
+            // let distanciasTags = new DistanciaTag({
 
-                macRpi: req.macrpi,
-                macTag: req.mactag,
-                distanciaTag: distancia,
-                region: result.idRegion,
-                status: true,
-                setDist:2
-            });
-            respuesta ={
-                ok:true, status:200
-            }
+            //     macRpi: req.macrpi,
+            //     macTag: req.mactag,
+            //     distanciaTag: distancia,
+            //     region: result.idRegion,
+            //     status: true,
+            //     setDist:2
+            // });
+            // respuesta ={
+            //     ok:true, status:200
+            // }
 
-            distanciasTags.save((err) => {
-                if (err) {
-                    console.log(err);
-                        respuesta={
-                        ok: false,
-                        status: 400
-                    }
-                }              
+            // distanciasTags.save((err) => {
+            //     if (err) {
+            //         console.log(err);
+            //             respuesta={
+            //             ok: false,
+            //             status: 400
+            //         }
+            //     }              
 
-            });
+            // });
         
 
 
