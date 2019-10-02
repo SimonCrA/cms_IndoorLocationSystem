@@ -6,6 +6,7 @@ let client_count=0
 
 const {processDataFromRpi} = require('./controladores/database/scan')
 const {rawCaracterizacion} = require('./controladores/database/guardarbd')
+const {globalDataGraph} = require('./controladores/variables')
 
 const { io } = require('./bin/www');
 
@@ -60,6 +61,8 @@ io.on('connection', function(socket){
     console.log('An user connected......');
     // console.log(socket);
     client_count++
+    //añadir datos a la grafica...
+    socket.emit('datosGrafica', globalDataGraph);
     
     socket.on('libreta', data=>{
         console.log(`entro aca`);
@@ -116,6 +119,7 @@ io.on('connection', function(socket){
         console.log(data);
         stoped()
     })
+
     
     
     

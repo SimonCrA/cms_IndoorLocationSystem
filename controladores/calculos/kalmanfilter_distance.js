@@ -1,8 +1,10 @@
 const RawData = require('../../models/rawdata');
 const Distancia = require('../calculos/getdistance');
+
 // const scan = require('../database/scan');
 
 let {globalFilter} = require('../variables')
+let {globalDataGraph} = require('../variables')
 
 
 var respuesta=''; 
@@ -75,8 +77,13 @@ let filtradoDistance = async ( index ) =>{
 
         console.log(`Distancia Filtrada: ${globalFilter[index].Xt_s} ___cont=${globalFilter[index].contador}`);
 
+        let datosGrafica = {
+            frame: globalFilter[index].contador,
+            valor: globalFilter[index].distancia,
+            valorfiltrado:globalFilter[index].Xt_s
+        }
 
-        
+        globalDataGraph.push(datosGrafica);
 
     }else{
         respuesta= {

@@ -7,7 +7,7 @@ const {validarFiltro} = require('./kalmanfilter_distance')
 
 
 var respuesta= '';
-let distancia =  async (req) => {
+let distancia =  async (req) => { 
 try {
     let getConstantes = () =>{
         return new Promise((resolve, reject)=>{
