@@ -18,6 +18,9 @@ router.get('/configuracion/:mactag/:region/:cantm', apiConfigFile.ejecucionEnSer
 
 
 
+router.get('/cambiarvariable/:derror',apiScanner.cambiar )
+
+
 router.get('/zona', apiZona.findZona);
 
 router.get('/fileconfig/:zona/:tags/:cantmuestras', apiConfigFile.ejecucionEnSerie);

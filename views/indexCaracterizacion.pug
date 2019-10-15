@@ -9,94 +9,116 @@ head
   script(src='../../../libs/morris.min.js')
   script(src='../../../libs/jquery.min.js')
   link(rel='stylesheet' href='../../../libs/morris.css')
+  link(rel='stylesheet' href='../../../stylesheets/style.css')
 
   title Caracterizaci&oacute;n
   // Bootstrap 4
   //- link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
-section#testimonial
-  .container.text-black
-    p.h1 Caracterizaci&oacute;n
-    p.h2.mb-2
-      | Esto permite conectarnos a los Raspberry pi disponibles y listarlos, para la recoleccion de muestras
-section
-  .container
-    .row
-      .cards.col-md-6.my-3
-        .container
-          .card.py-4.h-100
-            .card-body.text-center
-              form.form-inline(onsubmit='return addMessage(this)')
-                .form-group.mb-2
-                  label(for='maclist1') MACs
-                  select#maclist1.form-control.mx-3
-                  label(for='maclist2') MACs
-                  select#maclist2.form-control.mx-3
-                  label(for='maclist3') MACs
-                  select#maclist3.form-control.mx-3
-                br
-                .form-group.mx-sm-3.mb-2
-                  label.sr-only(for='mensaje') texto mensaje
-                  input#mensaje.form-control(type='text' placeholder='Distancia')
-                button.btn.btn-primary.mb-2(type='submit') enviar
+section#di
+  section#di1
+    section#testimonial
+      .container.text-black
+      p.h1 Caracterizaci&oacute;n
+      p.h2.mb-2
+        | Esto permite conectarnos a los Raspberry pi disponibles y listarlos, para la recoleccion de muestras
+    section
+      .container
+        .row
+          .cards.col-md-6.my-3
+            .container
+      .card.py-4.h-100
+        .card-body.text-center
+          form.form-inline(onsubmit='return addMessage(this)')
+            .form-group.mb-2
+              label(for='maclist1') MACs
+              select#maclist1.form-control.mx-3
+              label(for='maclist2') MACs
+              select#maclist2.form-control.mx-3
+              label(for='maclist3') MACs
+              select#maclist3.form-control.mx-3
+            br
+            .form-group.mx-sm-3.mb-2
+              label.sr-only(for='mensaje') texto mensaje
+              input#mensaje.form-control(type='text' placeholder='Distancia')
+            button.btn.btn-primary.mb-2(type='submit') enviar
+          br
+        
+    section#testimonial
+      .container.text-black
+      p.h3.mb-3
+        | En esta seccion se ejecuta la serie de calculos para determinar las constantes de los Tag
+    section
+      .container
+        .row
+          .cards.col-md-6.my-3
+            .container
+      .card.py-4.h-100
+        .card-body.text-center
+          form.form-inline(onsubmit='return GetFromPagefileconfigData(this)')
+            .form-group.mb-2
+              label(for='zona') idZona
+              select#zona.form-control.mx-3
+            .form-group.mb-2
+              label(for='tags') macTag
+              select#tags.form-control.mx-3
+            br
+            .form-group.mx-sm-3.mb-2
+              input#cantMuestras.form-control(type='text' placeholder='distancia')
+            button.btn.btn-primary.mb-2(type='submit') FileConfig
+          br
+    section#testimonial
+      .container.text-black
+        p.h3.mb-3
+          | Botones que permiten tener interaccion con los RaspberryPi
+    section
+      .container
+        .row
+          .cards.col-md-6.my-3
+            .container
+              .card.py-4.h-100
+                .card-body.text-center
+                  form.form-inline(onsubmit='return startDespliegue(this)')
+                    button.btn.btn-primary.mb-2(type='submit') Start Tracking
+    br
+    section
+      .container
+        .row
+          .cards.col-md-6.my-3
+            .container
+              .card.py-4.h-100
+                .card-body.text-center
+                  form.form-inline(onsubmit='return stopedAll(this)')
+                    button.btn.btn-primary.mb-2(type='submit') Stop Tracking
+    br
+    section
+      .container
+        .row
+          .cards.col-md-6.my-3
+            .container
+              .card.py-4.h-100
+                .card-body.text-center
+                  form.form-inline(onsubmit='return refresh(this)')
+                    button.btn.btn-primary.mb-2(type='submit') actualizar Libreta
+                    
+
+
+
+              
+  section#di2
+    section
       br
-    
-section#testimonial
-  .container.text-black
-    p.h3.mb-3
-      | En esta seccion se ejecuta la serie de calculos para determinar las constantes de los Tag
-section
-  .container
-    .row
-      .cards.col-md-6.my-3
-        .container
-          .card.py-4.h-100
-            .card-body.text-center
-              form.form-inline(onsubmit='return GetFromPagefileconfigData(this)')
-                .form-group.mb-2
-                  label(for='zona') idZona
-                  select#zona.form-control.mx-3
-                .form-group.mb-2
-                  label(for='tags') macTag
-                  select#tags.form-control.mx-3
-                br
-                .form-group.mx-sm-3.mb-2
-                  input#cantMuestras.form-control(type='text' placeholder='distancia')
-                button.btn.btn-primary.mb-2(type='submit') FileConfig
+      p.h3.mb-2
+        | aca utiliza una api para una variable global que indica en que distancia esta el beacon
+        | para calcular el error
       br
-section#testimonial
-  .container.text-black
-    
-    p.h3.mb-3
-      | Botones que permiten tener interaccion con los RaspberryPi
-section
-  .container
-    .row
-      .cards.col-md-6.my-3
-        .container
-          .card.py-4.h-100
-            .card-body.text-center
-              form.form-inline(onsubmit='return startDespliegue(this)')
-                button.btn.btn-primary.mb-2(type='submit') Start Tracking
-br
-section
-  .container
-    .row
-      .cards.col-md-6.my-3
-        .container
-          .card.py-4.h-100
-            .card-body.text-center
-              form.form-inline(onsubmit='return stopedAll(this)')
-                button.btn.btn-primary.mb-2(type='submit') Stop Tracking
-br
-section
-  .container
-    .row
-      .cards.col-md-6.my-3
-        .container
-          .card.py-4.h-100
-            .card-body.text-center
-              form.form-inline(onsubmit='return refresh(this)')
-                button.btn.btn-primary.mb-2(type='submit') actualizar Libreta
+      form.form-inline(onsubmit='return sendE(this)')
+      
+        br
+        .form-group.mx-sm-3.mb-2
+          label.sr-only(for='mensaj') texto mensaje
+          input#mensaj.form-control(type='text' placeholder='Distancia')
+        button.btn.btn-primary.mb-2(type='submit') enviar
+
 br
 section
   .container

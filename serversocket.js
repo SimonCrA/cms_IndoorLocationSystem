@@ -10,6 +10,10 @@ const {globalDataGraph} = require('./controladores/variables')
 
 const { io } = require('./bin/www');
 
+
+exports.graficar = ()=>{
+    
+}
 let libreta=[];
 byClient = new Map();
 let dato = (id, mac) =>{
@@ -62,7 +66,10 @@ io.on('connection', function(socket){
     // console.log(socket);
     client_count++
     //añadir datos a la grafica...
-    socket.emit('datosGrafica', globalDataGraph);
+    setInterval(() => {
+        
+        socket.emit('datosGrafica', globalDataGraph);
+    }, 1000);
     
     socket.on('libreta', data=>{
         console.log(`entro aca`);

@@ -6,6 +6,9 @@ const filtroKalman = require('../calculos/kalmanfilter');
 const {validacion_Trilateracion} = require('../calculos/validacion');
 const async = require('async');
 
+let {DistanciaError} = require('../variables')
+
+
 const d = require('../calculos/timer')
 
 
@@ -104,8 +107,14 @@ let rpi = function(req, res, next) {
 
 };
 
+let cambiar = (req, res, next) =>{
+	DistanciaError = req.params.derror;
 
+	console.log(DistanciaError);
+
+}
 module.exports = {
+	cambiar,
 	processDataFromRpi,
 	rpi,
 	dato, avisar

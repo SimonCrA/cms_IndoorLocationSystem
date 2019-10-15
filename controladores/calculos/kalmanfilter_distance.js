@@ -1,5 +1,7 @@
 const RawData = require('../../models/rawdata');
 const Distancia = require('../calculos/getdistance');
+const DistanciaTag= require('../../models/distancias');
+
 
 // const scan = require('../database/scan');
 
@@ -16,7 +18,7 @@ var respuesta='';
 let validarFiltro = (req)=>{
 
     let kalmanVariance = 3.2;      //var REAL
-    let kalmanCovariance = 0.09;
+    let kalmanCovariance = 0.2;
 
 
     let datosJs= {
@@ -75,15 +77,49 @@ let filtradoDistance = async ( index ) =>{
 
         globalFilter[index].contador ++;
 
-        console.log(`Distancia Filtrada: ${globalFilter[index].Xt_s} ___cont=${globalFilter[index].contador}`);
+        if( globalFilter[index].contador === 10){
+            globalFilter[index].contador = 0;
 
-        let datosGrafica = {
-            frame: globalFilter[index].contador,
-            valor: globalFilter[index].distancia,
-            valorfiltrado:globalFilter[index].Xt_s
+            console.log(`Distancia Filtrada: ${globalFilter[index].Xt_s} ___cont=${globalFilter[index].contador}`);
+    
+            let datosGrafica = {
+                frame: globalFilter[index].contador,
+                valor: globalFilter[index].distancia,
+                valorfiltrado:globalFilter[index].Xt_s
+            }
+    
+            globalDataGraph.push(datosGrafica);
+
+            /* *****************************************
+            *	Guardado en base de datos de las distancias Filtrada de los Tags.
+            /* *****************************************/
+
+            let distanciasTags = new DistanciaTag({
+
+                macRpi:  globalFilter[index].macRpi,
+                macTag:  globalFilter[index].macTag,
+                distanciaTag:  globalFilter[index].Xt_s,
+                region:  globalFilter[index].region,
+                status: true
+            });
+            
+
+            distanciasTags.save((err) => {
+                if (err) {
+                    console.log(err);
+                        respuesta={
+                        ok: false,
+                        status: 400
+                    }
+                }
+                respuesta ={
+                    ok:true, status:200
+                }              
+
+            });
+
         }
 
-        globalDataGraph.push(datosGrafica);
 
     }else{
         respuesta= {

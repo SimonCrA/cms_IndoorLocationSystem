@@ -27,7 +27,16 @@ var consulta = $.get( "../../../api/zona", function() {
 });
 
 
+function sendE(e){
+  let distE= document.getElementById('mensaj').value
+  console.log(distE)
 
+
+  var consulta = $.get( "../../../../api/cambiarvariable/"+distE, function() {
+    data = consulta.responseJSON;
+  })
+  return false;
+}
 function addMessage(e) { 
     var array = [{ 
       distancia: document.getElementById('mensaje').value, 

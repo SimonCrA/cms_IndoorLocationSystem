@@ -92,14 +92,55 @@ let ubicacion = (req, res, next)=>{
 
 }
 
-let zona = (req, res, next) =>{
+let regiones = (req, res, next) =>{
 
     let region = new Region({
 
-        edificio: req.body.edificio,
-        piso: req.body.piso,        
-        oficina: req.body.oficina,
-        tipodeZona: req.body.tipo
+        idLocation:req.body.idLocacion  ,
+
+        nombrePiso:req.body.nombrePiso   ,
+        numeroPiso:parseInt(req.body.numeroPiso)   ,
+
+        nombreRegion:req.body.nombreRegion   ,
+        numeroRegion:parseInt(req.body.numeroRegion)   ,
+
+        largo:parseInt(req.body.largo)   ,
+        ancho:parseInt(req.body.ancho),
+        estatus: true,
+        tipo:'region'  
+
+    });
+
+    region.save(function (err) {
+        if (err) {
+            console.log(err);
+            return next(err);
+        };
+
+        console.log("guarde Esto:\n" + region + "\n");
+        // Successful - redirect to new author record.	
+        res.status(202).jsonp({
+            ok: true,
+            region
+        });
+
+    });
+
+
+}
+let pisos = (req, res, next) =>{
+    // console.log(req.body);
+
+    let region = new Region({
+
+        idLocation:req.body.idLocacion  ,
+
+        nombrePiso:req.body.nombrePiso   ,
+        numeroPiso:parseInt(req.body.numeroPiso)   ,
+
+        plano:req.body.plano ,
+        estatus: true,
+        tipo:'piso'  
 
     });
 
@@ -158,8 +199,9 @@ module.exports = {
     constantes,
     dataTag,
     ubicacion,
-    zona,
-    rawCaracterizacion
+    regiones,
+    rawCaracterizacion,
+    pisos
 }
 
 

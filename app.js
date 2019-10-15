@@ -1,15 +1,18 @@
 const bodyParser = require('body-parser')
 
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var apiRouter = require('./routes/api');
-var postRouter = require('./routes/post');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const apiRouter = require('./routes/api');
+const postRouter = require('./routes/post');
+const putRouter = require('./routes/put');
+const deleteRouter = require('./routes/delete');
+const getRouter = require('./routes/get');
 const variables = require('./controladores/variables')
 console.log(`aca ES EL APP`);
 
@@ -59,6 +62,9 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api', apiRouter);
 app.use('/post', postRouter);
+app.use('/put', putRouter);
+app.use('/delete', deleteRouter);
+app.use('/get', getRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

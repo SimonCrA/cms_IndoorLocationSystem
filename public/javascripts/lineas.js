@@ -16,11 +16,7 @@ var morris1 = new Morris.Line({
   // Chart data records -- each entry in this array corresponds to a point on
   // the chart.
   data: [
-    { year: '2008', value: 20,  value2: 21 },
-    { year: '2009', value: 10, value2: 30 },
-    { year: '2010', value: 5,  value2: 40 },
-    { year: '2011', value: 5,  value2: 10 },
-    { year: '2012', value: 20,  value2: 80 }
+    { frame: '2008', valor: 20,  valorfiltrado: 21 },
   ],
   // The name of the data record attribute that contains x-values.
   xkey: 'frame',
@@ -28,7 +24,7 @@ var morris1 = new Morris.Line({
   ykeys: ['valor', 'valorfiltrado'],
   // Labels for the ykeys -- will be displayed when you hover over the
   // chart.
-  labels: ['distancia1', 'distancia2'],
+  labels: ['Rawdistancia', 'Filtradodistancia'],
   resize: true,
   lineColors: ['#563d7c', '#29303b'],
   lineWidth: 1

@@ -5,10 +5,12 @@ var Schema = mongoose.Schema;
 var ubicacionRpiSchema = new Schema({
 
 		macRpi: {type: String},
-		axis: {type: String },        
+		axis: {type: String }, 
+
         xpos: {type: Number},
 		ypos: {type: Number},
-		idZona:{type: String}
+		idZona:{type: String},
+		estatus: {type:Boolean, default: true}
 		
 
 	}

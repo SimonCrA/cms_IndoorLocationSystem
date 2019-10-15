@@ -4,6 +4,10 @@ const colors = require('colors')
 
 const {validarFiltro} = require('./kalmanfilter_distance')
 
+let {DistanciaError} = require('../variables')
+
+
+
 
 
 var respuesta= '';
@@ -30,12 +34,13 @@ try {
             let datosJson = {
                 Distancia:distancia,
                 macRpi:req.macrpi,
-                macTag:req.mactag
+                macTag:req.mactag,
+                region: result.idRegion
                 
             }
             validarFiltro(datosJson);
 
-            let error = Math.sqrt((Math.pow(6 - parseFloat(distancia), 2)) )
+            let error = Math.sqrt((Math.pow(DistanciaError - parseFloat(distancia), 2)) )
     
             console.log(`Mcrpi= ${req.macrpi} && macTag= ${req.mactag}\nDistancia:`.blue +`  ${distancia}`.green +`Error:`+`${error}`.red);
 

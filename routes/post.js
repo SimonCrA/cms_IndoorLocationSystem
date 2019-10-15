@@ -14,7 +14,8 @@ router.post('/tag_data', apiGuardardb.dataTag);
 router.post('/rasp_data_c', apiGuardardb.rawCaracterizacion);
 
 
-router.post ('/zona', apiGuardardb.zona);
+router.post ('/regiones', apiGuardardb.regiones);
+router.post ('/pisos', apiGuardardb.pisos);
 router.post ('/constantes', apiGuardardb.constantes);
 router.post ('/ubicacion', apiGuardardb.ubicacion);
 
