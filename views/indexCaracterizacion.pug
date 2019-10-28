@@ -11,135 +11,181 @@ head
   link(rel='stylesheet' href='../../../libs/morris.css')
   link(rel='stylesheet' href='../../../stylesheets/style.css')
 
-  title Caracterizaci&oacute;n
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  //- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  link(href='../../../stylesheets/bootstrap.min.css', rel='stylesheet')
+  //link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', rel='stylesheet')
+  link(href='../../../stylesheets/dataTables.bootstrap.min.css', rel='stylesheet')
+  //- script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
+  //- script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
+  //- script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
+
+
+      link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
+      script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js', integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', crossorigin='anonymous')
+      script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1', crossorigin='anonymous')
+      script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', crossorigin='anonymous')
+
+
   // Bootstrap 4
   //- link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
-section#di
-  section#di1
-    section#testimonial
-      .container.text-black
-      p.h1 Caracterizaci&oacute;n
-      p.h2.mb-2
-        | Esto permite conectarnos a los Raspberry pi disponibles y listarlos, para la recoleccion de muestras
-    section
-      .container
-        .row
-          .cards.col-md-6.my-3
-            .container
-      .card.py-4.h-100
-        .card-body.text-center
-          form.form-inline(onsubmit='return addMessage(this)')
-            .form-group.mb-2
-              label(for='maclist1') MACs
-              select#maclist1.form-control.mx-3
-              label(for='maclist2') MACs
-              select#maclist2.form-control.mx-3
-              label(for='maclist3') MACs
-              select#maclist3.form-control.mx-3
+
+  title Caracterizaci&oacute;n
+body
+
+
+  section#di
+    section#di1
+      section#testimonial
+        .container.text-black
+        p.h1 Caracterizaci&oacute;n
+        p.h2.mb-2
+          | Esto permite conectarnos a los Raspberry pi disponibles y listarlos, para la recoleccion de muestras
+      section
+        .container
+          .row
+            .cards.col-md-6.my-3
+              .container
+        .card.py-4.h-100
+          .card-body.text-center
+            form.form-inline(onsubmit='return addMessage(this)')
+              .form-group.mb-2
+                label(for='maclist1') MACs
+                select#maclist1.form-control.mx-3
+                label(for='maclist2') MACs
+                select#maclist2.form-control.mx-3
+                label(for='maclist3') MACs
+                select#maclist3.form-control.mx-3
+              br
+              .form-group.mx-sm-3.mb-2
+                label.sr-only(for='mensaje') texto mensaje
+                input#mensaje.form-control(type='text' placeholder='Distancia')
+              button.btn.btn-primary.mb-2(type='submit') enviar
             br
-            .form-group.mx-sm-3.mb-2
-              label.sr-only(for='mensaje') texto mensaje
-              input#mensaje.form-control(type='text' placeholder='Distancia')
-            button.btn.btn-primary.mb-2(type='submit') enviar
-          br
-        
-    section#testimonial
-      .container.text-black
-      p.h3.mb-3
-        | En esta seccion se ejecuta la serie de calculos para determinar las constantes de los Tag
-    section
-      .container
-        .row
-          .cards.col-md-6.my-3
-            .container
-      .card.py-4.h-100
-        .card-body.text-center
-          form.form-inline(onsubmit='return GetFromPagefileconfigData(this)')
-            .form-group.mb-2
-              label(for='zona') idZona
-              select#zona.form-control.mx-3
-            .form-group.mb-2
-              label(for='tags') macTag
-              select#tags.form-control.mx-3
-            br
-            .form-group.mx-sm-3.mb-2
-              input#cantMuestras.form-control(type='text' placeholder='distancia')
-            button.btn.btn-primary.mb-2(type='submit') FileConfig
-          br
-    section#testimonial
-      .container.text-black
+          
+      section#testimonial
+        .container.text-black
         p.h3.mb-3
-          | Botones que permiten tener interaccion con los RaspberryPi
-    section
-      .container
-        .row
-          .cards.col-md-6.my-3
-            .container
-              .card.py-4.h-100
-                .card-body.text-center
-                  form.form-inline(onsubmit='return startDespliegue(this)')
-                    button.btn.btn-primary.mb-2(type='submit') Start Tracking
-    br
-    section
-      .container
-        .row
-          .cards.col-md-6.my-3
-            .container
-              .card.py-4.h-100
-                .card-body.text-center
-                  form.form-inline(onsubmit='return stopedAll(this)')
-                    button.btn.btn-primary.mb-2(type='submit') Stop Tracking
-    br
-    section
-      .container
-        .row
-          .cards.col-md-6.my-3
-            .container
-              .card.py-4.h-100
-                .card-body.text-center
-                  form.form-inline(onsubmit='return refresh(this)')
-                    button.btn.btn-primary.mb-2(type='submit') actualizar Libreta
-                    
-
-
-
-              
-  section#di2
-    section
+          | En esta seccion se ejecuta la serie de calculos para determinar las constantes de los Tag
+      section
+        .container
+          .row
+            .cards.col-md-6.my-3
+              .container
+        .card.py-4.h-100
+          .card-body.text-center
+            form.form-inline(onsubmit='return GetFromPagefileconfigData(this)')
+              .form-group.mb-2
+                label(for='zona') idZona
+                select#zona.form-control.mx-3
+              .form-group.mb-2
+                label(for='tags') macTag
+                select#tags.form-control.mx-3
+              br
+              .form-group.mx-sm-3.mb-2
+                input#cantMuestras.form-control(type='text' placeholder='distancia')
+              button.btn.btn-primary.mb-2(type='submit') FileConfig
+            br
+      section#testimonial
+        .container.text-black
+          p.h3.mb-3
+            | Botones que permiten tener interaccion con los RaspberryPi
+      section
+        .container
+          .row
+            .cards.col-md-6.my-3
+              .container
+                .card.py-4.h-100
+                  .card-body.text-center
+                    form.form-inline(onsubmit='return startDespliegue(this)')
+                      button.btn.btn-primary.mb-2(type='submit') Start Tracking
       br
-      p.h3.mb-2
-        | aca utiliza una api para una variable global que indica en que distancia esta el beacon
-        | para calcular el error
+      section
+        .container
+          .row
+            .cards.col-md-6.my-3
+              .container
+                .card.py-4.h-100
+                  .card-body.text-center
+                    form.form-inline(onsubmit='return startValidacion(this)')
+                      button.btn.btn-primary.mb-2(type='submit') Start Validacion
       br
-      form.form-inline(onsubmit='return sendE(this)')
-      
+      section
+        .container
+          .row
+            .cards.col-md-6.my-3
+              .container
+                .card.py-4.h-100
+                  .card-body.text-center
+                    form.form-inline(onsubmit='return stopedAll(this)')
+                      button.btn.btn-primary.mb-2(type='submit') Stop Tracking
+      br
+      section
+        .container
+          .row
+            .cards.col-md-6.my-3
+              .container
+                .card.py-4.h-100
+                  .card-body.text-center
+                    form.form-inline(onsubmit='return refresh(this)')
+                      button.btn.btn-primary.mb-2(type='submit') actualizar Libreta
+                      
+
+
+
+                
+    section#di2
+      section
         br
-        .form-group.mx-sm-3.mb-2
-          label.sr-only(for='mensaj') texto mensaje
-          input#mensaj.form-control(type='text' placeholder='Distancia')
-        button.btn.btn-primary.mb-2(type='submit') enviar
+        p.h3.mb-2
+          | aca utiliza una api para una variable global que indica en que distancia esta el beacon
+          | para calcular el error
+        br
+        form.form-inline(onsubmit='return sendE(this)')
+        
+          br
+          .form-group.mx-sm-3.mb-2
+            label.sr-only(for='mensaj') texto mensaje
+            input#mensaj.form-control(type='text' placeholder='Distancia')
+          button.btn.btn-primary.mb-2(type='submit') enviar
 
-br
-section
-  .container
-    h1 Graficas
-    hr
-    .row
-      .col-md-12
-        h2 Grafica de linea
-        hr
-        #myfirstchart
-    button#Data.btn.btn-primary(type='button')  Cargar Data
-    
-// Bootstrap 4 scripts
-link(href='../../../stylesheets/bootstrap.min.css', rel='stylesheet')
-//link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', rel='stylesheet')
-link(href='../../../stylesheets/dataTables.bootstrap.min.css', rel='stylesheet')
-//- script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
-//- script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
-//- script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
-script(src="/socket.io/socket.io.js") 
-script(src='../../../libs/popper.min.js')
-script(src='../../../javascripts/jquery-3.3.1.js')
-script(src='../../../javascripts/main.js')
-script(src='../../../javascripts/lineas.js')
+  br
+  section
+    .container
+      h1 Graficas
+      hr
+      .row
+        .col-md-6
+          h2 Grafica generadaHIG
+          hr
+          #hchart
+        .col-md-6
+          h2 Grafica seleccionada
+          hr
+          #hchart2
+
+      a.btn.btn-primary(href='javascript:;', onclick='return sendm(this)') Cargar Data
+
+  section
+    .container
+      .row
+        .col-md-6
+  .dropdown
+    button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+      | Dropdown button
+    .dropdown-menu(aria-labelledby='dropdownMenuButton')
+      a.dropdown-item(href='#') Action
+      a.dropdown-item(href='#') Another action
+      a.dropdown-item(href='#') Something else here
+
+  // Bootstrap 4 scripts
+
+  script(src="/socket.io/socket.io.js") 
+  script(src='../../../libs/popper.min.js')
+  script(src='../../../javascripts/jquery-3.3.1.js')
+  script(src='../../../javascripts/main.js')
+  script(src='../../../javascripts/lineas.js')
+  script(src='../../../javascripts/highcharts.js')
+  script(src='../../../javascripts/exporting.js')

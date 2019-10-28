@@ -10,5 +10,7 @@ router.get('/pisos', apiGet.pisos);
 
 router.get('/ubicacion', apiGet.ubicacion);
 
+// router.get('/client', verificartoken, apiGet.client);
+
 
 module.exports = router;

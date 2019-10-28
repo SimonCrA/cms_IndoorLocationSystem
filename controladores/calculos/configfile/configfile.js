@@ -18,7 +18,7 @@ let ejecucionEnSerie = (req, res, next) =>{
     let muestras = 100;
     let cantidad_Muestras = req.params.cantmuestras
    
-
+    let numeroFinal = (cantidad_Muestras * 6) + (3*2)
    infoUbicacionRpi.find({idZona:region}).exec( async (err,macrpi) => {
         if(err){console.log(err);}
         let cont=0;
@@ -28,13 +28,13 @@ let ejecucionEnSerie = (req, res, next) =>{
             *	Calculo de Rssi Promedio
             /* *****************************************/
             cont++;
-            console.log(`${cont}`.blue);
+            console.log(`${cont}/${numeroFinal}`.blue);
             console.log(`MACRPI:${macrpi[i].macRpi}`.green);
             RSSIprom.rssiProm(muestras, 1, macrpi[i].macRpi, tag, i);
             await sleep(5000);
             cont++;
             console.log(RSSIprom.respRssi);
-            console.log(`${cont}`.blue);
+            console.log(`${cont}/${numeroFinal}`.blue);
 
             /* *****************************************
             *	            CALCULO DE
@@ -45,7 +45,7 @@ let ejecucionEnSerie = (req, res, next) =>{
                 gaussDesviaProm.desviacionEstandarGaussiana(muestras, j+ 1, macrpi[i].macRpi, tag,i);
                 await sleep(5000);
                 cont++;
-                console.log(`${cont}`.blue);
+                console.log(`${cont}/${numeroFinal}`.blue);
                 
             } ;
 
@@ -66,7 +66,7 @@ let ejecucionEnSerie = (req, res, next) =>{
                 calculoDeN.calculoDeN(muestras, j+1, macrpi[i].macRpi, tag,i);
                 await sleep(5000);
                 cont++;
-                console.log(`${cont}`.blue);
+                console.log(`${cont}/${numeroFinal}`.blue);
             
             }
 
@@ -87,7 +87,8 @@ let ejecucionEnSerie = (req, res, next) =>{
                 rssiProm: RSSIprom.respRssi[i],
                 nPropagacion: calculoDeN.respN[i].totalN,
                 desviacionEstandar: gaussDesviaProm.respvgcde[i].zmgvwsd,
-                idRegion:region
+                idRegion:region,
+                tipo:'generado'
     
             });
     

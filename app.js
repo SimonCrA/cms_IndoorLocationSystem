@@ -6,6 +6,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const apiRouter = require('./routes/api');
@@ -14,6 +15,10 @@ const putRouter = require('./routes/put');
 const deleteRouter = require('./routes/delete');
 const getRouter = require('./routes/get');
 const variables = require('./controladores/variables')
+const apiUser = require('./routes/usuario')
+const loginRouter = require('./routes/login')
+const clientRouter = require('./routes/client')
+const imgRouter = require('./routes/imagenes')
 console.log(`aca ES EL APP`);
 
 
@@ -59,12 +64,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users', apiUser);
 app.use('/api', apiRouter);
 app.use('/post', postRouter);
 app.use('/put', putRouter);
 app.use('/delete', deleteRouter);
 app.use('/get', getRouter);
+app.use('/login', loginRouter);
+app.use('/client', clientRouter);
+app.use('/img', imgRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

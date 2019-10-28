@@ -243,11 +243,11 @@ let validacion_Trilateracion = async ()=>{
                         // console.log(`T_1: d1=${r1}, d2=${r2}, d3=${r3},`+`Error=${punto.error}`.red);
                         // console.log(`T_2: d1=${r1}, d2=${r2}, d3=${r3}, `+`Error=${punto2.error}`.red);
                         // console.log(`\n`);
-                        // console.log(`Trilateracion_1:`);
-                        // console.log(punto);
+                        console.log(`Trilateracion_1:`);
+                        console.log(punto);
                         // console.log(`\n`);
                         // console.log(`Trilateracion_2:`);
-                        // // console.log(`\n`);
+                        // // // console.log(`\n`);
                         // console.log(punto2);
                         // console.log(`\n`);
 
@@ -256,16 +256,16 @@ let validacion_Trilateracion = async ()=>{
                         // console.log(`Trilateracion_3:`);
                         // console.log(punto3);
                         // console.log(`\n`);
-                        if(punto.status === true){
-                            // let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
+                        // if(punto.status === true){
+                        //     // let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
 
-                            // if(resultUpdateDistance.ok === true){
-                                let guardarpuntoXY = await promesa_puntoXY(punto, resulttag[k]._id, resultRegion[i]._id);
-                                // console.log(guardarpuntoXY.ok);
+                        //     // if(resultUpdateDistance.ok === true){
+                        //         let guardarpuntoXY = await promesa_puntoXY(punto, resulttag[k]._id, resultRegion[i]._id);
+                        //         console.log(guardarpuntoXY.ok);
 
-                            // }else{console.log(`No se actualizo el estatus de las distancias `);}
+                        //     // }else{console.log(`No se actualizo el estatus de las distancias `);}
 
-                        }else{console.log(`P(X,Y) fuera de la region no se puede guardar`);}
+                        // }else{console.log(`P(X,Y) fuera de la region no se puede guardar`);}
                     }////Fin del for para los TAGS
         }////Fin del for para las regiones
 

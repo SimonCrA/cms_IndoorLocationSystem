@@ -6,10 +6,11 @@ let client_count=0
 
 const {processDataFromRpi} = require('./controladores/database/scan')
 const {rawCaracterizacion} = require('./controladores/database/guardarbd')
-const {globalDataGraph} = require('./controladores/variables')
+let {globalDataGraph, globalDataGraphDos, DistanciaError, paramsValidacionCaract, etiqueta} = require('./controladores/variables')
 
 const { io } = require('./bin/www');
-
+var test = -1
+var test2 = -1
 
 exports.graficar = ()=>{
     
@@ -35,8 +36,8 @@ let sendAccion = (js)=>{
     
 }
 
-let startTracking= () =>{
-    let aviso = 'Inicio el despliegue';
+let startTracking= (aviso) =>{
+    
     console.log(aviso);
     io.emit('asset-tracking', aviso);
 }
@@ -49,6 +50,7 @@ let stoped= () =>{
 let setlist = ()=>{
     
     io.emit('libreta-list', libreta)
+    io.emit('list-etiqueta', etiqueta)
 
 }
 let refresh = () =>{
@@ -66,10 +68,11 @@ io.on('connection', function(socket){
     // console.log(socket);
     client_count++
     //añadir datos a la grafica...
-    setInterval(() => {
+    // setInterval(() => {
         
-        socket.emit('datosGrafica', globalDataGraph);
-    }, 1000);
+    //     socket.emit('datosGrafica', globalDataGraph);
+    //     socket.emit('datosGrafica2', globalDataGraphDos);
+    // }, 1000);
     
     socket.on('libreta', data=>{
         console.log(`entro aca`);
@@ -77,6 +80,39 @@ io.on('connection', function(socket){
         setlist();
         
     })
+
+    socket.on('datosGraficass', (res) =>{
+        console.log(res);
+        socket.emit('datosGrafica', globalDataGraph);
+    })
+    socket.emit('completeData', globalDataGraph);
+
+    setInterval(() => {
+        
+        // if(paramsValidacionCaract[0].signal === true){
+
+            socket.emit('completeData', globalDataGraph);
+            socket.emit('completeData2', globalDataGraphDos);
+            // paramsValidacionCaract[0].signal=false
+            // console.log(`Cambio de signal`);
+            // console.log(paramsValidacionCaract[0]);
+
+        // }
+             
+
+        
+    },5000);
+
+
+    socket.emit('dataUpdate', {name: 'this.query.name', data: 43});
+
+
+    socket.on('variables', data=>{
+        DistanciaError = data.valor
+
+        console.log(DistanciaError);
+    })
+
     socket.on('refresh-client', data=>{
         console.log(data);
         refresh();
@@ -85,13 +121,14 @@ io.on('connection', function(socket){
         // console.log(`tracking! ${socket.id}`);
         // console.log(dataTracking.length);
         // clg
+
         processDataFromRpi(dataTracking);
         
     })
     socket.on('sendDataCToServer', (dataCaracterizacion)=>{
         console.log(`CARACTERIZACION ${socket.id}`);
-        console.log(dataCaracterizacion.length);
-        console.log(dataCaracterizacion[0].macrpi);
+        // console.log(dataCaracterizacion.length);
+        // console.log(dataCaracterizacion[0].macrpi);
         rawCaracterizacion(dataCaracterizacion);
         
         
@@ -120,7 +157,7 @@ io.on('connection', function(socket){
     })
     socket.on('despliegue', data =>{
         console.log(data);
-        startTracking()
+        startTracking(data)
     })
     socket.on('stop-all', data =>{
         console.log(data);

@@ -2,9 +2,9 @@ const ConstDistancia= require('../../models/constantesdistancia');
 const DistanciaTag= require('../../models/distancias');
 const colors = require('colors')
 
-let {validarFiltro1} = require('./kalmanfilter_distance');
+var {validarFiltro1} = require('./kalmanfilter_distance')
 
-let { cambiar } = require('../database/scan')
+let {DistanciaError} = require('../variables')
 
 var {paramsValidacionCaract} = require('../variables')
 
@@ -13,15 +13,11 @@ var {paramsValidacionCaract} = require('../variables')
 
 
 var respuesta= '';
-let distancia =  async (req) => { 
-
-
+let distancia2 =  async (req) => { 
 try {
-    // console.log(`Mcrpi= ${req.macrpi} && macTag= ${req.mactag}`);
-
     let getConstantes = () =>{
         return new Promise((resolve, reject)=>{
-            ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag, tipo:'generado'}).sort({_id:-1})
+            ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag, tipo:`seleccionado`}).sort({_id:-1})
             .exec(function (err, data){
                 err 
                 ? reject(err) 
@@ -37,14 +33,15 @@ try {
             let distancia = Math.pow(10, pot);
             // console.log(distancia);
             // console.log(`********************\n`);
-            // console.log(paramsValidacionCaract);
             let error = Math.sqrt((Math.pow(paramsValidacionCaract[0].distError - parseFloat(distancia), 2)) )
+
+
             let datosJson = {
                 Distancia:distancia,
                 macRpi:req.macrpi,
-                macTag:req.mactag,
+                macTag:req.mactag, 
                 tipo:req.tipo,
-                tipov:'generado',
+                tipov:'select',
                 region: result.idRegion,
                 error
                 
@@ -52,40 +49,38 @@ try {
             validarFiltro1(datosJson);
 
     
-            // console.log(`Mcrpi= ${req.macrpi} && macTag= ${req.mactag}\nDistancia:`.blue +`  ${distancia}`.green +`Error:`+`${error}`.red);
+            // console.log(`GET2..Mcrpi= ${req.macrpi} && macTag= ${req.mactag}\nDistancia:`.blue +`  ${distancia}`.green +`Error:`+`${error}`.red);
 
-        
+ 
 
             respuesta={
-                            ok: true,
-                            status: 200
-                        }
+                ok: true,
+                status: 200
+            }
     
     return respuesta
 } catch (error) {
-    console.log(`Hay un error`);
-    console.log(error);
-    return respuesta ={ok:false,status:400}
+    
+console.log(error);
+return respuesta ={ok:false,status:400}
 }
-
+    
     
 
+
+
+
 }
 
-/***************************************
- * variable modificadas
- * calculateDistancia = distancia
- * 
- * las funciones son la misma.
- * la que hace la busqueda en DB es
- *distancia.
- * 
- * 
- * El documento ahora quedará
- * en partes, ver carpeta configFile.
- * Cada cálculo en un archivo.
- **************************************/
+
+let test = async(dato) =>{
+    for (let index = 0; index < 20000000; index++) {
+        dato+=index;
+        
+    }
+    return dato +1
+}
 
 module.exports = {
-    distancia
+    distancia2
 }

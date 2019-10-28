@@ -1,9 +1,11 @@
 
-const  ConstsDistancia = require("../../models/constantesdistancia");
+// const  ConstsDistancia = require("../../models/constantesdistancia");
 const  InfoUbicacionRpi = require("../../models/ubicacion");
 const Region = require ('../../models/zona')
 const RawMuestras = require ('../../models/rawdatamuestras')
 const TagInfo = require ('../../models/tagInfo')
+const ConstsDistancia = require('../../models/constantesdistancia');
+
 const _ = require('underscore');
 
 
@@ -92,6 +94,87 @@ let ubicacion = (req, res, next) => {
 
 }
 
+let ubicacionSelect = async(req, res, next) => {
+
+    console.log(req);
+// try{
+
+//     let getConstantes = () =>{
+//         return new Promise((resolve, reject)=>{
+//             ConstsDistancia.find({macRpi:req.body.macrpi, macTag:req.body.mactag, tipo:'generado'}).sort({_id:-1})
+//             .exec(function (err, data){
+//                 err 
+//                 ? reject(err) 
+//                 : resolve(data[0])
+//             });
+
+//         });
+//     }
+
+//     let promesa_id_Const = (region) =>{
+//         return new Promise((resolve, reject) => {
+
+//             ConstsDistancia.aggregate([{
+//             $match: {
+//                 tipo: 'seleccionado'
+//             }
+//         },
+//         {
+//             "$group": {
+//                 _id:"$_id",
+//                 count: {
+//                     $sum: 1
+//                 }
+//             }
+//         }])
+//         .exec( (err, agregate_id_Const) =>{
+//             err
+//                 ?
+//                 reject(err) :
+//                 resolve(agregate_id_Const);
+//             });
+    
+//         });
+//     }
+
+
+//     let result = await getConstantes();
+//     let result2 = await promesa_id_Const();
+//     console.log(result2);
+//     console.log(result);
+//     // return res.status(200).json({ok:true,
+//     // result, result2})
+
+//     for (let i = 0; i < result2.length; i++) {
+        
+//         let id = result2[i]._id;
+    
+//         let body = _.pick(result,['rssiProm','nPropagacion','desviacionEstandar']) ;
+//         console.log(id);
+        
+//         ConstsDistancia.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, ubicacionS)=>{
+    
+//             if(err){
+//                 return res.status(400).json({
+//                     ok:false,
+//                     err
+//                 });
+//             }
+//             console.log(ubicacionS);
+    
+//         })
+        
+//     }
+//     res.json({
+//         ok:true
+//     })
+
+// }catch(e){
+//     console.log(e);
+// }
+
+}
+
 
 
 module.exports = {
@@ -100,7 +183,7 @@ module.exports = {
 
 
 
-    regiones,pisos,ubicacion
+    regiones,pisos,ubicacion,ubicacionSelect
 }
 
 

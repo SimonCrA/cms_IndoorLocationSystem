@@ -5,11 +5,8 @@ const Fileconfig = require('../calculos/configfile/configfile');
 const filtroKalman = require('../calculos/kalmanfilter');
 const {validacion_Trilateracion} = require('../calculos/validacion');
 const async = require('async');
-
-let {DistanciaError} = require('../variables')
-
-
-const d = require('../calculos/timer')
+var {paramsValidacionCaract, variablel1} = require('../variables');
+const d = require('../calculos/timer');
 
 
 
@@ -24,6 +21,7 @@ let dato = function(req,res,next){
 
 let processDataFromRpi = async (data) => {
 	let respuesta;
+	// console.log(data);
 	
 	let rawDataRaspi = new Array();
 	const categoriaFiltrada = [];
@@ -44,7 +42,7 @@ let processDataFromRpi = async (data) => {
 
 		let dataToSendToKalmanF = rawDataRaspi.filter(data => data.mactag == categoriaFiltrada[i].mactag);
 		
-		// console.log(dataToSendToKalmanF.length);
+		// console.log(dataToSendToKalmanF);
 		
 		resp = await filtroKalman.filtrado(dataToSendToKalmanF);
 		// console.log(`scan ${JSON.stringify(resp, null, 2)}`);
@@ -62,13 +60,13 @@ let processDataFromRpi = async (data) => {
 			ok: true,
 			status: 200
 		}
-		console.log(respuesta);
+		// console.log(respuesta);
 	}else{
 		respuesta = {
 			ok: false,
 			status: 400
 		}
-		console.log(respuesta);
+		// console.log(respuesta);
 
 	}
 
@@ -108,13 +106,25 @@ let rpi = function(req, res, next) {
 };
 
 let cambiar = (req, res, next) =>{
-	DistanciaError = req.params.derror;
 
-	console.log(DistanciaError);
+	paramsValidacionCaract[0].distError = parseInt(req.params.derror)
+	console.log(paramsValidacionCaract);
+	
+	return res.status(200)
+
+}
+let cambiar2 = (req, res, next) =>{
+	
+
+	paramsValidacionCaract[0].mostrarGrafica = true
+
+	console.log(paramsValidacionCaract);
+	return res.status(200)
 
 }
 module.exports = {
 	cambiar,
+	cambiar2,
 	processDataFromRpi,
 	rpi,
 	dato, avisar

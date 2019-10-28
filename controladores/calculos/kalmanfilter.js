@@ -1,7 +1,9 @@
 const RawData = require('../../models/rawdata');
 const Distancia = require('../calculos/getdistance');
+const Distancia2 = require('../calculos/getdistance2');
 // const scan = require('../database/scan');
 
+var {paramsValidacionCaract} = require('../variables')
 
 
 
@@ -53,12 +55,25 @@ let filtrado = async ( scan ) =>{
         }
         // console.log(`rssi filtrado para macRpi:${scan[2].macrpi} && macTag:${scan[1].mactag}, es de rssi:${Xt_s}`);
         let dataToSendToDistance = {
-            mactag: scan[1].mactag,
-            macrpi: scan[2].macrpi,
-            rssi: Xt_s
+            mactag: scan[0].mactag,
+            macrpi: scan[0].macrpi,
+            rssi: Xt_s,
+            tipo: scan[0].tipo
         };
-
+        // console.log(`/////////////`);
+        // console.log(dataToSendToDistance);
+        // console.log(`____________________`);
         let resp = await Distancia.distancia( dataToSendToDistance);
+        // let resp = await Distancia2.distancia2( dataToSendToDistance);
+   
+
+
+        if(paramsValidacionCaract[0].mostrarGrafica == true){
+            let resp2 = await Distancia2.distancia2( dataToSendToDistance);
+            console.log(resp2);
+
+        }
+
         // console.log(`filtro ${JSON.stringify(resp, null, 2)}`);
         if(resp.ok === true){
             respuesta= {
@@ -83,3 +98,6 @@ return respuesta;
 module.exports = {
     filtrado
 }
+
+
+

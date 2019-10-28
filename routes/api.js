@@ -6,19 +6,21 @@ var apiScanner = require('../controladores/database/scan');
 var apiConfigFile= require('../controladores/calculos/configfile/configfile');
 var apiZona= require('../controladores/database/getdb');
 
+
 // guardar en base de datos desde RASPBERRYPI
 
 
 
 router.get('/dato/:datp',apiScanner.dato)
 
-router.get('/rpi/:rssi/:macBeacon/:macRpi/:date/:beaconType/:sampleId', apiScanner.rpi);
+router.get('/rpi/:rssi/:macBeacon/:macRpi/:/:beaconType/:sampleId', apiScanner.rpi);
 
 router.get('/configuracion/:mactag/:region/:cantm', apiConfigFile.ejecucionEnSerie);
 
 
-
 router.get('/cambiarvariable/:derror',apiScanner.cambiar )
+
+router.get('/cambiarvariable2', apiScanner.cambiar2 )
 
 
 router.get('/zona', apiZona.findZona);

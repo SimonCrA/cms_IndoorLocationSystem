@@ -7,6 +7,12 @@ const Region = require ('../../models/zona')
 
 const async = require('async');
 
+
+/* *****************************************
+*	ZONA
+*	
+/* *****************************************/
+
 let findZona = (req, res, next) => {
 	
 	// console.log(sample, mac, muestras)
@@ -86,6 +92,10 @@ let pisos = (req, res, next) =>{
 }
 
 
+/* *****************************************
+*	Ubicacion Rpi
+*	
+/* *****************************************/
 let ubicacion = (req, res, next) =>{
         
     InfoUbicacion.find({ estatus: true })
@@ -110,8 +120,41 @@ let ubicacion = (req, res, next) =>{
 
 
 
+
+/* *****************************************
+*	Cliente
+*	
+/* *****************************************/
+let client = (req, res) => {
+
+    Client.find({})
+        .exec((err, clientDB) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                })
+            };
+
+            Client.countDocuments({}, (err, conteo) => {
+
+                res.json({
+                    ok: true,
+                    users: clientDB,
+                    quantity: conteo
+                });
+
+            });
+
+        }); 
+
+};
+
+
+
 module.exports = {
     region,ubicacion,
-    
+    client,
     findZona,pisos
 }

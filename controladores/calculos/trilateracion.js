@@ -379,13 +379,13 @@ let trilateracion = (r1, r2, r3, x, y) =>{
     //QUIEN ES X , Y?????
     //console.log(x,y)
     var error = 0;
-    error = Math.sqrt((Math.pow(2.10 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(2.10 - parseFloat(punto_X_Y[1]), 2))))
+    error = Math.sqrt((Math.pow(4.0 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(4.0 - parseFloat(punto_X_Y[1]), 2))))
     if (punto_X_Y[0] > 0 && punto_X_Y[1] > 0) {
         // console.log(`Estoy dentro de la region`);
         return {
-            punt_x: (punto_X_Y[0]).toFixed(3),
-            punt_y: (punto_X_Y[1]).toFixed(3),
-            error:(error).toFixed(3),
+            punt_x: (punto_X_Y[0]).toFixed(2),
+            punt_y: (punto_X_Y[1]).toFixed(2),
+            error:(error).toFixed(2),
             status:true
         };
 
@@ -395,9 +395,9 @@ let trilateracion = (r1, r2, r3, x, y) =>{
         // console.log(`Estoy fuera de la region positivo`);
 
         return {
-            punt_x: (punto_X_Y[0]).toFixed(3),
-            punt_y: (punto_X_Y[1]).toFixed(3),
-            error:(error).toFixed(3),
+            punt_x: (punto_X_Y[0]).toFixed(2),
+            punt_y: (punto_X_Y[1]).toFixed(2),
+            error:(error).toFixed(2),
             status: false
         };
 
@@ -406,18 +406,18 @@ let trilateracion = (r1, r2, r3, x, y) =>{
         // console.log(`Estoy fuera de la region negativo`);
 
         return {
-            punt_x: (punto_X_Y[0]).toFixed(3),
-            punt_y: (punto_X_Y[1]).toFixed(3),
-            error:(error).toFixed(3),
+            punt_x: (punto_X_Y[0]).toFixed(2),
+            punt_y: (punto_X_Y[1]).toFixed(2),
+            error:(error).toFixed(2),
             status: false
         };
     }
     else{
         // console.log(`no soy ninguna condicion ${punto_X_Y[0]}`);
     return {
-        punt_x: (punto_X_Y[0]).toFixed(3),
-        punt_y: (punto_X_Y[1]).toFixed(3),
-        error:(error).toFixed(3),
+        punt_x: (punto_X_Y[0]).toFixed(2),
+        punt_y: (punto_X_Y[1]).toFixed(2),
+        error:(error).toFixed(2),
         status: false
     };
 

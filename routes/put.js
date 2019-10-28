@@ -17,5 +17,7 @@ router.put ('/pisos/:id', apiModificar.pisos);
 
 router.put ('/ubicacion/:id', apiModificar.ubicacion);
 
+router.put ('/ubicacionrpiselect', apiModificar.ubicacionSelect);
+
 
 module.exports = router;

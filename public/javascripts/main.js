@@ -37,6 +37,28 @@ function sendE(e){
   })
   return false;
 }
+function sendm(e){
+  let distE= document.getElementById('mensaj').value
+  console.log(distE)
+
+  let urlRequest = '/put/ubicacionrpiselect'
+
+  $.ajax({
+    contentType: 'application/json',
+    data: JSON.stringify({ "command": "on" }),
+    dataType: 'json',
+    success: function(data){
+        app.log("device control succeeded");
+    },
+    error: function(){
+        app.log("Device control failed");
+    },
+    processData: false,
+    type: 'PUT',
+    url: '/put/ubicacionrpiselect'
+});
+  return false;
+}
 function addMessage(e) { 
     var array = [{ 
       distancia: document.getElementById('mensaje').value, 
@@ -56,7 +78,14 @@ function addMessage(e) {
 
 
 function startDespliegue(e) { 
-    let aviso='Inicio el tracking desde client'
+  let aviso={aviso:'Inicio la Tracking', tipo:'tracking'}
+
+    socket.emit('despliegue', aviso); 
+    console.log(aviso);
+    return false;
+}
+function startValidacion(e) { 
+    let aviso={aviso:'Inicio la validacion', tipo:'validar'}
     socket.emit('despliegue', aviso); 
     console.log(aviso);
     return false;

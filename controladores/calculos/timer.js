@@ -41,12 +41,13 @@ let tiempoEspera = async () =>{
     
     contadorDePost ++;
 
-    console.log(`contador= ${contadorDePost},,,, result = ${resultrpi.length}`);
+    // console.log(`contador= ${contadorDePost},,,, result = ${(resultrpi.length*10)}`);
     
     
-    if (contadorDePost === resultrpi.length) {
+    if (contadorDePost === (resultrpi.length * 10)) {
         // console.log(`ESTO ES CANTIDAD DE RPIS ${resultrpi.length}`.inverse);
-        //validacion_Trilateracion();
+        validacion_Trilateracion();
+        // console.log(`\n`);
         contadorDePost = 0;
     }
 
