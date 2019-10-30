@@ -103,9 +103,8 @@ function sendm(e){
   
       
     // }
-  
-  
-  
+
+
 //   }
   
 //   socket.on('libreta-list', function(data) { render(data); });
