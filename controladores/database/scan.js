@@ -22,52 +22,61 @@ let dato = function(req,res,next){
 let processDataFromRpi = async (data) => {
 	let respuesta;
 	// console.log(data);
+	if(Array.isArray(data) && data.length){
+		
+		
+			let rawDataRaspi = new Array();
+			const categoriaFiltrada = [];
+			rawDataRaspi = data;
+			// console.log(rawDataRaspi)
+			// rawDataRaspi[0].mac
+			rawDataRaspi.forEach(categoria => {
+				
+				if (!categoriaFiltrada.find(data => data.mactag === categoria.mactag)) {
+					const  { mactag } = categoria;
+					categoriaFiltrada.push({mactag})
+					
+				}
+			});
+			// console.log(categoriaFiltrada);
+			let resp;
+			for (let i = 0; i < categoriaFiltrada.length; i++) {
+		
+				let dataToSendToKalmanF = rawDataRaspi.filter(data => data.mactag == categoriaFiltrada[i].mactag);
+				
+				// console.log(dataToSendToKalmanF);
+				
+				resp = await filtroKalman.filtrado(dataToSendToKalmanF);
+				// console.log(`scan ${JSON.stringify(resp, null, 2)}`);
+					
+				
+			}
+				
+			if(resp.ok === true){
+				// validacion_Trilateracion();
+				
+				d.tiempoEspera();
+				
+				// console.log(gobalabv.Xgloball);
+				respuesta ={
+					ok: true,
+					status: 200
+				}
+				// console.log(respuesta);
+			}else{
+				respuesta = {
+					ok: false,
+					status: 400
+				}
+				// console.log(respuesta);
+		
+			}
+		
+
 	
-	let rawDataRaspi = new Array();
-	const categoriaFiltrada = [];
-	rawDataRaspi = data;
-	// console.log(rawDataRaspi)
-	// rawDataRaspi[0].mac
-	rawDataRaspi.forEach(categoria => {
-		
-		if (!categoriaFiltrada.find(data => data.mactag === categoria.mactag)) {
-			const  { mactag } = categoria;
-			categoriaFiltrada.push({mactag})
-			
-		}
-	});
-	// console.log(categoriaFiltrada);
-	let resp;
-	for (let i = 0; i < categoriaFiltrada.length; i++) {
-
-		let dataToSendToKalmanF = rawDataRaspi.filter(data => data.mactag == categoriaFiltrada[i].mactag);
-		
-		// console.log(dataToSendToKalmanF);
-		
-		resp = await filtroKalman.filtrado(dataToSendToKalmanF);
-		// console.log(`scan ${JSON.stringify(resp, null, 2)}`);
-			
-		
 	}
-		
-	if(resp.ok === true){
-		// validacion_Trilateracion();
-		
-		d.tiempoEspera();
-		
-		// console.log(gobalabv.Xgloball);
-		respuesta ={
-			ok: true,
-			status: 200
-		}
-		// console.log(respuesta);
-	}else{
-		respuesta = {
-			ok: false,
-			status: 400
-		}
-		// console.log(respuesta);
-
+	else {
+		console.log(`BAD REQUEST!!!!!!!!-----`);
 	}
 
 }

@@ -1,191 +1,9 @@
 var socket = io();
 
-//revisar si no sirve hay que sacar el agregado de la data con una variable fuera del socket.
-
-
-
-
-// hc = Highcharts.chart('container1', {
-//   chart: {
-//         type: 'spline'
-//     },
-//   title: {
-//       text: 'gráfica de datos generados'
-//   },
-//   subtitle: {
-//       text: 'muestra los datos '
-//   },
-//   xAxis: {
-//       type: 'data',
-//       dateTimeLabelFormats: { // don't display the dummy year
-//           month: '%e. %b',
-//           year: '%b'
-//       }
-//   },
-//   yAxis: {
-//       title: {
-//           text: 'distancia'
-//       },
-//       min: 0
-//   },
-//   tooltip: {
-//     formatter: function() {
-//               return '<b>'+ this.series.name +'</b><br/>'+
-//               Highcharts.dateFormat('%e. %b', this.x) +': '+ this.y +' m';
-//       }
-//     },
-//   series: []
-
-// });
-
-
-// var morris1 = new Morris.Line({
-//   // ID of the element in which to draw the chart.
-//   element: 'myfirstchart',
-//   // Chart data records -- each entry in this array corresponds to a point on
-//   // the chart.
-//   data: [
-//     { frame: '2008', valor: 20,  valorfiltrado: 21 },
-//   ],
-//   // The name of the data record attribute that contains x-values.
-//   xkey: 'frame',
-//   // A list of names of data record attributes that contain y-values.
-//   ykeys: ['valor1', 'valor2','valor3', 'valor4'],
-//   // Labels for the ykeys -- will be displayed when you hover over the
-//   // chart.
-//   labels: ['valor1', 'valor2','valor3', 'valor4'],
-//   resize: true,
-//   lineColors: ['#563d7c', '#29303b'],
-//   lineWidth: 1
-// });
-
-// var morris2 = new Morris.Line({
-//   // ID of the element in which to draw the chart.
-//   element: 'myfirstchar',
-//   // Chart data records -- each entry in this array corresponds to a point on
-//   // the chart.
-//   data: [
-//     { frame: '21', valor: 20,  valorfiltrado: 21 },
-//   ],
-//   // The name of the data record attribute that contains x-values.
-//   xkey: 'frame',
-//   // A list of names of data record attributes that contain y-values.
-//   ykeys: ['valor1', 'valor2'],
-//   // Labels for the ykeys -- will be displayed when you hover over the
-//   // chart.
-//   labels: ['valor1', 'valor2'],
-//   resize: true,
-//   lineColors: ['#563d7c', '#29303b'],
-//   lineWidth: 1
-// });
-
-
-
-// socket.on('datosGrafica2', function(data) {
-
-//   //Agregar data a la grafica.
-//   // morris2.setData(data);
-
-  
-// });
-
-
-
-// socket.on('datosGrafica', function(data) {
-//   console.log(data)
-//   console.log(`simon que estamos bien te digo!`);
-//   //Agregar data a la grafica.
-//   // morris1.setData(data);
-//   // highChartGraph(data);
-
-  
-    
-
-
-  
-// });
-
-
-// console.log(`SIMON!!!`);
-// // console.log(chartLine);
-// $(function () {
-//   $(document).ready(function() {
-//       Highcharts.setOptions({
-//           global: {
-//               useUTC: false
-//           }
-//       });
-  
-//       var chart;
-//       $('#container').highcharts({
-//           chart: {
-//               type: 'spline',
-//               animation: Highcharts.svg, // don't animate in old IE
-//               marginRight: 10,
-//               events: {
-//                   load: function() {
-                    
-//                       var series = this.series[0];
-//                       // set up the updating of the chart each second
-//                       var dat = 'dasdckjainesc' 
-//                       socket.emit('datosGraficass', dat)
-//                       socket.on('datosGrafica', function(callback) {
-//                         console.log(callback);
-
-//                         if(callback != undefined){
-
-//                           var x = callback[callback.length -1].xs;
-//                           var y = callback[callback.length -1].y
-//                           series.addPoint([x, y], true, true);
-
-//                         }
-//                       })
-//                   }
-//               }
-//           },
-//           title: {
-//               text: 'distancias del gateway a los tags'
-//           },
-//           xAxis: {
-//               type: 'datetime',
-//               tickPixelInterval: 10000
-//           },
-//           yAxis: {
-//               title: {
-//                   text: 'Value'
-//               },
-//               plotLines: [{
-//                   value: 0,
-//                   width: 1,
-//                   color: '#808080'
-//               }]
-//           },
-//           tooltip: {
-//               formatter: function() {
-//                       return '<b>'+ this.series.name +'</b><br/>'+
-//                       Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
-//                       Highcharts.numberFormat(this.y, 2);
-//               }
-//           },
-//           legend: {
-//               enabled: false
-//           },
-//           exporting: {
-//               enabled: false
-//           },
-//           series: [{
-//               name: 'Random data',
-//               data: [14]
-
-//           }]
-//       });
-//   });
-  
-// });
 
 var hchart = null;
 socket.on('completeData', function (data) {
-    console.log(`Recibir!`);
+    // console.log(`Recibir!`);
     // document.getElementById('complete-data').innerHTML = JSON.stringify(data);
     var series = data;
     // series.name = 'KPI';
@@ -201,7 +19,7 @@ socket.on('completeData', function (data) {
     //     }
     // });
     
-    console.log(series);
+    // console.log(series);
     $('#hchart').highcharts({
         chart: {
             type: 'spline',
@@ -268,7 +86,7 @@ socket.on('completeData', function (data) {
 });
 
 socket.on('completeData2', function (data) {
-    console.log(`Recibir||||||`);
+    // console.log(`Recibir||||||`);
     // document.getElementById('complete-data').innerHTML = JSON.stringify(data);
     var series = data;
     // series.name = 'KPI';
@@ -284,7 +102,7 @@ socket.on('completeData2', function (data) {
     //     }
     // });
     
-    console.log(series);
+    // console.log(series);
     $('#hchart2').highcharts({
         chart: {
             type: 'spline',
@@ -373,15 +191,30 @@ socket.on('completeData2', function (data) {
 //     }
 // });
 
+socket.on('Option-to-Validator', data=>{
+    console.log(`VALIDO SI HAY ETIQUETAS!`);
+    var a =  data;
+    console.log(a);
+    for(x in a){
+        $('#downbtn').
+            append($('<button>').
+                attr("class", "dropdown-item").
+                attr("type", "button").
+                attr("value", a[x].name).
+                attr("onclick", 'setOption(this)').
+                text(a[x].name)
+            );
+
+    // if ($('#downbtn').length >  -1) {
+    //     // hay por lo menos un elemento
+    //     console.log($('#downbtn').length);
+    //     $("button.dropdown-item").remove();
+        
+    //   } else {
+    //       //no hay ni un elemento
+    //       console.log(`estoy agregando esta wea!`);
+    //   }
 
 
-
-
-//   socket.on('datosGrafica', function(msg){
-//     console.log(msg);
-    
-//     var seriesModule1 = chartLine.series[0];
-//     var x = msg.data.x; // UTC time
-//     var y = msg.data.y;
-//     seriesModule1.addPoint([x, y], true, true);
-//   })
+    }
+})

@@ -27,10 +27,10 @@ html(lang='en')
           .btn-group
           button.btn.btn-secondary.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
             | Select target
-          .dropdown-menu.dropdown-menu-left
-            button.dropdown-item(type='button', onclick='return sendm(this)') Action
-            button.dropdown-item(type='button') Another action
-            button.dropdown-item(type='button') Something else here
+          #downbtn.dropdown-menu.dropdown-menu-left
+            //- button.dropdown-item(type='button', onclick='return sendm(this)') Action
+            //- button.dropdown-item(type='button') Another action
+            //- button.dropdown-item(type='button') Something else here
           hr
           .row
             .col-md-6
@@ -46,10 +46,10 @@ html(lang='en')
       h2(style='text-align: center;') Interaction
       .card.py-4.h-100(style='align-items: center;')
         .card-body.text-center
-          button.btn.btn-primary.mb-2(type='submit') Start Tracking
-          button.btn.btn-primary.mb-2(type='submit') Start Validation
-          button.btn.btn-primary.mb-2(type='submit') refresh booklet
-          button.btn.btn-danger.mb-2(type='submit') Stop Tracking
+          button.btn.btn-primary.mb-2(type='submit', onclick="startDespliegue(this)") Start Tracking
+          button.btn.btn-primary.mb-2(type='submit', onclick="startValidacion(this)") Start Validation
+          button.btn.btn-primary.mb-2(type='submit', onclick="refresh(this)") refresh booklet
+          button.btn.btn-danger.mb-2(type='submit', onclick="stopedAll(this)") Stop Tracking
     .container
       h2(style='text-align: center;') Samples recolection
       .container
@@ -75,26 +75,18 @@ html(lang='en')
       .container
         .card.py-4.h-100(style='align-items: center;')
           .card-body.text-center
-            form.form-inline
+            form.form-inline(onsubmit='return GetFromPagefileconfigData(this)')
               .form-group.mb-2
-                label(for='exampleFormControlSelect1') MACs
-                select#exampleFormControlSelect1.form-control.mx-3
-                  option 1
-                  option 2
-                  option 3
-                  option 4
-                  option 5
+                label(for='zona') ID Zona
+                select#zona.form-control.mx-3
+                  
               .form-group.mb-2
-                label(for='exampleFormControlSelect1') MACs
-                select#exampleFormControlSelect1.form-control.mx-3
-                  option 1
-                  option 2
-                  option 3
-                  option 4
-                  option 5
+                label(for='tags') MACs Tag
+                select#tags.form-control.mx-3
+       
               .form-group.mx-sm-3.mb-2
                 label.sr-only(for='mensaje') texto mensaje
-                input#mensaje.form-control(type='text', placeholder='Distance')
+                input#cantMuestras.form-control(type='text', placeholder='Distance')
               button.btn.btn-primary.mb-2(type='submit') enviar
       hr
     .container
