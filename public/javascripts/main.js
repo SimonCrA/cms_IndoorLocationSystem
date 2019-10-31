@@ -1,6 +1,9 @@
 var socket = io();
 socket.emit('libreta', 'Client-Web');
 
+
+
+
 var consulta = $.get( "../../../api/zona", function() {
   data = consulta.responseJSON;
 
@@ -103,7 +106,20 @@ function refresh(e) {
     return false;
 }
 
+function setOption(e){
+  let value = e.value
+  console.log(e.value);
+  let js={macrpi:'', mactag:''}
+  let array = []
+  array = value.split('-')
+  js.macrpi = array[0]
+  js.mactag = array[1]
+  console.log(js);
 
+
+  return false
+
+}
 
 
 

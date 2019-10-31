@@ -54,7 +54,9 @@ let validarFiltro1 = (req)=>{
         filtradoDistance(findIt);
     
     }else{
-        etiqueta.push(datosJs.name)
+        let esto= {
+            name:datosJs.name}
+        etiqueta.push(esto)
         globalFilter.push(datosJs);
         // console.log(`\n\n\========================`);
 

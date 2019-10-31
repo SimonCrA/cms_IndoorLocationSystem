@@ -50,13 +50,15 @@ let stoped= () =>{
 let setlist = ()=>{
     
     io.emit('libreta-list', libreta)
-    io.emit('list-etiqueta', etiqueta)
+    io.emit('Option-to-Validator', etiqueta)
 
 }
 let refresh = () =>{
 
     let actualiza=`Actualizar libreta del server`
     io.emit('refresh', actualiza)
+    io.emit('Option-to-Validator', etiqueta)
+
 }
 
 ////////////////////////////////////////////////////////////////
