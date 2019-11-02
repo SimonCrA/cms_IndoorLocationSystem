@@ -117,6 +117,22 @@ function setOption(e){
   console.log(js);
 
 
+  $.ajax({
+    contentType: 'application/json',
+    data: JSON.stringify(js),
+    dataType: 'json',
+    success: function(data){
+        console.log(`"device control succeeded" ${JSON.stringify(data)}`);
+    },
+    error: function(){
+        console.log("Device control failed");
+    },
+    processData: false,
+    type: 'PUT',
+    url: '/put/ubicacionrpiselect'
+  });
+
+
   return false
 
 }

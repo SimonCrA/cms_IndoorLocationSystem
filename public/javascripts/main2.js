@@ -13,8 +13,8 @@
 
 
 function sendm(e){
-    let distE= document.getElementById('mensaj').value
-    console.log(distE)
+    // let distE= document.getElementById('mensaj').value
+    // console.log(distE)
   
     let urlRequest = '/put/ubicacionrpiselect'
   

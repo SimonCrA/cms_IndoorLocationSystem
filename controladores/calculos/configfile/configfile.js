@@ -15,7 +15,7 @@ let ejecucionEnSerie = (req, res, next) =>{
 
     let region = req.params.zona;
     let tag =  req.params.tags;
-    let muestras = 100;
+    let muestras = 80;
     let cantidad_Muestras = req.params.cantmuestras
    
     let numeroFinal = (cantidad_Muestras * 6) + (3*2)

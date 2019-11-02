@@ -23,43 +23,71 @@ try {
         return new Promise((resolve, reject)=>{
             ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag, tipo:'generado'}).sort({_id:-1})
             .exec(function (err, data){
-                err 
-                ? reject(err) 
-                : resolve(data[0])
+                // console.log(`linea26: ${JSON.stringify(data)}`);
+                if(err){
+                    // console.log(`ACA NUNCA DEBE ENTRAR`);
+                    reject(
+                        {ok:false,err}
+                    ) 
+                }
+
+                else if(data !== undefined && data.length > 0){
+                    // console.log(`YUPIIIIII`);
+                    resolve(data[0])
+                }
+                else{
+                    // console.log(`NO SE ENCONTRO NADA`);
+                    reject(
+                        {ok:false,mesage:'data is empty'}
+                    ) 
+                    
+                }
             });
 
         });
     }
 
-    let result = await getConstantes();
-    // console.log(result);
-    let pot = (-req.rssi + result.rssiProm + result.desviacionEstandar) / (10 * result.nPropagacion);
-            let distancia = Math.pow(10, pot);
-            // console.log(distancia);
-            // console.log(`********************\n`);
-            // console.log(paramsValidacionCaract);
-            let error = Math.sqrt((Math.pow(paramsValidacionCaract[0].distError - parseFloat(distancia), 2)) )
-            let datosJson = {
-                Distancia:distancia,
-                macRpi:req.macrpi,
-                macTag:req.mactag,
-                tipo:req.tipo,
-                tipov:'generado',
-                region: result.idRegion,
-                error
-                
-            }
-            validarFiltro1(datosJson);
-
+    let result = await getConstantes().then(dato=>{
+        // console.log(dato);
+        let pot = (-req.rssi + dato.rssiProm + dato.desviacionEstandar) / (10 * dato.nPropagacion);
+                let distancia = Math.pow(10, pot);
+                // console.log(distancia);
+                // console.log(`********************\n`);
+                // console.log(paramsValidacionCaract);
+                let error = Math.sqrt((Math.pow(paramsValidacionCaract[0].distError - parseFloat(distancia), 2)) )
+                let datosJson = {
+                    Distancia:distancia,
+                    macRpi:req.macrpi,
+                    macTag:req.mactag,
+                    tipo:req.tipo,
+                    tipov:'generado',
+                    region: dato.idRegion,
+                    error
+                    
+                }
+                validarFiltro1(datosJson);
     
-            // console.log(`Mcrpi= ${req.macrpi} && macTag= ${req.mactag}\nDistancia:`.blue +`  ${distancia}`.green +`Error:`+`${error}`.red);
-
+        
+                // console.log(`Mcrpi= ${req.macrpi} && macTag= ${req.mactag}\nDistancia:`.blue +`  ${distancia}`.green +`Error:`+`${error}`.red);
+    
+            
+    
+                respuesta={
+                                ok: true,
+                                status: 200
+                            }
         
 
-            respuesta={
-                            ok: true,
-                            status: 200
-                        }
+    
+    }, err =>{
+
+        respuesta={
+            ok: false,
+            status: 400
+        }
+        console.log(`Error: ${JSON.stringify(err)}`);
+    } );
+    
     
     return respuesta
 } catch (error) {

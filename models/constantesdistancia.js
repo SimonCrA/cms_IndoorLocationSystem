@@ -10,7 +10,8 @@ var constantesDistanciaSchema = new Schema({
         rssiProm: {type: Number},
 		desviacionEstandar: {type: Number},
 		idRegion: {type: String},
-		test: {type: String}
+		test: {type: String},
+		tipo:{type: String}
 		
 
 	}
