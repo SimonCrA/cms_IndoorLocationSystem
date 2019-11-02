@@ -13,7 +13,7 @@ let searchAssets = (req, res) => {
     let regex = new RegExp(termino, 'i')
 
 
-    TagInfo.find({name: regex})
+    TagInfo.find({nombre: regex})
         .exec((err, tagBuscado) => {
 
             if (err) {
