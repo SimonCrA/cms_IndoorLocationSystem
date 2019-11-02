@@ -20,9 +20,9 @@ let clientSchema = new Schema({
         type: String,
         required: false
     },
-    map: {
-        type: String,
-        required: false
+    state: {
+        type: Boolean,
+        default: true
     },
 });
 

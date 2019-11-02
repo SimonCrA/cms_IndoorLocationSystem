@@ -1,12 +1,12 @@
+const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const Client = require('../../models/client');
+const app = express();
 
 
-//================================
-//Consultar los usuarios
-//================================
-let getClient =  (req, res) => {
+
+let getAllClients = (eq,res) =>{
 
     Client.find({})
         .exec((err, clientDB) => {
@@ -29,14 +29,9 @@ let getClient =  (req, res) => {
             });
 
         });
-
 }
 
-
-//================================
-//Consultar un usuario
-//================================
-let getOneClient = (req, res) => {
+let getAClient = (req, res) =>{
 
     let id = req.params.id;
 
@@ -69,15 +64,10 @@ let getOneClient = (req, res) => {
 
 }
 
-
-
-//================================
-//Crear client
-//================================
-let postClient = (req, res) => {
+let postClient = (req, res) =>{
 
     let body = req.body;
-    console.log(body);
+    // console.log(body);
 
     let client = new Client({
         enterprise: body.enterprise,
@@ -104,8 +94,69 @@ let postClient = (req, res) => {
 
 }
 
+let putClient = (req, res) =>{
+
+    let id = req.params.id;
+    let body = _.pick(req.body, ['enterprise', 'business', 'location', 'img']);
+
+    Client.findByIdAndUpdate(id, body, {new: true,runValidators: true,useFindAndModify: false}, (err, clientModificado) => {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            })
+        };
+        if (!clientModificado) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    mensaje: ' El id del cliente no existe '
+                }
+            });
+        };
+
+        res.json({
+            ok: true,
+            clientModificado
+        });
 
 
+    });
 
 
-module.exports = {getClient,  getOneClient, postClient}
+}
+
+let deleteClient = (req, res) => {
+
+    let id = req.params.id;
+    let cambiaEstado = {
+        state: false
+    }
+
+    Client.findByIdAndUpdate(id, cambiaEstado, {new: true,runValidators: true,useFindAndModify: fals}, (err, clienteInhabilitado) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        res.json({
+            ok: true,
+            clienteBorrado: clienteInhabilitado
+        });
+
+    });
+
+}
+
+
+module.exports = {
+    getAllClients,
+    getAClient,
+    postClient,
+    putClient,
+    deleteClient
+}
