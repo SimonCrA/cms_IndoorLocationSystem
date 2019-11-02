@@ -13,7 +13,7 @@ let dataTag =  (req, res, next) =>{
         tipo: req.body.tipo,
         estado:req.body.estado
 
-    });
+    }); 
 
     tagInfo.save(function (err) {
         if (err) {

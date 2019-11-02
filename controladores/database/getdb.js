@@ -7,6 +7,44 @@ const Region = require ('../../models/zona')
 
 const async = require('async');
 
+let searchAssets = (req, res) => {
+
+    let termino = req.params.termino;
+    let regex = new RegExp(termino, 'i')
+
+
+    TagInfo.find({nombre: regex})
+        .exec((err, tagBuscado) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                })
+            };
+
+            if (!tagBuscado) {
+                return res.status(400).json({
+                    ok: false,
+                    err: {
+                        mensaje: "there isn't any asset with that name"
+                    }
+                });
+            };
+
+            TagInfo.countDocuments({name: regex}, (err, conteo) => {
+
+                res.json({
+                    ok: true,
+                    activo: tagBuscado,
+                    cantidad: conteo
+                });
+
+            });
+
+        });
+
+}
 
 /* *****************************************
 *	ZONA
@@ -120,41 +158,9 @@ let ubicacion = (req, res, next) =>{
 
 
 
-
-/* *****************************************
-*	Cliente
-*	
-/* *****************************************/
-let client = (req, res) => {
-
-    Client.find({})
-        .exec((err, clientDB) => {
-
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    err
-                })
-            };
-
-            Client.countDocuments({}, (err, conteo) => {
-
-                res.json({
-                    ok: true,
-                    users: clientDB,
-                    quantity: conteo
-                });
-
-            });
-
-        }); 
-
-};
-
-
-
 module.exports = {
     region,ubicacion,
     client,
-    findZona,pisos
+    findZona,pisos,
+    searchAssets
 }
