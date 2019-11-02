@@ -6,9 +6,11 @@ const RawMuestras = require ('../../models/rawdatamuestras')
 const TagInfo = require ('../../models/tagInfo')
 const ConstsDistancia = require('../../models/constantesdistancia');
 
+
+
 const _ = require('underscore');
 
-let {paramsValidacionCaract} = require('../variables')
+let {paramsValidacionCaract, globalDataGraphDos} = require('../variables')
 
 
 let regiones = (req, res, next) => {
@@ -98,6 +100,10 @@ let ubicacion = (req, res, next) => {
 let ubicacionSelect = async(req, res, next) => {
 
 try{
+
+    globalDataGraphDos.length = 0
+
+
     console.log(req.body);
 
     let getConstantes = () =>{

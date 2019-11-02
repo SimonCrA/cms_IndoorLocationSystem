@@ -72,6 +72,9 @@ function addMessage(e) {
     },{ 
       distancia: document.getElementById('mensaje').value, 
       mac: document.getElementById('maclist3').value
+    },{ 
+      distancia: document.getElementById('mensaje').value, 
+      mac: document.getElementById('maclist4').value
     }]; 
     socket.emit('accions', array); 
     console.log(array);
@@ -166,9 +169,11 @@ let render= async(data)=> {
   let select1 = document.getElementById("maclist1");
   let select2 = document.getElementById("maclist2");
   let select3 = document.getElementById("maclist3");
+  let select4 = document.getElementById("maclist4");
   let length1 = select1.options.length;
   let length2 = select2.options.length;
   let length3 = select3.options.length;
+  let length4 = select4.options.length;
   console.log(length);
   for (i = 0; i < length1+1; i++) {
     console.log(select1.options[i]);
@@ -181,6 +186,10 @@ let render= async(data)=> {
   for (i = 0; i < length3+1; i++) {
     console.log(select3.options[i]);
     select3.options[i] = null;
+  } 
+  for (i = 0; i < length4+1; i++) {
+    console.log(select4.options[i]);
+    select4.options[i] = null;
   } 
   
 
@@ -210,6 +219,17 @@ let render= async(data)=> {
   for (let i = 0; i < data.length; i++) {
     console.log(`data es ${i}====${JSON.stringify(data[i])}`);
     let maclist1 = document.getElementById("maclist3");
+
+    let option = document.createElement("option");
+    option.text = data[i].mac;
+    
+    maclist1.add(option);  
+
+    
+  }
+  for (let i = 0; i < data.length; i++) {
+    console.log(`data es ${i}====${JSON.stringify(data[i])}`);
+    let maclist1 = document.getElementById("maclist4");
 
     let option = document.createElement("option");
     option.text = data[i].mac;
