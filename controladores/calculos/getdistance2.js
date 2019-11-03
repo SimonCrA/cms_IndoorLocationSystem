@@ -6,7 +6,7 @@ var {validarFiltro1} = require('./kalmanfilter_distance')
 
 let {DistanciaError} = require('../variables')
 
-var {paramsValidacionCaract} = require('../variables')
+var {paramsValidacionCaract,globalDataGraphDistanceDos} = require('../variables')
 
 
 
@@ -48,6 +48,45 @@ try {
             }
             validarFiltro1(datosJson);
 
+
+            let name = `${req.macrpi}-${req.mactag}`
+
+                let preDataGraphsDos= {
+                    name: name,
+                    data:[{x:0,y:parseFloat(distancia)}]
+                }
+                let findIt = globalDataGraphDistanceDos.findIndex(obj => (obj.name === name) );
+                if(findIt>=0){
+                    var point = {};
+                    point.x = ((globalDataGraphDistanceDos[findIt].data).length) ;
+                    point.y = parseFloat(distancia);
+                    globalDataGraphDistanceDos[findIt].data.push(point)
+                    
+                    // console.log(paramsValidacionCaract[0]);
+                
+                }else{
+                    console.log(`Creo el dato nuevo`);
+                    let findIt2 = globalDataGraphDistanceDos.findIndex(obj => (obj.name === 'rssi') );
+                    if(findIt2>=0){
+                    console.log(`Creo el dato Real....`);
+    
+                        globalDataGraphDistanceDos[findIt2].name = preDataGraphsDos.name;
+                        globalDataGraphDistanceDos[findIt2].data = preDataGraphsDos.data;
+                        
+                    // console.log(paramsValidacionCaract[0]);
+    
+    
+                    }else{
+                        globalDataGraphDistanceDos.push(preDataGraphsDos);
+                        
+                    // console.log(paramsValidacionCaract[0]);
+    
+    
+                    }
+
+
+            }
+
     
             // console.log(`GET2..Mcrpi= ${req.macrpi} && macTag= ${req.mactag}\nDistancia:`.blue +`  ${distancia}`.green +`Error:`+`${error}`.red);
 
@@ -84,3 +123,6 @@ let test = async(dato) =>{
 module.exports = {
     distancia2
 }
+
+
+

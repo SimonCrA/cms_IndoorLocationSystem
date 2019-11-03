@@ -30,8 +30,9 @@ let ejecucionEnSerie = (req, res, next) =>{
             cont++;
             console.log(`${cont}/${numeroFinal}`.blue);
             console.log(`MACRPI:${macrpi[i].macRpi}`.green);
-            RSSIprom.rssiProm(muestras, 1, macrpi[i].macRpi, tag, i);
-            await sleep(5000);
+            
+            let rssipromedio = await RSSIprom.rssiProm(muestras, 1, macrpi[i].macRpi, tag, i);
+            console.log(rssipromedio);
             cont++;
             console.log(RSSIprom.respRssi);
             console.log(`${cont}/${numeroFinal}`.blue);
@@ -42,8 +43,8 @@ let ejecucionEnSerie = (req, res, next) =>{
             /* *****************************************/
 
             for (let j = 0 ; j<cantidad_Muestras; j ++){
-                gaussDesviaProm.desviacionEstandarGaussiana(muestras, j+ 1, macrpi[i].macRpi, tag,i);
-                await sleep(5000);
+                let resultGauss = await gaussDesviaProm.desviacionEstandarGaussiana(muestras, j+ 1, macrpi[i].macRpi, tag,i);
+                console.log(resultGauss);
                 cont++;
                 console.log(`${cont}/${numeroFinal}`.blue);
                 
@@ -63,8 +64,9 @@ let ejecucionEnSerie = (req, res, next) =>{
             /* *****************************************/
             for (let j = 0 ; j<cantidad_Muestras; j ++){
                 
-                calculoDeN.calculoDeN(muestras, j+1, macrpi[i].macRpi, tag,i);
-                await sleep(5000);
+                let resultCalculoN = await calculoDeN.calculoDeN(muestras, j+1, macrpi[i].macRpi, tag,i);
+                console.log(resultCalculoN);
+
                 cont++;
                 console.log(`${cont}/${numeroFinal}`.blue);
             

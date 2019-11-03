@@ -2,28 +2,41 @@ const RawDataM = require('../../../models/rawdatamuestras');
 const RSSIprom = require('../configfile/rssiprom');
 const gaussDesviaProm = require('../configfile/gaussiandesviaprom');
 
-let respN = new Array();
 
-respN[0] = {sumatoriaN:0, totalN:0}
-respN[1] = {sumatoriaN:0, totalN:0}
-respN[2] = {sumatoriaN:0, totalN:0}
+
+let respN=[
+    {sumatoriaN:0, totalN:0},
+    {sumatoriaN:0, totalN:0,},
+    {sumatoriaN:0, totalN:0}]
 
 
 
 let  calculoDeN = async (muestras, distancia, macrpi, mactag, iteracion ) => {
-    console.log("ENTRAMOS A calculo De Constante de Propagacion N");
+    try {
+        console.log("ENTRAMOS A calculo De Constante de Propagacion N");
+        let promesabusquedaN = () =>{
+            return new Promise((resolve, reject ) =>{
+                RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
+                            .limit(muestras)
+                            .sort({_id:-1})
+                            .exec( (err,rawdata) => {
+            
+                        if (err) {
+                            reject(err);
+                        }
+                        if(rawdata[0] === undefined){
+                            reject(`No se puede realizar calculos de Calculo de N para;
+                            \n macRasp:${macrpi} ,  MacTag:${mactag} ,  Distancia:${distancia}`);
+                        }else{
+                            resolve(rawdata);
+                        }
+            
+             
+                    });
 
-    RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
-                .limit(muestras)
-                .sort({_id:-1})
-                .exec( (err,rawdata) => {
-
-            if (err) {
-                return res.status(400).json({
-                    ok: false,
-                    err
-                });
-            }
+            });
+        }
+        let resultCalculoN = await promesabusquedaN().then(rawdata =>{
 
             let nsum = 0;
             let totalN =0;
@@ -37,9 +50,12 @@ let  calculoDeN = async (muestras, distancia, macrpi, mactag, iteracion ) => {
             // console.log(`Muestra nsum: ${nsum}`);
             totalN = nsum / muestras;
             respN[iteracion].sumatoriaN += totalN;
+        }, err => {console.log(err);})
+        return respN[iteracion] 
+    } catch (error) {
+        
+    }
 
- 
-        });
 };
 
 /***************************************

@@ -4,39 +4,58 @@ let respRssi = new Array();
 
 
 let  rssiProm = async (muestras, distancia, macrpi, mactag , iteracion) => {
-    console.log("ENTRAMOS A RSSIPROM")
-
-    let rssisum1 = 0;
-    RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
+    try{
+        
+        console.log("ENTRAMOS A RSSIPROM")
+        let rssisum1 = 0;
+        let promesaBusqueda = () =>{
+            return new Promise((resolve, reject ) =>{
+                RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
                 .limit(muestras)
                 .sort({_id:-1})
                 .exec( (err,rawdata) => {
 
-            if (err) {
-                return res.status(400).json({
-                    ok: false,
-                    err
-                });
+                    if (err){
+                        reject(err)
+                    }
+                    if(rawdata[0] === undefined){
+                        reject(`No se puede realizar calculos de RSSI Promedio para;
+                        \n macRasp:${macrpi} ,  MacTag:${mactag} ,  Distancia:${distancia}`)
+                    }
+                    else
+                        {resolve(rawdata);
+                    }
+                })
+
+            })
+
+        }
+
+        let resultPromiseRssi = await promesaBusqueda().then(rawdata=>{
+            for (var i = 0; i < muestras; i++) {
+                ////console.log('s')
+                rssisum1 += rawdata[i].rssi;
             }
-            if(rawdata[0] === undefined){
-                console.log(`No se puede realizar calculos de RSSI Promedio para;
-                \n macRasp:${macrpi} ,  MacTag:${mactag} ,  Distancia:${distancia}`);
-            }else{
+            let rssiprom = rssisum1 / muestras
+            // console.log(rssiprom);
+
+            respRssi[iteracion] = rssiprom;
+
+            return respRssi[iteracion];
+        }, err =>{
+
+            console.log(`Error: ${JSON.stringify(err)}`);
+        } )
+
+        
 
 
-                // console.log(rawdata)
-                for (var i = 0; i < muestras; i++) {
-                    ////console.log('s')
-                    rssisum1 += rawdata[i].rssi;
-                }
-                let rssiprom = rssisum1 / muestras
-                // console.log(rssiprom);
     
-                respRssi[iteracion] = rssiprom;
+        
+    }catch(e){
 
-            }
 
-        });
+    }
 
 };
 

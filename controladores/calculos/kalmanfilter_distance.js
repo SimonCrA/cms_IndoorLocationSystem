@@ -20,7 +20,7 @@ var respuesta='';
 let validarFiltro1 = (req)=>{
 
     let kalmanVariance = 3.2;      //var REAL
-    let kalmanCovariance = 0.08;
+    let kalmanCovariance = 0.5;
 
 
     let datosJs= {
@@ -96,8 +96,8 @@ let filtradoDistance = async ( index ) =>{
             globalFilter[index].contador = 0;
             let error = Math.sqrt((Math.pow(paramsValidacionCaract[0].distError - parseFloat(globalFilter[index].Xt_s), 2)) )
             globalFilter[index].error = error
-            console.log(`Mcrpi= ${globalFilter[index].macRpi} && macTag= ${globalFilter[index].macTag}\nDistancia:`.blue 
-                    +`  ${globalFilter[index].Xt_s}`.green +`Error:`+`${globalFilter[index].error}`.red +`\n`);
+            // console.log(`Mcrpi= ${globalFilter[index].macRpi} && macTag= ${globalFilter[index].macTag}\nDistancia:`.blue 
+            //         +`  ${globalFilter[index].Xt_s}`.green +`Error:`+`${globalFilter[index].error}`.red +`\n`);
 
             //=====================================================================================
             //=====================================================================================

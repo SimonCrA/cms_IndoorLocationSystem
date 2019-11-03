@@ -6,7 +6,7 @@ let {validarFiltro1} = require('./kalmanfilter_distance');
 
 let { cambiar } = require('../database/scan')
 
-var {paramsValidacionCaract} = require('../variables')
+var {paramsValidacionCaract , etiqueta2, globalDataGraphDistance} = require('../variables')
 
 
 
@@ -66,7 +66,43 @@ try {
                     
                 }
                 validarFiltro1(datosJson);
+                let name = `${req.macrpi}-${req.mactag}`
+
+                let preDataGraphsDos= {
+                    name: name,
+                    data:[{x:0,y:parseFloat(distancia)}]
+                }
+                let findIt = globalDataGraphDistance.findIndex(obj => (obj.name === name) );
+                if(findIt>=0){
+                    var point = {};
+                    point.x = ((globalDataGraphDistance[findIt].data).length) ;
+                    point.y = parseFloat(distancia);
+                    globalDataGraphDistance[findIt].data.push(point)
+                    
+                    // console.log(paramsValidacionCaract[0]);
+                
+                }else{
+                    console.log(`Creo el dato nuevo`);
+                    let findIt2 = globalDataGraphDistance.findIndex(obj => (obj.name === 'rssi') );
+                    if(findIt2>=0){
+                    console.log(`Creo el dato Real....`);
     
+                        globalDataGraphDistance[findIt2].name = preDataGraphsDos.name;
+                        globalDataGraphDistance[findIt2].data = preDataGraphsDos.data;
+                        
+                    // console.log(paramsValidacionCaract[0]);
+    
+    
+                    }else{
+                        globalDataGraphDistance.push(preDataGraphsDos);
+                        
+                    // console.log(paramsValidacionCaract[0]);
+    
+    
+                    }
+
+
+            }
         
                 // console.log(`Mcrpi= ${req.macrpi} && macTag= ${req.mactag}\nDistancia:`.blue +`  ${distancia}`.green +`Error:`+`${error}`.red);
     

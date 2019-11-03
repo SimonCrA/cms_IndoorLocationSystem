@@ -16,23 +16,32 @@ let respvgcde = [{
 
 
 let desviacionEstandarGaussiana = async (muestras, distancia, macrpi, mactag, iteracion) => {
-    console.log("ENTRAMOS A CALCULO DE DesviacionEstandarGaussiana");
+    try {
+        console.log("ENTRAMOS A CALCULO DE DesviacionEstandarGaussiana");
+        let promesaBusquedaGauss = ()=>{
+            return new Promise((resolve, reject ) =>{
+                RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
+                        .limit(muestras)
+                        .sort({_id:-1})
+                        .exec( (err,rawdata) => {
+            
+                    if (err) {
+                        reject(err)
+                    }
+                    if(rawdata[0] === undefined){
+                        reject(`No se puede realizar calculos de respvgcde para;
+                        \n macRasp:${macrpi} ,  MacTag:${mactag} ,  Distancia:${distancia}`);
+                    }else{
+                        resolve(rawdata);
+                    }
+            
+            
+                });
 
-    RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
-            .limit(muestras)
-            .sort({_id:-1})
-            .exec( (err,rawdata) => {
-
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            });
-        }
-        if(rawdata[0] === undefined){
-            console.log(`No se puede realizar calculos de respvgcde para;
-            \n macRasp:${macrpi} ,  MacTag:${mactag} ,  Distancia:${distancia}`);
-        }else{
+            })
+        } 
+        let resultPromesaGauss = await promesaBusquedaGauss().then(rawdata =>{
+            
             let rssisum = 0;
             let rssiprom = 0;
             let desviacion = 0;
@@ -51,18 +60,17 @@ let desviacionEstandarGaussiana = async (muestras, distancia, macrpi, mactag, it
             }
             desviacionT = Math.sqrt(desviacion / muestras)
             // console.log('esto es DesviaT= ',desviaT,' de la mac=',mac)
-    
-    
-    
+
             respvgcde[iteracion].sumatoria += desviacionT
-    
-          
-    
+        }, err => {console.log(err);}) 
+        // console.log(respvgcde[iteracion]);
+        
+        return respvgcde[iteracion]
+    } catch (error) {
+        console.log(error);
+        
+    }
 
-        }
-
-
-    });
 }
 
 /***************************************

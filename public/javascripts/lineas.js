@@ -167,6 +167,172 @@ socket.on('completeData2', function (data) {
         }
     });
 });
+socket.on('completeData3', function (data) {
+    // console.log(`Recibir||||||`);
+    // document.getElementById('complete-data').innerHTML = JSON.stringify(data);
+    var series = data;
+    // series.name = 'KPI';
+    // series.data = [];
+    // console.log(`he`);
+    // Object.keys(data).sort().forEach(function (key) {
+    //     console.log(`hey -> ${key}`);
+    //     if (data.hasOwnProperty(key)) {
+    //         var point = {};
+    //         point.x = key;
+    //         point.y = parseInt(data[key].y);
+    //         series.data.push(point);
+    //     }
+    // });
+    
+    // console.log(series);
+    $('#hchart3').highcharts({
+        chart: {
+            type: 'spline',
+            animation: Highcharts.svg, // don't animate in old IE
+            marginRight: 10,
+            events: {
+                load: function () {
+                    hchart = this;
+                }
+            }
+        },
+        colors: ['#7cb5ec', '#ff8528', '#90ed7d', '#f7a35c', '#8085e9',
+            '#f15c80', '#e4d354', '#8085e8', '#8d4653', '#91e8e1'],
+        title: {
+            text: 'One Constant'
+        },
+        xAxis: {
+            reversed: false,
+            title: {
+                enabled: true,
+                text: 'Rpi - Tag'
+            },
+            labels: {
+                format: '{value}'
+            },
+            maxPadding: 0.05,
+            showLastLabel: true
+        },
+        yAxis: {
+            title: {
+                text: 'Distancia'
+            },
+            labels: {
+                format: '{value} m'
+            },
+            lineWidth: 2,
+            min:0
+        },
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.series.name + '</b><br/>' +
+                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                    Highcharts.numberFormat(this.y, 2);
+            }
+        },
+        legend: {
+            enabled: true
+        },
+        exporting: {
+            enabled: false
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    enable: false
+                }
+            }
+        },
+        series: series,
+        credits: {
+            enabled: false
+        }
+    });
+});
+
+
+socket.on('completeData4', function (data) {
+    // console.log(`Recibir||||||`);
+    // document.getElementById('complete-data').innerHTML = JSON.stringify(data);
+    var series = data;
+    // series.name = 'KPI';
+    // series.data = [];
+    // console.log(`he`);
+    // Object.keys(data).sort().forEach(function (key) {
+    //     console.log(`hey -> ${key}`);
+    //     if (data.hasOwnProperty(key)) {
+    //         var point = {};
+    //         point.x = key;
+    //         point.y = parseInt(data[key].y);
+    //         series.data.push(point);
+    //     }
+    // });
+    
+    // console.log(series);
+    $('#hchart4').highcharts({
+        chart: {
+            type: 'spline',
+            animation: Highcharts.svg, // don't animate in old IE
+            marginRight: 10,
+            events: {
+                load: function () {
+                    hchart = this;
+                }
+            }
+        },
+        colors: ['#7cb5ec', '#ff8528', '#90ed7d', '#f7a35c', '#8085e9',
+            '#f15c80', '#e4d354', '#8085e8', '#8d4653', '#91e8e1'],
+        title: {
+            text: 'One Constant'
+        },
+        xAxis: {
+            reversed: false,
+            title: {
+                enabled: true,
+                text: 'Rpi - Tag'
+            },
+            labels: {
+                format: '{value}'
+            },
+            maxPadding: 0.05,
+            showLastLabel: true
+        },
+        yAxis: {
+            title: {
+                text: 'Distancia'
+            },
+            labels: {
+                format: '{value} m'
+            },
+            lineWidth: 2,
+            min:0
+        },
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.series.name + '</b><br/>' +
+                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                    Highcharts.numberFormat(this.y, 2);
+            }
+        },
+        legend: {
+            enabled: true
+        },
+        exporting: {
+            enabled: false
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    enable: false
+                }
+            }
+        },
+        series: series,
+        credits: {
+            enabled: false
+        }
+    });
+});
 
 
 

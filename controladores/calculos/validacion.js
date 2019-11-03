@@ -9,6 +9,7 @@
 /* *******************************************************************/
 
 const Distancia = require('../../models/distancias');
+const constantes = require('../../models/constantesdistancia');
 const colors = require('colors');
 const Ubicacion = require ('../../models/ubicacion')
 const {trilateracion} = require('../calculos/trilateracion')
@@ -38,9 +39,9 @@ let validacion_Trilateracion = async ()=>{
         }
         let promesa_AggregateRegion = () =>{
             return new Promise((resolve, reject) => {
-                Distancia.aggregate([{
+                Ubicacion.aggregate([{
                         "$group": {
-                            _id:"$region",
+                            _id:"$idZona",
                             count: {
                                 $sum: 1
                             }
@@ -58,10 +59,10 @@ let validacion_Trilateracion = async ()=>{
         let promesa_macrpi = (region) =>{
             return new Promise((resolve, reject) => {
 
-            Distancia.aggregate([{
+            Ubicacion.aggregate([{
                 $match: {
-                    region: region,
-                    status:true
+                    idZona: region
+                    // status:true
                 }
             },
             {
@@ -84,10 +85,10 @@ let validacion_Trilateracion = async ()=>{
         let promesa_mactag = (region_) =>{
             return new Promise((resolve, reject) => {
 
-            Distancia.aggregate([
+            constantes.aggregate([
             {
                 "$match": {
-                    "region": region_, "status":true
+                    "idRegion": region_
 
                 }
             },
@@ -178,13 +179,15 @@ let validacion_Trilateracion = async ()=>{
         }
         
         let resultRegion = await promesa_AggregateRegion()
-        // console.log(`Esto es el result Region length: ${JSON.stringify(resultRegion)}`);
+        console.log(`Esto es el result Region length: ${JSON.stringify(resultRegion, null, 2)}`);
         for (let i = 0; i < resultRegion.length; i++) {
             let resultrpi = await promesa_macrpi(resultRegion[i]._id);
             let resulttag = await promesa_mactag(resultRegion[i]._id);
-            // console.log(resultrpi);
+            console.log(resultRegion[i]._id);
 
-            // console.log(`resultTag: ${JSON.stringify(resulttag,null, 1)}`);
+            console.log(resultrpi);
+
+            console.log(resulttag);
             // console.log(resultRegion.length);
 
             
