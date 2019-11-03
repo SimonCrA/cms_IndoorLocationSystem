@@ -37,7 +37,7 @@ let globalDataGraphDistanceDos = [
 ];
 
 
-var paramsValidacionCaract = [{distError: 4, mostrarGrafica: false, signal:false}];
+var paramsValidacionCaract = [{distError: 1, mostrarGrafica: false, signal:false}];
 
 module.exports = {
     globalFilter,globalDataGraphDistance,globalDataGraphDistanceDos,

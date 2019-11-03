@@ -19,7 +19,7 @@ socket.on('completeData', function (data) {
     //     }
     // });
     
-    console.log(series);
+    // console.log(series);
     $('#hchart').highcharts({
         chart: {
             type: 'spline',

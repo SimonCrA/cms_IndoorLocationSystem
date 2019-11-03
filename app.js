@@ -19,7 +19,6 @@ const apiUser = require('./routes/usuario')
 const loginRouter = require('./routes/login')
 const clientRouter = require('./routes/client')
 const imgRouter = require('./routes/imagenes')
-
 console.log(`aca ES EL APP`);
 
 
@@ -92,6 +91,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
-
-

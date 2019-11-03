@@ -115,7 +115,7 @@ let filtradoDistance = async ( index ) =>{
                     point.y = parseFloat(globalFilter[index].Xt_s);
                     globalDataGraph[findIt].data.push(point)
                     paramsValidacionCaract[0].signal=true
-                    // console.log(paramsValidacionCaract[0]);
+                    console.log(paramsValidacionCaract[0]);
                     
                 }else{
                     console.log(`Creo el dato nuevo`);
@@ -126,13 +126,13 @@ let filtradoDistance = async ( index ) =>{
                         globalDataGraph[findIt2].name = preDataGraphs.name;
                         globalDataGraph[findIt2].data = preDataGraphs.data;
                         paramsValidacionCaract[0].signal=true
-                    // console.log(paramsValidacionCaract[0]);
+                    console.log(paramsValidacionCaract[0]);
                     
     
                     }else{
                         globalDataGraph.push(preDataGraphs);
                         paramsValidacionCaract[0].signal=true
-                    // console.log(paramsValidacionCaract[0]);
+                    console.log(paramsValidacionCaract[0]);
     
     
                     }
@@ -156,7 +156,7 @@ let filtradoDistance = async ( index ) =>{
                     point.y = parseFloat(globalFilter[index].Xt_s);
                     globalDataGraphDos[findIt].data.push(point)
                     paramsValidacionCaract[0].signal=true
-                    // console.log(paramsValidacionCaract[0]);
+                    console.log(paramsValidacionCaract[0]);
                 
                 }else{
                     console.log(`Creo el dato nuevo`);
@@ -167,13 +167,13 @@ let filtradoDistance = async ( index ) =>{
                         globalDataGraphDos[findIt2].name = preDataGraphsDos.name;
                         globalDataGraphDos[findIt2].data = preDataGraphsDos.data;
                         paramsValidacionCaract[0].signal=true
-                    // console.log(paramsValidacionCaract[0]);
+                    console.log(paramsValidacionCaract[0]);
     
     
                     }else{
                         globalDataGraphDos.push(preDataGraphsDos);
                         paramsValidacionCaract[0].signal=true
-                    // console.log(paramsValidacionCaract[0]);
+                    console.log(paramsValidacionCaract[0]);
     
     
                     }

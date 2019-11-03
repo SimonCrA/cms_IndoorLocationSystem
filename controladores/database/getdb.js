@@ -160,6 +160,7 @@ let ubicacion = (req, res, next) =>{
 
 module.exports = {
     region,ubicacion,
+    client,
     findZona,pisos,
     searchAssets
 }

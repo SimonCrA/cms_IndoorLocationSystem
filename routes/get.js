@@ -4,7 +4,7 @@ var router = express.Router();
 // Require controller modules.
 var apiGet = require('../controladores/database/getdb');
 
-const { verificartoken, verificarAdmin_Role, verificarSuper_Role,verificarSuperAll_Role } = require('../middlewares/autenticacion');
+const { verificartoken, verificarAdmin_Role, verificarSuper_Role } = require('../middlewares/autenticacion');
 
 
 router.get('/region', apiGet.region);
@@ -16,7 +16,7 @@ router.get('/ubicacion', apiGet.ubicacion);
 *	Buscar activos
 *	
 /* *****************************************/
-// router.get('/usuario/buscar/:termino', [verificartoken, verificarSuperAll_Role, verificarAdmin_Role], apiGet.searchAssets)
+app.get('/usuario/buscar/:termino', [verificartoken, verificarSuperAll_Role, verificarAdmin_Role], apiGet.searchAssets)
 
 
 module.exports = router;
