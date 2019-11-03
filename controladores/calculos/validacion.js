@@ -249,9 +249,9 @@ let validacion_Trilateracion = async ()=>{
                         console.log(`Trilateracion_1:`);
                         console.log(punto);
                         // console.log(`\n`);
-                        console.log(`Trilateracion_2:`);
-                        // console.log(`\n`);
-                        console.log(punto2);
+                        // console.log(`Trilateracion_2:`);
+                        // // // console.log(`\n`);
+                        // console.log(punto2);
                         // console.log(`\n`);
 
 
