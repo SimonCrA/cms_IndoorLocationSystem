@@ -54,8 +54,10 @@ let processDataFromRpi = async (data) => {
 				
 			if(resp.ok === true){
 				// validacion_Trilateracion();
-				
-				d.tiempoEspera();
+				if(data[0].tipo === 'tracking'){
+					d.tiempoEspera();
+
+				}
 				
 				// console.log(gobalabv.Xgloball);
 				respuesta ={
