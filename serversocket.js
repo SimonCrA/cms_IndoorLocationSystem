@@ -6,7 +6,7 @@ let client_count=0
 
 const {processDataFromRpi} = require('./controladores/database/scan')
 const {rawCaracterizacion} = require('./controladores/database/guardarbd')
-let {globalDataGraph, globalDataGraphDos, globalDataGraphDistance,
+let {globalDataGraph, globalDataGraphDos, globalDataGraphDistance,jsoCanvas,
     globalDataGraphDistanceDos, DistanciaError, paramsValidacionCaract, etiqueta} = require('./controladores/variables')
 
 const { io } = require('./bin/www');
@@ -98,6 +98,7 @@ io.on('connection', function(socket){
             socket.emit('completeData2', globalDataGraphDos);
             socket.emit('completeData3', globalDataGraphDistance);
             socket.emit('completeData4', globalDataGraphDistanceDos);
+            socket.emit('show-canvas', jsoCanvas);
             // paramsValidacionCaract[0].signal=false
             // console.log(`Cambio de signal`);
             // console.log(paramsValidacionCaract[0]);

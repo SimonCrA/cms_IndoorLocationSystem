@@ -35,14 +35,14 @@ let globalDataGraphDistanceDos = [
         ]
         }
 ];
-
+let jsoCanvas=[]
 
 var paramsValidacionCaract = [{distError: 1, mostrarGrafica: false, signal:false}];
 
 module.exports = {
     globalFilter,globalDataGraphDistance,globalDataGraphDistanceDos,
     paramsValidacionCaract,etiqueta2,
-    globalDataGraph,
+    globalDataGraph,jsoCanvas,
     globalDataGraphDos,
     etiqueta
 

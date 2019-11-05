@@ -14,6 +14,7 @@ const colors = require('colors');
 const Ubicacion = require ('../../models/ubicacion')
 const {trilateracion} = require('../calculos/trilateracion')
 const {trilateracionMatriz} = require('../calculos/trilateracion2')
+const {jsoCanvas} = require('../variables')
 // const {trilateracionMatriz2} = require('./trilateracion3')
 const Graficar = require('../../models/graficar')
 
@@ -235,6 +236,45 @@ let validacion_Trilateracion = async ()=>{
 
                         }////Fin del for para las RaspberryPi
                         
+                        let js={
+
+                        }
+
+
+                        let findIt = jsoCanvas.findIndex(obj => (obj.name === name) );
+                        if(findIt>=0){
+                            var point = {};
+                            point.x = ((globalDataGraphDistance[findIt].data).length) ;
+                            point.y = parseFloat(distancia);
+                            globalDataGraphDistance[findIt].data.push(point)
+                            
+                            // console.log(paramsValidacionCaract[0]);
+                        
+                        }else{
+                            console.log(`Creo el dato nuevo`);
+                            let findIt2 = globalDataGraphDistance.findIndex(obj => (obj.name === 'rssi') );
+                            if(findIt2>=0){
+                            console.log(`Creo el dato Real....`);
+            
+                                globalDataGraphDistance[findIt2].name = preDataGraphsDos.name;
+                                globalDataGraphDistance[findIt2].data = preDataGraphsDos.data;
+                                
+                            // console.log(paramsValidacionCaract[0]);
+            
+            
+                            }else{
+                                globalDataGraphDistance.push(preDataGraphsDos);
+                                
+                            // console.log(paramsValidacionCaract[0]);
+            
+            
+                            }
+        
+        
+                        }
+
+                        jsoCanvas.push(js)
+
                         let punto =trilateracion(r1, r2, r3, x2, y3);
                         let punto2 =trilateracionMatriz(datosPuntoXY);
                         // let punto3 = trilateracionMatriz2(datosPuntoXY);
