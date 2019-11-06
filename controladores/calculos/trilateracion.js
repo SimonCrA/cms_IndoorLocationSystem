@@ -388,7 +388,7 @@ let trilateracion = (r1, r2, r3, x, y) =>{
         //QUIEN ES X , Y?????
         //console.log(x,y)
         var error = 0;
-        error = Math.sqrt((Math.pow(4.0 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(4.0 - parseFloat(punto_X_Y[1]), 2))))
+        error = Math.sqrt((Math.pow(3.0 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(4.0 - parseFloat(punto_X_Y[1]), 2))))
         if (punto_X_Y[0] > 0 && punto_X_Y[1] > 0 && (punto_X_Y[0] < x1 && punto_X_Y[1] < y2) ) {
             // console.log(`Estoy dentro de la region`);
             return {

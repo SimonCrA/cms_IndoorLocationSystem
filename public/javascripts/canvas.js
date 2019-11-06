@@ -1,8 +1,15 @@
 
 socket.on('show-canvas', jso =>{
 
+    console.log(jso);
+    let color=''
+    let X=0
+    let Y=0
+    let R=1
+
     var c = document.getElementById("myCanvas");
     var ctx = c.getContext("2d");
+
     var tipCanvas = document.getElementById("tip");
     var wra = document.getElementById("wraps");
     var tipCtx = tipCanvas.getContext("2d");
@@ -13,10 +20,10 @@ socket.on('show-canvas', jso =>{
     
     //Varianles de configuracion
     var Rpoint =4; // Tamanio del punto a dibujar. (Utilizado para representar Beacons)
-    var scale = 40;// escala por la que se multiplica las distancias
+    var scale = 20;// escala por la que se multiplica las distancias
     
     // PointY [400 - inicia el origen en la esquina inferior izquierda]
-    var pointy = 160;
+    var pointy = 200;
     var pointx = 0
     
     //fillStyle: Establece el color de relleno del punto
@@ -40,17 +47,17 @@ socket.on('show-canvas', jso =>{
      
     //**********  [0,0]  ************
     ctx.beginPath();
-    ctx.arc((pointx), (pointy), r1.toFixed(2)*scale, 0, Math.PI * 2, false);
+    ctx.arc((pointx), (pointy), jso.r1.toFixed(2)*scale, 0, Math.PI * 2, false);
     ctx.stroke();
     
     //**********  [X,0]  ************ 
     ctx.beginPath();
-    ctx.arc(((meshUno[1].xpos)*scale)+pointx, (pointy), r2.toFixed(2)*scale, 0, Math.PI * 2, false);
+    ctx.arc(((jso.x)*scale)+pointx, (pointy), jso.r2.toFixed(2)*scale, 0, Math.PI * 2, false);
     ctx.stroke();
     
     //**********  [0,Y]  ************  
     ctx.beginPath();
-    ctx.arc((pointx), (pointy-((meshUno[2].ypos)*scale)),  r3.toFixed(2)*scale, 0, Math.PI * 2, false);
+    ctx.arc((pointx), (pointy-((jso.y)*scale)),  jso.r3.toFixed(2)*scale, 0, Math.PI * 2, false);
     ctx.stroke();
     
     
@@ -67,23 +74,23 @@ socket.on('show-canvas', jso =>{
     ctx.stroke();
     //**********  [0,0]  ************
     
-    ctx.beginPath();
-    ctx.strokeStyle='rgb(251, 255, 3)';
-    ctx.arc((pointx), (350), Rpoint, 0, Math.PI * 2, false);
-    ctx.stroke();
+    // ctx.beginPath();
+    // ctx.strokeStyle='rgb(251, 255, 3)';
+    // ctx.arc((pointx), (350), Rpoint, 0, Math.PI * 2, false);
+    // ctx.stroke();
     
     //**********  [X,0]  ************ 
     
     ctx.beginPath();
     ctx.strokeStyle='rgb(190, 68, 247)';
-    ctx.arc(((meshUno[1].xpos)*scale)+pointx, (pointy), Rpoint, 0, Math.PI * 2, false);
+    ctx.arc(((jso.x)*scale)+pointx, (pointy), Rpoint, 0, Math.PI * 2, false);
     ctx.stroke();
     
     //**********  [0,Y]  ************  
     
     ctx.beginPath();
     ctx.strokeStyle='rgb(97, 51, 76)';
-    ctx.arc((pointx), (pointy-((meshUno[2].ypos)*scale)), Rpoint, 0, Math.PI * 2, false);
+    ctx.arc((pointx), (pointy-((jso.y)*scale)), Rpoint, 0, Math.PI * 2, false);
     ctx.stroke();
     ctx.stroke();
     
@@ -97,7 +104,7 @@ socket.on('show-canvas', jso =>{
     
     // ctx.beginPath();
     // ctx.strokeStyle='blue';
-    // ctx.arc((parseFloat(c1c2[0])*scale)+pointx, pointy-(parseFloat(c1c2[1])*scale), 4, 0, Math.PI * 2, true);
+    // ctx.arc((parseFloat(c1c2)*scale)+pointx, pointy-(parseFloat(c1c2[1])*scale), 4, 0, Math.PI * 2, true);
     // ctx.stroke();
     
     // //**********  [C1C3]  ************ 
@@ -134,7 +141,7 @@ socket.on('show-canvas', jso =>{
     ctx.strokeStyle=color;
     ctx.lineWidth=3;
     
-    ctx.arc((X*scale)+pointx, pointy-(Y*scale), 3, 0, Math.PI * 2, false);
+    ctx.arc((jso.punt_x*scale)+pointx, pointy-(jso.punt_y*scale), 3, 0, Math.PI * 2, false);
     ctx.stroke();
     
     ctx.fill();
@@ -143,7 +150,7 @@ socket.on('show-canvas', jso =>{
     ctx.lineWidth=1;
     ctx.fillStyle = 'blue';
     
-    ctx.arc((X*scale)+pointx, pointy-(Y*scale), R*scale, 0, Math.PI * 2, false);
+    ctx.arc((jso.punt_x*scale)+pointx, pointy-(jso.punt_y*scale), R*scale, 0, Math.PI * 2, false);
     ctx.stroke();
     
     ctx.closePath()

@@ -17,7 +17,6 @@ const {trilateracionMatriz} = require('../calculos/trilateracion2')
 const {jsoCanvas} = require('../variables')
 // const {trilateracionMatriz2} = require('./trilateracion3')
 const Graficar = require('../../models/graficar')
-
 var r1=0, r2=0, r3=0, x1=0, x2=0, x3=0, y1=0, y2=0, y3=0;
 // var fecha_actual =  new Date()
 
@@ -200,7 +199,7 @@ let validacion_Trilateracion = async ()=>{
                             let resultDistancia = await promise_findDistancia(resultrpi[j]._id, resulttag[k]._id);
                             // console.log(`resultdistanica ${JSON.stringify(resultDistancia, null, 2)}`);
                             if(resultDistancia[0] == undefined){
-                                console.log(`is undefined`);
+                                // console.log(`is undefined`);
                             }else{
                                 // console.log(`si esta definido`);
                                 let id_distancia = resultDistancia[0]._id
@@ -236,50 +235,24 @@ let validacion_Trilateracion = async ()=>{
 
                         }////Fin del for para las RaspberryPi
                         
-                        let js={
-
-                        }
-
-
-                        let findIt = jsoCanvas.findIndex(obj => (obj.name === name) );
-                        if(findIt>=0){
-                            var point = {};
-                            point.x = ((globalDataGraphDistance[findIt].data).length) ;
-                            point.y = parseFloat(distancia);
-                            globalDataGraphDistance[findIt].data.push(point)
-                            
-                            // console.log(paramsValidacionCaract[0]);
                         
-                        }else{
-                            console.log(`Creo el dato nuevo`);
-                            let findIt2 = globalDataGraphDistance.findIndex(obj => (obj.name === 'rssi') );
-                            if(findIt2>=0){
-                            console.log(`Creo el dato Real....`);
-            
-                                globalDataGraphDistance[findIt2].name = preDataGraphsDos.name;
-                                globalDataGraphDistance[findIt2].data = preDataGraphsDos.data;
-                                
-                            // console.log(paramsValidacionCaract[0]);
-            
-            
-                            }else{
-                                globalDataGraphDistance.push(preDataGraphsDos);
-                                
-                            // console.log(paramsValidacionCaract[0]);
-            
-            
-                            }
-        
-        
-                        }
-
-                        jsoCanvas.push(js)
-
                         let punto =trilateracion(r1, r2, r3, x2, y3);
                         let punto2 =trilateracionMatriz(datosPuntoXY);
                         // let punto3 = trilateracionMatriz2(datosPuntoXY);
                         // console.log(resulttag[k]._id);
+                        
+                        let js={
+                            r1,
+                            r2,
+                            r3,
+                            x:x2,
+                            y:y3,
+                            punt_x: punto.punt_x,
+                            punt_y: punto.punt_y
+                        }
 
+                        
+                        jsoCanvas.push(js)
 
 
 

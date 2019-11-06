@@ -117,7 +117,7 @@ let rpi = function(req, res, next) {
 let cambiar = (req, res, next) =>{
 
 	paramsValidacionCaract[0].distError = parseInt(req.params.derror)
-	console.log(paramsValidacionCaract);
+	// console.log(paramsValidacionCaract);
 	
 	return res.status(200)
 
@@ -127,7 +127,7 @@ let cambiar2 = (req, res, next) =>{
 
 	paramsValidacionCaract[0].mostrarGrafica = true
 
-	console.log(paramsValidacionCaract);
+	// console.log(paramsValidacionCaract);
 	return res.status(200)
 
 }

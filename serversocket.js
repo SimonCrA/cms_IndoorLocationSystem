@@ -98,7 +98,7 @@ io.on('connection', function(socket){
             socket.emit('completeData2', globalDataGraphDos);
             socket.emit('completeData3', globalDataGraphDistance);
             socket.emit('completeData4', globalDataGraphDistanceDos);
-            socket.emit('show-canvas', jsoCanvas);
+            socket.emit('show-canvas', jsoCanvas[jsoCanvas.length-1]);
             // paramsValidacionCaract[0].signal=false
             // console.log(`Cambio de signal`);
             // console.log(paramsValidacionCaract[0]);
@@ -200,6 +200,5 @@ io.on('connection', function(socket){
     });
 });
 // io.on
-
 
 module.exports = io
