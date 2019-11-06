@@ -5,13 +5,9 @@ var Schema = mongoose.Schema;
 var zonaSchema = new Schema({
     
 
-
     idLocation:{type:String, required: true},
-
     edificio: {type: String},
-
     nombrePiso: {type: String , required: true},      
-
     numeroPiso: {type: Number , required: true},        
     
     //regiones
