@@ -1,20 +1,27 @@
 
 const InfoUbicacion = require('../../models/ubicacion');
-const TagInfo = require('../../models/tagInfo');
+const Activo = require('../../models/activo');
 const {ejecucionEnSerie} = require('../calculos/configfile/configfile');
-
-const Region = require ('../../models/zona')
+const Region = require('../../models/zona')
 
 const async = require('async');
 
+/* *****************************************
+*	Buscar Activos
+*	
+/* *****************************************/
+
 let searchAssets = (req, res) => {
 
-    let termino = req.params.termino;
+    let termino = req.params.termino; 
     let regex = new RegExp(termino, 'i')
 
 
-    TagInfo.find({nombre: regex})
-        .exec((err, tagBuscado) => {
+    Activo.find({nombre: regex})
+        .limit(5)
+        .populate('taginfo')
+        .populate('zona', 'edificio nombrePiso numeroPiso nombreRegion numeroRegion')
+        .exec((err, ActivoBuscado) => {
 
             if (err) {
                 return res.status(500).json({
@@ -23,7 +30,7 @@ let searchAssets = (req, res) => {
                 })
             };
 
-            if (!tagBuscado) {
+            if (!ActivoBuscado) {
                 return res.status(400).json({
                     ok: false,
                     err: {
@@ -32,11 +39,11 @@ let searchAssets = (req, res) => {
                 });
             };
 
-            TagInfo.countDocuments({name: regex}, (err, conteo) => {
+            Activo.countDocuments({name: regex}, (err, conteo) => {
 
                 res.json({
                     ok: true,
-                    activo: tagBuscado,
+                    activo: ActivoBuscado,
                     cantidad: conteo
                 });
 
