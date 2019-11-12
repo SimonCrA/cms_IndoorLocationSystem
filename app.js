@@ -20,13 +20,16 @@ const loginRouter = require('./routes/login')
 const clientRouter = require('./routes/client')
 const imgRouter = require('./routes/imagenes')
 console.log(`aca ES EL APP`);
+var cors = require('cors');
 
 
 
 var app = express();
+
 const {validacion_Trilateracion} = require('./controladores/calculos/validacion');
 
-// validacion_Trilateracion();
+
+validacion_Trilateracion();
 
 // -------- Set up mongoose connection ---------------------------------------
 console.log("Estableciendo conexion MongoDB Server...");
@@ -63,6 +66,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+app.use(cors({
+  origin: 'http://localhost:4200'
+}));
+
+
+
+
 app.use('/', indexRouter);
 app.use('/users', apiUser);
 app.use('/api', apiRouter);
@@ -91,3 +103,6 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+
+

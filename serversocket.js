@@ -17,6 +17,8 @@ exports.graficar = ()=>{
     
 }
 let libreta=[];
+
+
 byClient = new Map();
 let dato = (id, mac) =>{
     let json={socketID:id, mac}

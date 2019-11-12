@@ -9,6 +9,7 @@ app.post('/', (req, res) => {
 
 
     let body = req.body;
+    // console.log(body)
 
     if(body.email == undefined || body.password == undefined){
         return res.status(400).json({

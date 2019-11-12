@@ -65,7 +65,7 @@ try {
                     error
                     
                 }
-                validarFiltro1(datosJson);
+                let res = validarFiltro1(datosJson);
                 let name = `${req.macrpi}-${req.mactag}`
 
                 let preDataGraphsDos= {
@@ -121,7 +121,8 @@ try {
             ok: false,
             status: 400
         }
-        console.log(`Error: ${JSON.stringify(err)}`);
+
+        console.log(`Error: ${JSON.stringify(err)}|| macRpi:${req.macrpi}, macTac:${req.mactag}`);
     } );
     
     

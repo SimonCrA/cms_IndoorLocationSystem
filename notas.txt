@@ -17,10 +17,13 @@ rasp4-3 X = 'dc:a6:32:0b:97:a7'
 
 rasp4-4 O = 'dc:a6:32:0b:a2:6a'
 
+rasp4-2 Y = 'dc:a6:32:0b:a5:e6'
+
 
 
 
 x=3 , y=2
 x=3 , y=4
+
 
 

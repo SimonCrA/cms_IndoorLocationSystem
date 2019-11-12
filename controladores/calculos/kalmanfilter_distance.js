@@ -201,8 +201,8 @@ let filtradoDistance = async ( index ) =>{
                     macRpi:  globalFilter[index].macRpi,
                     macTag:  globalFilter[index].macTag,
                     distanciaTag:  globalFilter[index].Xt_s,
-                    region:  globalFilter[index].region,
                     status: true
+
                 });
                 
 
@@ -219,6 +219,7 @@ let filtradoDistance = async ( index ) =>{
                     }              
 
                 });
+                console.log(distanciasTags);
             }
         }
 

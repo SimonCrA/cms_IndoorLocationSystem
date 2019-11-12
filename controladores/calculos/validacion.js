@@ -46,6 +46,7 @@ let validacion_Trilateracion = async ()=>{
                                 $sum: 1
                             }
                         }
+
                     }])
                     .exec((err, aggregate_region) => {
                         err
@@ -230,7 +231,7 @@ let validacion_Trilateracion = async ()=>{
                                 }
     
                                 let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
-                                // console.log(resultUpdateDistance.ok);
+                                console.log(resultUpdateDistance);
                             }
 
                         }////Fin del for para las RaspberryPi

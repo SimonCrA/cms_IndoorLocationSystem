@@ -63,8 +63,8 @@ let filtrado = async ( scan ) =>{
         // console.log(`/////////////`);
         // console.log(dataToSendToDistance);
         // console.log(`____________________`);
-        let resp = await Distancia.distancia( dataToSendToDistance);
-        // let resp = await Distancia2.distancia2( dataToSendToDistance);
+        // let resp = await Distancia.distancia( dataToSendToDistance);
+        let resp = await Distancia2.distancia2( dataToSendToDistance);
    
 
 

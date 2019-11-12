@@ -76,7 +76,7 @@ let processDataFromRpi = async (data) => {
 	
 	}
 	else {
-		console.log(`BAD REQUEST!!!!!!!!-----`);
+		console.log(`data from raspberry is`+` EMPTY`);
 	}
 
 }
