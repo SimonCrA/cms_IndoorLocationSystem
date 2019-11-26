@@ -44,7 +44,7 @@ let searchAssets = async (req, res) => {
             
                     });
             
-
+ 
             });
 
         }
@@ -52,7 +52,7 @@ let searchAssets = async (req, res) => {
             return new Promise((reject, resolve)=>{
                 
                 for (let i = 0; i < resultPromiseActivo.length; i++) {
-                    let idActivo = resultPromiseActivo.activo._id[i];
+                    let idActivo = resultPromiseActivo.activo.idTag[i];
                     console.log(resultPromiseActivo);
                     console.log(idActivo);
 
