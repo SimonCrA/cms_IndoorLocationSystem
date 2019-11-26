@@ -10,12 +10,16 @@ var Schema = mongoose.Schema;
    
 var activoSchema = new Schema({
 	
-		nombre: { type: String },        
+		nombre: { type: String },
+		VIN:{type:Number},
+		anio:{type: Number},
+		modelo:{type:String},
+		color:{type: String},
         tipo: { type: String },
 		descripcion: { type: String },
 		estado: { type:Boolean },
-		idTag: { type: Schema.Types.ObjectId, ref: 'tagInfo', required: true },
-		idZona: { type: Schema.Types.ObjectId, ref: 'zona', required: true }
+		idTag: { type: Schema.Types.ObjectId, ref: 'tagInfo' }
+
 
 	}
 );  

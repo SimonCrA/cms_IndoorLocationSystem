@@ -10,6 +10,10 @@ let {globalDataGraph, globalDataGraphDos, globalDataGraphDistance,jsoCanvas,
     globalDataGraphDistanceDos, DistanciaError, paramsValidacionCaract, etiqueta} = require('./controladores/variables')
 
 const { io } = require('./bin/www');
+let {startTrilateracion} = require('./controladores/variables')
+const {iniciarValidacion} = require('./controladores/calculos/timer')
+
+
 var test = -1
 var test2 = -1
 
@@ -21,7 +25,7 @@ let libreta=[];
 
 byClient = new Map();
 let dato = (id, mac) =>{
-    let json={socketID:id, mac}
+    let json={socketID:id, mac, stat:false}
 
     let findIt = libreta.findIndex(tarea =>tarea.socketID === id);
     if(findIt>=0){
@@ -42,11 +46,16 @@ let sendAccion = (js)=>{
 let startTracking= (aviso) =>{
     
     console.log(aviso);
+    startTrilateracion[0].a = true
+    // validacion_Trilateracion();
+    iniciarValidacion()
     io.emit('asset-tracking', aviso);
 }
 let stoped= () =>{
     let aviso = 'detener el despliegue';
     console.log(aviso);
+    startTrilateracion[0].a = false
+
     io.emit('stoped-all', aviso);
 }
 
@@ -69,7 +78,7 @@ let refresh = () =>{
 ////////////////////////////////////////////////////////////////
 
 io.on('connection', function(socket){
-    console.log('An user connected......');
+    // console.log('An user connected......');
     // console.log(socket);
     client_count++
     //añadir datos a la grafica...
@@ -80,7 +89,8 @@ io.on('connection', function(socket){
     // }, 1000);
     
     socket.on('libreta', data=>{
-        console.log(`entro aca`);
+
+        console.log(`Add to libreta! serversockert.js line 84`);
         dato(socket.id , data);
         setlist();
         
@@ -131,8 +141,30 @@ io.on('connection', function(socket){
         // clg
 
         processDataFromRpi(dataTracking);
+        let findIt = libreta.findIndex(obj => (obj.mac === dataTracking[0].macrpi) );
+        if(findIt>=0){
+            libreta[findIt].stat = true;
+            // console.log(libreta);
+            
+        }else{
+            console.log(`Full: No se consigue dato en libreta.. se procede a guardar`);
+            refresh();
+        }
         
     })
+    socket.on('sendDataToServerEmpty',data=>{
+        let findIt = libreta.findIndex(obj => (obj.mac === data.rpimac) );
+        if(findIt>=0){
+            libreta[findIt].stat = false;
+            // console.log(libreta);
+
+        }else{
+            console.log(`Empty: No se consigue dato en libreta.. se procede a guardar`);
+
+            refresh();
+
+        }
+        })
     socket.on('sendDataCToServer', (dataCaracterizacion)=>{
         console.log(`CARACTERIZACION ${socket.id}`);
         // console.log(dataCaracterizacion.length);

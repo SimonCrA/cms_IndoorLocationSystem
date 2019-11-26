@@ -18,11 +18,29 @@
 //       }
 // }
 // var word = `Deleveleds`
-// console.log(isPalindrome(word))
+// // console.log(isPalindrome(word))
 
-let arr = [[1,1,1,1],
-          [2,2,2,2],
-          [2,2,2,2],
-          [2,2,2,2]]
+// let arr = [[1,1,1,1],
+//           [2,2,2,2],
+//           [2,2,2,2],
+//           [2,2,2,2]]
           
-console.log(arr[0].length)
+// console.log(arr[0].length)
+
+
+
+let arr = [1,1,1,1]
+
+let a = arr.length
+for (let i = 0; i < a; i++) {
+
+    console.log(i);
+
+    let fin = arr.indexOf(1)
+    if(fin>=0){
+        // console.log(fin);
+        arr.splice(fin,1)
+    }
+}
+
+console.log( arr);

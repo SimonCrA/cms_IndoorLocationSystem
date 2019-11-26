@@ -25,7 +25,7 @@ router.get('/client/:id', verificartoken, apiclient.getAClient);
 //================================
 //Crear client
 //================================
-router.post('/client', [verificartoken, verificarSuper_Role], apiclient.postClient);
+router.post('/', [verificartoken, verificarSuper_Role], apiclient.postClient);
 
 
 

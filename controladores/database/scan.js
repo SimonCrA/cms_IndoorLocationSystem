@@ -55,7 +55,6 @@ let processDataFromRpi = async (data) => {
 			if(resp.ok === true){
 				// validacion_Trilateracion();
 				
-				d.tiempoEspera();
 				
 				// console.log(gobalabv.Xgloball);
 				respuesta ={

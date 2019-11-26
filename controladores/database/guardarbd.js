@@ -96,16 +96,16 @@ let regiones = (req, res, next) =>{
 
     let region = new Region({
 
-        idLocation:req.body.idLocacion  ,
+        idPiso:req.body.idPiso  ,
 
-        nombrePiso:req.body.nombrePiso   ,
-        numeroPiso:parseInt(req.body.numeroPiso)   ,
+        // nombrePiso:req.body.nombrePiso   ,
+        // numeroPiso:parseInt(req.body.numeroPiso)   ,
 
         nombreRegion:req.body.nombreRegion   ,
         numeroRegion:parseInt(req.body.numeroRegion)   ,
 
-        largo:parseInt(req.body.largo)   ,
-        ancho:parseInt(req.body.ancho),
+        largo:parseFloat(req.body.largo)   ,
+        ancho:parseFloat(req.body.ancho),
         estatus: true,
         tipo:'region'  
 
@@ -203,6 +203,12 @@ module.exports = {
     rawCaracterizacion,
     pisos
 }
+
+
+
+
+
+
 
 
 

@@ -18,7 +18,7 @@ let regiones = (req, res, next) => {
     
     let id = req.params.id;
 
-    let body = _.pick(req.body,['idLocation','nombrePiso','numeroPiso','nombreRegion','numeroRegion','largo','ancho']) ;
+    let body = _.pick(req.body,['idPiso','nombreRegion','numeroRegion','largo','ancho']) ;
 
     
     Region.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, regiondb)=>{

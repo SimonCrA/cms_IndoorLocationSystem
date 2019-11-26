@@ -1,0 +1,71 @@
+/* 1 */
+{
+    "_id" : ObjectId("5dbdd4d35faeb2211cf84e5e"),
+    "idLocation" : ObjectId("5dbdd46e5faeb2211cf84e5d"),
+    "nombrePiso" : "sotano",
+    "numeroPiso" : 2,
+    "nombreRegion" : "bloqueCentro",
+    "numeroRegion" : 1,
+    "largo" : 6,
+    "ancho" : 7,
+    "estatus" : true,
+    "tipo" : "region",
+    "__v" : 0
+}
+
+/* 2 */
+{
+    "_id" : ObjectId("5dbdd5035faeb2211cf84e5f"),
+    "idLocation" : ObjectId("5dbdd46e5faeb2211cf84e5d"),
+    "nombrePiso" : "sotano",
+    "numeroPiso" : 2,
+    "nombreRegion" : "bloqueDerecho",
+    "numeroRegion" : 2,
+    "largo" : 4,
+    "ancho" : 7,
+    "estatus" : true,
+    "tipo" : "region",
+    "__v" : 0
+}
+
+/* 3 */
+{
+    "_id" : ObjectId("5dc84b6d4b6d851ab8bdd87b"),
+    "idLocation" : ObjectId("5dc843ec4b6d851ab8bdd87a"),
+    "nombrePiso" : "PB",
+    "numeroPiso" : 1,
+    "nombreRegion" : "bloqueIzquierdo",
+    "numeroRegion" : 2,
+    "largo" : 5,
+    "ancho" : 4,
+    "estatus" : true,
+    "tipo" : "region",
+    "__v" : 0
+}
+
+/* 4 */
+{
+    "_id" : ObjectId("5dc84bca4b6d851ab8bdd87c"),
+    "idLocation" : ObjectId("5dc843ec4b6d851ab8bdd87a"),
+    "nombrePiso" : "PB",
+    "numeroPiso" : 1,
+    "nombreRegion" : "bloqueDerecho",
+    "numeroRegion" : 2,
+    "largo" : 5,
+    "ancho" : 4,
+    "estatus" : true,
+    "tipo" : "region",
+    "__v" : 0
+}
+
+/* 5 */
+{
+    "_id" : ObjectId("5dca080b28facc2ec843b65f"),
+    "idLocation" : ObjectId("5dca07ab0d35c92ef8a88562"),
+    "nombrePiso" : "Garage de alberto",
+    "numeroPiso" : 2,
+    "plano" : "/img/plano2.jpg",
+    "estatus" : true,
+    "tipo" : "piso",
+    "__v" : 0
+}

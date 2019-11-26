@@ -21,6 +21,12 @@ let globalDataGraphDos = [
         }
 ];
 
+let startTrilateracion = [
+    {
+        a: true
+    }
+]
+
 let globalDataGraphDistance = [
     {
         name: 'rssi',
@@ -44,6 +50,6 @@ module.exports = {
     paramsValidacionCaract,etiqueta2,
     globalDataGraph,jsoCanvas,
     globalDataGraphDos,
-    etiqueta
+    etiqueta, startTrilateracion
 
 }

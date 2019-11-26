@@ -65,10 +65,10 @@ try {
                     // console.log(paramsValidacionCaract[0]);
                 
                 }else{
-                    console.log(`Creo el dato nuevo`);
+                    // console.log(`Creo el dato nuevo`);
                     let findIt2 = globalDataGraphDistanceDos.findIndex(obj => (obj.name === 'rssi') );
                     if(findIt2>=0){
-                    console.log(`Creo el dato Real....`);
+                    // console.log(`Creo el dato Real....`);
     
                         globalDataGraphDistanceDos[findIt2].name = preDataGraphsDos.name;
                         globalDataGraphDistanceDos[findIt2].data = preDataGraphsDos.data;

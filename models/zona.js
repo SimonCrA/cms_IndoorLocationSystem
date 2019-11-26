@@ -5,12 +5,14 @@ var Schema = mongoose.Schema;
 var zonaSchema = new Schema({
     
 
-    idLocation:{type:String, required: true},
+    idLocation:{ type: Schema.Types.ObjectId, ref: 'Client' },
+
     edificio: {type: String},
-    nombrePiso: {type: String , required: true},      
-    numeroPiso: {type: Number , required: true},        
+    nombrePiso: {type: String  },      
+    numeroPiso: {type: Number },        
     
     //regiones
+    idPiso:{ type: Schema.Types.ObjectId, ref: 'zona'},
     nombreRegion: {type: String},
     numeroRegion:{type:Number},
     largo:{type:Number},

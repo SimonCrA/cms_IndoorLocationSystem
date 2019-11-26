@@ -1,3 +1,4 @@
+
 const bodyParser = require('body-parser')
 
 
@@ -23,13 +24,11 @@ console.log(`aca ES EL APP`);
 var cors = require('cors');
 
 
-
 var app = express();
 
 const {validacion_Trilateracion} = require('./controladores/calculos/validacion');
 
 
-validacion_Trilateracion();
 
 // -------- Set up mongoose connection ---------------------------------------
 console.log("Estableciendo conexion MongoDB Server...");
@@ -43,6 +42,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 console.log("Establecienda la conexion con MongoDB Server");
 //----------------------------------------------------------------------------
+
 
 
 app.use(

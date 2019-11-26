@@ -118,10 +118,10 @@ let filtradoDistance = async ( index ) =>{
                     // console.log(paramsValidacionCaract[0]);
                     
                 }else{
-                    console.log(`Creo el dato nuevo`);
+                    // console.log(`Creo el dato nuevo`);
                     let findIt2 = globalDataGraph.findIndex(obj => (obj.name === 'rssi') );
                     if(findIt2>=0){
-                    console.log(`Creo el dato Real....`);
+                    // console.log(`Creo el dato Real....`);
     
                         globalDataGraph[findIt2].name = preDataGraphs.name;
                         globalDataGraph[findIt2].data = preDataGraphs.data;
@@ -159,10 +159,10 @@ let filtradoDistance = async ( index ) =>{
                     // console.log(paramsValidacionCaract[0]);
                 
                 }else{
-                    console.log(`Creo el dato nuevo`);
+                    // console.log(`Creo el dato nuevo`);
                     let findIt2 = globalDataGraphDos.findIndex(obj => (obj.name === 'rssi') );
                     if(findIt2>=0){
-                    console.log(`Creo el dato Real....`);
+                    // console.log(`Creo el dato Real....`);
     
                         globalDataGraphDos[findIt2].name = preDataGraphsDos.name;
                         globalDataGraphDos[findIt2].data = preDataGraphsDos.data;
@@ -196,6 +196,7 @@ let filtradoDistance = async ( index ) =>{
             *	Guardado en base de datos de las distancias Filtrada de los Tags.
             /* *****************************************/
             if(globalFilter[index].tipo == 'tracking'){
+
                 let distanciasTags = new DistanciaTag({
 
                     macRpi:  globalFilter[index].macRpi,
@@ -214,12 +215,13 @@ let filtradoDistance = async ( index ) =>{
                             status: 400
                         }
                     }
+
                     respuesta ={
                         ok:true, status:200
                     }              
 
                 });
-                console.log(distanciasTags);
+                // console.log(distanciasTags);
             }
         }
 

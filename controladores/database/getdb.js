@@ -11,46 +11,86 @@ const async = require('async');
 *	
 /* *****************************************/
 
-let searchAssets = (req, res) => {
+let searchAssets = async (req, res) => {
+    try {
+        let promise_Activo = () => {
+            return new Promise((reject, resolve)=>{
+                let termino = req.params.termino; 
+                let regex = new RegExp(termino, 'i')
+            
+            
+                Activo.find({nombre: regex})
+                    .limit(5)
+                    .populate('taginfo')
+                    .exec((err, ActivoBuscado) => {
+            
+                        if (err) {
+                            return reject({ok:false, err})
+                            //  res.status(500).json({
+                            //     ok: false,
+                            //     err
+                            // })
+                        };
+            
+                        if (!ActivoBuscado) {
+                            return reject({
+                                ok:false,
+                                err:{mensaje:"there isn't any asset with that name"}
+                            })
+                            
+                            // res.status(400).json({
+                            //     ok: false,
+                            //     err: {
+                            //         mensaje: "there isn't any asset with that name"
+                            //     }
+                            // });
+                        };
+            
+                        Activo.countDocuments({name: regex}, (err, conteo) => {
+                            return resolve({ok: true,
+                                    activo: ActivoBuscado,
+                                    cantidad: conteo})
 
-    let termino = req.params.termino; 
-    let regex = new RegExp(termino, 'i')
-
-
-    Activo.find({nombre: regex})
-        .limit(5)
-        .populate('taginfo')
-        .populate('zona', 'edificio nombrePiso numeroPiso nombreRegion numeroRegion')
-        .exec((err, ActivoBuscado) => {
-
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    err
-                })
-            };
-
-            if (!ActivoBuscado) {
-                return res.status(400).json({
-                    ok: false,
-                    err: {
-                        mensaje: "there isn't any asset with that name"
-                    }
-                });
-            };
-
-            Activo.countDocuments({name: regex}, (err, conteo) => {
-
-                res.json({
-                    ok: true,
-                    activo: ActivoBuscado,
-                    cantidad: conteo
-                });
+                            // res.json({
+                            //     ok: true,
+                            //     activo: ActivoBuscado,
+                            //     cantidad: conteo
+                            // });
+            
+                        });
+            
+                    });
+            
 
             });
 
-        });
+        }
+        let promise_pointXY = (resultPromiseActivo)=>{
+            return new Promise((reject, resolve)=>{
+                for (let i = 0; i < resultPromiseActivo.length; i++) {
+                        
+                    
+                    
+                }
+                
+            });
+        }
+        
+        
+        let resultPromiseActivo = await promise_Activo()
+        
+        let resultPromisePoint = await promise_pointXY(resultPromiseActivo[i])
+        
 
+
+
+        return res.statys
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+    
 }
 
 /* *****************************************
@@ -94,6 +134,7 @@ let findZona = (req, res, next) => {
 let region = (req, res, next) =>{
         
     Region.find({ estatus: true, tipo:'region' })
+        .populate('idPiso')
 
         .exec((err, region) => {
 
@@ -117,6 +158,7 @@ let region = (req, res, next) =>{
 let pisos = (req, res, next) =>{
         
     Region.find({ estatus: true, tipo:'piso' })
+        .populate('idLocation')
 
         .exec((err, pisos) => {
 

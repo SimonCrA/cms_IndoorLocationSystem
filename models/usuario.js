@@ -56,7 +56,7 @@ let userSchema = new Schema({
             required: false,
             enum: validDepartments
         },
-        client: [{ type: Schema.Types.ObjectId, ref: 'Client', required: true }]
+        client: { type: Schema.Types.ObjectId, ref: 'Client', required: true }
 
 });
 
