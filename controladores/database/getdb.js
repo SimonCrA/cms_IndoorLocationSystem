@@ -3,6 +3,7 @@ const InfoUbicacion = require('../../models/ubicacion');
 const Activo = require('../../models/activo');
 const {ejecucionEnSerie} = require('../calculos/configfile/configfile');
 const Region = require('../../models/zona')
+const Graficar = require('../../models/graficar')
 
 const async = require('async');
 
@@ -26,10 +27,6 @@ let searchAssets = async (req, res) => {
             
                         if (err) {
                             return reject({ok:false, err})
-                            //  res.status(500).json({
-                            //     ok: false,
-                            //     err
-                            // })
                         };
             
                         if (!ActivoBuscado) {
@@ -37,26 +34,12 @@ let searchAssets = async (req, res) => {
                                 ok:false,
                                 err:{mensaje:"there isn't any asset with that name"}
                             })
-                            
-                            // res.status(400).json({
-                            //     ok: false,
-                            //     err: {
-                            //         mensaje: "there isn't any asset with that name"
-                            //     }
-                            // });
                         };
             
                         Activo.countDocuments({name: regex}, (err, conteo) => {
                             return resolve({ok: true,
                                     activo: ActivoBuscado,
                                     cantidad: conteo})
-
-                            // res.json({
-                            //     ok: true,
-                            //     activo: ActivoBuscado,
-                            //     cantidad: conteo
-                            // });
-            
                         });
             
                     });
@@ -67,24 +50,64 @@ let searchAssets = async (req, res) => {
         }
         let promise_pointXY = (resultPromiseActivo)=>{
             return new Promise((reject, resolve)=>{
+                
                 for (let i = 0; i < resultPromiseActivo.length; i++) {
-                        
-                    
-                    
+                    let idActivo = resultPromiseActivo.activo._id[i];
+                    console.log(resultPromiseActivo);
+                    console.log(idActivo);
+
+                    Graficar.findById({idActivo})
+                        .exec((err, puntoBuscado) => {
+
+                            if (err) {
+                                return reject({
+                                    ok: false,
+                                    err
+                                })
+                            };
+
+                            if (!ActivoBuscado) {
+                                return reject({
+                                    ok: false,
+                                    err: {
+                                        mensaje: "there isn't any asset with that name"
+                                    }
+                                });
+                            };
+
+                            Graficar.countDocuments({idActivo}, (err, conteo) => {
+                                return resolve({
+                                    ok: true,
+                                    punto: puntoBuscado,
+                                    activo: resultPromiseActivo[i],
+                                    cantidad: conteo,
+
+                                });
+                            });
+
+                            
+                        });  
                 }
+
+
                 
             });
         }
         
         
-        let resultPromiseActivo = await promise_Activo()
+        let resultPromiseActivo = await promise_Activo();
         
-        let resultPromisePoint = await promise_pointXY(resultPromiseActivo[i])
+        let resultPromisePoint = await promise_pointXY(resultPromiseActivo);
+
+        console.log(resultPromisePoint);
         
 
 
 
-        return res.statys
+        return res.status(200).json({
+            ok: true,
+            activo: resultPromisePoint
+        });
         
     } catch (error) {
         console.log(error);
