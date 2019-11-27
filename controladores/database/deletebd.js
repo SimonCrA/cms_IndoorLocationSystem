@@ -1,7 +1,10 @@
 
 const  InfoUbicacionRpi = require("../../models/ubicacion");
 const Region = require ('../../models/zona')
+const TagInfo = require ('../../models/tagInfo')
+const Activo = require ('../../models/activo')
 
+ 
 let regiones = (req, res, next)=>{
 
     let id = req.params.id;
@@ -11,7 +14,7 @@ let regiones = (req, res, next)=>{
     let cambiaEstado = {
         estatus: false
     };
-
+ 
     Region.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, usuarioBorrado) => {
 
         if (err) {
@@ -75,11 +78,69 @@ let pisos = (req, res, next) => {
         });
 
     });
-
-
-
     
 }
+
+/* *****************************************
+*	Activo
+*	
+/* *****************************************/
+
+let deleteActivo = (req, res) => {
+
+    let id = req.params.id;
+    let cambiaEstado = {
+        state: false
+    }
+
+    Activo.findByIdAndUpdate(id, cambiaEstado, {new: true,runValidators: true, useFindAndModify: false}, (err, activoInhabilitado) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        res.status(200).json({
+            ok: true,
+            activoInhabilitado
+        });
+
+    });
+
+}
+
+/* *****************************************
+*	Tags
+*	
+/* *****************************************/
+
+let deleteTags = (req, res) => {
+
+    let id = req.params.id;
+    let cambiaEstado = {
+        state: false
+    }
+
+    TagInfo.findByIdAndUpdate(id, cambiaEstado, {new: true, runValidators: true, useFindAndModify: false}, (err, tagInhabilitado) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        res.status(200).json({
+            ok: true,
+            tagInhabilitado
+        });
+
+    });
+
+}
+
 let ubicacion = (req, res, next) => {
     
     let id = req.params.id;
@@ -122,6 +183,6 @@ let ubicacion = (req, res, next) => {
 
 
 module.exports = {
-regiones,ubicacion,
-pisos
+    regiones,ubicacion,
+    pisos, deleteActivo, deleteTags
 }

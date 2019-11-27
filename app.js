@@ -23,6 +23,7 @@ const imgRouter = require('./routes/imagenes')
 console.log(`aca ES EL APP`);
 var cors = require('cors');
 
+console.log("prueba tonta");
 
 var app = express();
 

@@ -11,6 +11,8 @@ router.get('/region', apiGet.region);
 router.get('/pisos', apiGet.pisos);
 
 router.get('/ubicacion', apiGet.ubicacion);
+router.get('/activo', apiGet.activoGet);
+router.get('/tag_data', apiGet.getTags);
 
 /* *****************************************
 *	Buscar activos

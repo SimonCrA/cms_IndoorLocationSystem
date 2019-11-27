@@ -1,9 +1,11 @@
 
 const InfoUbicacion = require('../../models/ubicacion');
-const Activo = require('../../models/activo');
-const {ejecucionEnSerie} = require('../calculos/configfile/configfile');
 const Region = require('../../models/zona')
 const Graficar = require('../../models/graficar')
+const Activo = require('../../models/activo');
+const TagInfo = require ('../../models/tagInfo')
+
+// const {ejecucionEnSerie} = require('../calculos/configfile/configfile');
 
 const async = require('async');
 
@@ -51,7 +53,7 @@ let searchAssets = async (req, res) => {
         let promise_pointXY = (resultPromiseActivo)=>{
             return new Promise((reject, resolve)=>{
                 
-                for (let i = 0; i < resultPromiseActivo.length; i++) {
+                for (let i = 0; i < resultPromiseActivo.activo.length; i++) {
                     let idActivo = resultPromiseActivo.activo.idTag[i];
                     console.log(resultPromiseActivo);
                     console.log(idActivo);
@@ -152,6 +154,11 @@ let findZona = (req, res, next) => {
     });
 
 };
+/* *****************************************
+*	Region
+*	
+/* *****************************************/
+
 
 
 let region = (req, res, next) =>{
@@ -176,6 +183,38 @@ let region = (req, res, next) =>{
         });
 
 }
+
+/* *****************************************
+*	Activos
+*	
+/* *****************************************/
+
+
+let activoGet = (req, res, next) =>{
+        
+    Activo.find({})
+        .exec((err, activoBuscado) => {
+
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+            
+            res.status(200).json({
+                ok: true,
+                activoBuscado
+            });
+
+        });
+
+}
+
+/* *****************************************
+*	Pisos
+*	
+/* *****************************************/
 
 
 let pisos = (req, res, next) =>{
@@ -229,10 +268,37 @@ let ubicacion = (req, res, next) =>{
 }
 
 
+/* *****************************************
+*	Ubicacion Rpi
+*	
+/* *****************************************/
+let getTags = (req, res, next) =>{
+        
+    TagInfo.find({})
+
+        .exec((err,tagGuardado ) => {
+
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+            
+            res.status(200).json({
+                ok: true,
+                tagGuardado
+            });
+
+        });
+
+}
+
+
 
 module.exports = {
     region,ubicacion,
-    
     findZona,pisos,
-    searchAssets
+    searchAssets,
+    activoGet, getTags
 }

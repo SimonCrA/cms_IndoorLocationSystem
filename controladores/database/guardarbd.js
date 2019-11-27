@@ -4,8 +4,11 @@ const  InfoUbicacionRpi = require("../../models/ubicacion");
 const Region = require ('../../models/zona')
 const RawMuestras = require ('../../models/rawdatamuestras')
 const TagInfo = require ('../../models/tagInfo')
+const Activo = require ('../../models/activo')
 
-let dataTag =  (req, res, next) =>{            
+
+let dataTag =  (req, res, next) =>{  
+              
     let tagInfo = new TagInfo({
         
         mactag: req.body.mactag,
@@ -31,7 +34,12 @@ let dataTag =  (req, res, next) =>{
     });
 
 };
-            
+    
+/* *****************************************
+*	Constantes
+*	
+/* *****************************************/
+
 let constantes =  (req, res, next) =>{            
     let constantesDeBD = new ConstsDistancia({
 
@@ -60,6 +68,11 @@ let constantes =  (req, res, next) =>{
     });
 
 };
+
+/* *****************************************
+*	Ubicación
+*	
+/* *****************************************/
 
 
 let ubicacion = (req, res, next)=>{
@@ -91,6 +104,12 @@ let ubicacion = (req, res, next)=>{
     });
 
 }
+
+/* *****************************************
+*	Regiones
+*	
+/* *****************************************/
+
 
 let regiones = (req, res, next) =>{
 
@@ -128,6 +147,13 @@ let regiones = (req, res, next) =>{
 
 
 }
+
+/* *****************************************
+*	Pisos
+*	
+/* *****************************************/
+
+
 let pisos = (req, res, next) =>{
     // console.log(req.body);
 
@@ -162,6 +188,51 @@ let pisos = (req, res, next) =>{
 
 }
 
+/* *****************************************
+*	Activo
+*	
+/* *****************************************/
+
+
+let activoPost = (req, res, next) =>{
+    // console.log(req.body);
+
+    let activo = new Activo({
+
+        nombre: req.body.nombre,
+        VIN: parseInt(req.body.VIN),
+        anio: parseInt(req.body.anio),
+        modelo: req.body.modelo,
+        color: req.body.color,
+        estado: req.body.estado,
+        idTag: req.body.idTag,
+        tipo: req.body.tipo,
+        descripcion: req.body.descripcion
+
+    });
+
+    activo.save((err, activoCreado) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        };
+
+        res.status(200).json({
+            ok: true,
+            activoCreado
+        });
+
+    });
+
+}
+
+/* *****************************************
+*	caracterización
+*	
+/* *****************************************/
 
 
 let rawCaracterizacion = (data) => {
@@ -201,7 +272,8 @@ module.exports = {
     ubicacion,
     regiones,
     rawCaracterizacion,
-    pisos
+    pisos,
+    activoPost
 }
 
 

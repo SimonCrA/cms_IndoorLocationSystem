@@ -1,8 +1,7 @@
-
-// const  ConstsDistancia = require("../../models/constantesdistancia");
 const  InfoUbicacionRpi = require("../../models/ubicacion");
 const Region = require ('../../models/zona')
 const RawMuestras = require ('../../models/rawdatamuestras')
+const Activo = require ('../../models/activo')
 const TagInfo = require ('../../models/tagInfo')
 const ConstsDistancia = require('../../models/constantesdistancia');
 
@@ -38,7 +37,6 @@ let regiones = (req, res, next) => {
 
 }
 
-
 let pisos = (req, res, next) => {
     
 
@@ -64,8 +62,61 @@ let pisos = (req, res, next) => {
     })
 
 }
+ 
+let putTags = (req, res, next) => {
+    console.log("holaaaaa estoy aquiiiii");
+    let id = req.params.id;
+    console.log(id);
+    let body = _.pick(req.body, ['nombre', 'tipo']);
 
+    
+    TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true, useFindAndModify: false },(err, tagModificado)=>{
 
+        if(err){
+            return res.status(400).json({
+                ok:false,
+                err
+            });
+        }
+        res.status(200).json({
+            ok:true,
+            tagModificado
+        })
+
+    })
+
+}
+
+let putActivo = (req, res) => {
+
+    let id = req.params.id;
+    let body = req.body;
+
+    Activo.findByIdAndUpdate(id, body, {new: true,runValidators: true,useFindAndModify: false}, (err, activoModificado) => {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            })
+        };
+        if (!activoModificado) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    mensaje: ' El id no existe'
+                }
+            });
+        };
+
+        res.status(200).json({
+            ok: true,
+            activoModificado
+        }); 
+
+    });
+
+}
 
 
 let ubicacion = (req, res, next) => {
@@ -184,12 +235,7 @@ try{
 
 
 module.exports = {
-    
-    
-
-
-
-    regiones,pisos,ubicacion,ubicacionSelect
+    regiones, pisos, ubicacion, ubicacionSelect, putActivo, putTags
 }
 
 
