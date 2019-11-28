@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-console.log("Segunda prueba tonta");
 // Require controller modules.
 let apiModificar = require('../controladores/database/modifbd');
 

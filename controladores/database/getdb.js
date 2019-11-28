@@ -15,6 +15,7 @@ const async = require('async');
 /* *****************************************/
 
 let searchAssets = async (req, res) => {
+    console.log("hola entre en buuscar activossss");
     try {
         let promise_Activo = () => {
             return new Promise((reject, resolve)=>{
