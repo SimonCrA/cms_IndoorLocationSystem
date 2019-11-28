@@ -18,7 +18,7 @@ router.get('/tag_data', apiGet.getTags);
 *	Buscar activos
 *	
 /* *****************************************/
-router.get('/usuario/buscar/:termino', [verificartoken, verificarSuper_Role, verificarAdmin_Role], apiGet.searchAssets)
+router.get('/buscar/:termino', apiGet.searchAssets)
 
 
 module.exports = router;
