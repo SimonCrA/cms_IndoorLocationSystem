@@ -24,7 +24,7 @@ let validacion_Trilateracion = async ()=>{
 
         let promesa_ubicacion = () =>{
             return new Promise((resolve, reject) => {
-                 Ubicacion.find()
+                 Ubicacion.find({estatus:true})
                      .exec((err, ubicacionRaspi) => {
                              err
                                  ?
@@ -34,6 +34,19 @@ let validacion_Trilateracion = async ()=>{
             
             
                         });
+        }
+        let promise_share = (region) => {
+            return new Promise((resolve, reject) => {
+                Ubicacion.find({compartido:region, estatus:true})
+                    .exec((err, ubicacionRaspi) => {
+                            err
+                                ?
+                                reject(err) :
+                                resolve(ubicacionRaspi);
+                           });
+           
+           
+                       });
         }
         let promesa_AggregateRegion = () =>{
             return new Promise((resolve, reject) => {
@@ -60,8 +73,8 @@ let validacion_Trilateracion = async ()=>{
 
             Ubicacion.aggregate([{
                 $match: {
-                    idZona: region
-                    // status:true
+                    idZona: region,
+                    estatus:true
                 }
             },
             {
@@ -137,8 +150,7 @@ let validacion_Trilateracion = async ()=>{
                 });
             });
         }
-///////////////////////////////////////////////////////////////////////////////////
-
+        
         let promesa_UpdateDistance =(id) =>{
             return new Promise((resolve, reject)=>{
                 let body = {status:false}
@@ -163,32 +175,33 @@ let validacion_Trilateracion = async ()=>{
         let promesa_puntoXY =(punto, mactag, region)=>{
             return new Promise((resolve, reject)=>{
                 
-
-
+                
+                
                 let graficar = new Graficar({
                     date: new Date().getTime(),
                     x: punto.x,        
                     y: punto.y,
                     region,
                     idTag: mactag
-
+                    
                 })
                 graficar.save((e)=>{
                     e
-                        ?
-                        reject({
-                            ok:false,
-                            e
-                        }) :
-                        resolve({
-                            ok:true,
-                            graficar
+                    ?
+                    reject({
+                        ok:false,
+                        e
+                    }) :
+                    resolve({
+                        ok:true,
+                        graficar
                     })
                 })
             });
         }
         
-
+        
+        ///////////////////////////////////////////////////////////////////////////////////
 
 
         console.log(`======================INICIA TRILATERACION=========================`.rainbow);
@@ -201,28 +214,51 @@ let validacion_Trilateracion = async ()=>{
         for (let i = 0; i < resultRegion.length; i++) {
             let arrtag=[]
             let arrRpi=[]
+            let arrShare=[]
+            var share=null;
+            let statusShare=true
             let resultrpi = await promesa_macrpi(resultRegion[i]._id);
             let resulttag = await promesa_mactag(resultRegion[i]._id);
+
+            let resultShare = await promise_share(resultRegion[i]._id);
             resulttag.forEach(element => {
                 arrtag.push(element._id)
             });
             resultrpi.forEach(element => {
                 arrRpi.push(element._id)
             });
+            if(resultShare[0] === undefined){
+                // console.log(`esta region no comparte Rpi`);
+            }else{
+                share= resultShare[0].idZona
+                // console.log(arrRpi);
+                // console.log(resultShare);
+                for (let i = 0; i < arrRpi.length; i++) {                   
+                    for (let j = 0; j < arrRpi.length; j++) {
+                        if(arrRpi[i] == resultShare[j].macRpi){
+                            arrShare.push(resultShare[j].macRpi);
+                        }
+                    }
+                    
+                }
+            }
             let obj={
                 region:resultRegion[i]._id,
                 rpi:arrRpi,
-                tag:arrtag
+                tag:arrtag,
+                share,
+                statusShare,
+                arrShare
+
+                
             }
             lista_Obj_trilaterar.push(obj)
                        
         }
         
 
-        // console.log(`-----------------------------`);
 
-        // console.log(lista_Obj_trilaterar);
-
+        
 
 
         let interval1_1=lista_Obj_trilaterar.length;
@@ -235,7 +271,7 @@ let validacion_Trilateracion = async ()=>{
             let interval1_2 = lista_Obj_trilaterar[k].tag.length;
 
             for (let j = 0; j < interval1_2; j++) {//Ciclo de tags
-                let interval1_3 = lista_Obj_trilaterar[k].rpi.length;
+                let interval1_3 = lista_Obj_trilaterar[k].rpi.length || 3;
             
                 for (let u = 0; u < interval1_3; u++) {//Ciclo de Rpis
                     if(lista_Obj_trilaterar[k].tag[j] !== undefined){
@@ -275,19 +311,23 @@ let validacion_Trilateracion = async ()=>{
 
             
         }
-
+        // console.log(`-----------------------------`);
+        
+        // console.log(lista_Obj_trilaterar);
+        
+        // console.log(`-----------------------------`);
 
         let interval_1=lista_Obj_trilaterar.length;
         
-        for (let k = 0; k < interval_1; k++) {
+        for (let k = 0; k < interval_1; k++) {//REGIONES
             let interval1_2 = lista_Obj_trilaterar[k].tag.length;
             
-            for (let j = 0; j < interval1_2; j++) {
+            for (let j = 0; j < interval1_2; j++) {//TAGS
                 let interval1_3 = lista_Obj_trilaterar[k].rpi.length;
                 console.log(`${lista_Obj_trilaterar[k].region}`.yellow );
                 console.log(`${lista_Obj_trilaterar[k].tag[j]}`.green);
-            
-                for (let u = 0; u < interval1_3; u++) {
+                // let id_distancia=[]
+                for (let u = 0; u < interval1_3; u++) {//Ciclo de rpaspis
                     if(lista_Obj_trilaterar[k].tag[j] !== undefined){
 
 
@@ -302,7 +342,7 @@ let validacion_Trilateracion = async ()=>{
 
                         }else{
                             // console.log(`si esta definido`);
-                            let id_distancia = resultDistancia[0]._id
+                            let id_distancia= (resultDistancia[0]._id)
                             let ubicacion = await promesa_ubicacion();
                             // console.log(resultrpi[j]._id);
                             let resultadoUbicacion = ubicacion.find(data => data.macRpi === lista_Obj_trilaterar[k].rpi[u]);
@@ -324,12 +364,47 @@ let validacion_Trilateracion = async ()=>{
                                 x3 = resultadoUbicacion.xpos;
                                 y3 = resultadoUbicacion.ypos;
                             }
+
+
+                            let findIt = lista_Obj_trilaterar.findIndex(obj => (
+                                obj.region ===  lista_Obj_trilaterar[k].share
+                                ) );
+                            
+                            //ESTO SE DEBE HACER DESPUES DE DETERMINAR QUE
+                            // AMBAS REGIONES COMPARTIDAS FUERON UTILIZADAS
+
+
+                            let findIt2 = lista_Obj_trilaterar[k].arrShare.indexOf(resultadoUbicacion.macRpi);
+                            if(lista_Obj_trilaterar[k].share != null){
+                                if(findIt2>=0){
+                                    if(lista_Obj_trilaterar[findIt].statusShare===false){
+    
+                                        // console.log(lista_Obj_trilaterar[findIt]);
+                                        // console.log(`%%%%%%%%%%%%%%%%%%%%%%%%`);
+                                        // console.log(lista_Obj_trilaterar[k]);
+                                        let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
+                                        
+                                    }
+                                    // console.log(lista_Obj_trilaterar[k].arrShare[findIt2]);
+    
+    
+    
+                                }else{
+                                    // console.log(`No tiene MATCH: ${resultadoUbicacion.macRpi}`);
+                                    let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
+    
+                                }
+                            }else{
+                                let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
+
+                            }
+                            
+                            
                             
                             datosPuntoXY= {
                                 x1, x2, x3, y1, y2, y3, r1, r2, r3
                             }
 
-                            let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
                             // console.log(resultUpdateDistance);
                         }
                     }
@@ -337,9 +412,30 @@ let validacion_Trilateracion = async ()=>{
                     
                     
                 }//fin CICLO RASPI
+
+
+                    // console.log(id_distancia);
+                    // console.log(lista_Obj_trilaterar[k].rpi);
+                    // for (let o = 0; o < id_distancia.length; o++) {
+                    //     if()
+                    //     if(lista_Obj_trilaterar[k].counter == 0 ){
+
+                    //         let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
+                    //     }
+                    //     else{
+                    //         lista_Obj_trilaterar[k].counter = lista_Obj_trilaterar[k].counter -1;
+                    //         if(lista_Obj_trilaterar[k].counter == 0 ){
+                    //             let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
+
+                    //         }
+
+
+                    //     }
+                        
+                    // }
                 
                     let punto =trilateracion(r1, r2, r3, x2, y3);
-                    let punto2 =trilateracionMatriz(datosPuntoXY);
+                    // let punto2 =trilateracionMatriz(datosPuntoXY);
                     // let punto3 = trilateracionMatriz2(datosPuntoXY);
                     // console.log(resulttag[k]._id);
                     
@@ -374,20 +470,23 @@ let validacion_Trilateracion = async ()=>{
                     // console.log(`Trilateracion_3:`);
                     // console.log(punto3);
                     // console.log(`\n`);
-                    if(punto.status === true){
-                        // let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
+                    // if(punto.status === true){
+                    //     // let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
 
-                        // if(resultUpdateDistance.ok === true){
-                            let guardarpuntoXY = await promesa_puntoXY(punto, resulttag[k]._id, resultRegion[i]._id);
-                            console.log(guardarpuntoXY.ok);
+                    //     // if(resultUpdateDistance.ok === true){
+                    //         let guardarpuntoXY = await promesa_puntoXY(punto, resulttag[k]._id, resultRegion[i]._id);
+                    //         console.log(guardarpuntoXY.ok);
 
-                        // }else{console.log(`No se actualizo el estatus de las distancias `);}
+                    //     // }else{console.log(`No se actualizo el estatus de las distancias `);}
 
-                    }else{console.log(`P(X,Y) fuera de la region no se puede guardar`);}
+                    // }else{console.log(`P(X,Y) fuera de la region no se puede guardar`);}
                 
 
 
             }//FIN CICLO TAG
+            if(lista_Obj_trilaterar[k].statusShare===true){
+                lista_Obj_trilaterar[k].statusShare=false;               
+            }
         }//FIN CICLO REGION
 
 

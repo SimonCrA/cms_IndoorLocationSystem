@@ -98,14 +98,24 @@ let searchAssets = async (req, res) => {
 
         // console.log(JSON.stringify(arrayfinish, null, 2));
 
-        
+        if(arrayfinish[0]===undefined){
+            return res.status(400).json({
+                ok: true,
+                err: {
+                    mensaje: "there isn't any asset with that name"
+                }
+            });
+
+        }else{
+
+            return res.status(200).json({
+                ok: true,
+                activo: arrayfinish
+            });
+        }
 
 
 
-        return res.status(200).json({
-            ok: true,
-            activo: arrayfinish
-        });
         
     } catch (error) {
         console.log(error);

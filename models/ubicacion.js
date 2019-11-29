@@ -10,7 +10,8 @@ var ubicacionRpiSchema = new Schema({
         xpos: {type: Number},
 		ypos: {type: Number},
 		idZona:{type: String},
-		estatus: {type:Boolean, default: true}
+		estatus: {type:Boolean, default: true},
+		compartido:{type:String}
 		
 
 	}
