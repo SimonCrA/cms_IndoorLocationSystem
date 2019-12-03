@@ -4,16 +4,19 @@ html(lang='en')
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(http-equiv='X-UA-Compatible', content='ie=edge')
-    link(rel='stylesheet', href='../stylesheets/bootstrap.min.css')
     //- script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js', integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', crossorigin='anonymous')
-
-    //- script(src='../javascripts/bootstrap.min.js')
+    
+    link(rel='stylesheet', href='../stylesheets/bootstrap.min.css')
+    script(src='../../../javascripts/jquery-3.3.1.js')
+    script(src='../../../javascripts/popper.min.js')
+    script(src='../javascripts/bootstrap.min.js')
     
     //- link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
-    script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js', integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', crossorigin='anonymous')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1', crossorigin='anonymous')
-    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', crossorigin='anonymous')
-    script(src='https://code.jquery.com/jquery-3.4.1.js', integrity='sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=', crossorigin='anonymous')
+    //- script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js', integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', crossorigin='anonymous')
+    //- script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1', crossorigin='anonymous')
+    
+    //- script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', crossorigin='anonymous')
+    //- script(src='https://code.jquery.com/jquery-3.4.1.js', integrity='sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=', crossorigin='anonymous')
 
     title Configuration
   body
@@ -29,9 +32,7 @@ html(lang='en')
           button.btn.btn-secondary.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
             | Select target
           #downbtn.dropdown-menu.dropdown-menu-left
-            //- button.dropdown-item(type='button', onclick='return sendm(this)') Action
-            //- button.dropdown-item(type='button') Another action
-            //- button.dropdown-item(type='button') Something else here
+          
           hr
           .row
             .col-md-12
@@ -44,6 +45,10 @@ html(lang='en')
     .container
       h1(style='text-align: center;') RAW DISTANCE
       hr
+      form.form-inline(onsubmit='return addMessage(this)')
+          .form-group.mb-2
+            label(for='maclist1') Region
+            select#maclist1.form-control.mx-3
       .card.py-4.h-100
           hr
           .row
@@ -69,7 +74,7 @@ html(lang='en')
       .container
         .card.py-4.h-100(style='align-items: center;')
           .card-body.text-center
-            form.form-inline(onsubmit='return addMessage(this)')
+            form.form-inline(onsubmit='return Send_to_particular_rpi(this)')
               .form-group.mb-2
                 label(for='maclist1') MACs
                 select#maclist1.form-control.mx-3
@@ -91,12 +96,12 @@ html(lang='en')
           .card-body.text-center
             form.form-inline(onsubmit='return GetFromPagefileconfigData(this)')
               .form-group.mb-2
-                label(for='zona') ID Zona
-                select#zona.form-control.mx-3
+                label(for='List_IdZona') ID Zodna
+                select#List_IdZona.form-control.mx-3
                   
               .form-group.mb-2
-                label(for='tags') MACs Tag
-                select#tags.form-control.mx-3
+                label(for='List_MacTag') MACs Tag
+                select#List_MacTag.form-control.mx-3
        
               .form-group.mx-sm-3.mb-2
                 label.sr-only(for='mensaje') texto mensaje
@@ -104,9 +109,10 @@ html(lang='en')
               button.btn.btn-primary.mb-2(type='submit') enviar
       hr
 
-    script(src="/socket.io/socket.io.js") 
+    script(src="/socket.io/socket.io.js")
+    script.
+      var socket = io();
     script(src='../../../libs/popper.min.js')
-    script(src='../../../javascripts/jquery-3.3.1.js')
     script(src='../../../javascripts/main.js')
     script(src='../../../javascripts/lineas.js')
     script(src='../../../javascripts/canvas.js')
