@@ -7,7 +7,7 @@ const ConstsDistancia = require('../../models/constantesdistancia');
 
 const _ = require('underscore');
 
-let {paramsValidacionCaract} = require('../variables')
+let {paramsValidacionCaract, globalDataGraphDos} = require('../variables')
 
 
 let regiones = (req, res, next) => {
@@ -149,6 +149,14 @@ let ubicacion = (req, res, next) => {
 let ubicacionSelect = async(req, res, next) => {
 
 try{
+    globalDataGraphDos =  [
+        {
+            name: 'rssi',
+            data:[{x:1, y:1}
+            ]
+            }
+    ];
+    console.log(globalDataGraphDos);
     console.log(req.body);
 
     let getConstantes = () =>{
@@ -192,9 +200,9 @@ try{
 
     let result = await getConstantes();
     let result2 = await promesa_id_Const();
-    console.log(result2);
-    console.log(result);
-    result.length
+    // console.log(result2);
+    // console.log(result);
+    // result.length
     // return res.status(200).json({ok:true,
     // result, result2})
 
@@ -203,7 +211,7 @@ try{
         let id = result2[i]._id;
     
         let body = _.pick(result,['rssiProm','nPropagacion','desviacionEstandar']) ;
-        console.log(id);
+        // console.log(id);
         
         ConstsDistancia.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, ubicacionS)=>{
     

@@ -45,8 +45,28 @@ let jsoCanvas=[]
 
 var paramsValidacionCaract = [{distError: 1, mostrarGrafica: false, signal:false}];
 
+
+
+
+let Users=[
+    {
+    token:'',
+    constantes:{nPropagacion:1,
+                desviacionEstandar:1,
+                rssiProm:1},
+    graphRaw:[{name:'',
+                data:[{x:1,y:1}]
+            }],
+    graphValidator:[{name:'',
+                    data:[{x:1, y:1}]}],
+    region:{id:'',
+            rpi:[]},
+    
+}
+]
+
 module.exports = {
-    globalFilter,globalDataGraphDistance,globalDataGraphDistanceDos,
+    globalFilter,globalDataGraphDistance,Users,globalDataGraphDistanceDos,
     paramsValidacionCaract,etiqueta2,
     globalDataGraph,jsoCanvas,
     globalDataGraphDos,

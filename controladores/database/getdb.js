@@ -92,7 +92,7 @@ let searchAssets = async (req, res) => {
             
             let resultPromisePoint = await promise_pointXY(resultPromiseActivo[i]);
             // console.log(resultPromisePoint);
-            js={activo: resultPromiseActivo[i], puntoXY: resultPromisePoint}
+            js={activo: resultPromiseActivo[i], puntoXY: resultPromisePoint[0]}
             arrayfinish.push(js)
         }
 

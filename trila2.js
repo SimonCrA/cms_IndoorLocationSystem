@@ -45,8 +45,8 @@
 
 // console.log( arr);
 
+let arr=[{mac:123},{mac:123},{mac:12},{mac:12}]
 
-let n=4;
-let total= ((n-1)*(n-2))+((n-1)*6+1)
+let fin= arr.findIndex(obj=>obj.mac===12)
 
-console.log(`${total}`);
+console.log(fin);
