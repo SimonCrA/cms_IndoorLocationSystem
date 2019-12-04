@@ -255,6 +255,7 @@ let pisos = (req, res, next) =>{
 let ubicacion = (req, res, next) =>{
         
     InfoUbicacion.find({ estatus: true })
+        .populate('idZona')
 
         .exec((err,infoUbicacion ) => {
 
@@ -281,7 +282,7 @@ let ubicacion = (req, res, next) =>{
 /* *****************************************/
 let getTags = (req, res, next) =>{
         
-    TagInfo.find({})
+    TagInfo.find()
 
         .exec((err,tagGuardado ) => {
 
@@ -291,7 +292,7 @@ let getTags = (req, res, next) =>{
                     err
                 });
             }
-            
+            // console.log(tagGuardado);
             res.status(200).json({
                 ok: true,
                 tagGuardado

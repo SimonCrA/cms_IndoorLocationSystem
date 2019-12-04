@@ -9,7 +9,7 @@ var ubicacionRpiSchema = new Schema({
 
         xpos: {type: Number},
 		ypos: {type: Number},
-		idZona:{type: String},
+		idZona:{type: Schema.Types.ObjectId, ref: 'zona'},
 		estatus: {type:Boolean, default: true},
 		compartido:{type:String}
 		
