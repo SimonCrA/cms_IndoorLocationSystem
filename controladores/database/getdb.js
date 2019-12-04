@@ -18,32 +18,21 @@ let searchAssets = async (req, res) => {
     console.log("hola entre en buuscar activossss");
     try {
         let promise_Activo = () => {
-            return new Promise((reject, resolve)=>{
+            return new Promise((resolve, reject) => {
+
                 let termino = req.params.termino; 
                 let regex = new RegExp(termino, 'i')
             
             
                 Activo.find({nombre: regex})
-                    .limit(5)
-                    .populate('taginfo')
+                    // .limit(5)
+                    .populate('idTag')
                     .exec((err, ActivoBuscado) => {
             
-                        if (err) {
-                            return reject({ok:false, err})
-                        };
-            
-                        if (!ActivoBuscado) {
-                            return reject({
-                                ok:false,
-                                err:{mensaje:"there isn't any asset with that name"}
-                            })
-                        };
-            
-                        Activo.countDocuments({name: regex}, (err, conteo) => {
-                            return resolve({ok: true,
-                                    activo: ActivoBuscado,
-                                    cantidad: conteo})
-                        });
+                        err
+                            ?
+                            reject(err) :
+                            resolve(ActivoBuscado);
             
                     });
             
@@ -52,45 +41,40 @@ let searchAssets = async (req, res) => {
 
         }
         let promise_pointXY = (resultPromiseActivo)=>{
-            return new Promise((reject, resolve)=>{
+            return new Promise((resolve, reject) => {
+
                 
-                for (let i = 0; i < resultPromiseActivo.activo.length; i++) {
-                    let idActivo = resultPromiseActivo.activo.idTag[i];
-                    console.log(resultPromiseActivo);
-                    console.log(idActivo);
+                let idActivo = resultPromiseActivo.idTag.mactag
+                // console.log(resultPromiseActivo);
+                // console.log(idActivo);
 
-                    Graficar.findById({idActivo})
-                        .exec((err, puntoBuscado) => {
+                Graficar.find({idTag:idActivo})
+                    .sort({_id:-1}).limit(1)
+                    .exec((err, puntoBuscado) => {
 
-                            if (err) {
-                                return reject({
-                                    ok: false,
-                                    err
-                                })
-                            };
+                        if (err) {
+                            reject({
+                                ok: false,
+                                err
+                            })
+                        };
 
-                            if (!ActivoBuscado) {
-                                return reject({
-                                    ok: false,
-                                    err: {
-                                        mensaje: "there isn't any asset with that name"
-                                    }
-                                });
-                            };
-
-                            Graficar.countDocuments({idActivo}, (err, conteo) => {
-                                return resolve({
-                                    ok: true,
-                                    punto: puntoBuscado,
-                                    activo: resultPromiseActivo[i],
-                                    cantidad: conteo,
-
-                                });
+                        if (!puntoBuscado) {
+                            reject({
+                                ok: false,
+                                err: {
+                                    mensaje: "there isn't any asset with that name"
+                                }
                             });
+                        };
 
-                            
-                        });  
-                }
+                        // Graficar.countDocuments({idActivo}, (err, conteo) => {
+                            resolve(puntoBuscado);
+                        // });
+
+                        
+                    });  
+                
 
 
                 
@@ -98,22 +82,35 @@ let searchAssets = async (req, res) => {
         }
         
         
-        let resultPromiseActivo = await promise_Activo();
-        
-        let resultPromisePoint = await promise_pointXY(resultPromiseActivo);
+        let arrayfinish =[]
+        let js
+        let resultPromiseActivo = await promise_Activo()
+        // console.log(resultPromiseActivo);
+        // console.log(`uno`);
 
-        console.log(resultPromisePoint);
+        for (let i = 0; i < resultPromiseActivo.length; i++) {
+            console.log(`vuelta ${i}`);
+            
+            let resultPromisePoint = await promise_pointXY(resultPromiseActivo[i]);
+            // console.log(resultPromisePoint);
+            js={activo: resultPromiseActivo[i], puntoXY: resultPromisePoint}
+            arrayfinish.push(js)
+        }
+
+        // console.log(JSON.stringify(arrayfinish, null, 2));
+
         
 
 
 
         return res.status(200).json({
             ok: true,
-            activo: resultPromisePoint
+            activo: arrayfinish
         });
         
     } catch (error) {
         console.log(error);
+        return res.status(400).json({ok:false, error})
         
     }
     
