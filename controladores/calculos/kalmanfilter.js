@@ -63,14 +63,21 @@ let filtrado = async ( scan ) =>{
         // console.log(`/////////////`);
         // console.log(dataToSendToDistance);
         // console.log(`____________________`);
-        // let resp = await Distancia.distancia( dataToSendToDistance);
-        let resp = await Distancia2.distancia2( dataToSendToDistance);
+
+
+
+        let resp = await Distancia.distancia( dataToSendToDistance);
+
+
+        //ESTA LINEA SE DESCOMENTA PARA HACER TRACK CON LAS CONSTANTES 
+
+        // let resp = await Distancia2.distancia2( dataToSendToDistance);
    
 
 
         if(paramsValidacionCaract[0].mostrarGrafica == true){
             let resp2 = await Distancia2.distancia2( dataToSendToDistance);
-            console.log(resp2);
+            // console.log(resp2);
 
         }
 

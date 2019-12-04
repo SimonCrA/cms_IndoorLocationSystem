@@ -40,6 +40,8 @@ app.post('/', (req, res) => {
             });
         }
 
+
+        
         if (!bcrypt.compareSync(body.password, usuarioDB.password)) {
             return res.status(400).json({
                 ok: false,
@@ -49,13 +51,17 @@ app.post('/', (req, res) => {
             });
         }
 
+
+
+
+
         let token = jwt.sign({
             usuario: usuarioDB,
         }, process.env.SEED_AUTH, {
             expiresIn: process.env.CADUCIDAD_TOKEN
         });
-
-        res.json({
+        // console.log(token);
+        res.status(200).json({
             ok: true,
             usuario: usuarioDB,
             token

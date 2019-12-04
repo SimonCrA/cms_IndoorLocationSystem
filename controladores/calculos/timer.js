@@ -12,7 +12,7 @@ let iniciarValidacion = async () =>{
     for (;;) {
         
         let res =await validacion_Trilateracion()
-        console.log(`RESPUESTA DE LA VALIDACION => ${res} <=`);
+        // console.log(`RESPUESTA DE LA VALIDACION => ${res} <=`);
         if(startTrilateracion[0].a == false){
             console.log(`DETENER CICLO ETERNO`);
             break

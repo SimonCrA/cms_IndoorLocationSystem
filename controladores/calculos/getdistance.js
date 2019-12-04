@@ -122,7 +122,7 @@ try {
             status: 400
         }
 
-        console.log(`Error: ${JSON.stringify(err)}|| macRpi:${req.macrpi}, macTac:${req.mactag}`);
+        console.log(`Error: ${JSON.stringify(err)}|| macRpi: ${req.macrpi}, macTac: ${req.mactag}`);
     } );
     
     

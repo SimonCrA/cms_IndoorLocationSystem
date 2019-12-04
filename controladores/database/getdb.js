@@ -93,20 +93,30 @@ let searchAssets = async (req, res) => {
             
             let resultPromisePoint = await promise_pointXY(resultPromiseActivo[i]);
             // console.log(resultPromisePoint);
-            js={activo: resultPromiseActivo[i], puntoXY: resultPromisePoint}
+            js={activo: resultPromiseActivo[i], puntoXY: resultPromisePoint[0]}
             arrayfinish.push(js)
         }
 
         // console.log(JSON.stringify(arrayfinish, null, 2));
 
-        
+        if(arrayfinish[0]===undefined){
+            return res.status(400).json({
+                ok: true,
+                err: {
+                    mensaje: "there isn't any asset with that name"
+                }
+            });
+
+        }else{
+
+            return res.status(200).json({
+                ok: true,
+                activo: arrayfinish
+            });
+        }
 
 
 
-        return res.status(200).json({
-            ok: true,
-            activo: arrayfinish
-        });
         
     } catch (error) {
         console.log(error);
@@ -246,6 +256,7 @@ let pisos = (req, res, next) =>{
 let ubicacion = (req, res, next) =>{
         
     InfoUbicacion.find({ estatus: true })
+        .populate('idZona')
 
         .exec((err,infoUbicacion ) => {
 
@@ -272,7 +283,7 @@ let ubicacion = (req, res, next) =>{
 /* *****************************************/
 let getTags = (req, res, next) =>{
         
-    TagInfo.find({})
+    TagInfo.find()
 
         .exec((err,tagGuardado ) => {
 
@@ -282,7 +293,7 @@ let getTags = (req, res, next) =>{
                     err
                 });
             }
-            
+            // console.log(tagGuardado);
             res.status(200).json({
                 ok: true,
                 tagGuardado

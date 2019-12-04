@@ -29,18 +29,24 @@
 
 
 
-let arr = [1,1,1,1]
+// let arr = [1,1,1,1]
 
-let a = arr.length
-for (let i = 0; i < a; i++) {
+// let a = arr.length
+// for (let i = 0; i < a; i++) {
 
-    console.log(i);
+//     console.log(i);
 
-    let fin = arr.indexOf(1)
-    if(fin>=0){
-        // console.log(fin);
-        arr.splice(fin,1)
-    }
-}
+//     let fin = arr.indexOf(1)
+//     if(fin>=0){
+//         // console.log(fin);
+//         arr.splice(fin,1)
+//     }
+// }
 
-console.log( arr);
+// console.log( arr);
+
+let arr=[{mac:123},{mac:123},{mac:12},{mac:12}]
+
+let fin= arr.findIndex(obj=>obj.mac===12)
+
+console.log(fin);

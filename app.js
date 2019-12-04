@@ -28,6 +28,7 @@ console.log("prueba tonta");
 var app = express();
 
 const {validacion_Trilateracion} = require('./controladores/calculos/validacion');
+const {iniciarValidacion} = require('./controladores/calculos/timer')
 
 
 
@@ -44,8 +45,8 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 console.log("Establecienda la conexion con MongoDB Server");
 //----------------------------------------------------------------------------
 
-
-
+// validacion_Trilateracion();
+// iniciarValidacion()
 app.use(
   bodyParser.urlencoded({
     extended: true

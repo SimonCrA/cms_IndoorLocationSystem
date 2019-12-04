@@ -7,7 +7,7 @@ let client_count=0
 const {processDataFromRpi} = require('./controladores/database/scan')
 const {rawCaracterizacion} = require('./controladores/database/guardarbd')
 let {globalDataGraph, globalDataGraphDos, globalDataGraphDistance,jsoCanvas,
-    globalDataGraphDistanceDos, DistanciaError, paramsValidacionCaract, etiqueta} = require('./controladores/variables')
+    globalDataGraphDistanceDos, DistanciaError, paramsValidacionCaract, etiqueta,Users} = require('./controladores/variables')
 
 const { io } = require('./bin/www');
 let {startTrilateracion} = require('./controladores/variables')
@@ -17,22 +17,64 @@ const {iniciarValidacion} = require('./controladores/calculos/timer')
 var test = -1
 var test2 = -1
 
-exports.graficar = ()=>{
-    
-}
+
 let libreta=[];
 
 
 byClient = new Map();
-let dato = (id, mac) =>{
-    let json={socketID:id, mac, stat:false}
+let dato = (id, mac, token) =>{
+    let json
+    if(token){
+        json={socketID:id,  token }
+        
+    }
+    else {
+        json={socketID:id, mac, stat:false}
+
+    }
 
     let findIt = libreta.findIndex(tarea =>tarea.socketID === id);
+    let findIt2 = libreta.findIndex(tarea =>tarea.token === token);
     if(findIt>=0){
-        console.log(`No estoy Autorizado para guardar a este Sr(${id})`);
+        console.log(`Socket.ID: (${id})||Mac: (${mac})`);
     }else{
-        libreta.push(json)
-        console.log(libreta);
+        if(findIt2>=0){
+            libreta[findIt2].socketID=id;
+            if(Users.length==1){
+                Users[0].token=token;
+
+            }
+            console.log(libreta);
+            console.log(Users);
+
+
+        }else{
+            let usr={
+                token:token,
+                constantes:{nPropagacion:1,
+                            desviacionEstandar:1,
+                            rssiProm:1},
+                graphRaw:[{name:'',
+                            data:[{x:1,y:1}]
+                        }],
+                graphValidator:[{name:'',
+                                data:[{x:1, y:1}]}],
+                region:{id:'',
+                        rpi:[]},
+                
+            }
+            if(Users.length==1){
+                Users[0].token=token;
+
+            }else{
+                Users.push(usr)
+
+            }
+            libreta.push(json)
+            console.log(libreta);
+            console.log(JSON.stringify(Users,null, ' '));
+ 
+        }
         
     }
 
@@ -48,7 +90,11 @@ let startTracking= (aviso) =>{
     console.log(aviso);
     startTrilateracion[0].a = true
     // validacion_Trilateracion();
-    iniciarValidacion()
+    if(aviso.tipo === 'tracking'){
+        
+        iniciarValidacion() //trilateracion
+
+    }
     io.emit('asset-tracking', aviso);
 }
 let stoped= () =>{
@@ -91,7 +137,7 @@ io.on('connection', function(socket){
     socket.on('libreta', data=>{
 
         console.log(`Add to libreta! serversockert.js line 84`);
-        dato(socket.id , data);
+        dato(socket.id , data.mac, data.token );
         setlist();
         
     })
@@ -108,8 +154,10 @@ io.on('connection', function(socket){
 
             socket.emit('completeData', globalDataGraph);
             socket.emit('completeData2', globalDataGraphDos);
-            socket.emit('completeData3', globalDataGraphDistance);
-            socket.emit('completeData4', globalDataGraphDistanceDos);
+
+
+            // socket.emit('completeData3', globalDataGraphDistance);
+            // socket.emit('completeData4', globalDataGraphDistanceDos);
             socket.emit('show-canvas', jsoCanvas[jsoCanvas.length-1]);
             // paramsValidacionCaract[0].signal=false
             // console.log(`Cambio de signal`);
