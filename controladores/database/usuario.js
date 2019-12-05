@@ -137,7 +137,7 @@ let logout = (req, res) => {
 let putUser =(req, res) => {
 
     let id = req.params.id;
-    let body = _.pick(req.body, ['name','surname','email','role','state','department']);
+    let body = req.body;
 
     User.findByIdAndUpdate(id, body, {new: true, runValidators: true, useFindAndModify: false }, (err, usuarioModificado) =>{
 
