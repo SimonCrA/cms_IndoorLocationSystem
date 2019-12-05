@@ -156,7 +156,7 @@ let findZona = (req, res, next) => {
         if (err) { return next(err); }
 		// Successful, so render.
 		
-		
+		console.log({'idzonas':results.idzona, 'tags':results.tags});
 		res.status(200).jsonp({'idzonas':results.idzona, 'tags':results.tags});
 		
     });

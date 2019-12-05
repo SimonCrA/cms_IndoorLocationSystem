@@ -49,4 +49,4 @@ let arr=[{mac:123},{mac:123},{mac:12},{mac:12}]
 
 let fin= arr.findIndex(obj=>obj.mac===12)
 
-console.log(fin);
+console.log(arr);
