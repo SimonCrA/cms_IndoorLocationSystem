@@ -120,7 +120,7 @@ let deleteTags = (req, res) => {
 
     let id = req.params.id;
     let cambiaEstado = {
-        state: false
+        estado: false
     }
 
     TagInfo.findByIdAndUpdate(id, cambiaEstado, {new: true, runValidators: true, useFindAndModify: false}, (err, tagInhabilitado) => {
@@ -131,7 +131,7 @@ let deleteTags = (req, res) => {
                 err
             });
         }
-
+        console.log(tagInhabilitado);
         res.status(200).json({
             ok: true,
             tagInhabilitado
