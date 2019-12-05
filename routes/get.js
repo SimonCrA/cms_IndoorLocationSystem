@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 
-console.log("Segunda prueba tonta");
 
 // Require controller modules.
 var apiGet = require('../controladores/database/getdb');

@@ -7,6 +7,11 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const passport = require('passport');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
+
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -23,9 +28,9 @@ const imgRouter = require('./routes/imagenes')
 console.log(`aca ES EL APP`);
 var cors = require('cors');
 
-console.log("prueba tonta");
 
 var app = express();
+
 
 const {validacion_Trilateracion} = require('./controladores/calculos/validacion');
 const {iniciarValidacion} = require('./controladores/calculos/timer')
@@ -34,6 +39,7 @@ const {iniciarValidacion} = require('./controladores/calculos/timer')
 
 // -------- Set up mongoose connection ---------------------------------------
 console.log("Estableciendo conexion MongoDB Server...");
+
 var mongoose = require('mongoose');
 //var mongoDB = process.env.MONGODB_URI || 'mongodb://julio:Trackjy-2018@ds223812.mlab.com:23812/trackjy';
 var mongoDB = 'mongodb://localhost:27017/indoorlocation';
@@ -47,13 +53,26 @@ console.log("Establecienda la conexion con MongoDB Server");
 
 // validacion_Trilateracion();
 // iniciarValidacion()
-app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
-)
+
 
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}));
+
+
+app.use(session({
+  secret: 'Guardo un secreto',
+  resave: true,
+  saveUninitialized: true,
+  store: new MongoStore({
+    url: mongoDB,
+    autoReconnect: true
+  })
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+
 
 app.post('/post', (req, res) => {
   console.log(req.body[0].rssi)

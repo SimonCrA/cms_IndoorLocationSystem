@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const bcrypt = require('bcrypt-nodejs')
+
 // let Client = mongoose.model('Client');
 
 let rolesValidos = {
@@ -39,10 +41,6 @@ let userSchema = new Schema({
             default: 'USER_ROLE',
             enum: rolesValidos
         },
-        signUpDate:{
-            type: Date,
-            default: Date.now()
-        },
         img: {
             type: String,
             required: false
@@ -56,9 +54,40 @@ let userSchema = new Schema({
             required: false,
             enum: validDepartments
         },
-        client: { type: Schema.Types.ObjectId, ref: 'Client', required: true }
+        client: { type: Schema.Types.ObjectId, ref: 'Client', required: false }
 
+}, {
+    timestamps: true
 });
+
+userSchema.pre('save', function (next) {
+    const usuario = this;
+    if (!usuario.isModified('password')) {
+        return next();
+    }
+
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) {
+            next(err);
+        }
+        bcrypt.hash(usuario.password, salt, null, (err, hash) => {
+            if (err) {
+                next(err);
+            }
+            usuario.password = hash;
+            next();
+        });
+    });
+});
+
+userSchema.methods.compararPassword = function (password, callback) {
+    bcrypt.compare(password, this.password, (err, sonIguales) => {
+        if (err) {
+            return callback(err);
+        };
+        callback(null, sonIguales);
+    })
+};
 
 userSchema.methods.toJSON = function () {
     let user = this;

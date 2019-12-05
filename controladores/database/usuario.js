@@ -1,6 +1,8 @@
 
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
+const passport = require('passport')
+
 const User = require('../../models/usuario');
 
 let getAllUsuario = (req, res) =>{
@@ -67,23 +69,24 @@ let getOneUser = (req, res) =>{
 
 
 
-let postUser = (req, res) => {
+let postSignUp = (req, res, next) => {
+    console.log('entre en signup');
 
     let body = req.body;
     console.log(body);
 
-    let usuario =  new User ({
+    let usuario =  new User({
         name: body.name,
         surname: body.surname,
         email: body.email,
-        password: bcrypt.hashSync(body.password, 10),
+        password: body.password,
         role: body.role,
-        state: body.state,
-        department: body.department,
-        client: body.client
+        department: body.department
     });
 
     usuario.save( (err, usuarioCreado) => {
+        console.log(err);
+        console.log(usuarioCreado);
 
         if (err) {
             return res.status(400).json({
@@ -91,15 +94,44 @@ let postUser = (req, res) => {
                 err
             });
         };
+        req.logIn(usuario, (err) => {
+            if (err) {
+                next(err)
+            }
+            res.status(200).json({
+                ok: true,
+                usuarioCreado
+            });
+        })
 
-        res.json({
-            ok:true,
-            usuarioCreado
-        });
+        
 
     });
     
 
+}
+
+let postLogIn = (req, res, next) => {
+    passport.authenticate('local', (err, usuario, info) => {
+
+        if (err) {
+            next(err);
+        }
+        if (!usuario) {
+            return res.status(400).send('Email o Contraseña no son válidos')
+        }
+        req.logIn(usuario, (err) => {
+            if (err) {
+                next(err)
+            }
+            res.send('Login Exitoso')
+        })
+    })(req, res, next)
+}
+
+let logout = (req, res) => {
+    req.logout();
+    res.send('Logout Exitoso')
 }
 
 let putUser =(req, res) => {
@@ -158,5 +190,14 @@ let deleteUser = (req, res) => {
     });
 
 }
+console.log('entre en controller');
 
-module.exports = {getAllUsuario, getOneUser,postUser, putUser, deleteUser}
+module.exports = {
+    getAllUsuario,
+    getOneUser,
+    postSignUp,
+    postLogIn,
+    logout,
+    putUser,
+    deleteUser
+}
