@@ -24,11 +24,13 @@ var consulta = $.get( "../../../api/zona", function() {
   for (let i = 0; i < data.idzonas.length; i++) {
     // console.log(`data es ${i}====${JSON.stringify(data[i])}`);
     let zona = document.getElementById("List_IdZona");
+    let zona2 = document.getElementById("RegionList2");
 
     let option = document.createElement("option");
     option.text = data.idzonas[i]._id;
     
     zona.add(option);  
+    zona2.add(option);  
     
   }
   for (let i = 0; i < data.tags.length; i++) {
@@ -101,11 +103,17 @@ function startDespliegue(e) { //Inicia el Tracking del sistema (se utiliza cuand
     console.log(aviso);
     return false;
 }
-function startValidacion(e) {//Se utiliza cuando se procede a validar las constantes 
-    let aviso={aviso:'Inicio la validacion', tipo:'validar'}
-    socket.emit('despliegue', aviso); 
-    console.log(aviso);
-    return false;
+function startValidacion(e) {//Se utiliza cuando se procede a validar las constantes
+
+  let region = document.getElementById('RegionList2').value
+  let aviso={aviso:'Inicio la validacion', tipo:'validar', region}
+
+
+
+
+  socket.emit('despliegue', aviso); 
+  console.log(aviso);
+  return false;
 }
 function stopedAll(e) {// Detiene la ejecucion de todas las RPIs
     let aviso='detener el tracking desde client'

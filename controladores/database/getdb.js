@@ -162,6 +162,43 @@ let findZona = (req, res, next) => {
     });
 
 };
+
+
+/* *****************************************************************************************************
+*	GET RPI DE REGIONES
+*	
+/* *****************************************/
+
+
+
+let regionId = (region) =>{
+    return new Promise((resolve, reject ) =>{
+
+        InfoUbicacion.find({ estatus: true, idZona:region })
+            .populate('idZona')
+    
+            .exec((err, region) => {
+    
+                if (err) {
+                    return reject(err)
+                }
+                if(Array.isArray(region) && region.length){
+                    return resolve({
+                        ok: true,
+                        region
+                    })
+                }else{
+                    return reject('Data is Empty')
+
+                }
+
+                   
+            });
+    })
+
+}
+
+
 /* *****************************************
 *	Region
 *	
@@ -309,5 +346,5 @@ module.exports = {
     region,ubicacion,
     findZona,pisos,
     searchAssets,
-    activoGet, getTags
+    activoGet, getTags,regionId
 }

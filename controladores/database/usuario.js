@@ -190,7 +190,6 @@ let deleteUser = (req, res) => {
     });
 
 }
-console.log('entre en controller');
 
 module.exports = {
     getAllUsuario,

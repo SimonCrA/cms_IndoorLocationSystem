@@ -12,6 +12,7 @@ let {globalDataGraph, globalDataGraphDos, globalDataGraphDistance,jsoCanvas,
 const { io } = require('./bin/www');
 let {startTrilateracion} = require('./controladores/variables')
 const {iniciarValidacion} = require('./controladores/calculos/timer')
+const {regionId} = require('./controladores/database/getdb')
 
 
 var test = -1
@@ -38,47 +39,48 @@ let dato = (id, mac, token) =>{
     if(findIt>=0){
         console.log(`Socket.ID: (${id})||Mac: (${mac})`);
     }else{
-        if(findIt2>=0){
-            libreta[findIt2].socketID=id;
-            if(Users.length==1){
-                Users[0].token=token;
+        // if(findIt2>=0){
+        //     libreta[findIt2].socketID=id;
+        //     if(Users.length==1){
+        //         Users[0].token=token;
 
-            }
-            console.log(libreta);
-            console.log(Users);
+        //     }
+        //     // console.log(libreta);
+        //     // console.log(Users);
 
 
-        }else{
-            let usr={
-                token:token,
-                constantes:{nPropagacion:1,
-                            desviacionEstandar:1,
-                            rssiProm:1},
-                graphRaw:[{name:'',
-                            data:[{x:1,y:1}]
-                        }],
-                graphValidator:[{name:'',
-                                data:[{x:1, y:1}]}],
-                region:{id:'',
-                        rpi:[]},
+        // }else{
+            // let usr={
+            //     token:token,
+            //     constantes:{nPropagacion:1,
+            //                 desviacionEstandar:1,
+            //                 rssiProm:1},
+            //     graphRaw:[{name:'',
+            //                 data:[{x:1,y:1}]
+            //             }],
+            //     graphValidator:[{name:'',
+            //                     data:[{x:1, y:1}]}],
+            //     region:{id:'',
+            //             rpi:[]},
                 
-            }
-            if(Users.length==1){
-                Users[0].token=token;
+            // }
+            // if(Users.length==1){
+            //     Users[0].token=token;
 
-            }else{
-                Users.push(usr)
-
-            }
+            // }else{
+            //     Users.push(usr)
+            
+            // }
             libreta.push(json)
             console.log(libreta);
-            console.log(JSON.stringify(Users,null, ' '));
- 
+            // console.log(JSON.stringify(Users,null, ' '));
+            
+            // }
+            
         }
         
     }
-
-}
+    io.emit('test1', 'test');
 let sendAccion = (js)=>{
     
     io.to(js.id).emit('accion', js.distancia);
@@ -96,6 +98,56 @@ let startTracking= (aviso) =>{
 
     }
     io.emit('asset-tracking', aviso);
+}
+let startValidation= async(aviso) =>{
+    try{
+
+
+        console.log(aviso);
+        // startTrilateracion[0].a = true
+        // validacion_Trilateracion();
+    
+        await regionId(aviso.region).then(region=>{
+    
+            let arr=[]
+            console.log(region.region.length);
+    
+            for (let i = 0; i < region.region.length; i++) {
+                
+                let resul = libreta.find(fin=>fin.mac === region.region[i].macRpi )
+                if(!resul){
+                    console.log(`No hay nada`);
+                }
+                else if(resul.socketID === undefined){
+                    console.log(`ERROR: result= ${resul}\n Data= ${data[i]}`);
+                }else{
+
+                    let js={id:resul.socketID, tipo:aviso.tipo, mac:region.region[i].macRpi}
+                    arr.push(js)
+                    // console.log(resul.socketID);  
+                        
+                    
+    
+                    // console.log(resul);
+                    
+                    // console.log(`ID:${socket.id} dice ${JSON.stringify(data,null, 2)}`);
+                }
+                
+            }
+            if(arr.length===3){
+
+                for (let i = 0; i < arr.length; i++) {
+                    console.log(`HAY 3 MACS ${arr[i].id}|| ${arr[i].mac}`);
+                    io.to(arr[i].id).emit('asset-tracking', aviso);
+                }
+            }
+            // io.emit('asset-tracking', aviso);
+    
+        }, err => {console.log(err);});
+    
+
+    }catch(e){console.log(e);}    
+
 }
 let stoped= () =>{
     let aviso = 'detener el despliegue';
@@ -137,7 +189,8 @@ io.on('connection', function(socket){
     socket.on('libreta', data=>{
 
         console.log(`Add to libreta! serversockert.js line 84`);
-        dato(socket.id , data.mac, data.token );
+        console.log(data);
+        dato(socket.id , data );
         setlist();
         
     })
@@ -221,7 +274,8 @@ io.on('connection', function(socket){
         
         
     })
-    
+    socket.on('test1',data=>{console.log(data);})
+
     socket.on('accions', data =>{
         // console.log(data);
 
@@ -245,7 +299,13 @@ io.on('connection', function(socket){
     })
     socket.on('despliegue', data =>{
         console.log(data);
-        startTracking(data)
+        if(data.tipo==='validar'){
+            
+            startValidation(data)
+        }else{
+            startTracking(data)
+
+        }
     })
     socket.on('stop-all', data =>{
         console.log(data);

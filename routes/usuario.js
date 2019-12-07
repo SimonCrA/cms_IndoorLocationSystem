@@ -6,11 +6,11 @@ const apiUser = require ('../controladores/database/usuario')
 const passportConfig = require('../middlewares/passport')
 
 
-console.log('estoy aqui en rutas');
 //================================
 //Consultar los usuarios
 //================================
 router.get('/usuario', passportConfig.estaAutenticado, apiUser.getAllUsuario)
+// router.get('/usuario',  apiUser.getAllUsuario)
 
 //================================
 //Consultar un usuario

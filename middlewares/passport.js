@@ -32,8 +32,12 @@ passport.use(new LocalStrategy(
 ))
 
 exports.estaAutenticado = (req, res, next) => {
+
+    console.log(req);
     if (req.isAuthenticated()) {
+        console.log(`Paso....`);
         return next();
     }
+    console.log(`NO PASO`);
     res.status(401).send('es necesario hacer login para ingresar');
 }
