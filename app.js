@@ -105,7 +105,7 @@ app.use('/delete', deleteRouter);
 app.use('/get', getRouter);
 app.use('/login', loginRouter);
 app.use('/client', clientRouter);
-app.use('/img', imgRouter);
+app.use('/', imgRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
