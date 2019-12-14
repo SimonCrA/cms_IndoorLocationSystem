@@ -23,6 +23,7 @@ const getRouter = require('./routes/get');
 const variables = require('./controladores/variables')
 const apiUser = require('./routes/usuario')
 const loginRouter = require('./routes/login')
+const uploadRouter = require('./routes/upload')
 const clientRouter = require('./routes/client')
 const imgRouter = require('./routes/imagenes')
 var cors = require('cors');
@@ -106,6 +107,7 @@ app.use('/get', getRouter);
 app.use('/login', loginRouter);
 app.use('/client', clientRouter);
 app.use('/img', imgRouter);
+app.use('/upload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

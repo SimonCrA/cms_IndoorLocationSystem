@@ -12,20 +12,24 @@ const apiclient =  require('../controladores/database/client')
 //================================
 //Consultar los usuarios
 //================================
-router.get('/client', verificartoken, apiclient.getAllClients );
+router.get('/', apiclient.getAllClients );
 
 
 
 //================================
 //Consultar un usuario
 //================================
-router.get('/client/:id', verificartoken, apiclient.getAClient);
+router.get('/:id', verificartoken, apiclient.getAClient);
 
 
 //================================
 //Crear client
 //================================
-router.post('/', [verificartoken, verificarSuper_Role], apiclient.postClient);
+router.post('/', apiclient.postClient);
+
+router.put('/:id', apiclient.putClient);
+
+router.delete('/:id', apiclient.deleteClient);
 
 
 

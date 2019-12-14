@@ -27,10 +27,12 @@ var consulta = $.get( "../../../api/zona", function() {
     let zona2 = document.getElementById("RegionList2");
 
     let option = document.createElement("option");
+    let option2 = document.createElement("option");
     option.text = data.idzonas[i]._id;
+    option2.text = data.idzonas[i]._id;
     
     zona.add(option);  
-    zona2.add(option);  
+    zona2.add(option2);  
     
   }
   for (let i = 0; i < data.tags.length; i++) {
@@ -74,21 +76,42 @@ var consulta = $.get( "../../../api/zona", function() {
 *	El cual ordena que las rpi seleccionadas se ejecuten 
 * para la recoleccion de datos 
 /* *****************************************/ 
+$("#mostrar").hide('fast');
+
 function Send_to_particular_rpi(e) { 
+  // $('#mostrar').attr("value", 'Procesando')
+  
+  // $("#mostrar").attr("value","OTRO TEXTO");
+  // $("#mostrar").hide('slow');
+  $("#mostrar").empty();
+  $("#mostrar").show('slow');
+  $("#mostrar").append("Procesando");
     var array = [{ 
-      distancia: document.getElementById('mensaje').value, 
-      mac: document.getElementById('maclist1').value
+      distancia: document.getElementById('Distancia').value, 
+      mac: document.getElementById('maclist1').value      
     },{ 
-      distancia: document.getElementById('mensaje').value, 
+      distancia: document.getElementById('Distancia').value, 
       mac: document.getElementById('maclist2').value
     },{ 
-      distancia: document.getElementById('mensaje').value, 
+      distancia: document.getElementById('Distancia').value, 
       mac: document.getElementById('maclist3').value
     }]; 
-    socket.emit('accions', array); 
+    socket.emit('accions', array);  
     console.log(array);
+    // $('#mostrar').show();
+
     return false;
 }
+
+
+socket.on('show', data=>{
+
+  $("#mostrar").empty();
+  $("#mostrar").append("FINISHED");
+  // $("#mostrar").hide("slow");
+  // $('#mostrar').show('slow');
+
+})
 
 /* *****************************************
 *	De aca en adelante son las acciones de 

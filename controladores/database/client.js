@@ -128,13 +128,13 @@ let putClient = (req, res) =>{
 }
 
 let deleteClient = (req, res) => {
-
+    console.log('hola estoy en delete client');
     let id = req.params.id;
     let cambiaEstado = {
         state: false
     }
 
-    Client.findByIdAndUpdate(id, cambiaEstado, {new: true,runValidators: true,useFindAndModify: fals}, (err, clienteInhabilitado) => {
+    Client.findByIdAndUpdate(id, cambiaEstado, {new: true,runValidators: true,useFindAndModify: false}, (err, clienteInhabilitado) => {
 
         if (err) {
             return res.status(400).json({
@@ -147,7 +147,7 @@ let deleteClient = (req, res) => {
             ok: true,
             clienteBorrado: clienteInhabilitado
         });
-
+    // 
     });
 
 }

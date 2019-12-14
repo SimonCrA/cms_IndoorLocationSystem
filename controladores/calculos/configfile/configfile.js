@@ -109,7 +109,10 @@ let ejecucionEnSerie = (req, res, next) =>{
         }
 
         res.status(200).jsonp({
-            result: 'SAVED'
+
+            result: 'Finished'
+
+
         });
 
 

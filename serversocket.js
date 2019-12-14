@@ -82,7 +82,7 @@ let dato = (id, mac, token) =>{
     }
     io.emit('test1', 'test');
 let sendAccion = (js)=>{
-    
+    console.log(js);
     io.to(js.id).emit('accion', js.distancia);
     
 }
@@ -276,13 +276,22 @@ io.on('connection', function(socket){
     })
     socket.on('test1',data=>{console.log(data);})
 
+    socket.on('stop_DataCToServer',data =>{
+        console.log(`FINISHED:`.green+` la recoleccion de data ha terminado ${data}`.magenta);
+        socket.emit('show',data)
+    })
+
+
     socket.on('accions', data =>{
-        // console.log(data);
+        console.log(data);
 
         for (let i = 0; i < data.length; i++) {
             
             let resul = libreta.find(fin=>fin.mac === data[i].mac )
-            if(resul.socketID === undefined){
+            if(!resul){
+                console.log(`NO DATA`);
+            }
+            else if(resul.socketID === undefined){
                 console.log(`ERROR: result= ${resul}\n Data= ${data[i]}`);
             }else{
                 

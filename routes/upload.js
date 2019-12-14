@@ -1,4 +1,4 @@
-const express = require('express');
+    const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
 const User = require('../models/usuario');
@@ -10,7 +10,8 @@ let path = require('path');
 app.use(fileUpload({ useTempFiles: true }));
 
 
-app.put('/upload/:tipo/:id', (req, res) =>{
+app.put('/:tipo/:id', (req, res) =>{
+    console.log(`upload file`);
 
     let tipo = req.params.tipo;
     let id = req.params.id;
