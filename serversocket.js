@@ -170,6 +170,10 @@ let refresh = () =>{
     io.emit('Option-to-Validator', etiqueta)
 
 }
+let stoped_caracter= (data)=>{
+    io.emit('progressInfo',data)
+
+}
 
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
@@ -278,7 +282,7 @@ io.on('connection', function(socket){
 
     socket.on('stop_DataCToServer',data =>{
         console.log(`FINISHED:`.green+` la recoleccion de data ha terminado ${data}`.magenta);
-        socket.emit('show',data)
+        stoped_caracter(data)
     })
 
 

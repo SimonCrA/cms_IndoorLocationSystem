@@ -20,7 +20,7 @@ router.get('/tag_data', apiGet.getTags);
 *	Buscar activos
 *	
 /* *****************************************/
-router.get('/buscar/:termino', apiGet.searchAssets)
+router.get('/buscar/:termino/:item', apiGet.searchAssets)
 
 
 module.exports = router;

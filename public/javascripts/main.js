@@ -79,13 +79,10 @@ var consulta = $.get( "../../../api/zona", function() {
 $("#mostrar").hide('fast');
 
 function Send_to_particular_rpi(e) { 
-  // $('#mostrar').attr("value", 'Procesando')
-  
-  // $("#mostrar").attr("value","OTRO TEXTO");
-  // $("#mostrar").hide('slow');
+
   $("#mostrar").empty();
+  $("#mostrar").append("Procesando...");
   $("#mostrar").show('slow');
-  $("#mostrar").append("Procesando");
     var array = [{ 
       distancia: document.getElementById('Distancia').value, 
       mac: document.getElementById('maclist1').value      
@@ -98,18 +95,16 @@ function Send_to_particular_rpi(e) {
     }]; 
     socket.emit('accions', array);  
     console.log(array);
-    // $('#mostrar').show();
 
     return false;
 }
 
 
-socket.on('show', data=>{
+socket.on('progressInfo', data=>{
 
   $("#mostrar").empty();
   $("#mostrar").append("FINISHED");
-  // $("#mostrar").hide("slow");
-  // $('#mostrar').show('slow');
+    $("#mostrar").hide("slow");
 
 })
 
@@ -157,15 +152,20 @@ function refresh(e) {//Actualiza la libreta de direcciones del  Socket
 * para el momento de seleccionarle iniciar la segunda grafica 
 * la cual muestra las constantes seleccionadas
 /* *****************************************/
+var value;
+// var js={macrpi:'dc:a6:32:0b:a5:e6', mactag:'df:a9:ce:b7:4c:f1', regionid:'5dca1b8abfcbb1377cedd07d'}
+var js={macrpi:'', mactag:'', regionid:''}
 
 function setOption(e){
-  let value = e.value
+   value = e.value
   console.log(e.value);
-  let js={macrpi:'', mactag:''}
+  let region = document.getElementById('RegionList2').value
+
   let array = []
   array = value.split('-')
   js.macrpi = array[0]
   js.mactag = array[1]
+  js.regionid = region
   console.log(js);
 
 
@@ -209,6 +209,31 @@ function GetFromPagefileconfigData(e) {
 }
 
 
+
+
+
+
+function EstablecerConstants(e){
+
+  $.ajax({
+    contentType: 'application/json',
+    data: JSON.stringify(js),
+    dataType: 'json',
+    success: function(data){
+        console.log(`"device control succeeded" ${JSON.stringify(data)}`);
+    },
+    error: function(){
+        console.log("Device control failed");
+    },
+    processData: false,
+    type: 'POST',
+    url: '/post/newconstant'
+  });
+
+
+
+  return false;
+}
 
 
 

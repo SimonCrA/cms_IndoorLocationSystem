@@ -156,6 +156,8 @@ try{
             ]
             }
     ];
+
+
     console.log(globalDataGraphDos);
     console.log(req.body);
 
@@ -176,7 +178,9 @@ try{
 
             ConstsDistancia.aggregate([{
             $match: {
-                tipo: 'seleccionado'
+                tipo: 'seleccionado',
+                idRegion:req.body.regionid
+
             }
         },
         {
@@ -196,6 +200,8 @@ try{
     
         });
     }
+
+    
 
 
     let result = await getConstantes();

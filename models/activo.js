@@ -12,7 +12,7 @@ var activoSchema = new Schema({
 	
 		nombre: { type: String },
 		VIN: {type:Number},
-		anio: {type: Number},
+		anio: {type: String},
 		modelo: {type:String},
 		color: {type: String},
         tipo: {type: String },
