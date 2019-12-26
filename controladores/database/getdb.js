@@ -201,6 +201,7 @@ let region = (req, res, next) =>{
 let activoGet = (req, res, next) =>{
         
     Activo.find({})
+        .populate('idTag')
         .exec((err, activoBuscado) => {
 
             if (err) {
@@ -228,7 +229,7 @@ let activoGet = (req, res, next) =>{
 let pisos = (req, res, next) =>{
         
     Region.find({ estatus: true, tipo:'piso' })
-        .populate('idLocation')
+        .populate('tagInfo')
 
         .exec((err, pisos) => {
 
