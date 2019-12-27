@@ -18,10 +18,17 @@ let distancia =  async (req) => {
 
 try {
     // console.log(`Mcrpi= ${req.macrpi} && macTag= ${req.mactag}`);
+    let type;
+    if(req.tipo==='tracking'){
+        type='established'
+    }
+    else if(req.tipo==='validar'){
+        type='generado'
+    }
 
     let getConstantes = () =>{
         return new Promise((resolve, reject)=>{
-            ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag, tipo:'generado'}).sort({_id:-1})
+            ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag, tipo:type}).sort({_id:-1})
             .exec(function (err, data){
                 // console.log(`linea26: ${JSON.stringify(data)}`);
                 if(err){
@@ -55,6 +62,7 @@ try {
                 // console.log(`********************\n`);
                 // console.log(paramsValidacionCaract);
                 let error = Math.sqrt((Math.pow(paramsValidacionCaract[0].distError - parseFloat(distancia), 2)) )
+                
                 let datosJson = {
                     Distancia:distancia,
                     macRpi:req.macrpi,

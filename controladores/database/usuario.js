@@ -111,6 +111,39 @@ let postSignUp = (req, res, next) => {
 
 }
 
+let postUser = (req, res) =>{
+
+    let body = req.body;
+    // console.log(body);
+
+    let usuario =  new User({
+        name: body.name,
+        surname: body.surname,
+        email: body.email,
+        password: body.password,
+        role: body.role,
+        department: body.department
+    });
+    usuario.save( (err, usuarioCreado) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        };
+
+        res.json({
+            ok: true,
+            usuarioCreado
+        });
+
+    });
+
+
+}
+
+
 let postLogIn = (req, res, next) => {
     passport.authenticate('local', (err, usuario, info) => {
 
@@ -167,12 +200,12 @@ let putUser =(req, res) => {
 
 
 let deleteUser = (req, res) => {
-
+    
+    console.log(id);
     let id = req.params.id;
     let cambiaEstado = {
         state: false
     }
-
     User.findByIdAndUpdate(id, cambiaEstado, { new: true, runValidators: true, useFindAndModify: false }, (err, usuarioInhabilitado) => {
 
         if (err) {
@@ -190,7 +223,6 @@ let deleteUser = (req, res) => {
     });
 
 }
-console.log('entre en controller');
 
 module.exports = {
     getAllUsuario,
@@ -199,5 +231,6 @@ module.exports = {
     postLogIn,
     logout,
     putUser,
-    deleteUser
+    deleteUser,
+    postUser
 }

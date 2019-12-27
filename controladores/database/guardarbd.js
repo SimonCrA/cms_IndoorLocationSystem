@@ -267,6 +267,125 @@ let rawCaracterizacion = (data) => {
     //     rawMuestras
     // });
 }
+
+
+let newConstant = async (req, res, next)=>{
+    try {
+        let body = req.body;
+
+        console.log(body);
+
+        let promise_tag = ()=>{
+            return new Promise ((resolve, reject)=>{
+
+                TagInfo.aggregate([{
+                    $match: {
+                        estado: true        
+                    }
+                },
+                {
+                    "$group": {
+                        _id:"$mactag",
+                        count: {
+                            $sum: 1
+                        }
+                    }
+                }])
+                .exec((err, taginfo)=>{
+                    err
+                        ? reject(err) 
+                        : resolve(taginfo)
+                    
+                })
+
+            });
+        }
+        
+        let promise_rpi = ()=>{
+            return new Promise ((resolve, reject)=>{
+
+                // InfoUbicacionRpi.aggregate([{
+                //     $match: {
+                //         idZona: `ObjectId("${body.regionid}")`       
+                //     }
+                // },
+                // {
+                //     "$group": {
+                //         _id:"$macRpi",
+                //         count: {
+                //             $sum: 1
+                //         }
+                //     }
+                // }])
+                InfoUbicacionRpi.find({idZona:body.regionid})
+                .exec((err, rpiinfo)=>{
+                    err
+                        ? reject(err) 
+                        : resolve(rpiinfo)
+                    
+                })
+
+            });
+        }
+        let getConstantes = () =>{
+            return new Promise((resolve, reject)=>{
+                ConstsDistancia.find({macRpi:body.macrpi, macTag:body.mactag, tipo:'generado'}).sort({_id:-1})
+                .exec(function (err, data){
+                    err 
+                    ? reject(err) 
+                    : resolve(data[0])
+                });
+    
+            });
+        }
+        
+        let resultTag = await promise_tag();
+        let resultRPI = await promise_rpi();
+        let resultConstants = await getConstantes();
+        console.log(resultTag.length);
+        console.log(resultRPI.length);
+        console.log(resultConstants);
+
+        
+        for (let i = 0; i < resultTag.length; i++) {
+            console.log(resultTag[i]._id);
+            for (let j = 0; j < resultRPI.length; j++) {
+                console.log(resultRPI[j].macRpi);
+                let constantesDeBDs = new ConstsDistancia({
+
+                    macRpi: resultRPI[j].macRpi,
+                    macTag: resultTag[i]._id,
+                    rssiProm: resultConstants.rssiProm,
+                    nPropagacion: resultConstants.nPropagacion,
+                    desviacionEstandar: resultConstants.desviacionEstandar,
+                    idRegion:body.regionid,
+                    tipo:'established'
+
+                });
+                console.log(constantesDeBDs);
+                constantesDeBDs.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(400).jsonp({err});
+                    };
+                
+                    console.log("guarde en constantes:\n" + constantesDeBDs + "\n");
+                    
+                });
+                
+                
+            }            
+        }
+        console.log(`Finished`);
+        
+        res.status(202).jsonp({
+            ok: true
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 module.exports = {
     constantes,
     dataTag,
@@ -274,7 +393,8 @@ module.exports = {
     regiones,
     rawCaracterizacion,
     pisos,
-    activoPost
+    activoPost,
+    newConstant
 }
 
 

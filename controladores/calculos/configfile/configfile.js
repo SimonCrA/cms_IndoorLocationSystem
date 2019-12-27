@@ -100,8 +100,30 @@ let ejecucionEnSerie = (req, res, next) =>{
                     return next(err);
                 };
     
-                console.log("guarde Esto:\n" + constantesDeBD + "\n");
-                // Successful - redirect to new author record.	
+                // console.log("guarde Esto:\n" + constantesDeBD + "\n");
+
+            
+            });
+
+            let constantesDeB = new ConstsDistancia({
+    
+                macRpi: macrpi[i].macRpi,
+                macTag:  tag,
+                rssiProm: RSSIprom.respRssi[i],
+                nPropagacion: calculoDeN.respN[i].totalN,
+                desviacionEstandar: gaussDesviaProm.respvgcde[i].zmgvwsd,
+                idRegion:region,
+                tipo:'seleccionado'
+    
+            });
+    
+            constantesDeB.save(function (err){
+                if(err){
+                    console.log(err);
+                    return next(err);
+                };
+    
+                // console.log("guarde Esto:\n" + constantesDeBD + "\n");
 
             
             });
@@ -109,7 +131,10 @@ let ejecucionEnSerie = (req, res, next) =>{
         }
 
         res.status(200).jsonp({
-            result: 'SAVED'
+
+            result: 'Finished'
+
+
         });
 
 

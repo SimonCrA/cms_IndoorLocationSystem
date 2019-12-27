@@ -21,10 +21,20 @@ let searchAssets = async (req, res) => {
             return new Promise((resolve, reject) => {
 
                 let termino = req.params.termino; 
-                let regex = new RegExp(termino, 'i')
+                let item = req.params.item
+                let regex = new RegExp(termino, 'g')
+
+                // let busqueda = JSON.parse(`{"${item}":${regex}}`)
+                // console.log(busqueda)
+
+                if(item==='nombre'){ var busqueda2 = {nombre:regex} }
+                else if(item==='color'){ var busqueda2 = {color:regex} }
+                else if(item==='anio'){ var busqueda2 = {anio:regex} }
+                console.log(busqueda2);
+                
             
-            
-                Activo.find({nombre: regex})
+                // Activo.find(JSON.parse(`{"${item}":"${regex}"}`))
+                Activo.find(busqueda2)
                     // .limit(5)
                     .populate('idTag')
                     .exec((err, ActivoBuscado) => {
@@ -162,6 +172,43 @@ let findZona = (req, res, next) => {
     });
 
 };
+
+
+/* *****************************************************************************************************
+*	GET RPI DE REGIONES
+*	
+/* *****************************************/
+
+
+
+let regionId = (region) =>{
+    return new Promise((resolve, reject ) =>{
+
+        InfoUbicacion.find({ estatus: true, idZona:region })
+            .populate('idZona')
+    
+            .exec((err, region) => {
+    
+                if (err) {
+                    return reject(err)
+                }
+                if(Array.isArray(region) && region.length){
+                    return resolve({
+                        ok: true,
+                        region
+                    })
+                }else{
+                    return reject('Data is Empty')
+
+                }
+
+                   
+            });
+    })
+
+}
+
+
 /* *****************************************
 *	Region
 *	
@@ -310,5 +357,5 @@ module.exports = {
     region,ubicacion,
     findZona,pisos,
     searchAssets,
-    activoGet, getTags
+    activoGet, getTags,regionId
 }

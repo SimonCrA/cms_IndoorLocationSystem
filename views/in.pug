@@ -47,8 +47,8 @@ html(lang='en')
       hr
       form.form-inline(onsubmit='return addMessage(this)')
           .form-group.mb-2
-            label(for='maclist1') Region
-            select#maclist1.form-control.mx-3
+            label(for='RegionList2') Region
+            select#RegionList2.form-control.mx-3
       .card.py-4.h-100
           hr
           .row
@@ -69,6 +69,7 @@ html(lang='en')
           button.btn.btn-primary.mb-2(type='submit', onclick="startValidacion(this)") Start Validation
           button.btn.btn-primary.mb-2(type='submit', onclick="refresh(this)") refresh booklet
           button.btn.btn-danger.mb-2(type='submit', onclick="stopedAll(this)") Stop Tracking
+          button.btn.btn-primary.mb-2(type='submit', onclick="EstablecerConstants(this)") Establecer constantes
     .container
       h2(style='text-align: center;') Samples recolection
       .container
@@ -86,8 +87,9 @@ html(lang='en')
                 select#maclist3.form-control.mx-3
               .form-group.mx-sm-3.mb-2
                 label.sr-only(for='mensaje') texto mensaje
-                input#mensaje.form-control(type='text', placeholder='Distance')
+                input#Distancia.form-control(type='text', placeholder='Distance')
               button.btn.btn-primary.mb-2(type='submit') Send
+            a#mostrar dddddddddddddddddddddd
       hr
     .container
       h2(style='text-align: center;') Calculation Application

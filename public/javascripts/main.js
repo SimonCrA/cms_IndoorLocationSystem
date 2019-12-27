@@ -24,11 +24,15 @@ var consulta = $.get( "../../../api/zona", function() {
   for (let i = 0; i < data.idzonas.length; i++) {
     // console.log(`data es ${i}====${JSON.stringify(data[i])}`);
     let zona = document.getElementById("List_IdZona");
+    let zona2 = document.getElementById("RegionList2");
 
     let option = document.createElement("option");
+    let option2 = document.createElement("option");
     option.text = data.idzonas[i]._id;
+    option2.text = data.idzonas[i]._id;
     
     zona.add(option);  
+    zona2.add(option2);  
     
   }
   for (let i = 0; i < data.tags.length; i++) {
@@ -72,21 +76,37 @@ var consulta = $.get( "../../../api/zona", function() {
 *	El cual ordena que las rpi seleccionadas se ejecuten 
 * para la recoleccion de datos 
 /* *****************************************/ 
+$("#mostrar").hide('fast');
+
 function Send_to_particular_rpi(e) { 
+
+  $("#mostrar").empty();
+  $("#mostrar").append("Procesando...");
+  $("#mostrar").show('slow');
     var array = [{ 
-      distancia: document.getElementById('mensaje').value, 
-      mac: document.getElementById('maclist1').value
+      distancia: document.getElementById('Distancia').value, 
+      mac: document.getElementById('maclist1').value      
     },{ 
-      distancia: document.getElementById('mensaje').value, 
+      distancia: document.getElementById('Distancia').value, 
       mac: document.getElementById('maclist2').value
     },{ 
-      distancia: document.getElementById('mensaje').value, 
+      distancia: document.getElementById('Distancia').value, 
       mac: document.getElementById('maclist3').value
     }]; 
-    socket.emit('accions', array); 
+    socket.emit('accions', array);  
     console.log(array);
+
     return false;
 }
+
+
+socket.on('progressInfo', data=>{
+
+  $("#mostrar").empty();
+  $("#mostrar").append("FINISHED");
+    $("#mostrar").hide("slow");
+
+})
 
 /* *****************************************
 *	De aca en adelante son las acciones de 
@@ -101,11 +121,17 @@ function startDespliegue(e) { //Inicia el Tracking del sistema (se utiliza cuand
     console.log(aviso);
     return false;
 }
-function startValidacion(e) {//Se utiliza cuando se procede a validar las constantes 
-    let aviso={aviso:'Inicio la validacion', tipo:'validar'}
-    socket.emit('despliegue', aviso); 
-    console.log(aviso);
-    return false;
+function startValidacion(e) {//Se utiliza cuando se procede a validar las constantes
+
+  let region = document.getElementById('RegionList2').value
+  let aviso={aviso:'Inicio la validacion', tipo:'validar', region}
+
+
+
+
+  socket.emit('despliegue', aviso); 
+  console.log(aviso);
+  return false;
 }
 function stopedAll(e) {// Detiene la ejecucion de todas las RPIs
     let aviso='detener el tracking desde client'
@@ -126,15 +152,20 @@ function refresh(e) {//Actualiza la libreta de direcciones del  Socket
 * para el momento de seleccionarle iniciar la segunda grafica 
 * la cual muestra las constantes seleccionadas
 /* *****************************************/
+var value;
+// var js={macrpi:'dc:a6:32:0b:a5:e6', mactag:'df:a9:ce:b7:4c:f1', regionid:'5dca1b8abfcbb1377cedd07d'}
+var js={macrpi:'', mactag:'', regionid:''}
 
 function setOption(e){
-  let value = e.value
+   value = e.value
   console.log(e.value);
-  let js={macrpi:'', mactag:''}
+  let region = document.getElementById('RegionList2').value
+
   let array = []
   array = value.split('-')
   js.macrpi = array[0]
   js.mactag = array[1]
+  js.regionid = region
   console.log(js);
 
 
@@ -178,6 +209,31 @@ function GetFromPagefileconfigData(e) {
 }
 
 
+
+
+
+
+function EstablecerConstants(e){
+
+  $.ajax({
+    contentType: 'application/json',
+    data: JSON.stringify(js),
+    dataType: 'json',
+    success: function(data){
+        console.log(`"device control succeeded" ${JSON.stringify(data)}`);
+    },
+    error: function(){
+        console.log("Device control failed");
+    },
+    processData: false,
+    type: 'POST',
+    url: '/post/newconstant'
+  });
+
+
+
+  return false;
+}
 
 
 

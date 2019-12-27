@@ -5,8 +5,8 @@ const bodyParser = require('body-parser')
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -23,10 +23,11 @@ const getRouter = require('./routes/get');
 const variables = require('./controladores/variables')
 const apiUser = require('./routes/usuario')
 const loginRouter = require('./routes/login')
+const uploadRouter = require('./routes/upload')
 const clientRouter = require('./routes/client')
 const imgRouter = require('./routes/imagenes')
-console.log(`aca ES EL APP`);
 var cors = require('cors');
+console.log(`Server`+` ON . . .`.green);
 
 
 var app = express();
