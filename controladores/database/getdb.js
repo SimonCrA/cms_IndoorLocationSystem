@@ -3,7 +3,10 @@ const InfoUbicacion = require('../../models/ubicacion');
 const Region = require('../../models/zona')
 const Graficar = require('../../models/graficar')
 const Activo = require('../../models/activo');
+const Modelotopten = require('../../models/toptenmodelo');
+const Colortopten = require('../../models/toptencolor');
 const TagInfo = require ('../../models/tagInfo')
+const {contBusquedas} = require ('../variables')
 
 // const {ejecucionEnSerie} = require('../calculos/configfile/configfile');
 
@@ -15,7 +18,6 @@ const async = require('async');
 /* *****************************************/
 
 let searchAssets = async (req, res) => {
-    console.log("hola entre en buuscar activossss");
     try {
         let promise_Activo = () => {
             return new Promise((resolve, reject) => {
@@ -27,11 +29,21 @@ let searchAssets = async (req, res) => {
                 // let busqueda = JSON.parse(`{"${item}":${regex}}`)
                 // console.log(busqueda)
 
-                if(item==='nombre'){ var busqueda2 = {nombre:regex} }
-                else if(item==='color'){ var busqueda2 = {color:regex} }
+                if(item==='nombre'){ 
+                    var busqueda2 = {nombre:regex};
+                }
+                else if(item==='color'){
+                    var busqueda2 = {color:regex};
+                    contBusquedas[0].color++;
+
+                }
+                else if(item==='modelo'){
+                    var busqueda2 = {modelo:regex};
+                    contBusquedas[0].modelo++;
+
+                }
                 else if(item==='anio'){ var busqueda2 = {anio:regex} }
-                console.log(busqueda2);
-                
+                // console.log(busqueda2);
             
                 // Activo.find(JSON.parse(`{"${item}":"${regex}"}`))
                 Activo.find(busqueda2)
@@ -43,10 +55,22 @@ let searchAssets = async (req, res) => {
                             ?
                             reject(err) :
                             resolve(ActivoBuscado);
-            
+                            var dataIdActivo = []
+
+
+                            for (let i = 0; i < ActivoBuscado.length; i++) {
+                                dataIdActivo.push(ActivoBuscado[i]._id)
+                                
+                            }
+                            console.log(dataIdActivo);
+
+                            if (item === 'color') {
+                                guardaColorMasBuscado(dataIdActivo, contBusquedas[0])
+                            } else if (item === 'modelo') {
+                                guardaModeloMasBuscado(dataIdActivo, contBusquedas[0])
+                            }
+                           
                     });
-            
- 
             });
 
         }
@@ -91,7 +115,6 @@ let searchAssets = async (req, res) => {
             });
         }
         
-        
         let arrayfinish =[]
         let js
         let resultPromiseActivo = await promise_Activo()
@@ -99,7 +122,7 @@ let searchAssets = async (req, res) => {
         // console.log(`uno`);
 
         for (let i = 0; i < resultPromiseActivo.length; i++) {
-            console.log(`vuelta ${i}`);
+            // console.log(`vuelta ${i}`);
             
             let resultPromisePoint = await promise_pointXY(resultPromiseActivo[i]);
             // console.log(resultPromisePoint);
@@ -108,7 +131,7 @@ let searchAssets = async (req, res) => {
         }
 
         // console.log(JSON.stringify(arrayfinish, null, 2));
-
+        dataActivo = arrayfinish;
         if(arrayfinish[0]===undefined){
             return res.status(400).json({
                 ok: true,
@@ -118,6 +141,7 @@ let searchAssets = async (req, res) => {
             });
 
         }else{
+
 
             return res.status(200).json({
                 ok: true,
@@ -134,6 +158,43 @@ let searchAssets = async (req, res) => {
         
     }
     
+}
+
+let guardaModeloMasBuscado = (activo,cantBusqueda) => {
+
+    console.log(data);
+    let cantModelobuscado = new Modelotopten({
+        
+        activo: activo,
+        cantBusquedas: cantBusqueda.modelo
+        
+    });
+
+    cantModelobuscado.save((err) => {
+        if (err) {
+            return false
+        };
+        return true;
+
+    });
+}
+
+let guardaColorMasBuscado = (activo, cantbusqueda) => {
+    
+
+    let cantColorbuscado = new Colortopten({
+        activo: activo,
+        cantBusquedas: cantbusqueda.color
+    });
+
+
+    cantColorbuscado.save((err) => {
+        if (err) {
+            return false;
+        };
+        return true;
+
+    });
 }
 
 /* *****************************************
