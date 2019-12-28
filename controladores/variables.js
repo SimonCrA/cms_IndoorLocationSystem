@@ -1,6 +1,6 @@
 let globalFilter = [];
-let etiqueta = []
-let etiqueta2 = []
+let etiqueta = [];
+let etiqueta2 = [];
 
 let globalDataGraph = [
     {
@@ -10,6 +10,14 @@ let globalDataGraph = [
     }
 
 ];
+
+let contBusquedas = [
+    {
+        color: 0,
+        modelo: 0
+    }
+
+]
 
 console.log((globalDataGraph[0].data).length);
 
@@ -75,7 +83,6 @@ module.exports = {
     globalDataGraph,
     jsoCanvas,
     globalDataGraphDos,
-    etiqueta, 
-    startTrilateracion
+    etiqueta, startTrilateracion, contBusquedas
 
 }

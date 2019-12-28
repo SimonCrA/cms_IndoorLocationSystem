@@ -3,6 +3,7 @@ const fileUpload = require('express-fileupload');
 const app = express();
 const User = require('../models/usuario');
 const Client = require('../models/client');
+const Zona = require('../models/zona');
 let fs = require('fs');
 let path = require('path');
 
@@ -10,12 +11,11 @@ let path = require('path');
 app.use(fileUpload({ useTempFiles: true }));
 
 
-app.put('/:tipo/:id', (req, res) =>{
-    console.log(`upload file`);
+let uploadFile = (req, res) =>{
 
     let tipo = req.params.tipo;
     let id = req.params.id;
-
+    console.log(req.files);
     if (!req.files){
         return res.status(400).json({
             ok: false,
@@ -83,7 +83,7 @@ app.put('/:tipo/:id', (req, res) =>{
 
     });
 
-});
+};
 
 function guardarImgUsuario( id, res, nombreArchivo ){
 
@@ -170,7 +170,7 @@ function guardarImgClient(id, res, nombreArchivo) {
 }
 function guardarImgMap(id, res, nombreArchivo) {
 
-    Client.findById(id, (err, clientDB) => {
+    Zona.findById(id, (err, zonaDB) => {
         if (err) {
             borrarArchivo(nombreArchivo, 'maps');
 
@@ -179,26 +179,26 @@ function guardarImgMap(id, res, nombreArchivo) {
                 err
             });
         };
-        if (!clientDB) {
+        if (!zonaDB) {
             borrarArchivo(nombreArchivo, 'maps');
 
             return res.status(400).json({
                 ok: true,
                 err: {
-                    mensaje: 'no existe un client con ese id'
+                    mensaje: 'no existe un zona con ese id'
                 }
             });
         };
 
-        console.log(clientDB.img);
+        console.log(zonaDB.plano);
 
-        clientDB.img = nombreArchivo;
+        zonaDB.plano = nombreArchivo;
 
-        clientDB.save( (err, clienteActualizado) =>{
+        zonaDB.save( (err, zonaActualizada) =>{
             
             res.json({
                 ok: true,
-                client: clienteActualizado,
+                zona: zonaActualizada,
                 maps: nombreArchivo
             });
         });
@@ -216,4 +216,4 @@ let borrarArchivo = (nombreImagen, tipo) =>{
 
 }
 
-module.exports = app;
+module.exports = {app, uploadFile};
