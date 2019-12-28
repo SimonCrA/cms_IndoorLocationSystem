@@ -3,12 +3,10 @@ const InfoUbicacion = require('../../models/ubicacion');
 const Region = require('../../models/zona')
 const Graficar = require('../../models/graficar')
 const Activo = require('../../models/activo');
-const Modelotopten = require('../../models/toptenmodelo');
-const Colortopten = require('../../models/toptencolor');
+const Reportetopten = require('../../models/reportetopten');
 const TagInfo = require ('../../models/tagInfo')
-const {contBusquedas} = require ('../variables')
 
-// const {ejecucionEnSerie} = require('../calculos/configfile/configfile');
+const {crearReporte} = require('../database/reportes');
 
 const async = require('async');
 
@@ -19,6 +17,12 @@ const async = require('async');
 
 let searchAssets = async (req, res) => {
     try {
+        let dataBusqueda = {
+                tipo: '',
+                nombre: '',
+                date: 0
+            }
+        
         let promise_Activo = () => {
             return new Promise((resolve, reject) => {
 
@@ -26,21 +30,16 @@ let searchAssets = async (req, res) => {
                 let item = req.params.item
                 let regex = new RegExp(termino, 'g')
 
-                // let busqueda = JSON.parse(`{"${item}":${regex}}`)
-                // console.log(busqueda)
-
                 if(item==='nombre'){ 
                     var busqueda2 = {nombre:regex};
                 }
                 else if(item==='color'){
                     var busqueda2 = {color:regex};
-                    contBusquedas[0].color++;
-
+                    dataBusqueda.tipo = item;
                 }
                 else if(item==='modelo'){
                     var busqueda2 = {modelo:regex};
-                    contBusquedas[0].modelo++;
-
+                    dataBusqueda.tipo = item;
                 }
                 else if(item==='anio'){ var busqueda2 = {anio:regex} }
                 // console.log(busqueda2);
@@ -55,20 +54,19 @@ let searchAssets = async (req, res) => {
                             ?
                             reject(err) :
                             resolve(ActivoBuscado);
-                            var dataIdActivo = []
 
-
-                            for (let i = 0; i < ActivoBuscado.length; i++) {
-                                dataIdActivo.push(ActivoBuscado[i]._id)
-                                
-                            }
-                            console.log(dataIdActivo);
+                            dataBusqueda.date = new Date().getTime();
 
                             if (item === 'color') {
-                                guardaColorMasBuscado(dataIdActivo, contBusquedas[0])
-                            } else if (item === 'modelo') {
-                                guardaModeloMasBuscado(dataIdActivo, contBusquedas[0])
+                                dataBusqueda.nombre = ActivoBuscado[0].color;
+                            }else if (item === 'modelo'){
+                                dataBusqueda.nombre = ActivoBuscado[0].modelo;
                             }
+
+
+                            // crearReporte(dataBusqueda);
+                            console.log(ActivoBuscado[0]);
+                            
                            
                     });
             });
@@ -118,6 +116,10 @@ let searchAssets = async (req, res) => {
         let arrayfinish =[]
         let js
         let resultPromiseActivo = await promise_Activo()
+
+        dataBusqueda.date = new Date().getTime();
+        crearReporte(dataBusqueda);
+
         // console.log(resultPromiseActivo);
         // console.log(`uno`);
 
@@ -160,41 +162,68 @@ let searchAssets = async (req, res) => {
     
 }
 
-let guardaModeloMasBuscado = (activo,cantBusqueda) => {
-
-    console.log(data);
-    let cantModelobuscado = new Modelotopten({
-        
-        activo: activo,
-        cantBusquedas: cantBusqueda.modelo
-        
-    });
-
-    cantModelobuscado.save((err) => {
-        if (err) {
-            return false
-        };
-        return true;
-
-    });
-}
-
-let guardaColorMasBuscado = (activo, cantbusqueda) => {
+let getTopTen = (req, res) =>{
     
+    try {
+        let tipo = req.params.tipo
+        let busquedaDeReporte = (req, res) =>{
+            
+            return new Promise((resolve, reject) => {
+                Reportetopten.find({tipo: tipo}).sort({count:-1}).exec((err, toptenBuscado) => {
+                    
+                   if(err){
 
-    let cantColorbuscado = new Colortopten({
-        activo: activo,
-        cantBusquedas: cantbusqueda.color
+                       reject({
+                            ok: false,
+                            err
+                        }) 
+                   } 
+                    if (!toptenBuscado) {
+                        reject({
+                            ok: false,
+                            err: {
+                                msg: 'No han habido busquedas recientemente'
+                                    }
+                                })
+                            }
+                            resolve(
+                                {
+                                    ok: true,
+                            toptenBuscado
+                        })
+                        
+                    })
+                    
+            });
+    }
+    
+    let resultPromiseReporte = busquedaDeReporte().then(data =>{
+        let body = data.toptenBuscado
+        let arrayjs=[]
+        for (let i = 0; i < body.length; i++) {
+            arrayjs.push({
+                n: i+1,
+                modelo: body[i].nombre,
+                busquedas:body[i].count
+            })
+            
+        }
+        console.log(body);
+        res.status(200).jsonp({
+            arrayjs
+        })
+    }, err =>{
+        console.log(err);
+        res.status(400).jsonp({
+            err
+        })
+
     });
+    } catch (error) {
+        console.log(error);
+    }
 
 
-    cantColorbuscado.save((err) => {
-        if (err) {
-            return false;
-        };
-        return true;
-
-    });
 }
 
 /* *****************************************
@@ -418,5 +447,5 @@ module.exports = {
     region,ubicacion,
     findZona,pisos,
     searchAssets,
-    activoGet, getTags,regionId
+    activoGet, getTags, regionId, getTopTen
 }
