@@ -146,7 +146,7 @@ let trilateracion = (r1, r2, r3, x, y) =>{
     let C1C3 = 0
     let C2C3 = 0
 
-    if((r1 > x+0.5 || r2 > x+0.5 || r3 > x+0.5) && (r1 > y+0.5 || r2 > y+0.5 || r3 > y+0.5) ){
+    if((r1 > x+1.9 || r2 > x+1.9 || r3 > x+1.9) && (r1 > y+1.9 || r2 > y+1.9 || r3 > y+1.9) ){
         return {punt_x: (0),
         punt_y: 0,
         error:0,

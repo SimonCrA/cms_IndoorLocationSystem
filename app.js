@@ -53,6 +53,10 @@ console.log("Establecienda la conexion con MongoDB Server");
 //----------------------------------------------------------------------------
 
 // validacion_Trilateracion();
+
+
+
+
 // iniciarValidacion()
 
 

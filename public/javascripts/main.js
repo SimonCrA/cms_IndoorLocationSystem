@@ -6,7 +6,7 @@ $.getJSON('https://api.ipify.org?format=json', function(data){
   var mcy=''
   console.log(`esto es?`);
   console.log(data.ip);
-  mcy=data.ip
+  mcy=data.ip || '192.168.168.168'
   let json={mac:mcy, token:'3242352fewf234e23fdef234fdswefjwneirj234kj2n3kj4n23k4nk23nm4k2h3b4k2nm34kh23kj4n23k4h2k3j4k23n4i2u3i4n23d'}
   socket.emit('libreta', json);
 });
@@ -153,7 +153,8 @@ function refresh(e) {//Actualiza la libreta de direcciones del  Socket
 * la cual muestra las constantes seleccionadas
 /* *****************************************/
 var value;
-// var js={macrpi:'dc:a6:32:0b:a5:e6', mactag:'df:a9:ce:b7:4c:f1', regionid:'5dca1b8abfcbb1377cedd07d'}
+// var js={macrpi:'dc:a6:32:0b:a5:e6', mactag:'df:a9:ce:b7:4c:f1', regionid:'5dffc7e9c5a86004a87ca55c'}
+
 var js={macrpi:'', mactag:'', regionid:''}
 
 function setOption(e){

@@ -66,10 +66,16 @@ let Users=[
 ]
 
 module.exports = {
-    globalFilter,globalDataGraphDistance,Users,globalDataGraphDistanceDos,
-    paramsValidacionCaract,etiqueta2,
-    globalDataGraph,jsoCanvas,
+    globalFilter,
+    globalDataGraphDistance,
+    Users,
+    globalDataGraphDistanceDos,
+    paramsValidacionCaract,
+    etiqueta2,
+    globalDataGraph,
+    jsoCanvas,
     globalDataGraphDos,
-    etiqueta, startTrilateracion
+    etiqueta, 
+    startTrilateracion
 
 }

@@ -46,38 +46,38 @@ let dato = (id, mac, token) =>{
 
         //     }
         //     // console.log(libreta);
-        //     // console.log(Users);
+        //     console.log(Users);
 
 
         // }else{
-            // let usr={
-            //     token:token,
-            //     constantes:{nPropagacion:1,
-            //                 desviacionEstandar:1,
-            //                 rssiProm:1},
-            //     graphRaw:[{name:'',
-            //                 data:[{x:1,y:1}]
-            //             }],
-            //     graphValidator:[{name:'',
-            //                     data:[{x:1, y:1}]}],
-            //     region:{id:'',
-            //             rpi:[]},
+        //     let usr={
+        //         token:token,
+        //         constantes:{nPropagacion:1,
+        //                     desviacionEstandar:1,
+        //                     rssiProm:1},
+        //         graphRaw:[{name:'',
+        //                     data:[{x:1,y:1}]
+        //                 }],
+        //         graphValidator:[{name:'',
+        //                         data:[{x:1, y:1}]}],
+        //         region:{id:'',
+        //                 rpi:[]},
                 
-            // }
-            // if(Users.length==1){
-            //     Users[0].token=token;
+        //     }
+        //     if(Users.length==1){
+        //         Users[0].token=token;
 
-            // }else{
-            //     Users.push(usr)
+        //     }else{
+        //         Users.push(usr)
             
-            // }
+        //     }
             libreta.push(json)
             console.log(libreta);
             // console.log(JSON.stringify(Users,null, ' '));
             
-            // }
+            }
             
-        }
+        // }
         
     }
     io.emit('test1', 'test');

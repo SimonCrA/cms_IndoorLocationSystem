@@ -1,5 +1,5 @@
 
-socket.on('show-canvas', jso =>{
+socket.on('show-canvass', jso =>{
 
     console.log(jso);
     let color=''

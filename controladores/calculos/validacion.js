@@ -96,11 +96,12 @@ let validacion_Trilateracion = async ()=>{
         }
         let promesa_mactag = (region_) =>{
             return new Promise((resolve, reject) => {
-
+                // console.log(region_);
             constantes.aggregate([
             {
-                "$match": {
-                    "idRegion": region_
+                $match: {
+                    idRegion: `${region_}`
+                    // tipo:'established'
 
                 }
             },
@@ -111,7 +112,8 @@ let validacion_Trilateracion = async ()=>{
                         $sum: 1
                     }
                 }
-            }])
+            }
+        ])
             .exec( (err, agregate_mactag) =>{
                 err
                     ?
@@ -219,6 +221,8 @@ let validacion_Trilateracion = async ()=>{
             let statusShare=true
             let resultrpi = await promesa_macrpi(resultRegion[i]._id);
             let resulttag = await promesa_mactag(resultRegion[i]._id);
+            // console.log(resultRegion[i]._id);
+            // console.log(resulttag);
 
             let resultShare = await promise_share(resultRegion[i]._id);
             resulttag.forEach(element => {
@@ -230,7 +234,7 @@ let validacion_Trilateracion = async ()=>{
             if(resultShare[0] === undefined){
                 // console.log(`esta region no comparte Rpi`);
             }else{
-                share= resultShare[0].idZona
+                share= `${resultShare[0].idZona}`
                 // console.log(arrRpi);
                 // console.log(resultShare);
                 for (let i = 0; i < arrRpi.length; i++) {                   
@@ -243,7 +247,7 @@ let validacion_Trilateracion = async ()=>{
                 }
             }
             let obj={
-                region:resultRegion[i]._id,
+                region:`${resultRegion[i]._id}`,
                 rpi:arrRpi,
                 tag:arrtag,
                 share,
@@ -258,8 +262,9 @@ let validacion_Trilateracion = async ()=>{
         
 
 
-        
-
+        // console.log(`============================`);
+        // console.log(lista_Obj_trilaterar);
+        // console.log(`============================`);
 
         let interval1_1=lista_Obj_trilaterar.length;
         
@@ -311,6 +316,8 @@ let validacion_Trilateracion = async ()=>{
 
             
         }
+
+
         // console.log(`-----------------------------`);
         
         // console.log(lista_Obj_trilaterar);
@@ -365,10 +372,12 @@ let validacion_Trilateracion = async ()=>{
                                 y3 = resultadoUbicacion.ypos;
                             }
 
-
+                            // console.log(`-> ${lista_Obj_trilaterar[k].share}`);
+                            // console.log(`-< ${lista_Obj_trilaterar[k].region}`);
                             let findIt = lista_Obj_trilaterar.findIndex(obj => (
                                 obj.region ===  lista_Obj_trilaterar[k].share
                                 ) );
+                            // console.log(findIt);
                             
                             //ESTO SE DEBE HACER DESPUES DE DETERMINAR QUE
                             // AMBAS REGIONES COMPARTIDAS FUERON UTILIZADAS
@@ -377,6 +386,8 @@ let validacion_Trilateracion = async ()=>{
                             let findIt2 = lista_Obj_trilaterar[k].arrShare.indexOf(resultadoUbicacion.macRpi);
                             if(lista_Obj_trilaterar[k].share != null){
                                 if(findIt2>=0){
+                                    // console.log(findIt);
+                                    // console.log(lista_Obj_trilaterar[findIt].statusShare);
                                     if(lista_Obj_trilaterar[findIt].statusShare===false){
     
                                         // console.log(lista_Obj_trilaterar[findIt]);
