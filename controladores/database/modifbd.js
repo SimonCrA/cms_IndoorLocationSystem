@@ -262,8 +262,9 @@ let venderAuto = (req, res, next) =>{
         estado: false
     }
     let activoStatus = {
-        idTag: "a2a2a2a2a2a2a2a3a3a3a3a3",
-        estado: false
+        // idTag: "a2a2a2a2a2a2a2a3a3a3a3a3",
+        estado: false,
+        $unset: {idTag:""}
 
     }
 
@@ -273,7 +274,8 @@ let venderAuto = (req, res, next) =>{
         activo: function (callback) {
             Activo.findByIdAndUpdate(idActivo, activoStatus, {
                     new: true,
-                    runValidators: true
+                    runValidators: true,
+                    
                 },
                 (callback)
                 )
