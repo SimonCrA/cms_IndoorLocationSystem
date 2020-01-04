@@ -168,7 +168,7 @@ let logout = (req, res) => {
 }
 
 let putUser =(req, res) => {
-
+console.log(`Update user`);
     let id = req.params.id;
     let body = req.body;
 
@@ -200,13 +200,14 @@ let putUser =(req, res) => {
 
 
 let deleteUser = (req, res) => {
-    
-    console.log(id);
+    console.log(`Delete user`);
     let id = req.params.id;
     let cambiaEstado = {
         state: false
     }
     User.findByIdAndUpdate(id, cambiaEstado, { new: true, runValidators: true, useFindAndModify: false }, (err, usuarioInhabilitado) => {
+        console.log(usuarioInhabilitado);
+        console.log(err);
 
         if (err) {
             return res.status(400).json({

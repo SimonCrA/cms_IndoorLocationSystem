@@ -126,13 +126,11 @@ function startValidacion(e) {//Se utiliza cuando se procede a validar las consta
   let region = document.getElementById('RegionList2').value
   let aviso={aviso:'Inicio la validacion', tipo:'validar', region}
 
-
-
-
   socket.emit('despliegue', aviso); 
   console.log(aviso);
   return false;
 }
+
 function stopedAll(e) {// Detiene la ejecucion de todas las RPIs
     let aviso='detener el tracking desde client'
     socket.emit('stop-all', aviso); 

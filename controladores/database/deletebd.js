@@ -90,7 +90,7 @@ let deleteActivo = (req, res) => {
 
     let id = req.params.id;
     let cambiaEstado = {
-        state: false
+        estado: false
     }
 
     Activo.findByIdAndUpdate(id, cambiaEstado, {new: true,runValidators: true, useFindAndModify: false}, (err, activoInhabilitado) => {

@@ -49,7 +49,7 @@ mongoose.connect(mongoDB, {useNewUrlParser: true});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-console.log("Establecienda la conexion con MongoDB Server");
+console.log("Establecida la conexion con MongoDB Server: On");
 //----------------------------------------------------------------------------
 
 // validacion_Trilateracion();
