@@ -15,7 +15,10 @@ router.get('/pisos', apiGet.pisos);
 router.get('/ubicacion', apiGet.ubicacion);
 router.get('/activo', apiGet.activoGet);
 router.get('/tag_data', apiGet.getTags);
-router.get('/topten/:tipo', apiGet.getTopTen);
+router.get('/topten/:tipo/:order', apiGet.getTopTen);
+router.get('/topsales/:order', apiGet.getTopTenSales); 
+
+
 
 /* *****************************************
 *	Buscar activos

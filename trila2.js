@@ -82,5 +82,6 @@ let arr=[ { region: '5dffc7d6c5a86004a87ca55b',
     arrShare: [ 'dc:a6:32:0b:97:a7', 'dc:a6:32:0b:a2:6a' ] } ]
 
 let fin= arr.findIndex(obj=>obj.region==='5dffc7e9c5a86004a87ca55c')
-
-console.log(fin);
+let fecha = 1000000
+let time = new Date()
+console.log(time);

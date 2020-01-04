@@ -3,10 +3,15 @@ const InfoUbicacion = require('../../models/ubicacion');
 const Region = require('../../models/zona')
 const Graficar = require('../../models/graficar')
 const Activo = require('../../models/activo');
+
+const Toptensales = require('../../models/reportetoptenventas');
+
+
 const Reportetopten = require('../../models/reportetopten');
+const {crearReporte} = require('./SaveDataToReports');
+
 const TagInfo = require ('../../models/tagInfo')
 
-const {crearReporte} = require('../database/reportes');
 
 const async = require('async');
 
@@ -166,10 +171,17 @@ let getTopTen = (req, res) =>{
     
     try {
         let tipo = req.params.tipo
-        let busquedaDeReporte = (req, res) =>{
+        let order= req.params.order
+        let counter
+        if(order==="up"){
+            counter=-1;
+        }else if(order==="down"){ 
+            counter=1;
+        }
+        let busquedaDeReporte = () =>{
             
             return new Promise((resolve, reject) => {
-                Reportetopten.find({tipo: tipo}).sort({count:-1}).exec((err, toptenBuscado) => {
+                Reportetopten.find({tipo: tipo}).sort({count:counter}).exec((err, toptenBuscado) => {
                     
                    if(err){
 
@@ -185,7 +197,7 @@ let getTopTen = (req, res) =>{
                                 msg: 'No han habido busquedas recientemente'
                                     }
                                 })
-                            }
+                        }
                             resolve(
                                 {
                                     ok: true,
@@ -197,7 +209,7 @@ let getTopTen = (req, res) =>{
             });
     }
     
-    let resultPromiseReporte = busquedaDeReporte().then(data =>{
+    busquedaDeReporte().then(data =>{
         let body = data.toptenBuscado
         let arrayjs=[]
         for (let i = 0; i < body.length; i++) {
@@ -223,7 +235,79 @@ let getTopTen = (req, res) =>{
         console.log(error);
     }
 
+}
 
+
+
+
+let getTopTenSales = (req, res) =>{
+    try {
+        console.log('entre en ventas');
+         let order= req.params.order
+        let counter
+        if(order === "up"){
+            counter=-1;
+        }else if(order === "down"){ 
+            counter=1;
+        }
+         let busquedaDeReporte = () => {
+            return new Promise((resolve, reject) => {
+                Toptensales.find()
+                    .sort({count: counter})
+                    .exec((err, activoEncontrado)=>{
+                        if (err) {
+
+                            reject({
+                                ok: false,
+                                err
+                            })
+                        }
+                        if (!activoEncontrado) {
+                            reject({
+                                ok: false,
+                                err: {
+                                    msg: 'No han habido busquedas recientemente'
+                                }
+                            })
+                        }
+                        resolve({
+                            ok: true,
+                            activoEncontrado
+                        })
+                        
+                    })
+            });
+        }
+    busquedaDeReporte().then(data => {
+        let body = data.activoEncontrado
+        let arrayjs = []
+        for (let i = 0; i < body.length; i++) {
+            arrayjs.push({
+                n: i + 1,
+                marca:body[i].brand,
+                modelo: body[i].model,
+                anio: body[i].year,
+                color: body[i].color,
+                busquedas: body[i].count
+            })
+
+        }
+        console.log(body);
+        res.status(200).jsonp({
+            arrayjs
+        })
+    }, err => {
+        console.log(err);
+        res.status(400).jsonp({
+            err
+        })
+
+    });
+
+        
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 /* *****************************************
@@ -447,5 +531,7 @@ module.exports = {
     region,ubicacion,
     findZona,pisos,
     searchAssets,
-    activoGet, getTags, regionId, getTopTen
+    activoGet, getTags, 
+    regionId, getTopTen,
+    getTopTenSales
 }

@@ -11,7 +11,7 @@ var Schema = mongoose.Schema;
    
 var activoSchema = new Schema({
 	
-		nombre: { type: String },
+		nombre: { type: String }, //MARCA
 		VIN: {type:Number},
 		anio: {type: String},
 		modelo: {type:String},

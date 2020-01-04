@@ -16,5 +16,8 @@ router.put ('/activo/:id', apiModificar.putActivo);
 
 router.put ('/tag_data/:id', apiModificar.putTags);
 
+router.put ('/ventas/:idActivo/:idTag', apiModificar.venderAuto);
+
+
 
 module.exports = router;
