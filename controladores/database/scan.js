@@ -6,6 +6,8 @@ const filtroKalman = require('../calculos/kalmanfilter');
 const {validacion_Trilateracion} = require('../calculos/validacion');
 const async = require('async');
 var {paramsValidacionCaract, variablel1} = require('../variables');
+const TagInfo = require ('../../models/tagInfo')
+
 const d = require('../calculos/timer');
 
 
@@ -80,7 +82,43 @@ let processDataFromRpi = async (data) => {
 
 }
 
+let processGossipFromRpi = async (data) => {
 
+	try {
+
+		let buscarTag = new Promise((resolve, reject) => {
+
+			TagInfo.find()
+				.exec((err, tagDB) => {
+					if (err) {
+						return reject({
+							ok: false,
+							err
+						});
+					}
+					if (Array.isArray(tagDB) && tagDB.length) {
+						return reject({
+							ok: false,
+							err: {
+								msg: 'No hay tags registrados'
+							}
+						});
+					}
+
+					return resolve({
+						ok: true,
+						tagDB
+					})
+				})
+
+		})
+
+				
+	} catch (error) {
+		console.log(error);
+	}
+
+}
 
 
 let rpi = function(req, res, next) {	
@@ -130,6 +168,7 @@ let cambiar2 = (req, res, next) =>{
 	return res.status(200)
 
 }
+
 module.exports = {
 	cambiar,
 	cambiar2,
