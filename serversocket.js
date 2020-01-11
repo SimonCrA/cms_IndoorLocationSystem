@@ -240,6 +240,12 @@ io.on('connection', function(socket){
         console.log(data);
         refresh();
     })
+    socket.on('sendGossipToServer', (data)=>{
+
+    })
+    socket.on('sendGossipToServerEmpty', (data)=>{
+
+    })
     socket.on('sendDataToServer', (dataTracking)=>{
         // console.log(`tracking! ${socket.id}`);
         // console.log(dataTracking.length);

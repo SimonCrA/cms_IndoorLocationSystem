@@ -6,6 +6,8 @@ const filtroKalman = require('../calculos/kalmanfilter');
 const {validacion_Trilateracion} = require('../calculos/validacion');
 const async = require('async');
 var {paramsValidacionCaract, variablel1} = require('../variables');
+const TagInfo = require ('../../models/tagInfo')
+
 const d = require('../calculos/timer');
 
 
@@ -80,8 +82,99 @@ let processDataFromRpi = async (data) => {
 
 }
 
+let processGossipFromRpi = async (data) => {
+	//Esta función se ejecutará cada vez que el raspi envíe nueva data
+	//entonces recibe la data, y la compara con la base de datos
+	//para así poder actualizar sólo los valores de telemetría de los tags
+	//que están enviando o están siendo escaneados por el raspi.
+
+	let mactagTLM = ''
+	let arrMactagTLM = [];
+	
+	try {
+		for (let i = 0; i < data.length; i++) {
+			
+			
+			let resultTagsFound = buscarTag(data);
+
+			arrMactagTLM.push(resultTagsFound);
+
+			
+		}
+
+		let buscarTag = (dataTLM) => {
+			return new Promise((resolve, reject) => {
+
+				mactagTLM = dataTLM.macTag;
+
+				TagInfo.find({mactag: mactagTLM})
+					.exec((err, tagDB) => {
+						if (err) {
+							return reject({
+								ok: false,
+								err
+							});
+						}
+						if (Array.isArray(tagDB) && tagDB.length) {
+							return reject({
+								ok: false,
+								err: {
+									msg: 'No hay tags registrados'
+								}
+							});
+						}
+
+						return resolve({
+							ok: true,
+							tagDB
+						})
+					})
+
+		})
+
+		}
+		
+		let id = '';
+		let body = {};
+
+		for (let i = 0; i < arrMactagTLM.length; i++) {
+			
+			id = arrMactagTLM[i]._id;
+			body = {
+				temperature: arrMactagTLM[i].temperature,
+				batteryLevel: arrMactagTLM[i].batteryLevel
+			}
+
+			TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true }, (err, tagActualizado)=>{
+				if (err) {
+					return json({
+						ok: false,
+						err
+					})
+				}
+				
+				if (Array.isArray(tagActualizado) && tagActualizado.length) {
+					return json({
+						ok: false,
+						err: {
+							msg: 'no hay tags disponibles en la base de datos'
+						}
+					})
+				}
+				return json({
+					ok: true
+				})
 
 
+			});
+
+		}
+
+	} catch (error) {
+		console.log(error);
+	}
+
+}
 
 let rpi = function(req, res, next) {	
     console.log(`hey u`);
@@ -130,11 +223,13 @@ let cambiar2 = (req, res, next) =>{
 	return res.status(200)
 
 }
+
 module.exports = {
 	cambiar,
 	cambiar2,
 	processDataFromRpi,
 	rpi,
-	dato, avisar
+	dato, avisar,
+	processGossipFromRpi
 
 }
