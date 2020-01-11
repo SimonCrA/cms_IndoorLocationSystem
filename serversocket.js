@@ -13,6 +13,8 @@ const { io } = require('./bin/www');
 let {startTrilateracion} = require('./controladores/variables')
 const {iniciarValidacion} = require('./controladores/calculos/timer')
 const {regionId} = require('./controladores/database/getdb')
+const {processGossipFromRpi} = require('./controladores/database/scan');
+
 
 
 var test = -1
@@ -20,6 +22,8 @@ var test2 = -1
 
 
 let libreta=[];
+
+
 
 
 byClient = new Map();
@@ -86,6 +90,12 @@ let sendAccion = (js)=>{
     io.to(js.id).emit('accion', js.distancia);
     
 }
+
+setInterval(() => {
+
+    io.emit('getTLMPacket', 'StartGossip');
+
+}, 10000);
 
 let startTracking= (aviso) =>{
     
@@ -240,10 +250,13 @@ io.on('connection', function(socket){
         console.log(data);
         refresh();
     })
-    socket.on('sendGossipToServer', (data)=>{
+    socket.on('sendGossipToServer', (data) => {
+        console.log(data);
+        processGossipFromRpi(data);
 
     })
     socket.on('sendGossipToServerEmpty', (data)=>{
+        console.log(data);
 
     })
     socket.on('sendDataToServer', (dataTracking)=>{
