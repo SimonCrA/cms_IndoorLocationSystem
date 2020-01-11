@@ -4,7 +4,7 @@
 let client_countOld=0;
 let client_count=0
 
-const {processDataFromRpi} = require('./controladores/database/scan')
+const {processDataFromRpi, processGossipFromRpi} = require('./controladores/database/scan')
 const {rawCaracterizacion} = require('./controladores/database/guardarbd')
 let {globalDataGraph, globalDataGraphDos, globalDataGraphDistance,jsoCanvas,
     globalDataGraphDistanceDos, DistanciaError, paramsValidacionCaract, etiqueta,Users} = require('./controladores/variables')
