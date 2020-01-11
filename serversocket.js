@@ -66,6 +66,15 @@ try {
         })
      }
     
+}
+
+setInterval(() => {
+
+    io.emit('getTLMPacket', 'StartGossip');
+
+}, 10000);
+
+let startTracking= (aviso) =>{
     
     let sendAccion = (js)=>{
         console.log(js);
@@ -167,6 +176,8 @@ try {
     
     io.on('connection',  (socket)=>{
 
+
+
         // console.log('An user connected......');
         // console.log(socket);
         client_count++
@@ -226,10 +237,13 @@ try {
             console.log(data);
             refresh();
         })
-        socket.on('sendGossipToServer', (data)=>{
+        socket.on('sendGossipToServer', (data) => {
+            console.log(data);
+            processGossipFromRpi(data);
     
         })
         socket.on('sendGossipToServerEmpty', (data)=>{
+            console.log(data);
     
         })
         socket.on('sendDataToServer', (dataTracking)=>{
