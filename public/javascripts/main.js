@@ -10,6 +10,38 @@ $.getJSON('https://api.ipify.org?format=json', function(data){
   let json={mac:mcy, token:'3242352fewf234e23fdef234fdswefjwneirj234kj2n3kj4n23k4nk23nm4k2h3b4k2nm34kh23kj4n23k4h2k3j4k23n4i2u3i4n23d'}
   socket.emit('libreta', json);
 });
+console.log(`hey?`);
+
+var session=''
+function login(e) {
+  
+  let email = document.getElementById('inputEmail').value
+  let password = document.getElementById('inputPassword').value
+
+  let dataToSend = {email, password}
+  $.ajax({
+    contentType: 'application/json',
+    data: JSON.stringify(dataToSend),
+    dataType: 'json',
+    success: function(data){
+        console.log(`"device control succeeded" ${JSON.stringify(data)}`);
+        console.log(`${data.sessionId}`);
+        session = data.sessionId;
+        sessionStorage.setItem('sessionId',data.sessionId)
+    },
+    error: function(er){
+        console.log(`"Device control failed" `);
+        console.log(er);
+    },
+    processData: false,
+    type: 'POST',
+    url: '/users/login'
+  });
+
+
+  return false;
+}
+
 
 /* *****************************************
 *	Api:
@@ -122,9 +154,10 @@ function startDespliegue(e) { //Inicia el Tracking del sistema (se utiliza cuand
     return false;
 }
 function startValidacion(e) {//Se utiliza cuando se procede a validar las constantes
-
+  let sessions= sessionStorage.getItem('sessionId')
+  console.log(sessions);
   let region = document.getElementById('RegionList2').value
-  let aviso={aviso:'Inicio la validacion', tipo:'validar', region}
+  let aviso={aviso:'Inicio la validacion', tipo:'validar', region, sessions}
 
   socket.emit('despliegue', aviso); 
   console.log(aviso);
@@ -308,3 +341,7 @@ let render= async(data)=> {
 
 socket.on('libreta-list', function(data) { render(data); });
 
+function LogOut(e){
+  sessionStorage.clear()
+  return false
+}

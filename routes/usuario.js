@@ -9,8 +9,12 @@ const passportConfig = require('../middlewares/passport')
 //================================
 //Consultar los usuarios
 //================================
-// router.get('/usuario', passportConfig.estaAutenticado, apiUser.getAllUsuario)
-router.get('/usuario',  apiUser.getAllUsuario)
+
+
+router.get('/usuario', passportConfig.estaAutenticado, apiUser.getAllUsuario)
+
+
+// router.get('/usuario',  apiUser.getAllUsuario)
 
 //================================
 //Consultar un usuario

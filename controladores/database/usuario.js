@@ -2,7 +2,7 @@
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const passport = require('passport')
-
+let {Users} = require('../variables')
 const User = require('../../models/usuario');
 
 let getAllUsuario = (req, res) =>{
@@ -145,6 +145,7 @@ let postUser = (req, res) =>{
 
 
 let postLogIn = (req, res, next) => {
+
     passport.authenticate('local', (err, usuario, info) => {
 
         if (err) {
@@ -157,7 +158,38 @@ let postLogIn = (req, res, next) => {
             if (err) {
                 next(err)
             }
-            res.send('Login Exitoso')
+            console.log(req.sessionID);
+        let findIt2 = Users.findIndex(tarea =>tarea.sessionId === req.sessionID);
+        console.log(findIt2);
+        console.log(Users.length);
+        if( Users[0].sessionId === ''){
+            
+            Users[0].sessionId = req.sessionID
+        }else if(findIt2>=0){
+
+        }else{
+                let use={
+                    sessionId: req.sessionID,
+                    constantes:{nPropagacion:1,
+                                desviacionEstandar:1,
+                                rssiProm:1},
+                    graphRaw:[{name:'',
+                                data:[{x:1,y:1}]
+                            }],
+                    graphValidator:[{name:'',
+                                    data:[{x:1, y:1}]}],
+                    region:{id:'',
+                            rpi:[]},
+                    
+                }
+                Users.push(use)
+                
+                
+            }
+            
+            console.log(Users);
+            // res.send('Login Exitoso')
+            res.jsonp({ok:true, sessionId:req.sessionID})
         })
     })(req, res, next)
 }

@@ -269,7 +269,7 @@ let venderAuto = (req, res, next) =>{
     }
 
     
-
+    
     async.parallel({
         activo: function (callback) {
             Activo.findByIdAndUpdate(idActivo, activoStatus, {

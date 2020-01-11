@@ -51,7 +51,7 @@ var paramsValidacionCaract = [{distError: 1, mostrarGrafica: false, signal:false
 
 let Users=[
     {
-    token:'',
+    sessionId:'',
     constantes:{nPropagacion:1,
                 desviacionEstandar:1,
                 rssiProm:1},

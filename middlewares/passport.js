@@ -33,7 +33,8 @@ passport.use(new LocalStrategy(
 
 exports.estaAutenticado = (req, res, next) => {
 
-    console.log(req);
+    console.log(req.sessionID);
+
     if (req.isAuthenticated()) {
         console.log(`Paso....`);
         return next();
