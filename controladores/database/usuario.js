@@ -145,14 +145,14 @@ let postUser = (req, res) =>{
 
 
 let postLogIn = (req, res, next) => {
-
+    console.log(req.body);
     passport.authenticate('local', (err, usuario, info) => {
 
         if (err) {
             next(err);
         }
         if (!usuario) {
-            return res.status(400).send('Email o Contraseña no son válidos')
+            return res.status(408).send('Email o Contraseña no son válidos')
         }
         req.logIn(usuario, (err) => {
             if (err) {
@@ -160,12 +160,16 @@ let postLogIn = (req, res, next) => {
             }
             console.log(req.sessionID);
         let findIt2 = Users.findIndex(tarea =>tarea.sessionId === req.sessionID);
-        console.log(findIt2);
-        console.log(Users.length);
-        if( Users[0].sessionId === ''){
+        // console.log(findIt2);
+        // console.log(Users.length);
+        // if(Users.length >0){
+        //     if( Users[0].sessionId === ''){
             
-            Users[0].sessionId = req.sessionID
-        }else if(findIt2>=0){
+        //         Users[0].sessionId = req.sessionID
+        //     }
+        // }
+        // else
+        if(findIt2>=0){
 
         }else{
                 let use={
@@ -195,7 +199,19 @@ let postLogIn = (req, res, next) => {
 }
 
 let logout = (req, res) => {
+
+
+    console.log(req.sessionID);
+    console.log(Users);
+    let index = Users.findIndex(tarea =>tarea.sessionId === req.sessionID);
+    if(index >=0 ){
+        Users.splice(index, 1);
+
+    }
+    console.log(`SE DESCONECTO!`);
     req.logout();
+    console.log(Users);
+
     res.send('Logout Exitoso')
 }
 

@@ -95,7 +95,7 @@ let processGossipFromRpi = async (data) => {
 		for (let i = 0; i < data.length; i++) {
 			
 			
-			let resultTagsFound = buscarTag(data);
+			let resultTagsFound = buscarTag(data[i]);
 
 			arrMactagTLM.push(resultTagsFound);
 

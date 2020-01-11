@@ -50,20 +50,20 @@ var paramsValidacionCaract = [{distError: 1, mostrarGrafica: false, signal:false
 
 
 let Users=[
-    {
-    sessionId:'',
-    constantes:{nPropagacion:1,
-                desviacionEstandar:1,
-                rssiProm:1},
-    graphRaw:[{name:'',
-                data:[{x:1,y:1}]
-            }],
-    graphValidator:[{name:'',
-                    data:[{x:1, y:1}]}],
-    region:{id:'',
-            rpi:[]},
+//     {
+//     sessionId:'',
+//     constantes:{nPropagacion:1,
+//                 desviacionEstandar:1,
+//                 rssiProm:1},
+//     graphRaw:[{name:'',
+//                 data:[{x:1,y:1}]
+//             }],
+//     graphValidator:[{name:'',
+//                     data:[{x:1, y:1}]}],
+//     region:{id:'',
+//             rpi:[]},
     
-}
+// }
 ]
 
 module.exports = {

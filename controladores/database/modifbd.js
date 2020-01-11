@@ -45,7 +45,7 @@ let regiones = (req, res, next) => {
 }
 
 let pisos = (req, res, next) => {
-    
+    console.log(req.body);
 
 
     let id = req.params.id;
@@ -61,6 +61,7 @@ let pisos = (req, res, next) => {
                 err
             });
         }
+        console.log(regiondb);
         res.json({
             ok:true,
             Region: regiondb

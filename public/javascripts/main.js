@@ -2,46 +2,16 @@
 /* *****************************************
 *	Obtener La IP del cliente
 /* *****************************************/
+
+var sessionId = sessionStorage.getItem('sessionId')
 $.getJSON('https://api.ipify.org?format=json', function(data){
   var mcy=''
   console.log(`esto es?`);
   console.log(data.ip);
   mcy=data.ip || '192.168.168.168'
-  let json={mac:mcy, token:'3242352fewf234e23fdef234fdswefjwneirj234kj2n3kj4n23k4nk23nm4k2h3b4k2nm34kh23kj4n23k4h2k3j4k23n4i2u3i4n23d'}
+  let json={sessionId,mac:mcy, token:'3242352fewf234e23fdef234fdswefjwneirj234kj2n3kj4n23k4nk23nm4k2h3b4k2nm34kh23kj4n23k4h2k3j4k23n4i2u3i4n23d'}
   socket.emit('libreta', json);
 });
-console.log(`hey?`);
-
-var session=''
-function login(e) {
-  
-  let email = document.getElementById('inputEmail').value
-  let password = document.getElementById('inputPassword').value
-
-  let dataToSend = {email, password}
-  $.ajax({
-    contentType: 'application/json',
-    data: JSON.stringify(dataToSend),
-    dataType: 'json',
-    success: function(data){
-        console.log(`"device control succeeded" ${JSON.stringify(data)}`);
-        console.log(`${data.sessionId}`);
-        session = data.sessionId;
-        sessionStorage.setItem('sessionId',data.sessionId)
-    },
-    error: function(er){
-        console.log(`"Device control failed" `);
-        console.log(er);
-    },
-    processData: false,
-    type: 'POST',
-    url: '/users/login'
-  });
-
-
-  return false;
-}
-
 
 /* *****************************************
 *	Api:
@@ -147,7 +117,7 @@ socket.on('progressInfo', data=>{
 /* *****************************************/
 
 function startDespliegue(e) { //Inicia el Tracking del sistema (se utiliza cuando ya este todo caracterizado)
-  let aviso={aviso:'Inicio la Tracking', tipo:'tracking'}
+  let aviso={sessionId,aviso:'Inicio la Tracking', tipo:'tracking'}
 
     socket.emit('despliegue', aviso); 
     console.log(aviso);
@@ -157,7 +127,7 @@ function startValidacion(e) {//Se utiliza cuando se procede a validar las consta
   let sessions= sessionStorage.getItem('sessionId')
   console.log(sessions);
   let region = document.getElementById('RegionList2').value
-  let aviso={aviso:'Inicio la validacion', tipo:'validar', region, sessions}
+  let aviso={aviso:'Inicio la validacion', tipo:'validar', region, sessionId}
 
   socket.emit('despliegue', aviso); 
   console.log(aviso);
@@ -341,7 +311,12 @@ let render= async(data)=> {
 
 socket.on('libreta-list', function(data) { render(data); });
 
-function LogOut(e){
-  sessionStorage.clear()
+let  LogOut = async (e)=>{
+
+  $.get("http://192.168.0.101:3000/users/logout", function(data, status){
+    sessionStorage.clear()
+      location.href ="http://192.168.0.101:3000/prueba";
+    
+  });
   return false
 }
