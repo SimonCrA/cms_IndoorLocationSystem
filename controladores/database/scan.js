@@ -82,20 +82,23 @@ let processDataFromRpi = async (data) => {
 
 }
 
+
+
+
 let processGossipFromRpi = async (data) => {
 	//Esta función se ejecutará cada vez que el raspi envíe nueva data
 	//entonces recibe la data, y la compara con la base de datos
 	//para así poder actualizar sólo los valores de telemetría de los tags
 	//que están enviando o están siendo escaneados por el raspi.
 
-	let mactagTLM = ''
-	let arrMactagTLM = [];
 	
 	try {
+		let mactagTLM = ''
+		let arrMactagTLM = [];
 		for (let i = 0; i < data.length; i++) {
 			
 			
-			let resultTagsFound = buscarTag(data[i]);
+			let resultTagsFound = await buscarTag(data[i]);
 
 			arrMactagTLM.push(resultTagsFound);
 
@@ -105,7 +108,7 @@ let processGossipFromRpi = async (data) => {
 		let buscarTag = (dataTLM) => {
 			return new Promise((resolve, reject) => {
 
-				mactagTLM = dataTLM.macTag;
+				mactagTLM = dataTLM.mactag;
 
 				TagInfo.find({mactag: mactagTLM})
 					.exec((err, tagDB) => {
@@ -137,12 +140,12 @@ let processGossipFromRpi = async (data) => {
 		let id = '';
 		let body = {};
 
-		for (let i = 0; i < arrMactagTLM.length; i++) {
+		for (let i = 0; i < arrMactagTLM.tagDB.length; i++) {
 			
-			id = arrMactagTLM[i]._id;
+			id = arrMactagTLM.tagDB[i]._id;
 			body = {
-				temperature: arrMactagTLM[i].temperature,
-				batteryLevel: arrMactagTLM[i].batteryLevel
+				temperature: arrMactagTLM.tagDB[i].temperature,
+				batteryLevel: arrMactagTLM.tagDB[i].batteryLevel
 			}
 
 			TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true }, (err, tagActualizado)=>{
