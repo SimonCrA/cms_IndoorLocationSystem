@@ -14,6 +14,7 @@ let {startTrilateracion} = require('./controladores/variables')
 const {iniciarValidacion} = require('./controladores/calculos/timer')
 const {regionId} = require('./controladores/database/getdb')
 try {
+
     
 
     
@@ -66,7 +67,7 @@ try {
         })
      }
     
-}
+
 
 setInterval(() => {
 
@@ -74,7 +75,6 @@ setInterval(() => {
 
 }, 10000);
 
-let startTracking= (aviso) =>{
     
     let sendAccion = (js)=>{
         console.log(js);
@@ -369,6 +369,7 @@ let startTracking= (aviso) =>{
         });
     });
     // io.on
+
 } catch (error) {
     console.log(`CATCH DE SERVERSOCKET.JS `);
     console.log(error);
