@@ -174,7 +174,7 @@ setInterval(() => {
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
     
-    io.on('connection',  (socket)=>{
+    io.on('connection', async (socket)=>{
 
 
 
@@ -237,9 +237,11 @@ setInterval(() => {
             console.log(data);
             refresh();
         })
-        socket.on('sendGossipToServer', (data) => {
+        socket.on('sendGossipToServer',  async (data) => {
+            console.log(`SENDGOSSIPTOSERVER`);
             console.log(data);
-            processGossipFromRpi(data);
+            let res = await processGossipFromRpi(data)
+            console.log(res);
     
         })
         socket.on('sendGossipToServerEmpty', (data)=>{

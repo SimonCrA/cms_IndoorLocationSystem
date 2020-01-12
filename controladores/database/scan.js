@@ -93,85 +93,99 @@ let processGossipFromRpi = async (data) => {
 
 	
 	try {
-		let mactagTLM = ''
-		let arrMactagTLM = [];
-		for (let i = 0; i < data.length; i++) {
-			
-			
-			let resultTagsFound = await buscarTag(data[i]);
-
-			arrMactagTLM.push(resultTagsFound);
-
-			
-		}
-
-		let buscarTag = (dataTLM) => {
-			return new Promise((resolve, reject) => {
-
-				mactagTLM = dataTLM.mactag;
-
-				TagInfo.find({mactag: mactagTLM})
-					.exec((err, tagDB) => {
-						if (err) {
-							return reject({
-								ok: false,
-								err
-							});
-						}
-						if (Array.isArray(tagDB) && tagDB.length) {
-							return reject({
-								ok: false,
-								err: {
-									msg: 'No hay tags registrados'
-								}
-							});
-						}
-
-						return resolve({
-							ok: true,
-							tagDB
-						})
-					})
-
-		})
-
-		}
+		return new Promise(async(resolve, reject) => {
 		
-		let id = '';
-		let body = {};
-
-		for (let i = 0; i < arrMactagTLM.tagDB.length; i++) {
-			
-			id = arrMactagTLM.tagDB[i]._id;
-			body = {
-				temperature: arrMactagTLM.tagDB[i].temperature,
-				batteryLevel: arrMactagTLM.tagDB[i].batteryLevel
+		
+		
+			let mactagTLM = ''
+			let arrMactagTLM = [];
+			let buscarTag = (dataTLM) => {
+				return new Promise(  (resolve, reject) => {
+	
+					mactagTLM = dataTLM.mactag;
+	
+					TagInfo.find({mactag: mactagTLM})
+						.exec((err, tagDB) => {
+							// console.log(`TAGINFO`);
+							// console.log(tagDB);
+							if (err) {
+								return reject({
+									ok: false,
+									err
+								});
+							}
+							if (Array.isArray(tagDB) && tagDB.length) {
+							
+								return resolve({
+									ok: true,
+									tagDB
+								})
+							}else{
+								return reject({
+									ok: false,
+									err: {
+										msg: 'No hay tags registrados'
+									}
+								});
+	
+							}
+							
+						})
+	
+			})
+	
 			}
-
-			TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true }, (err, tagActualizado)=>{
-				if (err) {
-					return json({
-						ok: false,
-						err
-					})
-				}
+			for (let i = 0; i < data.length; i++) {
 				
-				if (Array.isArray(tagActualizado) && tagActualizado.length) {
-					return json({
-						ok: false,
-						err: {
-							msg: 'no hay tags disponibles en la base de datos'
-						}
-					})
+				
+				let resultTagsFound = await buscarTag(data[i]);
+	
+				arrMactagTLM.push(resultTagsFound);
+	
+				
+			}
+	
+			
+			let id = '';
+			let body = {};
+	
+			for (let i = 0; i < arrMactagTLM.length; i++) {
+				
+				id = arrMactagTLM[i].tagDB._id;
+				body = {
+					temperature: arrMactagTLM[i].tagDB.temperature,
+					batteryLevel: arrMactagTLM[i].tagDB.batteryLevel
 				}
-				return json({
-					ok: true
-				})
-
-
-			});
-
-		}
+	
+				TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true }, (err, tagActualizado)=>{
+					if (err) {
+						return reject({
+							ok: false,
+							err
+						})
+					}
+					
+					if (Array.isArray(tagActualizado) && tagActualizado.length) {
+						console.log(tagActualizado);
+						return resolve( {
+							ok: true
+						})
+	
+					}else{
+						return reject({
+							ok: false,
+							err: {
+								msg: 'no hay tags disponibles en la base de datos'
+							}
+						})
+	
+					}
+	
+	
+				});
+	
+			}
+		});
 
 	} catch (error) {
 		console.log(error);
