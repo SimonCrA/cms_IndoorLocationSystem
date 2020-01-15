@@ -93,8 +93,42 @@ let processGossipFromRpi = async (data) => {
 
 	
 	try {
-		return new Promise(async(resolve, reject) => {
 		
+		
+		let updateTag = (id, body)=>{
+			return new Promise(async(resolve, reject) => {
+				console.log(id);
+				console.log(body);
+			
+				TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true }, (err, tagActualizado)=>{
+					if (err) {
+						return reject({
+							ok: false,
+							err
+						})
+					}
+					
+					if (Array.isArray(tagActualizado) && tagActualizado.length) {
+						return reject({
+							ok: false,
+							err: {
+								msg: 'no hay tags disponibles en la base de datos'
+							}
+						})
+						
+					}else{
+							return resolve( {
+								ok: true
+							})
+	
+					}
+	
+	
+				});
+			});
+
+
+		}
 		
 		
 			let mactagTLM = ''
@@ -118,7 +152,7 @@ let processGossipFromRpi = async (data) => {
 							
 								return resolve({
 									ok: true,
-									tagDB
+									tagDB:tagDB[0]
 								})
 							}else{
 								return reject({
@@ -148,44 +182,27 @@ let processGossipFromRpi = async (data) => {
 			
 			let id = '';
 			let body = {};
+			// console.log(JSON.stringify(arrMactagTLM, null, 2));
+			// console.log(arrMactagTLM.	);
 	
 			for (let i = 0; i < arrMactagTLM.length; i++) {
-				
+				console.log(`for del update!!!`);
+				console.log(JSON.stringify(arrMactagTLM[i], null, 2));
 				id = arrMactagTLM[i].tagDB._id;
-				body = {
-					temperature: arrMactagTLM[i].tagDB.temperature,
-					batteryLevel: arrMactagTLM[i].tagDB.batteryLevel
+				let find = data.findIndex(obj =>obj.mactag === arrMactagTLM[i].tagDB.mactag)
+				if(find >=0){
+
+					body = {
+						temperature:data[find].temperature,
+						batteryLevel: data[find].batteryLevel
+					}
 				}
 	
-				TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true }, (err, tagActualizado)=>{
-					if (err) {
-						return reject({
-							ok: false,
-							err
-						})
-					}
-					
-					if (Array.isArray(tagActualizado) && tagActualizado.length) {
-						console.log(tagActualizado);
-						return resolve( {
-							ok: true
-						})
-	
-					}else{
-						return reject({
-							ok: false,
-							err: {
-								msg: 'no hay tags disponibles en la base de datos'
-							}
-						})
-	
-					}
-	
-	
-				});
+				let res = await updateTag(id, body)
+				
 	
 			}
-		});
+
 
 	} catch (error) {
 		console.log(error);

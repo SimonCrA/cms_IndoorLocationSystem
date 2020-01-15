@@ -28,7 +28,7 @@ let regiones = (req, res, next) => {
 
     
     Region.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, regiondb)=>{
-
+        console.log(regiondb);
         if(err){
             return res.status(400).json({
                 ok:false,
@@ -45,16 +45,19 @@ let regiones = (req, res, next) => {
 }
 
 let pisos = (req, res, next) => {
+
+    console.log(`SOY PISOS NO REGION STUPIDA!!`);
     console.log(req.body);
 
 
     let id = req.params.id;
 
     let body = _.pick(req.body,['idLocation','nombrePiso','numeroPiso','plano']) ;
-
+    console.log(`body`);
+    console.log(body);
     
     Region.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, regiondb)=>{
-
+        console.log(regiondb);
         if(err){
             return res.status(400).json({
                 ok:false,
@@ -72,10 +75,11 @@ let pisos = (req, res, next) => {
 }
  
 let putTags = (req, res, next) => {
+    console.log(req.body);
     console.log("holaaaaa estoy aquiiiii");
     let id = req.params.id;
     console.log(id);
-    let body = _.pick(req.body, ['nombre', 'tipo']);
+    let body = _.pick(req.body, ['nombre', 'tipo', 'mactag']);
 
     
     TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true, useFindAndModify: false },(err, tagModificado)=>{

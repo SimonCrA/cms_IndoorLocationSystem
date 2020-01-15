@@ -19,7 +19,8 @@ router.get('/', apiclient.getAllClients );
 //================================
 //Consultar un usuario
 //================================
-router.get('/:id', verificartoken, apiclient.getAClient);
+// router.get('/:id', verificartoken, apiclient.getAClient);
+router.get('/:id', apiclient.getAClient);
 
 
 //================================

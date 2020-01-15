@@ -26,6 +26,8 @@ const loginRouter = require('./routes/login')
 const uploadRouter = require('./routes/upload')
 const clientRouter = require('./routes/client')
 const imgRouter = require('./routes/imagenes')
+const {MakelogSistem, logSistem} =  require('./controladores/write_Log')
+let {nameFile} = require('./controladores/variables')
 var cors = require('cors');
 console.log(`Server`+` ON . . .`.green);
 
@@ -35,7 +37,6 @@ var app = express();
 
 const {validacion_Trilateracion} = require('./controladores/calculos/validacion');
 const {iniciarValidacion} = require('./controladores/calculos/timer')
-
 
 
 // -------- Set up mongoose connection ---------------------------------------
@@ -76,6 +77,16 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+MakelogSistem('Inicio app').then(archivo=>{
+  console.log(`Archivo creado ${archivo}`)
+  nameFile[0]= archivo  
+  console.log(nameFile);
+  
+})
+.catch(e=> console.log(e))
+
+
 
 
 

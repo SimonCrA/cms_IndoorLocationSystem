@@ -8,6 +8,7 @@ const Activo = require ('../../models/activo')
 
 
 let dataTag =  (req, res, next) =>{  
+    console.log(req.body);
               
     let tagInfo = new TagInfo({
         
@@ -156,7 +157,7 @@ let regiones = (req, res, next) =>{
 
 
 let pisos = (req, res, next) =>{
-    // console.log(req.body);
+
 
     let region = new Region({
 

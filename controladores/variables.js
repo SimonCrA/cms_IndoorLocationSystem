@@ -65,9 +65,11 @@ let Users=[
     
 // }
 ]
+let timeTLM = 3600000
 
+let nameFile= ['']
 module.exports = {
-    globalFilter,
+    globalFilter,timeTLM,nameFile,
     globalDataGraphDistance,
     Users,
     globalDataGraphDistanceDos,

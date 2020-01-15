@@ -10,9 +10,13 @@ let {globalDataGraph, globalDataGraphDos, globalDataGraphDistance,jsoCanvas,
     globalDataGraphDistanceDos, DistanciaError, paramsValidacionCaract, etiqueta,Users} = require('./controladores/variables')
 
 const { io } = require('./bin/www');
-let {startTrilateracion} = require('./controladores/variables')
+let {startTrilateracion, timeTLM} = require('./controladores/variables')
 const {iniciarValidacion} = require('./controladores/calculos/timer')
 const {regionId} = require('./controladores/database/getdb')
+const {logSistem} =  require('./controladores/write_Log')
+let {nameFile} = require('./controladores/variables')
+
+
 try {
 
     
@@ -39,12 +43,16 @@ try {
     
         let findIt = libreta.findIndex(tarea =>tarea.socketID === id);
         if(findIt>=0){
-            console.log(`Socket.ID: (${id})||Mac: (${mac})`);
+            logSistem(`Socket.ID: (${id})||Mac: (${mac})`, nameFile[0])
+
         }
         else{
           
             libreta.push(json)
-            console.log(libreta);
+
+            logSistem(`${JSON.stringify(libreta, null, 1)}`, nameFile[0])
+
+            // console.log(libreta);
             }
                 
             
@@ -73,7 +81,7 @@ setInterval(() => {
 
     io.emit('getTLMPacket', 'StartGossip');
 
-}, 10000);
+}, timeTLM);
 
     
     let sendAccion = (js)=>{
@@ -190,7 +198,7 @@ setInterval(() => {
         
         socket.on('libreta',async data=>{
             
-            console.log(`Add to libreta! serversockert.js line 84`);
+            logSistem(`Add to libreta! serversockert.js line 84`, nameFile[0])
             dato(socket.id , data );
             setlist();
             
@@ -237,11 +245,11 @@ setInterval(() => {
             console.log(data);
             refresh();
         })
-        socket.on('sendGossipToServer',  async (data) => {
+        socket.on('sendGossipToServer',  (data) => {
             console.log(`SENDGOSSIPTOSERVER`);
             console.log(data);
-            let res = await processGossipFromRpi(data)
-            console.log(res);
+             processGossipFromRpi(data)
+            
     
         })
         socket.on('sendGossipToServerEmpty', (data)=>{
@@ -320,8 +328,8 @@ setInterval(() => {
         })
         socket.on('despliegue', async data =>{
 
-            let res = await validacion_de_Usuario(data.sessionId).then(respons=>{
-                if(respons===true){
+            // let res = await validacion_de_Usuario(data.sessionId).then(respons=>{
+            //     if(respons===true){
                     console.log(data);
                     if(data.tipo==='validar'){
                         
@@ -331,10 +339,10 @@ setInterval(() => {
             
                     }
 
-                }
+            //     }
                 
 
-            }, err=>console.log(err));
+            // }, err=>console.log(err));
         })
         socket.on('stop-all', data =>{
             console.log(data);

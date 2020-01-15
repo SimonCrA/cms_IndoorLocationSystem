@@ -315,7 +315,7 @@ let  LogOut = async (e)=>{
 
   $.get("http://192.168.0.101:3000/users/logout", function(data, status){
     sessionStorage.clear()
-      location.href ="http://192.168.0.101:3000/prueba";
+      location.href ="http://192.168.0.101:3000/";
     
   });
   return false

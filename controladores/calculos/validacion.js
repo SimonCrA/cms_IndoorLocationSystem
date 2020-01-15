@@ -331,8 +331,6 @@ let validacion_Trilateracion = async ()=>{
             
             for (let j = 0; j < interval1_2; j++) {//TAGS
                 let interval1_3 = lista_Obj_trilaterar[k].rpi.length;
-                console.log(`${lista_Obj_trilaterar[k].region}`.yellow );
-                console.log(`${lista_Obj_trilaterar[k].tag[j]}`.green);
                 // let id_distancia=[]
                 for (let u = 0; u < interval1_3; u++) {//Ciclo de rpaspis
                     if(lista_Obj_trilaterar[k].tag[j] !== undefined){
@@ -468,8 +466,14 @@ let validacion_Trilateracion = async ()=>{
                     // console.log(`T_1: d1=${r1}, d2=${r2}, d3=${r3},`+`Error=${punto.error}`.red);
                     // console.log(`T_2: d1=${r1}, d2=${r2}, d3=${r3}, `+`Error=${punto2.error}`.red);
                     // console.log(`\n`);
-                    console.log(`Trilateracion_1:`);
-                    console.log(punto);
+                    if(punto.status == true){
+                        
+                        console.log(`${lista_Obj_trilaterar[k].region}`.yellow );
+                        console.log(`${lista_Obj_trilaterar[k].tag[j]}`.green);
+                        console.log(`Trilateracion_1:`);
+                        console.log(punto);
+                        
+                    }
                     // console.log(`\n`);
                     // console.log(`Trilateracion_2:`);
                     // // // console.log(`\n`);
