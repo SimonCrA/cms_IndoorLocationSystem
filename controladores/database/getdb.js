@@ -421,7 +421,7 @@ let region = (req, res, next) =>{
 
 let activoGet = (req, res, next) =>{
         
-    Activo.find({})
+    Activo.find({estado:true})
         .populate('idTag')
         .exec((err, activoBuscado) => {
 
@@ -500,7 +500,7 @@ let ubicacion = (req, res, next) =>{
 
 
 /* *****************************************
-*	Ubicacion Rpi
+*	TAGS ACTIVOS
 *	
 /* *****************************************/
 let getTags = (req, res, next) =>{
@@ -515,6 +515,57 @@ let getTags = (req, res, next) =>{
                     err
                 });
             }
+
+
+            tagGuardado.forEach((element, index) => {
+                if(element.batteryLevel != undefined ){
+                    // console.log(index);
+                    console.log(element.batteryLevel);
+                    
+                    tagGuardado[index].batteryLevel = (((element.batteryLevel/1000) /3) *100)   .toFixed(2)
+                    
+                    console.log(element.batteryLevel);
+                }
+            });
+
+            // console.log(tagGuardado);
+            res.status(200).json({
+                ok: true,
+                tagGuardado
+            });
+
+        });
+
+}
+/* *****************************************
+*	TAGS inactivos
+*	
+/* *****************************************/
+let getTagsfalse = (req, res, next) =>{
+        
+    TagInfo.find({estado: false})
+
+        .exec((err,tagGuardado ) => {
+
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+
+            tagGuardado.forEach((element, index) => {
+                if(element.batteryLevel != undefined ){
+                    // console.log(index);
+                    console.log(element.batteryLevel);
+                    
+                    tagGuardado[index].batteryLevel = (((element.batteryLevel/1000) /3) *100)   .toFixed(2)
+                    
+                    console.log(element.batteryLevel);
+                }
+            });
+
             // console.log(tagGuardado);
             res.status(200).json({
                 ok: true,
@@ -525,13 +576,80 @@ let getTags = (req, res, next) =>{
 
 }
 
+let contador = (req, res, next)=>{
 
+	async.parallel({
+		tagTrue: function(callback) {
+            TagInfo.find({estado: true}).count()
+              .exec(callback);
+        },
+		tagFalse: function(callback) {
+            TagInfo.find({estado: false}).count()
+              .exec(callback);
+        },
+		tagBateryLow: function(callback) {
+            TagInfo.find({batteryLevel:{$lt:1175}}).count()
+              .exec(callback);
+        },
+		regionesTrue: function(callback) {
+			Region.find({tipo:'region', estatus: true}).count()
+              .exec(callback);
+        },
+		regionesFalse: function(callback) {
+			Region.find({tipo:'region', estatus: false}).count()
+              .exec(callback);
+        },
+		pisoTrue: function(callback) {
+			Region.find({tipo:'piso', estatus: true}).count()
+              .exec(callback);
+        },
+		pisoFalse: function(callback) {
+			Region.find({tipo:'piso', estatus: false}).count()
+              .exec(callback);
+        },
+		gatewayTrue: function(callback) {
+			InfoUbicacion.find({estatus:true}).count()
+              .exec(callback);
+        },
+		gatewayFalse: function(callback) {
+			InfoUbicacion.find({estatus:false}).count()
+              .exec(callback);
+        }
+
+    }, function(err, results) {
+        if (err) { return next(err); }
+		// Successful, so render.
+		
+		// console.log({'idzonas':results.idzona, 'tags':results.tags});
+		res.status(200).jsonp({
+            'tagTrue':results.tagTrue,
+             'tagFalse':results.tagFalse,
+             'tagBateryLow': results.tagBateryLow,
+             'regionesTrue': results.regionesTrue,
+             'regionesFalse': results.regionesFalse,
+             'pisoTrue': results.pisoTrue,
+             'pisoFalse': results.pisoFalse,
+             'gatewayTrue': results.gatewayTrue,
+             'gatewayFalse': results.gatewayFalse
+            
+            });
+		
+    });
+
+
+}
 
 module.exports = {
-    region,ubicacion,
-    findZona,pisos,
+    region,
+    ubicacion,
+    findZona,
+    pisos,
     searchAssets,
-    activoGet, getTags, 
-    regionId, getTopTen,
-    getTopTenSales
+    activoGet,
+     getTags, 
+    regionId, 
+    getTopTen,
+    getTopTenSales,
+    contador,
+    getTagsfalse
 }
