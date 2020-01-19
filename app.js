@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const fileUpload = require('express-fileupload');
 
 
 
@@ -63,6 +64,7 @@ console.log("Establecida la conexion con MongoDB Server: On");
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(fileUpload({ useTempFiles: true }));
 
 
 app.use(session({
