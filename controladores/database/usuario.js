@@ -218,11 +218,14 @@ let logout = (req, res) => {
 let putUser =(req, res) => {
 console.log(`Update user`);
     let id = req.params.id;
-    let body = req.body;
+
+    let body = _.pick(req.body,['name','surname','role', 'department']) ;
+
 
     User.findByIdAndUpdate(id, body, {new: true, runValidators: true, useFindAndModify: false }, (err, usuarioModificado) =>{
-
+    console.log(usuarioModificado);
         if (err) {
+            console.log(err);
             return res.status(500).json({
                 ok: false,
                 err
