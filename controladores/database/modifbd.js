@@ -102,7 +102,8 @@ let putTags = (req, res, next) => {
 let putActivo = (req, res) => {
 
     let id = req.params.id;
-    let body = req.body;
+    // let body = req.body;
+    let body = _.pick(req.body, ['nombre', 'tipo','VIN', 'anio', 'modelo', 'color', 'descripcion']);
 
     Activo.findByIdAndUpdate(id, body, {new: true,runValidators: true,useFindAndModify: false}, (err, activoModificado) => {
 
