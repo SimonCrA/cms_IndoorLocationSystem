@@ -89,11 +89,155 @@
 
 
 
-let d = new Date();
+// let d = new Date();
 
 
-var datestring = d.getFullYear()  + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-("0" + d.getDate()).slice(-2) + "-:" + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + ":" + ("0" + d.getSeconds()).slice(-2) ;
+// var datestring = d.getFullYear()  + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+// ("0" + d.getDate()).slice(-2) + "-:" + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + ":" + ("0" + d.getSeconds()).slice(-2) ;
 
 
-console.log(datestring);
+// console.log(datestring);
+
+
+
+
+let array = [
+    {
+        "_id": "5d714f8dbe48251a587daf79",
+        "mactag": "cc:50:e3:a9:8e:d6",
+        "nombre": "tag1_ESP32",
+        "tipo": "ventas",
+        "estado": false,
+        "__v": 0
+    },
+    {
+        "_id": "5d729714284aa90a041e085f",
+        "mactag": "c4:2f:eb:44:2c:ea",
+        "nombre": "tag_lemon",
+        "tipo": "ventas",
+        "estado": true,
+        "__v": 0
+    },
+    {
+        "_id": "5d72bcc0d773281c848cea90",
+        "mactag": "c4:4f:33:0b:35:23",
+        "nombre": "tag2_ESP32",
+        "tipo": "ventas",
+        "estado": true,
+        "__v": 0
+    },
+    {
+        "_id": "5d72bcf4d773281c848cea91",
+        "mactag": "c4:4f:33:0b:aa:1b",
+        "nombre": "tag3_ESP32",
+        "tipo": "ventas",
+        "estado": true,
+        "__v": 0
+    },
+    {
+        "_id": "5dbd0b4f0137bd3410fcf1ad",
+        "mactag": "ee:23:f3:72:56:17",
+        "nombre": "tag1_Betrooth",
+        "tipo": "ventas",
+        "estado": true,
+        "__v": 0
+    },
+    {
+        "_id": "5dbd0b5f0137bd3410fcf1ae",
+        "mactag": "e5:57:fe:96:d6:f8",
+        "nombre": "tag1_Candy",
+        "tipo": "ventas",
+        "estado": true,
+        "__v": 0
+    },
+    {
+        "_id": "5ddeda61de8f9041902e1359",
+        "mactag": "c8:64:46:ac:3a:18",
+        "nombre": "PtDatz",
+        "tipo": "ventas",
+        "estado": true,
+        "temperature": 0,
+        "batteryLevel": 0,
+        "__v": 0
+    },
+    {
+        "_id": "5ddeda7ede8f9041902e135a",
+        "mactag": "c4:04:ca:41:50:ad",
+        "nombre": "PtQ09p",
+        "tipo": "ventas",
+        "estado": true,
+        "temperature": 28.5,
+        "batteryLevel": 2975,
+        "__v": 0
+    },
+    {
+        "_id": "5ddeda97de8f9041902e135b",
+        "mactag": "df:a9:ce:b7:4c:f1",
+        "nombre": "PtX9uL",
+        "tipo": "ventas",
+        "estado": true,
+        "temperature": 29.75,
+        "batteryLevel": 2962,
+        "__v": 0
+    },
+    {
+        "_id": "5de81b749f8ef02c9cd47d3f",
+        "mactag": "12::234:234:",
+        "nombre": "esphfhf",
+        "tipo": null,
+        "estado": false,
+        "__v": 0
+    },
+    {
+        "_id": "5e0e3779f0ba1222285264e6",
+        "mactag": "cc:50:e3:a9:8e:d623232323",
+        "nombre": "tag1_ESP32222wwwww",
+        "tipo": "servicio",
+        "__v": 0,
+        "estado": false
+    },
+    {
+        "_id": "5e1b0ad285741214c4bb2d5f",
+        "mactag": "23:23:23:23:23:23",
+        "nombre": "tagbeco",
+        "tipo": null,
+        "__v": 0
+    },
+    {
+        "_id": "5e1b0e91757cb83774468b39",
+        "mactag": "24:24:24:24:24:24:",
+        "nombre": "tagbeco223fsdf",
+        "tipo": null,
+        "__v": 0
+    },
+    {
+        "_id": "5e20cd722f1ea3235cf7186d",
+        "mactag": "beto:jose:Lb",
+        "nombre": "beto",
+        "tipo": "Ventas",
+        "__v": 0
+    }
+]
+
+
+
+
+
+
+
+// array.forEach((element, index) => {
+//     if(element.batteryLevel != undefined){
+//         // console.log(index);
+//         console.log(element.batteryLevel);
+        
+//         array[index].batteryLevel = ((element.batteryLevel/1000) /3) *100
+        
+//         console.log(element.batteryLevel);
+
+        
+        
+
+//     }
+// });
+
+console.log(((1175/1000)/3)*100);
