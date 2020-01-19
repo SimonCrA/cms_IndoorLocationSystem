@@ -15,7 +15,9 @@ let dataTag =  (req, res, next) =>{
         mactag: req.body.mactag,
         nombre: req.body.nombre,
         tipo: req.body.tipo,
-        estado:req.body.estado
+        estado:false,
+        temperature: 0,
+        batteryLevel: 0
 
     }); 
 
@@ -77,15 +79,15 @@ let constantes =  (req, res, next) =>{
 
 
 let ubicacion = (req, res, next)=>{
-    
+    console.log(req.body);
 
     let ubicacion = new InfoUbicacionRpi({
 
-        macRpi: req.body.macrpi,
+        macRpi: req.body.macRpi,
         axis: req.body.axis,
         xpos: req.body.xpos,
         ypos: req.body.ypos,
-        idZona: req.body.idzona,
+        idZona: req.body.idZona,
         compartido: req.body.idzonaCompartido
 
     });
@@ -158,6 +160,7 @@ let regiones = (req, res, next) =>{
 
 let pisos = (req, res, next) =>{
 
+    console.log(req.body);
 
     let region = new Region({
 
@@ -198,7 +201,7 @@ let pisos = (req, res, next) =>{
 
 let activoPost = (req, res, next) =>{
     // console.log(req.body);
-
+    let idbeacon = req.body.idTag
     let activo = new Activo({
 
         nombre: req.body.nombre,
@@ -222,10 +225,27 @@ let activoPost = (req, res, next) =>{
             });
         };
 
-        res.status(200).json({
-            ok: true,
-            activoCreado
-        });
+
+        let id = idbeacon;
+
+        let body = {
+            estado:true
+        }
+       
+        
+        TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, tag)=>{
+            if(err){
+                console.log(err);
+            }
+            console.log(tag);
+            
+            res.status(200).json({
+                ok: true,
+                activoCreado
+            });
+        })
+
+
 
     });
 
@@ -397,191 +417,3 @@ module.exports = {
     activoPost,
     newConstant
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// /* 1 */
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "b8:27:eb:bd:36:61",
-//     "axis" : "x",
-//     "xpos" : 6,
-//     "ypos" : 0,
-//     "idZona" : "5dbdd4d35faeb2211cf84e5e",
-//     "__v" : 0
-// }
-
-// /* 2 */
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "b8:27:eb:de:9f:60",
-//     "axis" : "o",
-//     "xpos" : 0,
-//     "ypos" : 0,
-//     "idZona" : "5dbdd4d35faeb2211cf84e5e",
-//     "__v" : 0
-// }
-
-// /* 3 */
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "b8:27:eb:d4:04:c9",
-//     "axis" : "y",
-//     "xpos" : 0,
-//     "ypos" : 6,
-//     "idZona" : "5dbdd4d35faeb2211cf84e5e",
-//     "__v" : 0
-// }
-
-// /* 4 */
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "dc:a6:32:0b:97:a7",
-//     "axis" : "y",
-//     "xpos" : 0,
-//     "ypos" : 6,
-//     "idZona" : "5dbdd5035faeb2211cf84e5f",
-//     "__v" : 0
-// }
-
-// /* 5 */
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "dc:a6:32:0b:a2:6a",
-//     "axis" : "o",
-//     "xpos" : 0,
-//     "ypos" : 0,
-//     "idZona" : "5dbdd5035faeb2211cf84e5f",
-//     "__v" : 0
-// }
-
-// /* 6 */
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "dc:a6:32:0b:a2:be",
-//     "axis" : "x",
-//     "xpos" : 6,
-//     "ypos" : 0,
-//     "idZona" : "5dbdd5035faeb2211cf84e5f",
-//     "__v" : 0
-// }
-
-// /* 7 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "dc:a6:32:0b:a2:6a",
-//     "axis" : "o",
-//     "xpos" : 0,
-//     "ypos" : 0,
-//     "idZona" : "5dd1ab5465597324382a8a1f",
-//     "__v" : 0
-// }
-
-// /* 14 */
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "dc:a6:32:0b:a2:be",
-//     "axis" : "y",
-//     "xpos" : 0,
-//     "ypos" : 2.8,
-//     "idZona" : "5dd1ab5465597324382a8a1f",
-//     "__v" : 0
-// }
-
-// /* 15 */
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "dc:a6:32:0b:a5:e6",
-//     "axis" : "x",
-//     "xpos" : 2.8,
-//     "ypos" : 0,
-//     "idZona" : "5dd1ab5465597324382a8a1f",
-//     "__v" : 0
-// }
-
-// /* 16 */
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "b8:27:eb:de:9f:60",
-//     "axis" : "o",
-//     "xpos" : 0,
-//     "ypos" : 0,
-//     "idZona" : "5dd1ab8265597324382a8a20",
-//     "__v" : 0
-// }
-
-// /* 17 */
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "b8:27:eb:bd:36:61",
-//     "axis" : "y",
-//     "xpos" : 0,
-//     "ypos" : 2.9,
-//     "idZona" : "5dd1ab8265597324382a8a20",
-//     "__v" : 0
-// }
-
-// /* 18 */
-// {
-    
-//     "estatus" : false,
-//     "macRpi" : "b8:27:eb:d4:04:c9",
-//     "axis" : "x",
-//     "xpos" : 2.6,
-//     "ypos" : 0,
-//     "idZona" : "5dd1ab8265597324382a8a20",
-//     "__v" : 0
-// }
