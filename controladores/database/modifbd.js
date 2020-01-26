@@ -265,12 +265,14 @@ let venderAuto = (req, res, next) =>{
 
 
     let tagStatus = {
-        estado: false
+        estado: false,
+        
     }
     let activoStatus = {
         // idTag: "a2a2a2a2a2a2a2a3a3a3a3a3",
         estado: false,
-        $unset: {idTag:""}
+        $unset: {idTag:""},
+        endDate: new Date().getTime()
 
     }
 
