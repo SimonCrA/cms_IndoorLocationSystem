@@ -279,7 +279,7 @@ let crearReporteTiempoServicio = async (activo) =>{
     let resultSearchAsset = await searchAsset();
     let resta = 0;
         
-        let resta = resultSearchAsset.endDate- resultSearchAsset.startDate;
+        resta = resultSearchAsset.endDate- resultSearchAsset.startDate;
         let contdias = Math.round(resta/(1000*60*60*24));
         let conthoras = Math.round(resta/(1000*60*60));
         let contmin = resta/(1000*60);
