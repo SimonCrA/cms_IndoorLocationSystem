@@ -8,7 +8,10 @@ const Toptensales = require('../../models/reportetoptenventas');
 
 
 const Reportetopten = require('../../models/reportetopten');
-const {crearReporte, crearReporteTiempoVenta} = require('./SaveDataToReports');
+const {
+    crearReporte, crearReporteTiempoVenta,
+    crearReporteTiempoServicio
+        } = require('./SaveDataToReports');
 
 const TagInfo = require ('../../models/tagInfo')
 
@@ -310,6 +313,16 @@ let getTopTenSales = (req, res) =>{
 
 let getSaleTime = async (req, res) =>{
     let resultado = await crearReporteTiempoVenta();
+    // console.log(resultado);
+
+    res.status(200).json({
+        ok: true,
+        resultado
+    })
+}
+
+let getServiceTime = async (req, res) =>{
+    let resultado = await crearReporteTiempoServicio();
     // console.log(resultado);
 
     res.status(200).json({
@@ -659,6 +672,7 @@ module.exports = {
     getTopTen,
     getTopTenSales,
     getSaleTime,
+    getServiceTime,
     contador,
     getTagsfalse
 }

@@ -18,7 +18,8 @@ router.get('/tag_data', apiGet.getTags);
 router.get('/tag_data/false', apiGet.getTagsfalse);
 router.get('/topten/:tipo/:order', apiGet.getTopTen);
 router.get('/topsales/:order', apiGet.getTopTenSales); 
-router.get('/', apiGet.getSaleTime);
+router.get('/saletime', apiGet.getSaleTime);
+router.get('/servicetime', apiGet.getServiceTime);
 
 router.get('/counter', apiGet.contador); 
 

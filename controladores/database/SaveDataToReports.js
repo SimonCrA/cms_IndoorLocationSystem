@@ -252,6 +252,43 @@ let crearReporteTiempoVenta = async () =>{
 
      return arrActivo
 }
+let crearReporteTiempoServicio = async (activo) =>{
+
+    let arrActivo = [];
+    let id = activo._id;
+    let searchAsset = () => {
+        try {
+    
+            return new Promise((resolve, reject) => {
+                Activo.findById(id,(err, activoDB)=>{
+
+                    err
+                        ?
+                        reject(err) :
+
+                        resolve(activoDB)
+                })
+                    
+            })
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    let resultSearchAsset = await searchAsset();
+    let resta = 0;
+        
+        let resta = resultSearchAsset.endDate- resultSearchAsset.startDate;
+        let contdias = Math.round(resta/(1000*60*60*24));
+        let conthoras = Math.round(resta/(1000*60*60));
+        let contmin = resta/(1000*60);
+        let tiempoTotal = contdias+ ':' + conthoras + ':' + contmin.toFixed(1);
+        arrActivo.push(tiempoTotal);
+        
+
+     return arrActivo
+}
 
 
 
@@ -262,5 +299,6 @@ let crearReporteTiempoVenta = async () =>{
 module.exports = {
     crearReporte,
     crearReporteVentas,
-    crearReporteTiempoVenta
+    crearReporteTiempoVenta,
+    crearReporteTiempoServicio
 }
