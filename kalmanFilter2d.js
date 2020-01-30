@@ -1,84 +1,100 @@
 const matrix = require('matrix-js');
 
-var f = [
-    [1, 1],
-    [0, 1],
 
 
-]
 
-var p = [
-    [10, 0],
-    [0, 10],
-
-]
-var xx = [
-    [1],
-    [1]
-]
-
-var pp = [
-    [1, 1],
-    [1, 1]
-]
-
-var q = [
-    [0.0001, 0.0001],
-    [0.0001, 0.0001]
-]
-
-var h = [
-    [1, 0],
-    [0, 1]
-]
-
-var r = [
-    [5, 0],
-    [0, 5],
-
-]
-
-var z = [
-    [2],
-    [1]
-]
-
-var Xk_1 = [
-    [2],
-    [1],
-
-]
-
-
-var X = matrix(x);
-var F = matrix(f);
-var P_Before = matrix(p);
-var X_mirror = matrix(xx);
-var P_mirror = matrix(pp);
-var Qk = matrix(q);
-var H = matrix(h);
-var ht = H.trans();
-var HT = matrix(ht);
-var ft = F.trans();
-var FT = matrix(ft);
-var R = matrix(r);
-var Z = matrix(z);
-var X_Before = matrix(Xk_1);
-
-
-var arr = []
-for (let i = 0; i < 7; i++) {
-    z = [
-        [0],
+let dataToKalman2D = (arrayFromValidation)=>{
+    var f = [
+        [1, 1],
+        [0, 1],
+    
+    
+    ]
+    
+    var p = [
+        [10, 0],
+        [0, 10],
+    
+    ]
+    var xx = [
+        [1],
         [1]
     ]
-
-    Z = matrix(z);
-    arr.push(Z)
-}
-for (let i = 0; i < arr.length; i++) {
-
-    console.log(arr[i]());
+    
+    var pp = [
+        [1, 1],
+        [1, 1]
+    ]
+    
+    var q = [
+        [0.0001, 0.0001],
+        [0.0001, 0.0001]
+    ]
+    
+    var h = [
+        [1, 0],
+        [0, 1]
+    ]
+    
+    var r = [
+        [5, 0],
+        [0, 5],
+    
+    ]
+    
+    var z = [
+        [2],
+        [1]
+    ]
+    
+    var Xk_1 = [
+        [2],
+        [1],
+    
+    ]
+    
+    
+    var X = matrix(x);
+    var F = matrix(f);
+    var P_Before = matrix(p);
+    var X_mirror = matrix(xx);
+    var P_mirror = matrix(pp);
+    var Qk = matrix(q);
+    var H = matrix(h);
+    var ht = H.trans();
+    var HT = matrix(ht);
+    var ft = F.trans();
+    var FT = matrix(ft);
+    var R = matrix(r);
+    var Z = matrix(z);
+    var X_Before = matrix(Xk_1);
+    
+    
+    var arr = []
+    
+    for (let i = 0; i < arrayFromValidation.length; i++) {
+        z = [
+            [arrayFromValidation[i].x],
+            [arrayFromValidation[i].y]
+        ]
+    
+        Z = matrix(z);
+    
+        if (i === 0) {
+            console.log("soy 0");
+            res = doKalmanfilter(X_Before, P_Before, Z);
+            console.log(res.X_Before());
+    
+        } else {
+            console.log(`soy ${i}`);
+            res = doKalmanfilter(res.X_Before, res.P_Before, Z);
+            console.log(res.X_Before());
+    
+    
+        }
+    
+    
+    }
 
 }
 
@@ -164,18 +180,7 @@ let res;
 console.log("\n");
 let interval = setInterval(() => {
 
-    if (j === 0) {
-        console.log("soy 0");
-        res = doKalmanfilter(X_Before, P_Before, arr[j]);
-        console.log(res.X_Before());
-
-    } else {
-        console.log(`soy ${j}`);
-        res = doKalmanfilter(res.X_Before, res.P_Before, arr[j]);
-        console.log(res.X_Before());
-
-
-    }
+    
     j++;
 
     if (j === 5) {
@@ -183,3 +188,8 @@ let interval = setInterval(() => {
 
     }
 }, 1000);
+
+
+module.exports = {
+    dataToKalman2D
+}
