@@ -30,14 +30,21 @@ try {
     
     
     byClient = new Map();
-    let dato = (id, mac, token) =>{
+    let dato = (id, mac, sessionid) =>{
         let json
-        if(token){
-            json={socketID:id,  token }
+        if(sessionid){
+            json={
+                socketID:id,
+                sessionid, 
+                mac
+                }
             
         }
         else {
-            json={socketID:id, mac, stat:false}
+            json={
+                socketID:id,
+                mac
+                }
     
         }
     
@@ -186,8 +193,7 @@ setInterval(() => {
 
 
 
-        // console.log('An user connected......');
-        // console.log(socket);
+        console.log(`'An user connected...... ${socket.id}'`);
         client_count++
         //añadir datos a la grafica...
         // setInterval(() => {
@@ -305,7 +311,7 @@ setInterval(() => {
         socket.on('accions', data =>{
             console.log(data);
     
-            for (let i = 0; i < data.length; i++) {
+            for (let i = 0; i <( data.length - 1); i++) {
                 
                 let resul = libreta.find(fin=>fin.mac === data[i].mac )
                 if(!resul){
