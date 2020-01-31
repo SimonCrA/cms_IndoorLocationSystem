@@ -252,6 +252,7 @@ let crearReporteTiempoVenta = async () =>{
 
      return arrActivo
 }
+
 let crearReporteTiempoServicio = async (activo) =>{
 
     let arrActivo = [];
@@ -290,6 +291,52 @@ let crearReporteTiempoServicio = async (activo) =>{
      return arrActivo
 }
 
+let crearReporteMasTiempoDealer = async () =>{
+
+    let arrActivo = [];
+    let searchAsset = () => {
+        try {
+
+            return new Promise((resolve, reject) => {
+
+                Activo.find({ estado: true })
+                    .sort({startDate:-1})
+                    .exec((err, activoDB) => {
+                        err
+                            ?
+                            reject(err) :
+
+                            resolve(activoDB)
+                    })
+
+            })
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    let resultSearchAsset = await searchAsset();
+
+    let dataObject = {};
+
+    for (let i = 0; i < resultSearchAsset.length; i++) {
+        
+        dataObject = {
+            VIN : resultSearchAsset[i].VIN,
+            date: resultSearchAsset[i].startDate,
+            name: resultSearchAsset[i].nombre,
+            model: resultSearchAsset[i].modelo
+        };
+
+        arrActivo.push(dataObject);
+        
+    }
+
+    return arrActivo;
+
+}
+
 
 
 
@@ -300,5 +347,6 @@ module.exports = {
     crearReporte,
     crearReporteVentas,
     crearReporteTiempoVenta,
-    crearReporteTiempoServicio
+    crearReporteTiempoServicio,
+    crearReporteMasTiempoDealer
 }
