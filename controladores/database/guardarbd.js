@@ -6,6 +6,8 @@ const RawMuestras = require ('../../models/rawdatamuestras')
 const TagInfo = require ('../../models/tagInfo')
 const Activo = require ('../../models/activo')
 
+const {conversorP_M} = require('../variables')
+
 
 let dataTag =  (req, res, next) =>{  
     console.log(req.body);
@@ -80,19 +82,23 @@ let constantes =  (req, res, next) =>{
 
 let ubicacion = (req, res, next)=>{
     console.log(req.body);
+  
+    let ubicaciones = req.body.ubicacion.toUpperCase()
 
     let ubicacion = new InfoUbicacionRpi({
 
         macRpi: req.body.macRpi,
         axis: req.body.axis,
-        xpos: req.body.xpos,
-        ypos: req.body.ypos,
+        ubicacion: ubicaciones,
+        xpos: conversorP_M(req.body.xpos),
+        ypos: conversorP_M(req.body.ypos),
         idZona: req.body.idZona,
-        compartido: req.body.idzonaCompartido
+        compartido: req.body.compartido
 
     });
 
     ubicacion.save(function (err) {
+        console.log(err);
         if (err) {
             console.log(err);
             return next(err);
@@ -121,14 +127,14 @@ let regiones = (req, res, next) =>{
 
         idPiso:req.body.idPiso  ,
 
-        // nombrePiso:req.body.nombrePiso   ,
-        // numeroPiso:parseInt(req.body.numeroPiso)   ,
-
         nombreRegion:req.body.nombreRegion   ,
         numeroRegion:parseInt(req.body.numeroRegion)   ,
 
-        largo:parseFloat(req.body.largo)   ,
-        ancho:parseFloat(req.body.ancho),
+        bottomLeft:conversorP_M(parseFloat(req.body.bottomLeft)) ,
+        bottomRigth:conversorP_M(parseFloat(req.body.bottomRigth)) ,
+        topLeft:conversorP_M(parseFloat(req.body.topLeft)) ,
+        topRight:conversorP_M(parseFloat(req.body.topRight)) ,
+        
         estatus: true,
         tipo:'region'  
 

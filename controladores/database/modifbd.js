@@ -9,6 +9,9 @@ const Toptensales = require('../../models/reportetoptenventas');
 
 const {crearReporteVentas} = require('./SaveDataToReports');
 
+const {conversorP_M} = require('../variables')
+
+
 
 let {paramsValidacionCaract, globalDataGraphDos} = require('../variables')
 const async = require('async');
@@ -23,8 +26,16 @@ let regiones = (req, res, next) => {
 
     
     let id = req.params.id;
+    let body = {
+        idPiso: req.body.idPiso,
+        nombreRegion: req.body.nombreRegion,
+        numeroRegion: req.body.numeroRegion,
+        bottomLeft: conversorP_M(req.body.bottomLeft),
+        bottomRigth: conversorP_M(req.body.bottomRigth),
+        topLeft:conversorP_M( req.body.topLeft),
+        topRight: conversorP_M(req.body.topRight)
+    }
 
-    let body = _.pick(req.body,['idPiso','nombreRegion','numeroRegion','largo','ancho']) ;
 
     
     Region.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, regiondb)=>{
@@ -316,7 +327,13 @@ let venderAuto = (req, res, next) =>{
 }
 
 module.exports = {
-    regiones, pisos, ubicacion, ubicacionSelect, putActivo, putTags, venderAuto
+    regiones,
+     pisos, 
+     ubicacion, 
+     ubicacionSelect,
+      putActivo, 
+      putTags, 
+      venderAuto
 }
 
 

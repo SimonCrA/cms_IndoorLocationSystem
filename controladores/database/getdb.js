@@ -10,6 +10,8 @@ const Toptensales = require('../../models/reportetoptenventas');
 const Reportetopten = require('../../models/reportetopten');
 const {crearReporte} = require('./SaveDataToReports');
 
+const {conversorM_P} = require('../variables')
+
 const TagInfo = require ('../../models/tagInfo')
 
 
@@ -22,6 +24,7 @@ const async = require('async');
 
 let searchAssets = async (req, res) => {
     try {
+
         let dataBusqueda = {
                 tipo: '',
                 nombre: '',
@@ -30,24 +33,30 @@ let searchAssets = async (req, res) => {
         
         let promise_Activo = () => {
             return new Promise((resolve, reject) => {
-
-                let termino = req.params.termino; 
-                let item = req.params.item
+                let termino = (req.params.termino).toLowerCase() ; 
+                let item = (req.params.item).toLowerCase() 
                 let regex = new RegExp(termino, 'g')
-
                 if(item==='nombre'){ 
-                    var busqueda2 = {nombre:regex};
+                    var busqueda2 = {nombre:regex, estado:true};
                 }
                 else if(item==='color'){
-                    var busqueda2 = {color:regex};
+                    var busqueda2 = {color:regex, estado:true};
                     dataBusqueda.tipo = item;
                 }
                 else if(item==='modelo'){
-                    var busqueda2 = {modelo:regex};
+                    var busqueda2 = {modelo:regex, estado:true};
                     dataBusqueda.tipo = item;
                 }
-                else if(item==='anio'){ var busqueda2 = {anio:regex} }
-                // console.log(busqueda2);
+                else if(item==='anio'){ 
+                    var busqueda2 = {anio:regex, estado:true}
+                    dataBusqueda.tipo = item
+                 }
+
+                 else{
+                     return res.status(400).json({ok:false, error:{
+                        mensaje: "there isn't any asset with that Item"
+                     }})
+                 }
             
                 // Activo.find(JSON.parse(`{"${item}":"${regex}"}`))
                 Activo.find(busqueda2)
@@ -55,21 +64,32 @@ let searchAssets = async (req, res) => {
                     .populate('idTag')
                     .exec((err, ActivoBuscado) => {
             
-                        err
-                            ?
-                            reject(err) :
-                            resolve(ActivoBuscado);
+                    if(err){
+                        reject(err)
+                    }
 
-                            dataBusqueda.date = new Date().getTime();
+                    if(Array.isArray(ActivoBuscado) && ActivoBuscado.length){
 
-                            if (item === 'color') {
-                                dataBusqueda.nombre = ActivoBuscado[0].color;
-                            }else if (item === 'modelo'){
-                                dataBusqueda.nombre = ActivoBuscado[0].modelo;
-                            }
+                        for(let i = 0; i< ActivoBuscado.length ; i++){
+                            ActivoBuscado[i].idTag.batteryLevel = (((ActivoBuscado[i].idTag.batteryLevel /1000) /3) *100).toFixed(2)
+                        }
+                        dataBusqueda.date = new Date().getTime();
+    
+                        if (item === 'color') {
+                            dataBusqueda.nombre = ActivoBuscado[0].color;
+                        }else if (item === 'modelo'){
+                            dataBusqueda.nombre = ActivoBuscado[0].modelo;
+                        }
+                        resolve(ActivoBuscado)
+                    }else{
+                        reject({error:'empty'})
 
+                    }
+                        
 
-                            // crearReporte(dataBusqueda);
+                    
+
+                            crearReporte(dataBusqueda);
                             console.log(ActivoBuscado[0]);
                             
                            
@@ -80,12 +100,22 @@ let searchAssets = async (req, res) => {
         let promise_pointXY = (resultPromiseActivo)=>{
             return new Promise((resolve, reject) => {
 
+                console.log(resultPromiseActivo);
                 
                 let idActivo = resultPromiseActivo.idTag.mactag
-                // console.log(resultPromiseActivo);
                 // console.log(idActivo);
 
                 Graficar.find({idTag:idActivo})
+                    .populate([{
+                        path:'region',
+                        model:'zona',
+                        populate:{
+                            path:'idPiso',
+                            model:'zona'
+                        }
+                }
+            ])
+                    // .populate('zona')
                     .sort({_id:-1}).limit(1)
                     .exec((err, puntoBuscado) => {
 
@@ -104,7 +134,11 @@ let searchAssets = async (req, res) => {
                                 }
                             });
                         };
+                        for(let i = 0 ; i < puntoBuscado.length ; i++){
 
+                            puntoBuscado[i].x = conversorM_P(puntoBuscado[i].x)
+                            puntoBuscado[i].y = conversorM_P(puntoBuscado[i].y)
+                        }
                         // Graficar.countDocuments({idActivo}, (err, conteo) => {
                             resolve(puntoBuscado);
                         // });
@@ -140,6 +174,7 @@ let searchAssets = async (req, res) => {
         // console.log(JSON.stringify(arrayfinish, null, 2));
         dataActivo = arrayfinish;
         if(arrayfinish[0]===undefined){
+            
             return res.status(400).json({
                 ok: true,
                 err: {
@@ -403,6 +438,14 @@ let region = (req, res, next) =>{
                     err
                 });
             }
+
+            for(let i = 0 ; i < region.length ; i++){
+
+                region[i].bottomLeft = conversorM_P(region[i].bottomLeft)
+                region[i].bottomRigth = conversorM_P(region[i].bottomRigth)
+                region[i].topLeft = conversorM_P(region[i].topLeft)
+                region[i].topRight = conversorM_P(region[i].topRight)
+            }
             
             res.json({
                 ok: true,
@@ -479,6 +522,7 @@ let ubicacion = (req, res, next) =>{
         
     InfoUbicacion.find({ estatus: true })
         .populate('idZona')
+        .populate('compartido')
 
         .exec((err,infoUbicacion ) => {
 
@@ -488,7 +532,14 @@ let ubicacion = (req, res, next) =>{
                     err
                 });
             }
-            
+            // console.log(infoUbicacion);
+
+            for(let i = 0 ; i < infoUbicacion.length ; i++){
+
+                infoUbicacion[i].xpos = conversorM_P(infoUbicacion[i].xpos)
+                infoUbicacion[i].ypos = conversorM_P(infoUbicacion[i].ypos)
+            }
+
             res.json({
                 ok: true,
                 infoUbicacion
@@ -587,8 +638,21 @@ let contador = (req, res, next)=>{
             TagInfo.find({estado: false}).count()
               .exec(callback);
         },
+		tagBateryhigh: function(callback) {
+            TagInfo.find({batteryLevel:{$gt:2250}}).count()
+              .exec(callback);
+        },
+		tagBaterymedium: function(callback) {
+            TagInfo.find({$and: 
+                [ 
+                  {batteryLevel:{$lt:2249}}, 
+                  {batteryLevel:{$gt:1050}} 
+                ] 
+            }).count()
+              .exec(callback);
+        },
 		tagBateryLow: function(callback) {
-            TagInfo.find({batteryLevel:{$lt:1175}}).count()
+            TagInfo.find({batteryLevel:{$lt:1049}}).count()
               .exec(callback);
         },
 		regionesTrue: function(callback) {
@@ -624,7 +688,10 @@ let contador = (req, res, next)=>{
 		res.status(200).jsonp({
             'tagTrue':results.tagTrue,
              'tagFalse':results.tagFalse,
+             'tagBateryhigh':results.tagBateryhigh,
+             'tagBaterymedium':results.tagBaterymedium,
              'tagBateryLow': results.tagBateryLow,
+
              'regionesTrue': results.regionesTrue,
              'regionesFalse': results.regionesFalse,
              'pisoTrue': results.pisoTrue,
