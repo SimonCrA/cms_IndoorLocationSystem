@@ -13,11 +13,11 @@ let MakelogSistem = ( msg) => {
 
         let mensaje = `${datemake}: ${msg}\n`
         
-        fs.writeFile(`Logs/Log_${datemake}.txt`, mensaje, (err)=>{
+        fs.writeFile(`Logs/Log_${datemake}.log`, mensaje, (err)=>{
             if(err) 
                 reject(err)
             else
-                resolve(`Logs/Log_${datemake}.txt`)
+                resolve(`Logs/Log_${datemake}.log`)
 
 
         })
@@ -30,8 +30,8 @@ let MakelogSistem = ( msg) => {
 }
 
 let logSistem = (msg, name, type = 'Log')=> {
-    console.log(msg);
-    console.log(name);
+    // console.log(msg);
+    // console.log(name);
         let d = new Date();
 
 
@@ -47,7 +47,7 @@ let logSistem = (msg, name, type = 'Log')=> {
             {
                 console.log(err);
             }else{
-                console.log(`The ${mensaje} was appended to file!`);
+                // console.log(`The ${mensaje} was appended to file!`);
 
             }
           });
