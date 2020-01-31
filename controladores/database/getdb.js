@@ -323,18 +323,41 @@ let getSaleTime = async (req, res) =>{
 }
 
 let getServiceTime = async (req, res) =>{
-    let result = await crearReporteTiempoServicio();
-    // console.log(resultado);
+    let searchAsset = () => {
+        try {
+
+            return new Promise((resolve, reject) => {
+
+                Activo.find({ estado: false })
+                    .exec((err, activoDB) => {
+                        err
+                            ?
+                            reject(err) :
+
+                            resolve(activoDB)
+                    })
+
+            })
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    let resultSearchAsset = await searchAsset();
+
+    let resultReport = await crearReporteTiempoServicio(resultSearchAsset);
 
     res.status(200).json({
         ok: true,
-        result
+        resultReport
     })
 }
 
 let getDealerTime = async (req, res) =>{
 
-    let result = crearReporteMasTiempoDealer();
+    let result = await crearReporteMasTiempoDealer();
+    console.log(result);
     res.status(200).json({
         ok:true,
         result

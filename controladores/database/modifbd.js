@@ -328,7 +328,7 @@ let despacharServicio = (req, res, next) =>{
 
     }
     let activoStatus = {
-        // idTag: "a2a2a2a2a2a2a2a3a3a3a3a3",
+        // idTag: "a2a2a2a2a2a2a2a3a3a3a3a3", 
         estado: false,
         $unset: {
             idTag: ""
@@ -366,7 +366,6 @@ let despacharServicio = (req, res, next) =>{
             });
         }
 
-        crearReporteTiempoServicio(results.activo);
 
         res.status(200).jsonp({
             'activo': results.activo,

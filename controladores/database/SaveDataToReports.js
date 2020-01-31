@@ -255,38 +255,21 @@ let crearReporteTiempoVenta = async () =>{
 
 let crearReporteTiempoServicio = async (activo) =>{
 
+    console.log(activo);
+
     let arrActivo = [];
-    let id = activo._id;
-    let searchAsset = () => {
-        try {
-    
-            return new Promise((resolve, reject) => {
-                Activo.findById(id,(err, activoDB)=>{
 
-                    err
-                        ?
-                        reject(err) :
-
-                        resolve(activoDB)
-                })
-                    
-            })
-            
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    let resultSearchAsset = await searchAsset();
     let resta = 0;
-        
-        resta = resultSearchAsset.endDate- resultSearchAsset.startDate;
-        let contdias = Math.round(resta/(1000*60*60*24));
-        let conthoras = Math.round(resta/(1000*60*60));
-        let contmin = resta/(1000*60);
-        let tiempoTotal = contdias+ ':' + conthoras + ':' + contmin.toFixed(1);
+            
+    for (let i = 1; i < activo.length; i++) {
+
+        let resta = activo[i].endDate - activo[i].startDate;
+        let contdias = Math.round(resta / (1000 * 60 * 60 * 24));
+        let conthoras = Math.round(resta / (1000 * 60 * 60));
+        let contmin = resta / (1000 * 60);
+        let tiempoTotal = contdias + ':' + conthoras + ':' + contmin.toFixed(1);
         arrActivo.push(tiempoTotal);
-        
+    }
 
      return arrActivo
 }
@@ -317,6 +300,7 @@ let crearReporteMasTiempoDealer = async () =>{
     }
 
     let resultSearchAsset = await searchAsset();
+    // console.log(resultSearchAsset);
 
     let dataObject = {};
 
@@ -332,7 +316,7 @@ let crearReporteMasTiempoDealer = async () =>{
         arrActivo.push(dataObject);
         
     }
-
+    // console.log(arrActivo);
     return arrActivo;
 
 }
