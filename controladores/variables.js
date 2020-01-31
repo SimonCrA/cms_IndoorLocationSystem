@@ -68,7 +68,27 @@ let Users=[
 let timeTLM = 3600000
 
 let nameFile= ['']
+
+
+// conversion : (3.281)p = 1m
+
+
+/// 0.3048m = 1m
+
+let conversorM_P = (metro)=>{
+    let pie = 3.281;
+    return (metro * pie).toFixed(2);
+    
+}
+let conversorP_M = (pie)=>{
+    let metro = 0.3048;
+    return (metro * pie).toFixed(2);
+
+}
+
+
 module.exports = {
+    conversorM_P, conversorP_M,
     globalFilter,timeTLM,nameFile,
     globalDataGraphDistance,
     Users,
