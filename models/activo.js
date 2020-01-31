@@ -12,11 +12,13 @@ var Schema = mongoose.Schema;
 var activoSchema = new Schema({
 	
 		nombre: { type: String }, //MARCA
-		VIN: {type:Number},
-		anio: {type: String},
-		modelo: {type:String},
-		color: {type: String},
-        tipo: {type: String },
+		VIN: { type: Number },
+		anio: { type: String },
+		modelo: { type:String },
+		color: { type: String },
+		tipo: { type: String },
+		startDate:  {type: Date, default: Date.now()},
+		endDate:  {type: Date},
 		descripcion: { type: String },
 		estado: { type:Boolean },
 		idTag: { type: Schema.Types.ObjectId, ref: 'tagInfo' }

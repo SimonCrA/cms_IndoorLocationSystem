@@ -276,12 +276,14 @@ let venderAuto = (req, res, next) =>{
 
 
     let tagStatus = {
-        estado: false
+        estado: false,
+        
     }
     let activoStatus = {
         // idTag: "a2a2a2a2a2a2a2a3a3a3a3a3",
         estado: false,
-        $unset: {idTag:""}
+        $unset: {idTag:""},
+        endDate: new Date().getTime()
 
     }
 
@@ -326,6 +328,66 @@ let venderAuto = (req, res, next) =>{
 
 }
 
+let despacharServicio = (req, res, next) =>{
+
+    let idActivo = req.params.idActivo;
+    let idTag = req.params.idTag;
+
+
+    let tagStatus = {
+        estado: false,
+
+    }
+    let activoStatus = {
+        // idTag: "a2a2a2a2a2a2a2a3a3a3a3a3", 
+        estado: false,
+        $unset: {
+            idTag: ""
+        },
+        endDate: new Date().getTime()
+
+    }
+
+
+
+    async.parallel({
+        activo: function (callback) {
+            Activo.findByIdAndUpdate(idActivo, activoStatus, {
+                    new: true,
+                    runValidators: true,
+
+                },
+                (callback)
+            )
+        },
+        tags: function (callback) {
+            TagInfo.findByIdAndUpdate(idTag, tagStatus, {
+                    new: true,
+                    runValidators: true
+                },
+                (callback)
+            )
+
+        }
+    }, function (err, results) {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+
+        res.status(200).jsonp({
+            'activo': results.activo,
+            'tag': results.tags
+        });
+
+
+    });
+
+
+}
 module.exports = {
     regiones,
      pisos, 

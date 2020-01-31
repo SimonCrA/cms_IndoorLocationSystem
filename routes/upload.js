@@ -1,21 +1,18 @@
     const express = require('express');
-const fileUpload = require('express-fileupload');
-const app = express();
-const User = require('../models/usuario');
-const Client = require('../models/client');
-const Zona = require('../models/zona');
-let fs = require('fs');
-let path = require('path');
-
-//default options
-app.use(fileUpload({ useTempFiles: true }));
-
+    const app = express();
+    const User = require('../models/usuario');
+    const Client = require('../models/client');
+    const Zona = require('../models/zona');
+    let fs = require('fs');
+    let path = require('path');
+    
+    //default options
+    
 
 let uploadFile = (req, res) =>{
 
     let tipo = req.params.tipo;
     let id = req.params.id;
-    console.log(req.files);
     if (!req.files){
         return res.status(400).json({
             ok: false,
@@ -46,7 +43,7 @@ let uploadFile = (req, res) =>{
     //Extensiones permitidas
     let extensionesValidas = ['png', 'jpg', 'jpeg', 'gif'];
 
-    if (extensionesValidas .indexOf( extension ) < 0) {
+    if (extensionesValidas.indexOf( extension ) < 0) {
         return res.status(400).json({
             ok: false,
             err: {

@@ -8,7 +8,11 @@ const Toptensales = require('../../models/reportetoptenventas');
 
 
 const Reportetopten = require('../../models/reportetopten');
-const {crearReporte} = require('./SaveDataToReports');
+const {
+    crearReporte, crearReporteTiempoVenta,
+    crearReporteTiempoServicio,
+    crearReporteMasTiempoDealer
+        } = require('./SaveDataToReports');
 
 const {conversorM_P} = require('../variables')
 
@@ -273,8 +277,6 @@ let getTopTen = (req, res) =>{
 }
 
 
-
-
 let getTopTenSales = (req, res) =>{
     try {
         console.log('entre en ventas');
@@ -343,6 +345,59 @@ let getTopTenSales = (req, res) =>{
     } catch (error) {
         console.log(error);
     }
+}
+
+let getSaleTime = async (req, res) =>{
+    let resultado = await crearReporteTiempoVenta();
+    // console.log(resultado);
+
+    res.status(200).json({
+        ok: true,
+        resultado
+    })
+}
+
+let getServiceTime = async (req, res) =>{
+    let searchAsset = () => {
+        try {
+
+            return new Promise((resolve, reject) => {
+
+                Activo.find({ estado: false })
+                    .exec((err, activoDB) => {
+                        err
+                            ?
+                            reject(err) :
+
+                            resolve(activoDB)
+                    })
+
+            })
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    let resultSearchAsset = await searchAsset();
+
+    let resultReport = await crearReporteTiempoServicio(resultSearchAsset);
+
+    res.status(200).json({
+        ok: true,
+        resultReport
+    })
+}
+
+let getDealerTime = async (req, res) =>{
+
+    let result = await crearReporteMasTiempoDealer();
+    console.log(result);
+    res.status(200).json({
+        ok:true,
+        result
+    })
+
 }
 
 /* *****************************************
@@ -717,6 +772,9 @@ module.exports = {
     regionId, 
     getTopTen,
     getTopTenSales,
+    getSaleTime,
+    getServiceTime,
+    getDealerTime,
     contador,
     getTagsfalse
 }
