@@ -240,4 +240,22 @@ let array = [
 //     }
 // });
 
-console.log(((1175/1000)/3)*100);
+// console.log(((1049/1000)/3)*100);
+
+
+let dato
+console.log("Escribe tu nombre");
+process.stdin.on('readable', () => {
+    let chunk;
+    // Use a loop to make sure we read all available data.
+    while ((chunk = process.stdin.read()) !== null) {
+      process.stdout.write(`data: ${chunk}`);
+    }
+  });
+  
+  process.stdin.on('end', () => {
+    process.stdout.write('end');
+  });
+
+// let chunk = process.stdin.read()
+//       process.stdout.write(`data: ${chunk}`);
