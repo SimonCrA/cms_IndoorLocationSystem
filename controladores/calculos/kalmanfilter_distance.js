@@ -7,7 +7,7 @@ const DistanciaTag= require('../../models/distancias');
 
 let {globalFilter} = require('../variables')
 let {globalDataGraph, globalDataGraphDos} = require('../variables')
-var {paramsValidacionCaract, etiqueta} = require('../variables')
+var {paramsValidacionCaract, etiqueta, conversorM_P} = require('../variables')
 
 
 
@@ -106,13 +106,13 @@ let filtradoDistance = async ( index ) =>{
 
                 let preDataGraphs= {
                     name: globalFilter[index].name,
-                    data:[{x:0,y:parseFloat(globalFilter[index].Xt_s)}]
+                    data:[{x:0,y:conversorM_P(parseFloat(globalFilter[index].Xt_s))}]
                 }
                 let findIt = globalDataGraph.findIndex(obj => (obj.name === globalFilter[index].name) );
                 if(findIt>=0){
                     var point = {};
                     point.x = ((globalDataGraph[findIt].data).length) ;
-                    point.y = parseFloat(globalFilter[index].Xt_s);
+                    point.y = conversorM_P(parseFloat(globalFilter[index].Xt_s));
                     globalDataGraph[findIt].data.push(point)
                     paramsValidacionCaract[0].signal=true
                     // console.log(paramsValidacionCaract[0]);
@@ -147,13 +147,13 @@ let filtradoDistance = async ( index ) =>{
             if(globalFilter[index].tipov === 'select'){
                 let preDataGraphsDos= {
                     name: globalFilter[index].name,
-                    data:[{x:0,y:parseFloat(globalFilter[index].Xt_s)}]
+                    data:[{x:0,y:conversorM_P(parseFloat(globalFilter[index].Xt_s))}]
                 }
                 let findIt = globalDataGraphDos.findIndex(obj => (obj.name === globalFilter[index].name) );
                 if(findIt>=0){
                     var point = {};
                     point.x = ((globalDataGraphDos[findIt].data).length) ;
-                    point.y = parseFloat(globalFilter[index].Xt_s);
+                    point.y = conversorM_P(parseFloat(globalFilter[index].Xt_s));
                     globalDataGraphDos[findIt].data.push(point)
                     paramsValidacionCaract[0].signal=true
                     // console.log(paramsValidacionCaract[0]);
