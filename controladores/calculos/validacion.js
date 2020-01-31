@@ -5,12 +5,18 @@ const constantes = require('../../models/constantesdistancia');
 const colors = require('colors');
 const Ubicacion = require ('../../models/ubicacion')
 
+const {logSistem} =  require('../write_Log')
+let {nameFile} = require('../variables')   
 
 const {trilateracion} = require('../calculos/trilateracion')
 const {trilateracionMatriz} = require('../calculos/trilateracion2')
 const {jsoCanvas} = require('../variables')
 // const {trilateracionMatriz2} = require('./trilateracion3')
 const Graficar = require('../../models/graficar')
+
+
+
+const {dataToKalman2D} = require('./kalmanFilter2d')
 var r1=0, r2=0, r3=0, x1=0, x2=0, x3=0, y1=0, y2=0, y3=0;
 // var fecha_actual =  new Date()
 
@@ -181,8 +187,8 @@ let validacion_Trilateracion = async ()=>{
                 
                 let graficar = new Graficar({
                     date: new Date().getTime(),
-                    x: punto.x,        
-                    y: punto.y,
+                    x: punto.punt_x,        
+                    y: punto.punt_y,
                     region,
                     idTag: mactag
                     
@@ -203,10 +209,40 @@ let validacion_Trilateracion = async ()=>{
         }
         
         
+        
+        let promesa_Las10XY =(mactag, regio)=>{
+            return new Promise((resolve, reject)=>{
+                
+                
+                graficar.find({region: regio, idTag:mactag }).sort({_id:-1}).limit(10)
+                .exec((err, poitnXY) => {
+    
+                    if (err) {
+                        return reject(err)
+                    }
+                    if(Array.isArray(poitnXY) && poitnXY.length){
+                        return resolve(
+                            poitnXY
+                        )
+                    }else{
+                        return reject('Data is Empty')
+    
+                    }
+    
+                       
+                });
+                
+                
+                   });
+        }
+        
+        
+
         ///////////////////////////////////////////////////////////////////////////////////
 
 
         console.log(`======================INICIA TRILATERACION=========================`.rainbow);
+        logSistem(`======================INICIA TRILATERACION=========================`, nameFile[0])
 
 
         let resultRegion = await promesa_AggregateRegion()
@@ -298,6 +334,9 @@ let validacion_Trilateracion = async ()=>{
                             }
                         }, er=>{
                             console.log(er);
+                            logSistem(`${er}`, nameFile[0], 'ERR:')
+
+                            
                         });
                     }
                     
@@ -384,13 +423,10 @@ let validacion_Trilateracion = async ()=>{
                             let findIt2 = lista_Obj_trilaterar[k].arrShare.indexOf(resultadoUbicacion.macRpi);
                             if(lista_Obj_trilaterar[k].share != null){
                                 if(findIt2>=0){
-                                    // console.log(findIt);
-                                    // console.log(lista_Obj_trilaterar[findIt].statusShare);
+                             
                                     if(lista_Obj_trilaterar[findIt].statusShare===false){
     
-                                        // console.log(lista_Obj_trilaterar[findIt]);
-                                        // console.log(`%%%%%%%%%%%%%%%%%%%%%%%%`);
-                                        // console.log(lista_Obj_trilaterar[k]);
+                                        
                                         let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
                                         
                                     }
@@ -414,7 +450,6 @@ let validacion_Trilateracion = async ()=>{
                                 x1, x2, x3, y1, y2, y3, r1, r2, r3
                             }
 
-                            // console.log(resultUpdateDistance);
                         }
                     }
 
@@ -423,30 +458,10 @@ let validacion_Trilateracion = async ()=>{
                 }//fin CICLO RASPI
 
 
-                    // console.log(id_distancia);
-                    // console.log(lista_Obj_trilaterar[k].rpi);
-                    // for (let o = 0; o < id_distancia.length; o++) {
-                    //     if()
-                    //     if(lista_Obj_trilaterar[k].counter == 0 ){
-
-                    //         let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
-                    //     }
-                    //     else{
-                    //         lista_Obj_trilaterar[k].counter = lista_Obj_trilaterar[k].counter -1;
-                    //         if(lista_Obj_trilaterar[k].counter == 0 ){
-                    //             let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
-
-                    //         }
-
-
-                    //     }
-                        
-                    // }
+                    
                 
                     let punto =trilateracion(r1, r2, r3, x2, y3);
-                    // let punto2 =trilateracionMatriz(datosPuntoXY);
-                    // let punto3 = trilateracionMatriz2(datosPuntoXY);
-                    // console.log(resulttag[k]._id);
+
                     
                     let js={
                         r1,
@@ -461,38 +476,58 @@ let validacion_Trilateracion = async ()=>{
                     
                     jsoCanvas.push(js)
 
+                    
+                    console.log(`${lista_Obj_trilaterar[k].region}`.yellow );
+                    console.log(`${lista_Obj_trilaterar[k].tag[j]}`.green);
+                    console.log(`Trilateracion_1:`);
+                    console.log(punto);
 
+                    logSistem(`${lista_Obj_trilaterar[k].region}
+                    \n${lista_Obj_trilaterar[k].tag[j]}
+                    \nTrilateracion_1:
+                    \n${JSON.stringify(punto)}`, nameFile[0])
 
                     // console.log(`T_1: d1=${r1}, d2=${r2}, d3=${r3},`+`Error=${punto.error}`.red);
-                    // console.log(`T_2: d1=${r1}, d2=${r2}, d3=${r3}, `+`Error=${punto2.error}`.red);
-                    // console.log(`\n`);
                     if(punto.status == true){
                         
-                        console.log(`${lista_Obj_trilaterar[k].region}`.yellow );
-                        console.log(`${lista_Obj_trilaterar[k].tag[j]}`.green);
-                        console.log(`Trilateracion_1:`);
-                        console.log(punto);
+
+
+                            let guardarpuntoXY = await promesa_puntoXY(punto, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
+                        
+                        // consulta-> 10 ultimos registros (tag y region)
+                        // let consultaXY = await promesa_Las10XY(lista_Obj_trilaterar[k].tag[j],lista_Obj_trilaterar[k].region)
+
+                        // console.log(consultaXY);
+                        // if (consultaXY.length < 0){
+                        //     let filtradoXY= dataToKalman2D(punto)
+                            
+                        //     let guardarpuntoXY = await promesa_puntoXY(filtradoXY, resulttag[k]._id, resultRegion[i]._id);
+                        // }else{
+                        //     consultaXY. push(punto)
+                        //         if(i===0){
+                        //             let filtradoXY= dataToKalman2D(consultaXY[i]).then (
+                        //                 guarda
+                        //             )
+
+                        //         }else{
+
+                        //             res= dataToKalman2D(x_b, p_b, consultaXY[i] )
+                        //         }
+    
+    
+                        //         if(res < x region + (1.9)){
+                        //             guardo en gaficar
+                        //         }else{
+                        //             no guardo
+                        //         }}
                         
                     }
-                    // console.log(`\n`);
-                    // console.log(`Trilateracion_2:`);
-                    // // // console.log(`\n`);
-                    // console.log(punto2);
-                    // console.log(`\n`);
 
-
-
-                    // console.log(`Trilateracion_3:`);
-                    // console.log(punto3);
-                    // console.log(`\n`);
                     // if(punto.status === true){
-                    //     // let resultUpdateDistance = await promesa_UpdateDistance(id_distancia);
 
-                    //     // if(resultUpdateDistance.ok === true){
-                    //         let guardarpuntoXY = await promesa_puntoXY(punto, resulttag[k]._id, resultRegion[i]._id);
-                    //         console.log(guardarpuntoXY.ok);
+                    //     console.log(guardarpuntoXY.ok);
 
-                    //     // }else{console.log(`No se actualizo el estatus de las distancias `);}
+                        
 
                     // }else{console.log(`P(X,Y) fuera de la region no se puede guardar`);}
                 
@@ -506,47 +541,20 @@ let validacion_Trilateracion = async ()=>{
 
 
 
-        // lista_Obj_trilaterar.forEach( async function(regiones, indice, array) {
-        //     console.log(indice );
-        //     regiones.tag.forEach(async tags =>{
-        //         regiones.rpi.forEach( async rpis =>{
-        //             let resultDistancia = await promise_findDistancia(rpis, tags).then(data=>{
-        //                 // console.log(data);
-        //                 if(data[0] === undefined){
-        //                     // console.log(`Vacio`);
-        //                     // console.log(`rpi=${rpis} ===== tag=${tags}`);
-                            
-        //                     let findIt = regiones.tag.indexOf(tags);
-        //                     if(findIt>=0){
-        //                         lista_Obj_trilaterar[indice].tag= lista_Obj_trilaterar[indice].tag.splice(findIt,1)
-                            
-        //                     }
-
-        //                 }else{
-        //                     // console.log(data);
-        //                 }
-        //             }, er=>{
-        //                 console.log(er);
-        //             });
-        //             console.log(lista_Obj_trilaterar);
-
-
-
-
-        //         })
-        //     })
-            
-        // })
+        
         
         // console.log(`-----------------------------\n`);
 
         // console.log(lista_Obj_trilaterar);
 
-    console.log(`======================FINALIZA TRILATERACION=========================`.rainbow);   
+    console.log(`======================FINALIZA TRILATERACION=========================`.rainbow);
+    logSistem(`======================FINALIZA TRILATERACION=========================`, nameFile[0])  
         return true;
     }catch(e){
         console.log("hola SOY UN HERRROR");
         console.log(e)
+        logSistem(`${e}`, nameFile[0], 'ERR:')  
+
         return false;
     }
 
