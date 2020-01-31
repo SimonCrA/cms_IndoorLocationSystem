@@ -7,7 +7,7 @@ var graficarSchema = new Schema(
 		date: {type: Date },
 		x: {type: Number },        
         y: {type: Number},
-		region: {type: String},
+		region: { type: Schema.Types.ObjectId, ref: 'zona', required: false },
 		idTag:{type: String}
 	}
 );  
