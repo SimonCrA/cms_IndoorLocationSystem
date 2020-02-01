@@ -15,8 +15,11 @@ var zonaSchema = new Schema({
     idPiso:{ type: Schema.Types.ObjectId, ref: 'zona'},
     nombreRegion: {type: String},
     numeroRegion:{type:Number},
-    largo:{type:Number},
-    ancho:{type:Number},
+
+    bottomLeft:{type:Number},
+    bottomRigth:{type:Number},
+    topLeft:{type:Number},
+    topRight:{type:Number},
 
     //piso
     plano:{type:String},

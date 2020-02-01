@@ -20,22 +20,18 @@ $.getJSON('https://api.ipify.org?format=json', function(data){
 /* *****************************************/
 var consulta = $.get( "../../../api/zona", function() {
   data = consulta.responseJSON;
-
   console.log(data.idzonas);
   
   for (let i = 0; i < data.idzonas.length; i++) {
     // console.log(`data es ${i}====${JSON.stringify(data[i])}`);
     let zona = document.getElementById("List_IdZona");
     let zona2 = document.getElementById("RegionList2");
-
     let option = document.createElement("option");
     let option2 = document.createElement("option");
     option.text = data.idzonas[i]._id;
     option2.text = data.idzonas[i]._id;
-    
     zona.add(option);  
-    zona2.add(option2);  
-    
+    zona2.add(option2); 
   }
   for (let i = 0; i < data.tags.length; i++) {
     // console.log(`data es ${i}====${JSON.stringify(data[i])}`);
@@ -85,6 +81,8 @@ function Send_to_particular_rpi(e) {
   $("#mostrar").empty();
   $("#mostrar").append("Procesando...");
   $("#mostrar").show('slow');
+  var sessionId = sessionStorage.getItem('sessionId')
+
     var array = [{ 
       distancia: document.getElementById('Distancia').value, 
       mac: document.getElementById('maclist1').value      
@@ -94,7 +92,8 @@ function Send_to_particular_rpi(e) {
     },{ 
       distancia: document.getElementById('Distancia').value, 
       mac: document.getElementById('maclist3').value
-    }]; 
+    }, 
+    {sessionId}]; 
     socket.emit('accions', array);  
     console.log(array);
 
@@ -117,7 +116,9 @@ socket.on('progressInfo', data=>{
 /* *****************************************/
 
 function startDespliegue(e) { //Inicia el Tracking del sistema (se utiliza cuando ya este todo caracterizado)
-  let aviso={sessionId,aviso:'Inicio la Tracking', tipo:'tracking'}
+  
+  
+  let aviso={sessionId, aviso:'Inicio la Tracking', tipo:'tracking'}
 
     socket.emit('despliegue', aviso); 
     console.log(aviso);
@@ -135,13 +136,15 @@ function startValidacion(e) {//Se utiliza cuando se procede a validar las consta
 }
 
 function stopedAll(e) {// Detiene la ejecucion de todas las RPIs
-    let aviso='detener el tracking desde client'
+
+    let aviso= {aviso:'detener el tracking desde client', sessionId}
+
     socket.emit('stop-all', aviso); 
     console.log(aviso);
     return false;
 }
 function refresh(e) {//Actualiza la libreta de direcciones del  Socket
-    let aviso='Actualizar data del Server'
+    let aviso={aviso:'Actualizar data del Server', sessionId}
     socket.emit('refresh-client', aviso); 
     console.log(aviso);
     return false;
@@ -232,8 +235,8 @@ function EstablecerConstants(e){
     url: '/post/newconstant'
   });
 
-
-
+  
+  
   return false;
 }
 
@@ -246,8 +249,10 @@ function EstablecerConstants(e){
 *	la cual cada vez que se refresca la pagina solicita al server
 * la libreta de direcciones del socket para mostrarlo en las listas.
 /* *****************************************/
+socket.on('libreta-list', function(data) { render(data); });
 
 let render= async(data)=> { 
+  console.log(`ACA VA RENDER`);
   console.log(data);
   let select1 = document.getElementById("maclist1");
   let select2 = document.getElementById("maclist2");
@@ -309,7 +314,6 @@ let render= async(data)=> {
 
 }
 
-socket.on('libreta-list', function(data) { render(data); });
 
 let  LogOut = async (e)=>{
 

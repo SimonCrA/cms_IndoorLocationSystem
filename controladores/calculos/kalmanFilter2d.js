@@ -47,7 +47,8 @@ let dataToKalman2D = (arrayFromValidation)=>{
         [1]
     ]
     
-    var Xk_1 = [
+    var Xk_1 = 
+    [
         [2],
         [1],
     
@@ -71,7 +72,7 @@ let dataToKalman2D = (arrayFromValidation)=>{
     
     
     var arr = []
-    
+    let res;
     for (let i = 0; i < arrayFromValidation.length; i++) {
         z = [
             [arrayFromValidation[i].x],
@@ -95,6 +96,7 @@ let dataToKalman2D = (arrayFromValidation)=>{
     
     
     }
+    return {x:res.x_before[0][0], y: res.x_before[1][0]}
 
 }
 
@@ -175,19 +177,7 @@ let doKalmanfilter = (x_before, p_before, X_Y) => {
 
 
 
-let j = 0;
-let res;
-console.log("\n");
-let interval = setInterval(() => {
 
-    
-    j++;
-
-    if (j === 5) {
-        clearInterval(interval)
-
-    }
-}, 1000);
 
 
 module.exports = {

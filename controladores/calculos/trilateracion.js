@@ -46,8 +46,6 @@ let getCrosC1C3 = (r1, r3, y2) => {
     return poitn_x_y;
 }
 
-
-
 let getCrosC2C3 = (r2, r3, y2, x1) =>{
 
     let ya = 0.0;    let yb = 0.0;    let yc = 0.0;    let yd = 0.0;
@@ -90,8 +88,6 @@ let getCrosC2C3 = (r2, r3, y2, x1) =>{
 
     return poitn_x_y;
 }
-
-
 
 let  equa = (x1, y1, x2, y2, r3, y0) => {
 
@@ -389,7 +385,7 @@ let trilateracion = (r1, r2, r3, x, y) =>{
         //console.log(x,y)
         var error = 0;
         error = Math.sqrt((Math.pow(3.0 - parseFloat(punto_X_Y[0]), 2)) + ((Math.pow(4.0 - parseFloat(punto_X_Y[1]), 2))))
-        if (punto_X_Y[0] > 0 && punto_X_Y[1] > 0 && (punto_X_Y[0] < x1 && punto_X_Y[1] < y2) ) {
+        if (punto_X_Y[0] >= (-1.9) && punto_X_Y[1] >= (-1.9) && (punto_X_Y[0] <= x1+1.9 && punto_X_Y[1] <= y2+1.9) ) {
             // console.log(`Estoy dentro de la region`);
             return {
                 punt_x: (punto_X_Y[0]).toFixed(2),
@@ -400,7 +396,7 @@ let trilateracion = (r1, r2, r3, x, y) =>{
     
     
         }
-        else if (punto_X_Y[0] > x1 || punto_X_Y[1] > y2) {
+        else if (punto_X_Y[0] > x1+1.9 || punto_X_Y[1] > y2+1.9) {
             // console.log(`Estoy fuera de la region positivo`);
     
             return {
@@ -411,7 +407,7 @@ let trilateracion = (r1, r2, r3, x, y) =>{
             };
     
         }
-        else if (punto_X_Y[0] < 0 || punto_X_Y[1] < 0) {
+        else if (punto_X_Y[0] < (-1.9) || punto_X_Y[1] < (-1.9)) {
             // console.log(`Estoy fuera de la region negativo`);
     
             return {
