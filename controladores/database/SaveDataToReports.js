@@ -239,15 +239,21 @@ let crearReporteTiempoVenta = async () =>{
 
     let resultSearchAsset = await searchAsset();
     let resta = 0;
+    let objectActivo = {};
 
     for (let i = 1; i < resultSearchAsset.length; i++) {
         
         let resta = resultSearchAsset[i].endDate- resultSearchAsset[i].startDate;
-        let contdias = Math.round(resta/(1000*60*60*24));
-        let conthoras = Math.round(resta/(1000*60*60));
-        let contmin = resta/(1000*60);
-        let tiempoTotal = contdias+ ':' + conthoras + ':' + contmin.toFixed(1);
-        arrActivo.push(tiempoTotal);
+        let contdias = resta/(1000*60*60*24);
+
+        objectActivo ={
+            brand: resultSearchAsset[i].nombre,
+            model: resultSearchAsset[i].modelo,
+            vin: resultSearchAsset[i].VIN,
+            saletime: contdias.toFixed(2),
+        }
+
+        arrActivo.push(objectActivo);
     }
 
      return arrActivo
@@ -258,17 +264,22 @@ let crearReporteTiempoServicio = async (activo) =>{
     console.log(activo);
 
     let arrActivo = [];
+    let objectActiv = {};
 
     let resta = 0;
             
     for (let i = 1; i < activo.length; i++) {
 
-        let resta = activo[i].endDate - activo[i].startDate;
-        let contdias = Math.round(resta / (1000 * 60 * 60 * 24));
-        let conthoras = Math.round(resta / (1000 * 60 * 60));
-        let contmin = resta / (1000 * 60);
-        let tiempoTotal = contdias + ':' + conthoras + ':' + contmin.toFixed(1);
-        arrActivo.push(tiempoTotal);
+        resta = activo[i].endDate - activo[i].startDate;
+        let conthoras = resta / (1000 * 60 * 60);
+
+        objectActiv = {
+            brand: activo[i].nombre,
+            model: activo[i].modelo,
+            vin: activo[i].VIN,
+            saletime: conthoras.toFixed(2)
+        }
+        arrActivo.push(objectActiv);
     }
 
      return arrActivo
