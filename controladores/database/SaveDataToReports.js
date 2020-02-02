@@ -1,6 +1,9 @@
 const Reportetopten = require('../../models/reportetopten');
 const Toptensales = require('../../models/reportetoptenventas');
 const Activo = require('../../models/activo');
+const TagInfo = require ('../../models/tagInfo')
+const Graficar = require ('../../models/graficar')
+
 const Reportetiempoventa = require('../../models/reportetiempoventa');
 
 let crearReporte = async (dataBusqueda) =>{
@@ -243,7 +246,7 @@ let crearReporteTiempoVenta = async () =>{
 
     for (let i = 1; i < resultSearchAsset.length; i++) {
         
-        let resta = resultSearchAsset[i].endDate- resultSearchAsset[i].startDate;
+        resta = resultSearchAsset[i].endDate- resultSearchAsset[i].startDate;
         let contdias = resta/(1000*60*60*24);
 
         objectActivo ={
@@ -314,12 +317,19 @@ let crearReporteMasTiempoDealer = async () =>{
     // console.log(resultSearchAsset);
 
     let dataObject = {};
+    let resta = 0;
+    let contdias = 0;
+    console.log(resultSearchAsset);
+    let lastTime = new Date().getTime();
 
     for (let i = 0; i < resultSearchAsset.length; i++) {
+
+        resta = lastTime - resultSearchAsset[i].startDate;
+        contdias = resta / (1000 * 60 * 60 * 24);
         
         dataObject = {
             VIN : resultSearchAsset[i].VIN,
-            date: resultSearchAsset[i].startDate,
+            date: contdias.toFixed(2),
             name: resultSearchAsset[i].nombre,
             model: resultSearchAsset[i].modelo
         };
@@ -329,6 +339,118 @@ let crearReporteMasTiempoDealer = async () =>{
     }
     // console.log(arrActivo);
     return arrActivo;
+
+}
+
+let crearReporteTiempoSinMoverse = async () =>{
+
+        let searchTag = () => {
+            try {
+
+                return new Promise((resolve, reject) => {
+
+                    TagInfo.find({estado: true})
+                        .exec((err, tagDB) => {
+                            err
+                                ?
+                                reject(err) :
+
+                                resolve(tagDB)
+                        })
+
+                })
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+    let resultSearchTag = await searchTag();
+    let arrPoint = [];
+    let js={
+        contador:0,
+        region:``,
+        tag:``
+    }
+    for (let i = 0; i < resultSearchTag.length; i++) {
+        
+        let searchPoint = () => {
+            try {
+
+                param = {
+                    idTag: resultSearchTag[i].idTag
+                }
+
+                return new Promise((resolve, reject) => {
+
+                    Graficar.find(param)
+                        .exec((err, pointDB) => {
+                            err
+                                ?
+                                reject(err) :
+
+                                resolve(pointDB)
+                        })
+
+                });
+
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        let resultSearchPoint = await searchPoint();
+
+        for (let i = 0; i < resultSearchPoint.length; i++) {
+            
+
+            if (resultSearchPoint[i].region != resultSearchPoint[i + 1].region) {
+
+                js.contador+=1;
+                js.region = resultSearchPoint[i].region;
+                js.tag = resultSearchPoint[i].idTag;
+
+            }
+            
+        }
+
+        if (js.contador <= 5) {
+            arrPoint.push(js);
+        }
+
+    };
+
+    for (let i = 0; i < arrPoint.length; i++) {
+        
+        let searchPointDate = (ruta) => {
+            try {
+
+                return new Promise((resolve, reject) => {
+
+                    Graficar.find(ruta)
+                        .exec((err, pointDB) => {
+                            err
+                                ?
+                                reject(err) :
+
+                                resolve(pointDB)
+                        })
+
+                })
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        let ruta = JSON.parse(`{region:${arrPoint[i].region}, idTag:${arrPoint[i].tag}}`)
+        let resultSearchTag = await searchPointDate(ruta);
+        
+    }
+
+
+
 
 }
 
@@ -343,5 +465,6 @@ module.exports = {
     crearReporteVentas,
     crearReporteTiempoVenta,
     crearReporteTiempoServicio,
-    crearReporteMasTiempoDealer
+    crearReporteMasTiempoDealer,
+    crearReporteTiempoSinMoverse
 }

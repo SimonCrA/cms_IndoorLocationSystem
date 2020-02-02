@@ -396,7 +396,8 @@ module.exports = {
      ubicacionSelect,
       putActivo, 
       putTags, 
-      venderAuto
+      venderAuto,
+      despacharServicio
 }
 
 
