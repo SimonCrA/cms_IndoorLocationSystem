@@ -8,22 +8,22 @@
     
     //default options
     
-
-let uploadFile = (req, res) =>{
-
-    let tipo = req.params.tipo;
-    let id = req.params.id;
-    if (!req.files){
-        return res.status(400).json({
+    
+    let uploadFile = (req, res) =>{
+        let tipo = (req.params.tipo).toLowerCase();
+        let id = req.params.id;
+        if (!req.files){
+            return res.status(400).json({
             ok: false,
             err: {
                 mensaje: 'No se ha seleccionado ningún archivo'
             }
         });
     };
-
+    
     //valida tipo
     let tiposValidos = ['clients', 'usuarios', 'maps'];
+    
     if (tiposValidos.indexOf( tipo ) < 0) {
         return res.status(400).json({
             ok: false,
@@ -32,17 +32,18 @@ let uploadFile = (req, res) =>{
             }
         });
     }
-
-    let archivo =  req.files.archivo;
+    
+    let archivo =  req.files.file;
+    console.log(`line 28`);
     let fragmentarNombre = archivo.name.split('.');
     let extension = fragmentarNombre[fragmentarNombre.length -1]
     // console.log(extension);
-
-
-
+    
+    
+    
     //Extensiones permitidas
     let extensionesValidas = ['png', 'jpg', 'jpeg', 'gif'];
-
+    
     if (extensionesValidas.indexOf( extension ) < 0) {
         return res.status(400).json({
             ok: false,
@@ -52,18 +53,24 @@ let uploadFile = (req, res) =>{
             }
         })
     };
-
+    
     //Cambiar nombre del archivo.
     //el nombre se genera en este formato aseicnai31n32i9-432.jpg
-
+    
     let nombreArchivo = `${id}-${ new Date().getMilliseconds() }.${extension}`
+    
+    console.log(archivo.mv(`uploads/${tipo}/${ nombreArchivo }`));
+    
 
     archivo.mv(`uploads/${tipo}/${ nombreArchivo }`, (err)=>{
-
+        
         if(err){
+            console.log(`line 64`);
             return res.status(500).json({
                 ok: false,
-                err
+                err,
+                msj:'aca esta lo malo'
+                
             });
         };
 
@@ -88,13 +95,14 @@ function guardarImgUsuario( id, res, nombreArchivo ){
 
         if (err) {
         borrarArchivo(nombreArchivo, 'usuarios');
-
+            console.log('line94');
             return res.status(500).json({
                 ok: false,
                 err
             });
         };
         if (!usuarioDB) {
+            console.log(usuarioDB);
         borrarArchivo(nombreArchivo, 'usuarios');
 
             return res.status(400).json({
@@ -131,7 +139,7 @@ function guardarImgClient(id, res, nombreArchivo) {
     Client.findById(id, (err, clientDB) => {
         if (err) {
             borrarArchivo(nombreArchivo, 'clients');
-
+console.log(`line 138`);
             return res.status(500).json({
                 ok: false,
                 err
@@ -168,9 +176,10 @@ function guardarImgClient(id, res, nombreArchivo) {
 function guardarImgMap(id, res, nombreArchivo) {
 
     Zona.findById(id, (err, zonaDB) => {
+        console.log(err);
         if (err) {
             borrarArchivo(nombreArchivo, 'maps');
-
+console.log(`178`);
             return res.status(500).json({
                 ok: false,
                 err
