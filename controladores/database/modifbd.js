@@ -63,7 +63,7 @@ let pisos = (req, res, next) => {
 
     let id = req.params.id;
 
-    let body = _.pick(req.body,['idLocation','nombrePiso','numeroPiso','plano']) ;
+    let body = _.pick(req.body,['idLocation','nombrePiso','numeroPiso','ancho', 'alto']) ;
     console.log(`body`);
     console.log(body);
     
@@ -395,7 +395,8 @@ module.exports = {
      ubicacionSelect,
       putActivo, 
       putTags, 
-      venderAuto
+      venderAuto,
+      despacharServicio
 }
 
 
