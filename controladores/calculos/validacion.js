@@ -214,15 +214,17 @@ let validacion_Trilateracion = async ()=>{
             return new Promise((resolve, reject)=>{
                 
                 
-                graficar.find({region: regio, idTag:mactag }).sort({_id:-1}).limit(10)
+                graficar.find({region: regio, idTag:mactag }).sort({_id:-1}).limit(10).select('x y')
                 .exec((err, poitnXY) => {
     
                     if (err) {
                         return reject(err)
                     }
                     if(Array.isArray(poitnXY) && poitnXY.length){
-                        return resolve(
+                        return resolve({
                             poitnXY
+
+                        }
                         )
                     }else{
                         return reject('Data is Empty')
@@ -495,31 +497,33 @@ let validacion_Trilateracion = async ()=>{
                             let guardarpuntoXY = await promesa_puntoXY(punto, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
                         
                         // consulta-> 10 ultimos registros (tag y region)
-                        // let consultaXY = await promesa_Las10XY(lista_Obj_trilaterar[k].tag[j],lista_Obj_trilaterar[k].region)
+                        let consultaXY = await promesa_Las10XY(lista_Obj_trilaterar[k].tag[j] ,lista_Obj_trilaterar[k].region)
 
                         // console.log(consultaXY);
-                        // if (consultaXY.length < 0){
-                        //     let filtradoXY= dataToKalman2D(punto)
+                        if (consultaXY.length < 0){
+                            let filtradoXY= dataToKalman2D(punto)
                             
-                        //     let guardarpuntoXY = await promesa_puntoXY(filtradoXY, resulttag[k]._id, resultRegion[i]._id);
-                        // }else{
-                        //     consultaXY. push(punto)
-                        //         if(i===0){
-                        //             let filtradoXY= dataToKalman2D(consultaXY[i]).then (
-                        //                 guarda
-                        //             )
+                            let guardarpuntoXY = await promesa_puntoXY(filtradoXY, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
+                            
+                        }else{
+                            consultaXY. push(punto)
+                                
+                            let filtradoXY= dataToKalman2D(consultaXY)
 
-                        //         }else{
 
-                        //             res= dataToKalman2D(x_b, p_b, consultaXY[i] )
-                        //         }
+                            
+                            if((filtradoXY.xpos < x + (1.9)) && (filtradoXY.ypos < y + (1.9)) ){
+                                let guardarpuntoXY = await promesa_puntoXY(filtradoXY, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
+                                
+                            }else{
+                                
+                            }
+                        
+                        }
+
+                                
     
     
-                        //         if(res < x region + (1.9)){
-                        //             guardo en gaficar
-                        //         }else{
-                        //             no guardo
-                        //         }}
                         
                     }
 
