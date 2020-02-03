@@ -96,7 +96,7 @@ let dataToKalman2D = (arrayFromValidation)=>{
     
     
     }
-    return {x:res.x_before[0][0], y: res.x_before[1][0]}
+    return {xpos:res.x_before[0][0], ypos: res.x_before[1][0]}
 
 }
 
