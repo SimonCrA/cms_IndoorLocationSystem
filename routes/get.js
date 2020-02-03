@@ -22,6 +22,9 @@ router.get('/saletime', apiGet.getSaleTime);
 router.get('/servicetime', apiGet.getServiceTime);
 router.get('/dealertime', apiGet.getDealerTime);
 
+
+router.get('/asd/:idactivo', apiGet.asd);
+
 router.get('/counter', apiGet.contador); 
 
 
