@@ -406,6 +406,17 @@ let getDealerTime = async (req, res) =>{
 
 }
 
+let getRegionTime = async (req, res) =>{
+
+        let result = await crearReporteTiempoSinMoverse();
+        console.log(result);
+        res.status(200).json({
+            ok: true,
+            result
+        })
+
+}
+
 /* *****************************************
 *	ZONA
 *	
@@ -866,6 +877,7 @@ module.exports = {
     getSaleTime,
     getServiceTime,
     getDealerTime,
+    getRegionTime,
     contador,
     getTagsfalse,
     asd
