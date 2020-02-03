@@ -3,6 +3,9 @@ const InfoUbicacion = require('../../models/ubicacion');
 const Region = require('../../models/zona')
 const Graficar = require('../../models/graficar')
 const Activo = require('../../models/activo');
+const timerToreciveActive = require('../../models/timerToreciveActive');
+
+const promesas = require('./promesas')
 
 const Toptensales = require('../../models/reportetoptenventas');
 
@@ -28,6 +31,7 @@ const async = require('async');
 
 let searchAssets = async (req, res) => {
     try {
+        let userid= req.user._id
 
         let dataBusqueda = {
                 tipo: '',
@@ -94,6 +98,8 @@ let searchAssets = async (req, res) => {
                     
 
                             crearReporte(dataBusqueda);
+
+                            // crearReporteAtendidosVendedor(userid)
                             console.log(ActivoBuscado[0]);
                             
                            
@@ -761,6 +767,91 @@ let contador = (req, res, next)=>{
 
 }
 
+
+
+let asd =async (req, res, next)=>{
+try{
+
+    
+
+    let userid= req.user._id
+    let activo = req.params.idactivo ;
+    let regionPartida
+    let regionllegada
+    let dateStart = new Date().getTime();
+    let dateEnd = new Date().getTime();
+
+    await promesas.promise_active(req.params.idactivo).then( async obj=>{
+       await promesas.promise_pointXY(obj.active[0].idTag.mactag).then(obj2=>{
+        regionPartida= obj2[0].region._id;
+        }, er=>{
+            console.log(er);
+        })
+
+    }, er=>{
+        console.log(er);
+    })
+
+    let intervalAactive = setInterval( async () => {
+        console.log(`scan`);
+        await promesas.promise_active(req.params.idactivo).then( async obj=>{
+            await promesas.promise_pointXY(obj.active[0].idTag.mactag).then(obj2=>{
+                regionllegada= obj2[0].region._id;
+             }, er=>{
+                 console.log(er);
+             })
+     
+         }, er=>{
+             console.log(er);
+         })
+        if(regionllegada == `5e2e202ed0a03853b82a0c30`  ){
+
+
+            dateEnd = new Date().getTime();
+
+            let resta = dateEnd- dateStart;
+            let contdias = Math.round(resta/(1000*60*60*24));
+            let conthoras = Math.round(resta/(1000*60*60));
+            let contmin = resta/(1000*60);
+            let conts = resta/(1000);
+            let tiempoTotal = contdias+ ':' + conthoras + ':' + contmin.toFixed(1)+':'+conts.toFixed(1);
+
+
+            let TimerToreciveActive = new timerToreciveActive({
+                user:userid ,
+
+                activo:activo,
+                regionPartida:regionPartida,
+                regionLLegada: regionllegada,
+                duracionString:tiempoTotal,
+                duracion:[dateStart, dateEnd, (dateEnd-dateStart)]
+            })
+            TimerToreciveActive.save((er, save)=>{
+                if(er){
+                   console.log({ok:false, er})
+                }else{
+                    console.log(save);
+                }
+                
+            })
+
+            clearInterval(intervalAactive)
+
+        }
+        
+    }, 10000);
+
+    console.log(regionPartida);
+
+    // timerToreciveActive
+    return res.status(200).jsonp({ok:true})
+}catch(e){
+    console.log(e);
+    }
+}
+
+
+
 module.exports = {
     region,
     ubicacion,
@@ -776,5 +867,7 @@ module.exports = {
     getServiceTime,
     getDealerTime,
     contador,
-    getTagsfalse
+    getTagsfalse,
+    asd
 }
+
