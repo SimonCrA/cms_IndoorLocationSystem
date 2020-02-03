@@ -9,7 +9,8 @@ var zonaSchema = new Schema({
 
     edificio: {type: String},
     nombrePiso: {type: String  },      
-    numeroPiso: {type: Number },        
+    numeroPiso: {type: Number },  
+    plano:{type:String},      
     
     //regiones
     idPiso:{ type: Schema.Types.ObjectId, ref: 'zona'},
@@ -24,7 +25,9 @@ var zonaSchema = new Schema({
     //piso
     plano:{type:String},
     tipo:{type:String},
-    estatus: {type:Boolean}
+    estatus: {type:Boolean},
+    alto: {type:Number},
+    ancho: {type:Number},
 
 
 	}
