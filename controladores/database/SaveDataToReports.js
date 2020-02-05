@@ -428,7 +428,7 @@ let crearReporteTiempoSinMoverse = async () =>{
 
                 return new Promise((resolve, reject) => {
 
-                    Graficar.find(ruta)
+                    Activo.find(ruta)
                         .exec((err, pointDB) => {
                             err
                                 ?
@@ -444,12 +444,26 @@ let crearReporteTiempoSinMoverse = async () =>{
             }
         }
 
-        let ruta = JSON.parse(`{region:${arrPoint[i].region}, idTag:${arrPoint[i].tag}}`)
+        let ruta = JSON.parse(`idTag:${arrPoint[i].tag}}`)
         let resultSearchTag = await searchPointDate(ruta);
+        let arrActivoRegion = [];
+        let objectActivoRegion = {};
+
+        objectActivoRegion = {
+            brand: resultSearchTag.nombre,
+            VIN: resultSearchTag.VIN,
+            model: resultSearchTag.modelo,
+            region: arrPoint.region
+        }
+
+        arrActivoRegion.push(objectActivoRegion);
+
+
         
     }
-
-
+    
+    
+    return arrActivoRegion;
 
 
 }
