@@ -31,7 +31,18 @@ const async = require('async');
 
 let searchAssets = async (req, res) => {
     try {
-        let userid= req.user._id
+        console.log(req.sessionID);
+        // let userid= req.user._id || req.headers.authorization || "5daf3de63a64441b7c1479ff"
+        
+        let userid= ''
+        if(req.user === undefined){
+            userid=   "5daf3de63a64441b7c1479ff"
+            
+        }else{
+            userid= req.user._id 
+
+
+        }
 
         let dataBusqueda = {
                 tipo: '',
@@ -59,13 +70,17 @@ let searchAssets = async (req, res) => {
                     var busqueda2 = {anio:regex, estado:true}
                     dataBusqueda.tipo = item
                  }
-
+                 
                  else{
                      return res.status(400).json({ok:false, error:{
                         mensaje: "there isn't any asset with that Item"
                      }})
                  }
             
+
+
+
+
                 // Activo.find(JSON.parse(`{"${item}":"${regex}"}`))
                 Activo.find(busqueda2)
                     // .limit(5)
@@ -100,7 +115,7 @@ let searchAssets = async (req, res) => {
                             crearReporte(dataBusqueda);
 
                             // crearReporteAtendidosVendedor(userid)
-                            console.log(ActivoBuscado[0]);
+                            // console.log(ActivoBuscado[0]);
                             
                            
                     });
@@ -110,7 +125,7 @@ let searchAssets = async (req, res) => {
         let promise_pointXY = (resultPromiseActivo)=>{
             return new Promise((resolve, reject) => {
 
-                console.log(resultPromiseActivo);
+                // console.log(resultPromiseActivo);
                 
                 let idActivo = resultPromiseActivo.idTag.mactag
                 // console.log(idActivo);
@@ -226,7 +241,9 @@ let getTopTen = (req, res) =>{
         let busquedaDeReporte = () =>{
             
             return new Promise((resolve, reject) => {
-                Reportetopten.find({tipo: tipo}).sort({count:counter}).exec((err, toptenBuscado) => {
+                Reportetopten.find({tipo: tipo}).sort({count:counter})
+                .limit(10)
+                .exec((err, toptenBuscado) => {
                     
                    if(err){
 
@@ -442,13 +459,22 @@ let findZona = (req, res, next) => {
 			TagInfo.find().select('mactag')
               .exec(callback);
         },
+        zona: function(callback) {
+            Region.find({tipo:'region', estatus:true}).select('nombreRegion numeroRegion')
+            .populate({
+                path:'idPiso',
+                model:'zona',
+                select:'nombrePiso'
+            })
+            .exec(callback)
+        }
 
     }, function(err, results) {
         if (err) { return next(err); }
 		// Successful, so render.
 		
 		// console.log({'idzonas':results.idzona, 'tags':results.tags});
-		res.status(200).jsonp({'idzonas':results.idzona, 'tags':results.tags});
+		res.status(200).jsonp({ 'idzonas':results.idzona,'tags':results.tags, 'zona':results.zona});
 		
     });
 
@@ -479,7 +505,7 @@ let regionId = (region) =>{
                         region
                     })
                 }else{
-                    return reject('Data is Empty')
+                    return reject('Region is Empty')
 
                 }
 
@@ -821,11 +847,7 @@ try{
             dateEnd = new Date().getTime();
 
             let resta = dateEnd- dateStart;
-            let contdias = Math.round(resta/(1000*60*60*24));
-            let conthoras = Math.round(resta/(1000*60*60));
             let contmin = resta/(1000*60);
-            let conts = resta/(1000);
-            let tiempoTotal = contdias+ ':' + conthoras + ':' + contmin.toFixed(1)+':'+conts.toFixed(1);
 
 
             let TimerToreciveActive = new timerToreciveActive({
@@ -834,7 +856,7 @@ try{
                 activo:activo,
                 regionPartida:regionPartida,
                 regionLLegada: regionllegada,
-                duracionString:tiempoTotal,
+                duracionString:contmin,
                 duracion:[dateStart, dateEnd, (dateEnd-dateStart)]
             })
             TimerToreciveActive.save((er, save)=>{
@@ -861,7 +883,46 @@ try{
     }
 }
 
+let timeActiveRecive = (req, res, next)=>{
 
+    timerToreciveActive.find()
+    .populate([
+        {
+        path:'user',
+        model:'User',
+        select:'name surname'
+    },
+        {
+        path:'activo',
+        model:'Activo',
+        select:'nombre modelo color'
+    },
+        {
+        path:'regionPartida',
+        model:'zona',
+        select:'nombreRegion'
+
+    },
+        {
+        path:'regionLLegada',
+        model:'zona',
+        select:'nombreRegion'
+
+        }
+        ])
+    .exec((err, timetorecive)=>{
+
+        if(err){
+            return res.status(402).jsonp({ok:false, err})
+        }
+        else{
+            
+            return res.jsonp({ok:true, timetorecive})
+        }
+    })
+
+
+}
 
 module.exports = {
     region,
@@ -880,6 +941,7 @@ module.exports = {
     getRegionTime,
     contador,
     getTagsfalse,
-    asd
+    asd,
+    timeActiveRecive
 }
 
