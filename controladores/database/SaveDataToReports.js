@@ -375,13 +375,14 @@ let crearReporteTiempoSinMoverse = async () =>{
         region:``,
         tag:``
     }
+    console.log(resultSearchTag);
     for (let i = 0; i < resultSearchTag.length; i++) {
         
         let searchPoint = () => {
             try {
 
-                param = {
-                    idTag: resultSearchTag[i].idTag
+                let param = {
+                    idTag: resultSearchTag[i].mactag
                 }
 
                 return new Promise((resolve, reject) => {
@@ -404,40 +405,54 @@ let crearReporteTiempoSinMoverse = async () =>{
         }
 
         let resultSearchPoint = await searchPoint();
+        if(Array.isArray(resultSearchPoint) && resultSearchPoint.length){
+            if(resultSearchPoint.length > 1){
+                console.log(`Procede a comparar ...`);
+                console.log(resultSearchPoint);
+                for (let j = 0; j < (resultSearchPoint.length -1); j++) {
+                    
+                    console.log(`entre no?`);
+                    if (resultSearchPoint[j].region != resultSearchPoint[j + 1].region) {
+                        console.log(`ENTRE ${j}`);
+                        js.contador+=1;
+                        js.region = resultSearchPoint[j].region;
+                        js.tag = resultSearchTag[i]._id;
+        
+                    }
+                    
+                }
+        
+                if (js.contador <= 5) {
+                    arrPoint.push(js);
+                }
 
-        for (let i = 0; i < resultSearchPoint.length; i++) {
-            
-
-            if (resultSearchPoint[i].region != resultSearchPoint[i + 1].region) {
-
-                js.contador+=1;
-                js.region = resultSearchPoint[i].region;
-                js.tag = resultSearchPoint[i].idTag;
-
+            }else{
+                console.log(`No procede`);
+                console.log(resultSearchPoint);
+                
             }
             
-        }
 
-        if (js.contador <= 5) {
-            arrPoint.push(js);
         }
-
+        
+        
     };
-
+    
+    let arrActivoRegion = [];
     for (let i = 0; i < arrPoint.length; i++) {
         
         let searchPointDate = (ruta) => {
             try {
 
                 return new Promise((resolve, reject) => {
-
+                    console.log(ruta);
                     Activo.find(ruta)
                         .exec((err, pointDB) => {
                             err
                                 ?
                                 reject(err) :
 
-                                resolve(pointDB)
+                                resolve(pointDB[0])
                         })
 
                 })
@@ -446,17 +461,19 @@ let crearReporteTiempoSinMoverse = async () =>{
                 console.log(error);
             }
         }
-
-        let ruta = JSON.parse(`idTag:${arrPoint[i].tag}}`)
+        console.log(arrPoint[i].tag);
+        let ta= arrPoint[i].tag
+        let path= `{"idTag":"${ta}"}`
+        console.log(path);
+        let ruta = JSON.parse(path)
         let resultSearchTag = await searchPointDate(ruta);
-        let arrActivoRegion = [];
         let objectActivoRegion = {};
 
         objectActivoRegion = {
             brand: resultSearchTag.nombre,
             VIN: resultSearchTag.VIN,
             model: resultSearchTag.modelo,
-            region: arrPoint.region
+            region: arrPoint[i].region
         }
 
         arrActivoRegion.push(objectActivoRegion);
