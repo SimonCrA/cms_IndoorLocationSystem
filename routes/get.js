@@ -21,6 +21,7 @@ router.get('/topsales/:order', apiGet.getTopTenSales);
 router.get('/saletime', apiGet.getSaleTime);
 router.get('/servicetime', apiGet.getServiceTime);
 router.get('/dealertime', apiGet.getDealerTime);
+router.get('/timeactiverecive', apiGet.timeActiveRecive);
 router.get('/nomotionasset', apiGet.getRegionTime);
 
 
