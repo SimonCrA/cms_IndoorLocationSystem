@@ -5,7 +5,9 @@ const TagInfo = require ('../../models/tagInfo')
 const Graficar = require ('../../models/graficar')
 
 const Reportetiempoventa = require('../../models/reportetiempoventa');
-// const Reportatendidos = require('../../models/reporteatendidosperuser');
+
+const {buscarReporteAatendidos, actualizaReporteAtendidos} =require('./promesas') 
+
 
 let crearReporte = async (dataBusqueda) =>{
     try {
@@ -272,7 +274,7 @@ let crearReporteTiempoServicio = async (activo) =>{
 
     let resta = 0;
             
-    for (let i = 1; i < activo.length; i++) {
+    for (let i = 0; i < activo.length; i++) {
 
         resta = activo[i].endDate - activo[i].startDate;
         let conthoras = resta / (1000 * 60 * 60);
@@ -330,7 +332,7 @@ let crearReporteMasTiempoDealer = async () =>{
         
         dataObject = {
             VIN : resultSearchAsset[i].VIN,
-            date: contdias.toFixed(2),
+            days: contdias.toFixed(2),
             name: resultSearchAsset[i].nombre,
             model: resultSearchAsset[i].modelo
         };
@@ -456,119 +458,60 @@ let crearReporteTiempoSinMoverse = async () =>{
 }
 
 
-// let crearReporteAtendidosVendedor = (userid)=>{
+let crearReporteAtendidosVendedor = async (userid)=>{
 
-//     try {
-//         console.log("ESTO ESTA FUNCIONANDO??");
+    try {
+        console.log("ESTO ESTA FUNCIONANDO??");
         
-//         let actualizaReporte = (dataToRefresh) => {
+        let path = JSON.parse(`{userid:${userid}}`)
+        let buscaReporte = await buscarReporteAatendidos(path);
+
+
+        
+        if (buscaReporte.ok === false) {
+            console.log('entre en false');
+            console.log(`reporte ${buscaReporte}`);
+
+            let date = new Date().getTime();
+    
+    
+            let report = new Reportatendidos({
+    
+                userid:userid,
+                count: 1,
+                date: date
             
-//             return new Promise((resolve, reject) => {
-//                 console.log("es hora de actualizar");
-//                 let date = dataToRefresh[0].date
-//                 date.push(dataBusqueda.date)
-//                 let id = dataToRefresh[0]._id
-//                 let body = {
-//                     count: dataToRefresh[0].count + 1,
-//                     date: date
-//                 }
-//                 console.log(body);
+                });
 
-//                 Reportetopten.findByIdAndUpdate(id, body, {
-//                     new: true,
-//                     runValidators: true
-//                 }, (err, reporteActualizado) => {
-//                     console.log(reporteActualizado);
-//                 err
-//                     ?
-//                     reject(err):
+            report.save((err, dataGuardada)=>{
+            if (err) {
+                return err
+            };
+            if (dataGuardada) {
+            console.log(`guardó ${dataGuardada}`);
 
-//                     resolve(reporteActualizado)
-//                 })
-
-
-//             })
-
-//         }
-
-//         let buscarReporte = (userid) => {
-//             nombre = dataToFind.nombre;
-//             tipo = dataToFind.tipo;
-//             return new Promise((resolve, reject) => {
-
-//                 console.log("BUSCAR EL REPORTE");
-                
-//                 Reportatendidos.find({userid: userid}).exec((err, reporteBuscado) => {
-//                     if (err) {
-//                         return reject(err)
-//                     }
-//                     if (Array.isArray(reporteBuscado) && reporteBuscado.length) {
-//                         return resolve({
-//                             ok: true,
-//                             reporteBuscado
-//                         })
-//                     } else {
-//                         console.log("ESTO ES FALSE");
-
-//                         return resolve({
-//                             ok: false
-//                         })
-//                     }
-
-//                 })
-//             })
-
-
-//         }
-
-
-//         // let buscaReporte = await buscarReporte(dataBusqueda);
-
-
+                return true
+            }
+        })
+        } 
+        else if (buscaReporte.ok === true) {
+            await actualizaReporteAtendidos(buscaReporte.reporteBuscado)
+        }
         
-//         if (buscaReporte.ok === false) {
-//             console.log('entre en false');
-//             console.log(`reporte ${buscaReporte}`);
-
-//             let date = new Date().getTime();
-    
-    
-//             let report = new Reportatendidos({
-    
-//                 userid:userid,
-//                 count: 'd',
-//                 date: 2
-            
-//                 });
-
-//             report.save((err, dataGuardada)=>{
-//             if (err) {
-//                 return err
-//             };
-//             if (dataGuardada) {
-//             console.log(`guardó ${dataGuardada}`);
-
-//                 return true
-//             }
-//         })
-//         } else if (buscaReporte.ok === true) {
-//             // let actualizareporte = await actualizaReporte(buscaReporte.reporteBuscado)
-//         }
-        
-//     } catch (error) {
-//         console.log(error);
-//     }
+    } catch (error) {
+        console.log(error);
+    }
     
     
 
-//         let date = new Date().getTime();
+        let date = new Date().getTime();
     
     
 
 
 
 
-// }
+}
 
 
 module.exports = {
@@ -577,6 +520,6 @@ module.exports = {
     crearReporteTiempoVenta,
     crearReporteTiempoServicio,
     crearReporteMasTiempoDealer,
-    // crearReporteAtendidosVendedor
+    crearReporteAtendidosVendedor,
     crearReporteTiempoSinMoverse
 }
