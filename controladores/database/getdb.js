@@ -14,7 +14,7 @@ const Reportetopten = require('../../models/reportetopten');
 const {
     crearReporte, crearReporteTiempoVenta,
     crearReporteTiempoServicio,
-    crearReporteMasTiempoDealer
+    crearReporteMasTiempoDealer,crearReporteTiempoSinMoverse
         } = require('./SaveDataToReports');
 
 const {conversorM_P} = require('../variables')
