@@ -18,6 +18,8 @@ var socket = io();
 var hchart = null;
 socket.on('completeData', function (data) {
     var series = data;
+    console.log(`SERIE`);
+    console.log(data);
    
     $('#hchart').highcharts({
         chart: {

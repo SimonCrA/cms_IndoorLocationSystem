@@ -20,16 +20,18 @@ $.getJSON('https://api.ipify.org?format=json', function(data){
 /* *****************************************/
 var consulta = $.get( "../../../api/zona", function() {
   data = consulta.responseJSON;
-  console.log(data.idzonas);
+  console.log(data.zona);
   
-  for (let i = 0; i < data.idzonas.length; i++) {
+  for (let i = 0; i < data.zona.length; i++) {
     // console.log(`data es ${i}====${JSON.stringify(data[i])}`);
     let zona = document.getElementById("List_IdZona");
     let zona2 = document.getElementById("RegionList2");
     let option = document.createElement("option");
     let option2 = document.createElement("option");
-    option.text = data.idzonas[i]._id;
-    option2.text = data.idzonas[i]._id;
+    option.text = `${data.zona[i].idPiso.nombrePiso} - ${data.zona[i].nombreRegion} (${data.zona[i].numeroRegion})`;
+    option.value=data.zona[i]._id
+    option2.value=data.zona[i]._id
+    option2.text = `${data.zona[i].idPiso.nombrePiso} - ${data.zona[i].nombreRegion} (${data.zona[i].numeroRegion})`;
     zona.add(option);  
     zona2.add(option2); 
   }
@@ -128,6 +130,7 @@ function startValidacion(e) {//Se utiliza cuando se procede a validar las consta
   let sessions= sessionStorage.getItem('sessionId')
   console.log(sessions);
   let region = document.getElementById('RegionList2').value
+  
   let aviso={aviso:'Inicio la validacion', tipo:'validar', region, sessionId}
 
   socket.emit('despliegue', aviso); 
