@@ -59,7 +59,7 @@ try {
 
             logSistem(`${JSON.stringify(libreta, null, 1)}`, nameFile[0])
 
-            // console.log(libreta);
+            console.log(libreta);
             }
                 
             
