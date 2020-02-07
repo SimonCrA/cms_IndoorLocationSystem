@@ -6,6 +6,7 @@ const Graficar = require('../../models/graficar')
 const Activo = require('../../models/activo');
 const {conversorM_P} = require('../variables')
 
+const Reportatendidos = require('../../models/reporteatendidosperuser');
 
 try {
     let promise_active = (idActivo)=>{
@@ -87,16 +88,73 @@ try {
 
 
 
+    let buscarReporteAatendidos = (path) => {
+        
+        return new Promise((resolve, reject) => {
+
+            console.log("BUSCAR EL REPORTE");   
+            
+            Reportatendidos.find(path)
+            .exec((err, reporteBuscado) => {
+                if (err) {
+                    return reject(err)
+                }
+                if (Array.isArray(reporteBuscado) && reporteBuscado.length) {
+                    return resolve({
+                        ok: true,
+                        reporteBuscado
+                    })
+                } else {
+
+                    return resolve({
+                        ok: false
+                    })
+                }
+
+            })
+        })
 
 
+    }
 
+    let actualizaReporteAtendidos = (dataToRefresh) => {
+            
+        return new Promise((resolve, reject) => {
+            console.log("es hora de actualizar");
+            let date = dataToRefresh[0].date
+            date.push(dataBusqueda.date)
+            let id = dataToRefresh[0]._id
+            let body = {
+                count: dataToRefresh[0].count + 1,
+                date: date
+            }
+            console.log(body);
+
+            Reportatendidos.findByIdAndUpdate(id, body, {
+                new: true,
+                runValidators: true
+            }, (err, reporteActualizado) => {
+                console.log(reporteActualizado);
+            err
+                ?
+                reject(err):
+
+                resolve(reporteActualizado)
+            })
+
+
+        })
+
+    }
 
 
 
 
 module.exports={
     promise_active,
-    promise_pointXY
+    promise_pointXY,
+    buscarReporteAatendidos,
+    actualizaReporteAtendidos
 }
 } catch (error) {
     
