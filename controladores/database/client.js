@@ -95,14 +95,15 @@ let postClient = (req, res) =>{
 }
 
 let putClient = (req, res) =>{
-
+    console.log(req.body);
     let id = req.params.id;
     let body = _.pick(req.body, ['enterprise', 'business', 'location', 'img']);
 
     Client.findByIdAndUpdate(id, body, {new: true,runValidators: true,useFindAndModify: false}, (err, clientModificado) => {
 
         if (err) {
-            return res.status(500).json({
+            // console.log(err);
+            return res.status(501).json({
                 ok: false,
                 err
             })
