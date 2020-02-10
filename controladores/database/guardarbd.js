@@ -122,6 +122,20 @@ let ubicacion = (req, res, next)=>{
 
 
 let regiones = (req, res, next) =>{
+    
+    let x = req.body.xbottonleft
+    let y = req.body.ybottonleft
+
+    let alto = req.body.height
+    let ancho = req.body.width
+
+
+    let bl=[ x , y ]
+   let  br=[ancho + x, y ]
+    let tl=[x, alto+y]
+    let tr=[ancho+x, alto+y]
+
+console.log(conversorP_M(bl));
 
     let region = new Region({
 
@@ -130,10 +144,10 @@ let regiones = (req, res, next) =>{
         nombreRegion:req.body.nombreRegion   ,
         numeroRegion:parseInt(req.body.numeroRegion)   ,
 
-        bottomLeft:conversorP_M(parseFloat(req.body.bottomLeft)) ,
-        bottomRigth:conversorP_M(parseFloat(req.body.bottomRigth)) ,
-        topLeft:conversorP_M(parseFloat(req.body.topLeft)) ,
-        topRight:conversorP_M(parseFloat(req.body.topRight)) ,
+        bottomLeft:conversorP_M(bl) ,
+        bottomRigth:conversorP_M(br) ,
+        topLeft:conversorP_M(tl) ,
+        topRight:conversorP_M(tr) ,
         
         estatus: true,
         tipo:'region'  

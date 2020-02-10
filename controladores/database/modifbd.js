@@ -23,17 +23,28 @@ const _ = require('underscore');
 let regiones = (req, res, next) => {
     
     console.log(req.params);
+    
+    let x = req.body.xbottonleft
+    let y = req.body.ybottonleft
 
+    let alto = req.body.height
+    let ancho = req.body.width
+
+
+    let bl=[ x , y ]
+   let  br=[ancho + x, y ]
+    let tl=[x, alto+y]
+    let tr=[ancho+x, alto+y]
     
     let id = req.params.id;
     let body = {
         idPiso: req.body.idPiso,
         nombreRegion: req.body.nombreRegion,
         numeroRegion: req.body.numeroRegion,
-        bottomLeft: conversorP_M(req.body.bottomLeft),
-        bottomRigth: conversorP_M(req.body.bottomRigth),
-        topLeft:conversorP_M( req.body.topLeft),
-        topRight: conversorP_M(req.body.topRight)
+        bottomLeft: conversorP_M(bl),
+        bottomRigth: conversorP_M(br),
+        topLeft:conversorP_M( tl),
+        topRight: conversorP_M(tr)
     }
 
 

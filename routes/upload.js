@@ -3,15 +3,19 @@
     const User = require('../models/usuario');
     const Client = require('../models/client');
     const Zona = require('../models/zona');
+    const {validarImagen} = require('../controladores/database/promesas')
     let fs = require('fs');
     let path = require('path');
+
+    const {resolution} = require('../controladores/variables')
     
     //default options
     
     
-    let uploadFile = (req, res) =>{
+    let uploadFile = async (req, res) =>{
         let tipo = (req.params.tipo).toLowerCase();
         let id = req.params.id;
+        
         if (!req.files){
             return res.status(400).json({
             ok: false,
@@ -20,6 +24,7 @@
             }
         });
     };
+
     
     //valida tipo
     let tiposValidos = ['clients', 'usuarios', 'maps'];
@@ -34,7 +39,6 @@
     }
     
     let archivo =  req.files.file;
-    console.log(`line 28`);
     let fragmentarNombre = archivo.name.split('.');
     let extension = fragmentarNombre[fragmentarNombre.length -1]
     // console.log(extension);
@@ -44,6 +48,7 @@
     //Extensiones permitidas
     let extensionesValidas = ['png', 'jpg', 'jpeg', 'gif'];
     
+    console.log(`line 28`);
     if (extensionesValidas.indexOf( extension ) < 0) {
         return res.status(400).json({
             ok: false,
@@ -59,10 +64,10 @@
     
     let nombreArchivo = `${id}-${ new Date().getMilliseconds() }.${extension}`
     
-    console.log(archivo.mv(`uploads/${tipo}/${ nombreArchivo }`));
+   
     
-
-    archivo.mv(`uploads/${tipo}/${ nombreArchivo }`, (err)=>{
+    
+    archivo.mv(`uploads/${tipo}/${ nombreArchivo }`, async (err)=>{
         
         if(err){
             console.log(`line 64`);
@@ -73,7 +78,33 @@
                 
             });
         };
+        
+        let respValidarImagen = await validarImagen(`uploads/${tipo}/${ nombreArchivo }`);
+        console.log(respValidarImagen);
+        
+        if(!(respValidarImagen.height=== resolution[0].height) &&
+             !(respValidarImagen.width===resolution[0].width) ){
 
+            borrarArchivo(nombreArchivo, tipo);
+
+            return res.status(400).json({
+                ok:false,
+                err:{
+                    msg:'the measurements are invalid',
+                    expected:{
+                        height:resolution[0].height,
+                        width:resolution[0].width
+                    },
+                    recieved:{
+                        height:respValidarImagen.height,
+                        width:respValidarImagen.width
+                    }
+                }
+            })
+
+        }
+        
+        
         if (tipo === 'usuarios') {
             guardarImgUsuario(id, res, nombreArchivo);
         }

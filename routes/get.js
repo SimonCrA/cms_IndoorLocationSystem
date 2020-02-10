@@ -19,13 +19,16 @@ router.get('/tag_data/false', apiGet.getTagsfalse);
 router.get('/topten/:tipo/:order', apiGet.getTopTen);
 router.get('/topsales/:order', apiGet.getTopTenSales); 
 router.get('/saletime', apiGet.getSaleTime);
+
 router.get('/servicetime', apiGet.getServiceTime);
 router.get('/dealertime', apiGet.getDealerTime);
+
 router.get('/timeactiverecive', apiGet.timeActiveRecive);
+
 router.get('/nomotionasset', apiGet.getRegionTime);
 
 
-router.get('/asd/:idactivo', apiGet.asd);
+router.get('/IniciarContador/:idactivo', apiGet.asd);
 
 router.get('/counter', apiGet.contador); 
 
