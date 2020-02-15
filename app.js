@@ -54,7 +54,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 console.log("Establecida la conexion con MongoDB Server: On");
 //----------------------------------------------------------------------------
 
-// validacion_Trilateracion();
 
 
 
@@ -115,6 +114,7 @@ app.use(cors({
 }));
 
 
+// validacion_Trilateracion();
 
 
 app.use('/', indexRouter);
