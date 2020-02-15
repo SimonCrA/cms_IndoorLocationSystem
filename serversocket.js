@@ -85,7 +85,7 @@ try {
 
 
 setInterval(() => {
-
+console.log(`INCIIO ESTO de gossip`);
     io.emit('getTLMPacket', 'StartGossip');
 
 }, timeTLM);
@@ -251,14 +251,18 @@ setInterval(() => {
             console.log(data);
             refresh();
         })
-        socket.on('sendGossipToServer',  (data) => {
+        socket.on('sendGossipToServer', async (data) => {
             console.log(`SENDGOSSIPTOSERVER`);
             console.log(data);
-             processGossipFromRpi(data)
-            
+             res= await processGossipFromRpi(data)
+            if(res.ok===true){
+                console.log(`ALARMA`);
+                console.log(res);
+            }
     
         })
         socket.on('sendGossipToServerEmpty', (data)=>{
+            console.log(`265- gossip empty`);
             console.log(data);
     
         })
