@@ -108,6 +108,7 @@ let doKalmanfilter = (x_before, p_before, X_Y) => {
 
         console.log(`X_Y`);
         console.log(X_Y());
+        console.log(F());
         Xk_predictiva = F.prod(x_before);
         var Xk_Predictiva = matrix(Xk_predictiva);
         console.log(Xk_Predictiva());
