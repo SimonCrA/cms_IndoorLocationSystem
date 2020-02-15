@@ -60,6 +60,7 @@ let validacion_Trilateracion = async ()=>{
         }
         let promesa_AggregateRegion = () =>{
             return new Promise((resolve, reject) => {
+
                 Ubicacion.aggregate([{
                         "$group": {
                             _id:"$idZona",
@@ -218,7 +219,7 @@ let validacion_Trilateracion = async ()=>{
             return new Promise((resolve, reject)=>{
                 
                 
-                graficar.find({region: regio, idTag:mactag }).sort({_id:-1}).limit(10).select('x y')
+                Graficar.find({region: regio, idTag:mactag }).sort({_id:-1}).limit(10).select('x y')
                 .exec((err, poitnXY) => {
     
                     if (err) {
@@ -231,7 +232,11 @@ let validacion_Trilateracion = async ()=>{
                         }
                         )
                     }else{
-                        return reject('Data is Empty')
+                        return resolve({
+                            poitnXY
+
+                        }
+                        )
     
                     }
     
@@ -243,15 +248,16 @@ let validacion_Trilateracion = async ()=>{
         }
         
         
-
+        
         ///////////////////////////////////////////////////////////////////////////////////
-
-
+        
+        
         console.log(`======================INICIA TRILATERACION=========================`.rainbow);
         logSistem(`======================INICIA TRILATERACION=========================`, nameFile[0])
-
-
+        
+        
         let resultRegion = await promesa_AggregateRegion()
+        console.log(`Line 255`);
         // console.log(`Esto es el result Region length: ${JSON.stringify(resultRegion, null, 2)}`);
 
         let lista_Obj_trilaterar =[]
@@ -313,8 +319,6 @@ let validacion_Trilateracion = async ()=>{
         for (let k = 0; k < interval1_1; k++) {// CICLO DE REGIONES
 
 
-
-
             let interval1_2 = lista_Obj_trilaterar[k].tag.length;
 
             for (let j = 0; j < interval1_2; j++) {//Ciclo de tags
@@ -361,6 +365,8 @@ let validacion_Trilateracion = async ()=>{
 
             
         }
+
+
 
 
         // console.log(`-----------------------------`);
@@ -504,15 +510,38 @@ let validacion_Trilateracion = async ()=>{
                         
                     console.log(`el punto xy es true`);
 
-                            // let guardarpuntoXY = await promesa_puntoXY(punto, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            let guardarpuntoXY = await promesa_puntoXY(punto, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
                         
                         // consulta-> 10 ultimos registros (tag y region)
                         let consultaXY = await promesa_Las10XY(lista_Obj_trilaterar[k].tag[j] ,lista_Obj_trilaterar[k].region)
 
-                        console.log(consultaXY);
-                        if (consultaXY.length < 0){
+                        console.log(consultaXY.length);
+                        if (consultaXY.length === undefined ||consultaXY.length <0 ){
                             console.log(`No hay data `);
-                            let filtradoXY= dataToKalman2D(punto)
+
+                            let atray =[{
+                                x: punto.punt_x,
+                                y: punto.punt_y
+                            }]
+
+                            let filtradoXY= dataToKalman2D(atray)
                             
                             let guardarpuntoXY = await promesa_puntoXY(filtradoXY, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
                             
@@ -524,30 +553,33 @@ let validacion_Trilateracion = async ()=>{
                             let filtradoXY= dataToKalman2D(consultaXY)
 
 
-                            
+
                             if((filtradoXY.xpos < x + (1.9)) && (filtradoXY.ypos < y + (1.9)) ){
                                 console.log(`Se guardara el xy`);
-                                // let path_IdRegion = {
-                                //     _id:lista_Obj_trilaterar[k].region
-                                // }
-                                // await Promesa.getZona(path_IdRegion).then(resp=>{
-                                //     bottomLeft  = resp.idPiso[0].bottomLeft
+
+                                let path_IdRegion = {_id:lista_Obj_trilaterar[k].region}
+                                await Promesa.getZona(path_IdRegion).then(resp=>{
+                                    console.log(resp.resposeZona);
+                                    bottomLeft  = resp.resposeZona[0].bottomLeft
                                     
-                                // }, err => console.log(err))
-                                // let XyPlanoReal = {
-                                //     x:filtradoXY.xpos,
-                                //     y:filtradoXY.ypos,
-                                //     anchoR:x2,
-                                //     altoR:y3,
-                                //     ubicacionOrigen
-                                // }
-                                // Promesa.referencialplano(XyPlanoReal).then(resp=>{
+                                }, err => console.log(err))
+                                console.log(punto);
+                                let XyPlanoReal = {
+                                    x:punto.punt_x,
+                                    y:punto.punt_y,
+                                    anchoR:x2,
+                                    altoR:y3,
+                                    ubicacionOrigen
+                                }
+                                await Promesa.referencialplano(XyPlanoReal).then(resp=>{
                                     
-                                //     filtradoXY.xpos = resp.x + bottomLeft[0];
-                                //     filtradoXY.ypos = resp.y + bottomLeft[1];
+                                    punto.punt_x = resp.x + bottomLeft[0];
+                                    punto.punt_y = resp.y + bottomLeft[1];
             
+                                    console.log(punto);
             
-                                // })
+                                }, er=>console.log(er))
+        
                                 let guardarpuntoXY = await promesa_puntoXY(filtradoXY, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
                                 
                             }else{
