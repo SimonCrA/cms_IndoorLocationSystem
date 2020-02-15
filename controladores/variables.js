@@ -65,7 +65,7 @@ let Users=[
     
 // }
 ]
-let timeTLM = 3600000
+let timeTLM = 19990000
 
 let nameFile= ['']
 
@@ -103,7 +103,7 @@ let conversorP_M = (pie)=>{
 
 }
 
-let resolution = [{height:670, width:1096}]
+let resolution = [{height:1300, width:957}]
 
 module.exports = {
     resolution,
