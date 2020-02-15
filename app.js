@@ -58,7 +58,9 @@ console.log("Establecida la conexion con MongoDB Server: On");
 
 
 
-iniciarValidacion()
+// iniciarValidacion()
+
+
 
 
 

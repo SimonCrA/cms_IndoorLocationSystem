@@ -327,3 +327,13 @@ let  LogOut = async (e)=>{
   });
   return false
 }
+
+
+socket.on('alarmlowbatery', tagLowBattery=>{
+  console.log(`ALLLLLAAAAAARRRRMMMMM`);
+  console.log(tagLowBattery);
+  $("#lowBattery").empty();
+  $("#lowBattery").append("Battery low...");
+  $("#lowBattery").show('slow');
+
+})

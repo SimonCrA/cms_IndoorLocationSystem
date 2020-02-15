@@ -185,6 +185,10 @@ console.log(`INCIIO ESTO de gossip`);
     
     }
     
+    let alarmLowBatery = (tagLowBattery)=>{
+
+        io.emit('alarmlowbatery', tagLowBattery)
+    }
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -256,8 +260,11 @@ console.log(`INCIIO ESTO de gossip`);
             console.log(data);
              res= await processGossipFromRpi(data)
             if(res.ok===true){
+                
                 console.log(`ALARMA`);
-                console.log(res);
+                console.log(res.tagLowBattery);
+
+                alarmLowBatery(res.tagLowBattery)
             }
     
         })
