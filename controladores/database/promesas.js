@@ -182,7 +182,7 @@ try {
                     return reject({ok:false,err})
                 }
                 else{
-                    return resolve({ok:true, responseZona})
+                    return resolve({ok:true, resposeZona})
                 }
             })
         })
@@ -192,32 +192,37 @@ try {
     let referencialplano = (dataPlano)=>{
 
         if(dataPlano )
+        console.log(dataPlano);
         
+    
         return new Promise((resolve, reject) => {
             let newX = 0;
             let newY = 0;
+            let x = dataPlano.x
+            let y = dataPlano.y
 
+            let ubicacion = dataPlano.ubicacionOrigen.toLowerCase()
             
-        if(path.ubicacionOrigen === 'bl'){
+        if(ubicacion === 'bl'){
             newX = x;
             newY = y;
 
             return resolve({x: newX, y: newY}); 
 
         }
-        else if(path.ubicacionOrigen === 'br'){
+        else if(ubicacion === 'br'){
             newX = dataPlano.anchoR - x;
             newY = y;
 
             return resolve({x: newX, y: newY}); 
         }
-        else if(path.ubicacionOrigen === 'tl'){
+        else if(ubicacion === 'tl'){
             newX = x;
             newY = dataPlano.altoR - y;
 
             return resolve({x: newX, y: newY}); 
         }
-        else if(path.ubicacionOrigen === 'tr'){
+        else if(ubicacion === 'tr'){
             newX = dataPlano.anchoR - x;
             newY = dataPlano.altoR - y;
 
@@ -241,6 +246,6 @@ module.exports={
     actualizaReporteAtendidos
 }
 } catch (error) {
-    
+    console.log(error);
 }
 

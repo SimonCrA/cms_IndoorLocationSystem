@@ -24,10 +24,10 @@ var zonaSchema = new Schema({
     
     
     
-    bottomLeft:{type:Array},//[0] = x || [1]
-    bottomRigth:{type:Array},
-    topLeft:{type:Array},
-    topRight:{type:Array},
+    bottomLeft:{type:Array, required:false},//[0] = x || [1]
+    bottomRigth:{type:Array, required:false},
+    topLeft:{type:Array,  required:false},
+    topRight:{type:Array, required:false},
 
     //piso
     plano:{type:String},
@@ -35,6 +35,11 @@ var zonaSchema = new Schema({
     estatus: {type:Boolean},
     alto: {type:Number},
     ancho: {type:Number},
+
+
+    heightPixel: {type:Number},
+    widthPixel: {type:Number},
+    scale:{type:Number}
 
 
 	}

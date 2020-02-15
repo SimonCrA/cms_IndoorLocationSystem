@@ -188,10 +188,12 @@ let pisos = (req, res, next) =>{
 
         nombrePiso:req.body.nombrePiso   ,
         numeroPiso:parseInt(req.body.numeroPiso)   ,
-
+        scale: parseInt(req.body.scale),
         plano:'',
         alto: parseInt(req.body.alto) ,
         ancho: parseInt(req.body.ancho) ,
+        heightPixel:0,
+        widthPixel:0,
         estatus: true,
         tipo:'piso'  
 

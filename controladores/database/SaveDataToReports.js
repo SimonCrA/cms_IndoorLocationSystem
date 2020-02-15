@@ -283,7 +283,7 @@ let crearReporteTiempoServicio = async (activo) =>{
             brand: activo[i].nombre,
             model: activo[i].modelo,
             vin: activo[i].VIN,
-            saletime: conthoras.toFixed(2)
+            servicetime: conthoras.toFixed(2)
         }
         arrActivo.push(objectActiv);
     }

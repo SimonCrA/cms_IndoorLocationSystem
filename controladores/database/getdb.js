@@ -136,7 +136,8 @@ let searchAssets = async (req, res) => {
                         model:'zona',
                         populate:{
                             path:'idPiso',
-                            model:'zona'
+                            model:'zona',
+                            select:'idLocation nombrePiso numeroPiso  scale plano alto ancho estatus tipo heightPixel widthPixel'
                         }
                 }
             ])
@@ -592,8 +593,8 @@ let activoGet = (req, res, next) =>{
 
 let pisos = (req, res, next) =>{
         
-    Region.find({ estatus: true, tipo:'piso' })
-        .populate('tagInfo')
+    Region.find({ estatus: true, tipo:'piso' }).select('idLocation nombrePiso numeroPiso plano estatus tipo alto ancho scale')
+        .populate('idLocation')
 
         .exec((err, pisos) => {
 

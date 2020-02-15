@@ -97,8 +97,8 @@ let processGossipFromRpi = async (data) => {
 		
 		let updateTag = (id, body)=>{
 			return new Promise(async(resolve, reject) => {
-				console.log(id);
-				console.log(body);
+				// console.log(id);
+				// console.log(body);
 			
 				TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true }, (err, tagActualizado)=>{
 					if (err) {
@@ -184,13 +184,23 @@ let processGossipFromRpi = async (data) => {
 			let body = {};
 			// console.log(JSON.stringify(arrMactagTLM, null, 2));
 			// console.log(arrMactagTLM.	);
+			let tagLowBattery = []
 	
 			for (let i = 0; i < arrMactagTLM.length; i++) {
-				console.log(`for del update!!!`);
-				console.log(JSON.stringify(arrMactagTLM[i], null, 2));
+				// console.log(`for del update!!!`);
+				// console.log(JSON.stringify(arrMactagTLM[i], null, 2));
 				id = arrMactagTLM[i].tagDB._id;
 				let find = data.findIndex(obj =>obj.mactag === arrMactagTLM[i].tagDB.mactag)
 				if(find >=0){
+					if(data[find].batteryLevel <3049){
+
+						let js={
+							macTag:arrMactagTLM[i].tagDB.mactag,
+							batteryLevel: data[find].batteryLevel
+						}
+						tagLowBattery.push(js)
+
+					}
 
 					body = {
 						temperature:data[find].temperature,
@@ -201,6 +211,16 @@ let processGossipFromRpi = async (data) => {
 				let res = await updateTag(id, body)
 				
 	
+			}
+
+			if(Array.isArray(tagLowBattery) && tagLowBattery.length){
+				return {ok:true,
+						tagLowBattery
+						}
+
+			}else{
+				return {ok:false}
+
 			}
 
 

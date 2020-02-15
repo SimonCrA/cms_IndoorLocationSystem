@@ -112,7 +112,7 @@
             guardarImgClient(id, res, nombreArchivo);
         }
         if (tipo === 'maps') {
-            guardarImgMap(id, res, nombreArchivo);
+            guardarImgMap(id, res, nombreArchivo, respValidarImagen);
         }
         
 
@@ -204,8 +204,8 @@ console.log(`line 138`);
     });
 
 }
-function guardarImgMap(id, res, nombreArchivo) {
-
+function guardarImgMap(id, res, nombreArchivo ,resolution) {
+console.log(resolution);
     Zona.findById(id, (err, zonaDB) => {
         console.log(err);
         if (err) {
@@ -229,7 +229,10 @@ console.log(`178`);
 
         console.log(zonaDB.plano);
 
+
         zonaDB.plano = nombreArchivo;
+        zonaDB.heightPixel = resolution.height
+        zonaDB.widthPixel =resolution.width
 
         zonaDB.save( (err, zonaActualizada) =>{
             
