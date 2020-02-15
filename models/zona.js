@@ -18,7 +18,7 @@ var zonaSchema = new Schema({
     numeroRegion:{type:Number},
 
     
-    COSA:{type:Boolean},//INDICA QUE LA REGION CREADA ES A DONDE SE DEBE DE LLEGAR EL ACTIVO [PARA LA PRESENTACION!]
+    arrivalZone:{type:Boolean},//INDICA QUE LA REGION CREADA ES A DONDE SE DEBE DE LLEGAR EL ACTIVO [PARA LA PRESENTACION!]
                         //Solamente la debe de tener una region por LOCATION!
     
     

@@ -6,6 +6,9 @@ let apiModificar = require('../controladores/database/modifbd');
 
 router.put ('/regiones/:id', apiModificar.regiones);
 
+
+router.put('/regiones/arrivalzone/:id', apiModificar.regionArrival);
+
 router.put ('/pisos/:id', apiModificar.pisos);
 
 router.put ('/ubicacion/:id', apiModificar.ubicacion);
