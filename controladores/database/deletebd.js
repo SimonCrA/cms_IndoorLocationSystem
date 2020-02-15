@@ -164,7 +164,7 @@ let ubicacion = (req, res, next) => {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'Usuario no encontrado'
+                    message: 'User not found'
                 }
             });
         }

@@ -49,7 +49,7 @@ let getAClient = (req, res) =>{
                 return res.status(400).json({
                     ok: false,
                     err: {
-                        mensaje: 'No existe un Cliente con ese id'
+                        mensaje: "There isn´t a client with this id"
                     }
                 });
             };
