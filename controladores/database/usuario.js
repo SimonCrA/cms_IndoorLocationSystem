@@ -52,7 +52,7 @@ let getOneUser = (req, res) =>{
             return res.status(400).json({
                 ok: false,
                 err: {
-                    mensaje: 'No existe un usuario con ese id'
+                    mensaje: "there isn't an user with this id"
                 }
             });
         };
@@ -152,7 +152,7 @@ let postLogIn = (req, res, next) => {
             next(err);
         }
         if (!usuario) {
-            return res.status(408).send('Email o Contraseña no son válidos')
+            return res.status(408).send('Email or password are invalid')
         }
         req.logIn(usuario, (err) => {
             if (err) {
@@ -235,7 +235,7 @@ console.log(`Update user`);
             return res.status(400).json({
                 ok: false,
                 err: {
-                    mensaje: ' El id no existe'
+                    message: "there isn't an user with this id"
                 }
             });
         };

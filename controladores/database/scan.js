@@ -112,7 +112,7 @@ let processGossipFromRpi = async (data) => {
 						return reject({
 							ok: false,
 							err: {
-								msg: 'no hay tags disponibles en la base de datos'
+								msg: "There isn't tags available in DB"
 							}
 						})
 						
@@ -158,7 +158,7 @@ let processGossipFromRpi = async (data) => {
 								return reject({
 									ok: false,
 									err: {
-										msg: 'No hay tags registrados'
+										msg: "There is'nt  tags registered"
 									}
 								});
 	

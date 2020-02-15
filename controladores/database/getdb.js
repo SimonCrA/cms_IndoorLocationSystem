@@ -256,7 +256,7 @@ let getTopTen = (req, res) =>{
                         reject({
                             ok: false,
                             err: {
-                                msg: 'No han habido busquedas recientemente'
+                                msg: 'No Searches recently'
                                     }
                                 })
                         }
@@ -326,7 +326,7 @@ let getTopTenSales = (req, res) =>{
                             reject({
                                 ok: false,
                                 err: {
-                                    msg: 'No han habido busquedas recientemente'
+                                    msg: 'No searches recently'
                                 }
                             })
                         }
