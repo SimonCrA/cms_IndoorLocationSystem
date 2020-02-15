@@ -9,7 +9,7 @@ var timerToreciveActive = new Schema(
         activo:{type: Schema.Types.ObjectId, ref: 'Activo'},
         regionPartida:{type: Schema.Types.ObjectId, ref: 'zona'},
         regionLLegada:{type: Schema.Types.ObjectId, ref: 'zona'},
-        duracionString:{type: String},
+        duracionMin:{type: Number},
         duracion:{type: Array}
 
 	}

@@ -54,7 +54,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 console.log("Establecida la conexion con MongoDB Server: On");
 //----------------------------------------------------------------------------
 
-// validacion_Trilateracion();
 
 
 
@@ -66,6 +65,9 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(fileUpload({ useTempFiles: true }));
 
+// app.use(fileUpload({
+//   limits: { fileSize: 50 * 1024 * 1024 },
+// }));
 
 app.use(session({
   secret: 'Guardo un secreto',
@@ -112,6 +114,7 @@ app.use(cors({
 }));
 
 
+// validacion_Trilateracion();
 
 
 app.use('/', indexRouter);

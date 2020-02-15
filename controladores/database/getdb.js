@@ -136,7 +136,8 @@ let searchAssets = async (req, res) => {
                         model:'zona',
                         populate:{
                             path:'idPiso',
-                            model:'zona'
+                            model:'zona',
+                            select:'idLocation nombrePiso numeroPiso  scale plano alto ancho estatus tipo heightPixel widthPixel'
                         }
                 }
             ])
@@ -386,7 +387,7 @@ let getServiceTime = async (req, res) =>{
 
             return new Promise((resolve, reject) => {
 
-                Activo.find({ estado: false })
+                Activo.find({ estado: false, })
                     .exec((err, activoDB) => {
                         err
                             ?
@@ -526,7 +527,7 @@ let regionId = (region) =>{
 let region = (req, res, next) =>{
         
     Region.find({ estatus: true, tipo:'region' })
-        .populate('idPiso')
+        .populate('idPiso' , 'nombrePiso numeroPiso ')
 
         .exec((err, region) => {
 
@@ -539,10 +540,12 @@ let region = (req, res, next) =>{
 
             for(let i = 0 ; i < region.length ; i++){
 
+
                 region[i].bottomLeft = conversorM_P(region[i].bottomLeft)
                 region[i].bottomRigth = conversorM_P(region[i].bottomRigth)
                 region[i].topLeft = conversorM_P(region[i].topLeft)
                 region[i].topRight = conversorM_P(region[i].topRight)
+            
             }
             
             res.json({
@@ -590,8 +593,8 @@ let activoGet = (req, res, next) =>{
 
 let pisos = (req, res, next) =>{
         
-    Region.find({ estatus: true, tipo:'piso' })
-        .populate('tagInfo')
+    Region.find({ estatus: true, tipo:'piso' }).select('idLocation nombrePiso numeroPiso plano estatus tipo alto ancho scale')
+        .populate('idLocation')
 
         .exec((err, pisos) => {
 
@@ -828,6 +831,13 @@ try{
     }, er=>{
         console.log(er);
     })
+    let path = idlocation 
+    
+    
+    // await promesas.promise_Region(path).then(obj=>{
+    //     recepcion = ?????
+    // }, er => {console.log(er)})
+
 
     let intervalAactive = setInterval( async () => {
         console.log(`scan`);
@@ -841,7 +851,8 @@ try{
          }, er=>{
              console.log(er);
          })
-        if(regionllegada == `5e2e202ed0a03853b82a0c30`  ){
+         
+        if(regionllegada ==   'recepcion'){
 
 
             dateEnd = new Date().getTime();
@@ -850,13 +861,14 @@ try{
             let contmin = resta/(1000*60);
 
 
+
             let TimerToreciveActive = new timerToreciveActive({
                 user:userid ,
 
                 activo:activo,
                 regionPartida:regionPartida,
                 regionLLegada: regionllegada,
-                duracionString:contmin,
+                duracionMin:contmin.toFixed(2),
                 duracion:[dateStart, dateEnd, (dateEnd-dateStart)]
             })
             TimerToreciveActive.save((er, save)=>{
@@ -885,7 +897,7 @@ try{
 
 let timeActiveRecive = (req, res, next)=>{
 
-    timerToreciveActive.find()
+    timerToreciveActive.find().select('user activo regionPartida regionLLegada duracionMin')
     .populate([
         {
         path:'user',

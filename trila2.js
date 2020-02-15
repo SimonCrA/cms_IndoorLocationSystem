@@ -243,19 +243,77 @@ let array = [
 // console.log(((1049/1000)/3)*100);
 
 
-let dato
-console.log("Escribe tu nombre");
-process.stdin.on('readable', () => {
-    let chunk;
-    // Use a loop to make sure we read all available data.
-    while ((chunk = process.stdin.read()) !== null) {
-      process.stdout.write(`data: ${chunk}`);
-    }
-  });
-  
-  process.stdin.on('end', () => {
-    process.stdout.write('end');
-  });
-
-// let chunk = process.stdin.read()
+// let dato
+// console.log("Escribe tu nombre");
+// process.stdin.on('readable', () => {
+//     let chunk;
+//     // Use a loop to make sure we read all available data.
+//     while ((chunk = process.stdin.read()) !== null) {
 //       process.stdout.write(`data: ${chunk}`);
+//     }
+//   });
+  
+//   process.stdin.on('end', () => {
+//     process.stdout.write('end');
+//   });
+
+// // let chunk = process.stdin.read()
+// //       process.stdout.write(`data: ${chunk}`);
+const gm = require('gm');
+
+
+
+// try {
+    
+    
+    
+//     let validarImagen = (imagen) =>{
+    
+//         return new Promise((resolve, reject) => {
+//             console.log(imagen);
+    
+//             gm(imagen)
+//             .size((err, size) => {
+//                 if(err){
+//                     return reject(err)
+//                 }else{
+    
+//                     objectSize = {
+//                         width: size.width,
+//                         height: size.height
+//                     }
+//                     return resolve(objectSize)
+//                 }
+//             })
+//         })
+        
+    
+//     }
+    
+//     validarImagen().then(obj=>{
+//         console.log(obj);
+//     })
+// } catch (error) {
+//     console.log(error);
+// }
+
+
+// gm('712.jpg')
+//             .size((err, size) => {
+//                 if(!err){
+//                     console.log(size);
+//                 }
+//                 else{console.log(err);}
+
+//             })
+
+
+
+
+
+var sizeof = require('image-size')
+
+sizeof('uploads/usuarios/undefined-889.jpg', (err, dim)=>{
+  
+    console.log(dim);
+})

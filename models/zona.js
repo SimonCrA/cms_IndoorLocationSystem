@@ -17,10 +17,17 @@ var zonaSchema = new Schema({
     nombreRegion: {type: String},
     numeroRegion:{type:Number},
 
-    bottomLeft:{type:Number},
-    bottomRigth:{type:Number},
-    topLeft:{type:Number},
-    topRight:{type:Number},
+    
+    COSA:{type:Boolean},//INDICA QUE LA REGION CREADA ES A DONDE SE DEBE DE LLEGAR EL ACTIVO [PARA LA PRESENTACION!]
+                        //Solamente la debe de tener una region por LOCATION!
+    
+    
+    
+    
+    bottomLeft:{type:Array, required:false},//[0] = x || [1]
+    bottomRigth:{type:Array, required:false},
+    topLeft:{type:Array,  required:false},
+    topRight:{type:Array, required:false},
 
     //piso
     plano:{type:String},
@@ -28,6 +35,11 @@ var zonaSchema = new Schema({
     estatus: {type:Boolean},
     alto: {type:Number},
     ancho: {type:Number},
+
+
+    heightPixel: {type:Number},
+    widthPixel: {type:Number},
+    scale:{type:Number}
 
 
 	}

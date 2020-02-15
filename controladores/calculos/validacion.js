@@ -17,7 +17,11 @@ const Graficar = require('../../models/graficar')
 
 
 const {dataToKalman2D} = require('./kalmanFilter2d')
-var r1=0, r2=0, r3=0, x1=0, x2=0, x3=0, y1=0, y2=0, y3=0;
+
+const Promesa = require('../database/promesas')
+
+
+var r1=0, r2=0, r3=0, x1=0, x2=0, x3=0, y1=0, y2=0, y3=0, ubicacionOrigen='', xPoint, yPoint;
 // var fecha_actual =  new Date()
 
 // var fecha_vieja = new Date () -10min
@@ -56,6 +60,7 @@ let validacion_Trilateracion = async ()=>{
         }
         let promesa_AggregateRegion = () =>{
             return new Promise((resolve, reject) => {
+
                 Ubicacion.aggregate([{
                         "$group": {
                             _id:"$idZona",
@@ -214,7 +219,7 @@ let validacion_Trilateracion = async ()=>{
             return new Promise((resolve, reject)=>{
                 
                 
-                graficar.find({region: regio, idTag:mactag }).sort({_id:-1}).limit(10).select('x y')
+                Graficar.find({region: regio, idTag:mactag }).sort({_id:-1}).limit(10).select('x y')
                 .exec((err, poitnXY) => {
     
                     if (err) {
@@ -227,7 +232,11 @@ let validacion_Trilateracion = async ()=>{
                         }
                         )
                     }else{
-                        return reject('Data is Empty')
+                        return resolve({
+                            poitnXY
+
+                        }
+                        )
     
                     }
     
@@ -239,15 +248,16 @@ let validacion_Trilateracion = async ()=>{
         }
         
         
-
+        
         ///////////////////////////////////////////////////////////////////////////////////
-
-
+        
+        
         console.log(`======================INICIA TRILATERACION=========================`.rainbow);
         logSistem(`======================INICIA TRILATERACION=========================`, nameFile[0])
-
-
+        
+        
         let resultRegion = await promesa_AggregateRegion()
+        console.log(`Line 255`);
         // console.log(`Esto es el result Region length: ${JSON.stringify(resultRegion, null, 2)}`);
 
         let lista_Obj_trilaterar =[]
@@ -309,8 +319,6 @@ let validacion_Trilateracion = async ()=>{
         for (let k = 0; k < interval1_1; k++) {// CICLO DE REGIONES
 
 
-
-
             let interval1_2 = lista_Obj_trilaterar[k].tag.length;
 
             for (let j = 0; j < interval1_2; j++) {//Ciclo de tags
@@ -359,6 +367,8 @@ let validacion_Trilateracion = async ()=>{
         }
 
 
+
+
         // console.log(`-----------------------------`);
         
         // console.log(lista_Obj_trilaterar);
@@ -397,6 +407,8 @@ let validacion_Trilateracion = async ()=>{
                                 r1 = resultDistancia[0].distanciaTag;
                                 x1=resultadoUbicacion.xpos;
                                 y1=resultadoUbicacion.ypos;
+
+                                ubicacionOrigen = resultadoUbicacion.ubicacion
 
                             }
                             if (resultadoUbicacion.axis === 'x') {
@@ -465,6 +477,10 @@ let validacion_Trilateracion = async ()=>{
                     let punto =trilateracion(r1, r2, r3, x2, y3);
 
                     
+                   
+
+                
+                    
                     let js={
                         r1,
                         r2,
@@ -492,6 +508,23 @@ let validacion_Trilateracion = async ()=>{
                     // console.log(`T_1: d1=${r1}, d2=${r2}, d3=${r3},`+`Error=${punto.error}`.red);
                     if(punto.status == true){
                         
+                    console.log(`el punto xy es true`);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                             let guardarpuntoXY = await promesa_puntoXY(punto, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
@@ -499,20 +532,54 @@ let validacion_Trilateracion = async ()=>{
                         // consulta-> 10 ultimos registros (tag y region)
                         let consultaXY = await promesa_Las10XY(lista_Obj_trilaterar[k].tag[j] ,lista_Obj_trilaterar[k].region)
 
-                        // console.log(consultaXY);
-                        if (consultaXY.length < 0){
-                            let filtradoXY= dataToKalman2D(punto)
+                        console.log(consultaXY.length);
+                        if (consultaXY.length === undefined ||consultaXY.length <0 ){
+                            console.log(`No hay data `);
+
+                            let atray =[{
+                                x: punto.punt_x,
+                                y: punto.punt_y
+                            }]
+
+                            let filtradoXY= dataToKalman2D(atray)
                             
                             let guardarpuntoXY = await promesa_puntoXY(filtradoXY, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
                             
                         }else{
+
+                            console.log(`si hay data y se filtra`);
                             consultaXY. push(punto)
                                 
                             let filtradoXY= dataToKalman2D(consultaXY)
 
 
-                            
+
                             if((filtradoXY.xpos < x + (1.9)) && (filtradoXY.ypos < y + (1.9)) ){
+                                console.log(`Se guardara el xy`);
+
+                                let path_IdRegion = {_id:lista_Obj_trilaterar[k].region}
+                                await Promesa.getZona(path_IdRegion).then(resp=>{
+                                    console.log(resp.resposeZona);
+                                    bottomLeft  = resp.resposeZona[0].bottomLeft
+                                    
+                                }, err => console.log(err))
+                                console.log(punto);
+                                let XyPlanoReal = {
+                                    x:punto.punt_x,
+                                    y:punto.punt_y,
+                                    anchoR:x2,
+                                    altoR:y3,
+                                    ubicacionOrigen
+                                }
+                                await Promesa.referencialplano(XyPlanoReal).then(resp=>{
+                                    
+                                    punto.punt_x = resp.x + bottomLeft[0];
+                                    punto.punt_y = resp.y + bottomLeft[1];
+            
+                                    console.log(punto);
+            
+                                }, er=>console.log(er))
+        
                                 let guardarpuntoXY = await promesa_puntoXY(filtradoXY, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
                                 
                             }else{

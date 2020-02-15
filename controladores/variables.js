@@ -65,7 +65,7 @@ let Users=[
     
 // }
 ]
-let timeTLM = 3600000
+let timeTLM = 19990000
 
 let nameFile= ['']
 
@@ -77,17 +77,36 @@ let nameFile= ['']
 
 let conversorM_P = (metro)=>{
     let pie = 3.281;
+
+    
+    if(Array.isArray(metro)){
+
+        let arreglo = [parseFloat((pie * metro[0]).toFixed(2)), parseFloat((pie * metro[1]).toFixed(2))]
+        return arreglo
+
+    }
     return (metro * pie).toFixed(2);
     
 }
 let conversorP_M = (pie)=>{
     let metro = 0.3048;
+
+    if(Array.isArray(pie)){
+
+        let arreglo = [parseFloat((metro * pie[0]).toFixed(2)), parseFloat((metro * pie[1]).toFixed(2))]
+        return arreglo
+
+    }
+
+
     return (metro * pie).toFixed(2);
 
 }
 
+let resolution = [{height:1300, width:957}]
 
 module.exports = {
+    resolution,
     conversorM_P, conversorP_M,
     globalFilter,timeTLM,nameFile,
     globalDataGraphDistance,
