@@ -66,6 +66,35 @@ let regiones = (req, res, next) => {
 
 }
 
+let regionArrival = (req, res, next) => {
+
+    let id = req.params.id
+
+    let body = {
+        arrivalZone: true
+    }
+
+
+    Region.findByIdAndUpdate(id, body, {
+        new: true,
+        runValidators: true
+    }, (err, regiondb) => {
+        console.log(regiondb);
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+        res.json({
+            ok: true,
+            Region: regiondb
+        })
+
+    })
+
+}
+
 let pisos = (req, res, next) => {
 
     console.log(`SOY PISOS NO REGION STUPIDA!!`);
@@ -408,7 +437,8 @@ module.exports = {
       putActivo, 
       putTags, 
       venderAuto,
-      despacharServicio
+      despacharServicio,
+      regionArrival
 }
 
 
