@@ -416,6 +416,7 @@ let crearReporteTiempoSinMoverse = async () =>{
         let resultSearchPoint = await searchPoint();
         if(Array.isArray(resultSearchPoint) && resultSearchPoint.length){
             if(resultSearchPoint.length > 1){
+                let StartCountTime = new Date().getTime();
                 console.log(`Procede a comparar ...`);
                 console.log(resultSearchPoint);
                 for (let j = 0; j < (resultSearchPoint.length -1); j++) {
@@ -423,9 +424,14 @@ let crearReporteTiempoSinMoverse = async () =>{
                     console.log(`entre no?`);
                     if (resultSearchPoint[j].region != resultSearchPoint[j + 1].region) {
                         console.log(`ENTRE ${j}`);
+                        let StopCountTime = new Date().getTime();
+                        let resultTime = StopCountTime - StartCountTime;
                         js.contador+=1;
                         js.region = resultSearchPoint[j].region;
                         js.tag = resultSearchTag[i]._id;
+                        StartCountTime = StopCountTime;
+                        js.time = resultTime;
+
         
                     }
                     
@@ -482,7 +488,8 @@ let crearReporteTiempoSinMoverse = async () =>{
             brand: resultSearchTag.nombre,
             VIN: resultSearchTag.VIN,
             model: resultSearchTag.modelo,
-            region: arrPoint[i].region
+            region: arrPoint[i].region,
+            time: arrPoint.time
         }
 
         arrActivoRegion.push(objectActivoRegion);
