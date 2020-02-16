@@ -237,13 +237,29 @@ try {
 
     }
 
+
+let PromiseRegion = (path)=>{
+    return new Promise((resolve, reject)=>{
+        Zona.find(path)
+        .exec((er, response)=>{
+            if(er){
+                return reject(er)
+            }
+            
+            return resolve(response[0])
+        })
+
+
+    })
+}
+
 module.exports={
     getZona,referencialplano,
     validarImagen,
     promise_active,
     promise_pointXY,
     buscarReporteAatendidos,
-    actualizaReporteAtendidos
+    actualizaReporteAtendidos,PromiseRegion
 }
 } catch (error) {
     console.log(error);
