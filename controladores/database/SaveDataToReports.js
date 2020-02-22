@@ -354,7 +354,19 @@ let crearReporteMasTiempoDealer = async () =>{
 
 }
 
-let crearReporteTiempoSinMoverse = async () =>{
+
+/* *****************************************
+*	INDICADRO 4
+*	
+/* *****************************************/
+
+
+let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
+
+    let actualTime = new Date().getTime();
+    let oldTime = actualTime - period*86400000;
+
+
 
         let searchTag = () => {
             try {
@@ -379,24 +391,38 @@ let crearReporteTiempoSinMoverse = async () =>{
 
     let resultSearchTag = await searchTag();
     let arrPoint = [];
-    let js={
-        contador:0,
-        region:``,
-        tag:``
-    }
-    console.log(resultSearchTag);
+    // console.log(resultSearchTag);
     for (let i = 0; i < resultSearchTag.length; i++) {
+        let js={
+            contadorE:0,
+            contadorD:0,
+            region:``,
+            tag:``,
+            id:null
+        }
         
         let searchPoint = () => {
             try {
 
                 let param = {
-                    idTag: resultSearchTag[i].mactag
+                    idTag: resultSearchTag[i].mactag, date:{$gte:new Date(desde)}
                 }
 
                 return new Promise((resolve, reject) => {
-
+                
                     Graficar.find(param)
+                    .populate([{
+                        path:'region',
+                        model:'zona',
+                        select:'nombreRegion numeroRegion idPiso',
+                        populate:{
+                            path:'idPiso',
+                            model:'zona',
+                            select:'nombrePiso numeroPiso'
+                        }
+                }
+            ])
+                    
                         .exec((err, pointDB) => {
                             err
                                 ?
@@ -414,35 +440,60 @@ let crearReporteTiempoSinMoverse = async () =>{
         }
 
         let resultSearchPoint = await searchPoint();
+        console.log(`_____________________`);
+        console.log(resultSearchPoint);
+        console.log(`_____________________`);
+
         if(Array.isArray(resultSearchPoint) && resultSearchPoint.length){
             if(resultSearchPoint.length > 1){
+
                 let StartCountTime = new Date().getTime();
-                console.log(`Procede a comparar ...`);
-                console.log(resultSearchPoint);
+                // console.log(resultSearchPoint);
                 for (let j = 0; j < (resultSearchPoint.length -1); j++) {
+                    let fechaInicio = new Date(resultSearchPoint[j].date).getTime();
+                    // console.log(`Procede a comparar ...  ${fechaInicio} ${oldTime}`);
+        
+                    // if (fechaInicio > oldTime && fechaInicio < actualTime) {
+                        
+                        console.log(`${resultSearchPoint[j].region._id} === ${resultSearchPoint[j + 1].region._id}` );
+                        
+                        if (`${resultSearchPoint[j].region._id}` === `${resultSearchPoint[j + 1].region._id}`) {
+
+                            console.log(`ENTRE ${j}`);
+                            console.log(resultSearchPoint[j].idTag);
+                            js.contadorE+=1;
+                            js.region = resultSearchPoint[j].region;
+                            js.tag = resultSearchTag[i]._id;
+                            if(js.id == null){
+                                js.id = resultSearchPoint[j]._id
+                                js.time =(actualTime - fechaInicio)/(1000*60*60) ;
+                                
+                            }
+    
+            
+                        }else{
+                            js.contadorD+=1;
+                            js.region = resultSearchPoint[j].region;
+                            js.tag = resultSearchTag[i]._id;
+                            js.time =(oldTime- fechaInicio) /(1000*60*60) ;
+                            js.id = null
+
+                        }
+        
+                    // }
+                        
+
                     
-                    console.log(`entre no?`);
-                    if (resultSearchPoint[j].region != resultSearchPoint[j + 1].region) {
-                        console.log(`ENTRE ${j}`);
-                        let StopCountTime = new Date().getTime();
-                        let resultTime = StopCountTime - StartCountTime;
-                        js.contador+=1;
-                        js.region = resultSearchPoint[j].region;
-                        js.tag = resultSearchTag[i]._id;
-                        StartCountTime = StopCountTime;
-                        js.time = resultTime;
+                }
+
 
         
-                    }
-                    
-                }
-        
-                if (js.contador <= 5) {
+                // if (js.contador <= 5) {
                     arrPoint.push(js);
-                }
+                // }
 
             }else{
-                console.log(`No procede`);
+                console.log(`Solo existe un registro de este tag o ninguno`);
                 console.log(resultSearchPoint);
                 
             }
@@ -453,14 +504,16 @@ let crearReporteTiempoSinMoverse = async () =>{
         
     };
     
+    console.log(arrPoint);
     let arrActivoRegion = [];
+
     for (let i = 0; i < arrPoint.length; i++) {
         
         let searchPointDate = (ruta) => {
             try {
 
                 return new Promise((resolve, reject) => {
-                    console.log(ruta);
+                    // console.log(ruta);
                     Activo.find(ruta)
                         .exec((err, pointDB) => {
                             err
@@ -476,23 +529,28 @@ let crearReporteTiempoSinMoverse = async () =>{
                 console.log(error);
             }
         }
+
+
         console.log(arrPoint[i].tag);
         let ta= arrPoint[i].tag
-        let path= `{"idTag":"${ta}"}`
-        console.log(path);
+        let path= `{"idTag":"${ta}", "estado": true}`
         let ruta = JSON.parse(path)
-        let resultSearchTag = await searchPointDate(ruta);
-        let objectActivoRegion = {};
+        if(arrPoint[i].id != null ){
 
-        objectActivoRegion = {
-            brand: resultSearchTag.nombre,
-            VIN: resultSearchTag.VIN,
-            model: resultSearchTag.modelo,
-            region: arrPoint[i].region,
-            time: arrPoint.time
+            let resultSearchTag = await searchPointDate(ruta);
+            let objectActivoRegion = {};
+    
+            objectActivoRegion = {
+                brand: resultSearchTag.nombre,
+                VIN: resultSearchTag.VIN,
+                model: resultSearchTag.modelo,
+                region: arrPoint[i].region,
+                timeDays: parseFloat((arrPoint[i].time).toFixed(2))
+            }
+    
+            arrActivoRegion.push(objectActivoRegion);
+
         }
-
-        arrActivoRegion.push(objectActivoRegion);
 
 
         
