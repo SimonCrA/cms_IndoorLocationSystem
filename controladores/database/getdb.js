@@ -231,10 +231,11 @@ let searchAssets = async (req, res) => {
 let getTopTen = (req, res) =>{
     
     try {
+        console.log(req.params);
         let tipo = req.params.tipo
         let order= req.params.order
-        let desde = req.params.desde
-        let hasta =req.params.hasta
+        let desde = req.params.desde || ''
+        let hasta =req.params.hasta || ''
         let counter
         let path = {tipo:tipo}
         if(order==="up"){
@@ -243,14 +244,14 @@ let getTopTen = (req, res) =>{
             counter=1;
         }
 
-        if(desde !='null' && hasta !='null'){
-            hasta = parseInt(hasta)
-            desde = parseInt(desde)
+        // if(desde !='null' && hasta !='null'){
+        //     hasta = parseInt(hasta)
+        //     desde = parseInt(desde)
 
-            path = {tipo: tipo, $and:[{date:{$gt:desde}}, {date:{$lt:hasta}}]}
+        //     path = {tipo: tipo, $and:[{date:{$gt:desde}}, {date:{$lt:hasta}}]}
 
 
-        }
+        // }
         // else if(hasta!=''){
             // path = `{tipo: ${tipo}}`
             
@@ -447,7 +448,10 @@ let getDealerTime = async (req, res) =>{
 
 let getRegionTime = async (req, res) =>{
 
-        let result = await crearReporteTiempoSinMoverse();
+    let period = req.body.period;
+    let desde = req.body.desde;
+
+        let result = await crearReporteTiempoSinMoverse(period, desde);
         console.log(result);
         res.status(200).json({
             ok: true,
