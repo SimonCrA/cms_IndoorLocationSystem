@@ -3,9 +3,9 @@ var Schema = mongoose.Schema;
 
 var reporteTopTenSchema = new Schema({
     
-    nombre: {type: String},
+    name: {type: String},
     count: {type: Number},
-    tipo: {type: String},
+    type: {type: String},
     date: {type: Array},
 
 });

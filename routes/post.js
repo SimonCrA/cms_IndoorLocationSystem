@@ -19,7 +19,7 @@ router.post ('/pisos', apiGuardardb.pisos);
 router.post ('/constantes', apiGuardardb.constantes);
 router.post ('/ubicacion', apiGuardardb.ubicacion);
 router.post ('/activo', apiGuardardb.activoPost);
+router.post('/newconstant',apiGuardardb.newConstant);
 
-router.post('/newconstant',apiGuardardb.newConstant)
 
 module.exports = router;

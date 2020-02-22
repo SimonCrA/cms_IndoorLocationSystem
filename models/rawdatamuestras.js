@@ -7,7 +7,7 @@ var rawDataMuestrasSchema = new Schema(
 		macRpi: {type: String,  max: 100},
 		macTag: {type: String , max: 100},        
         rssi: {type: Number},
-		distancia: {type: Number}
+		distance: {type: Number}
 		
 	}
 );  

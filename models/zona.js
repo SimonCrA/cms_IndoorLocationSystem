@@ -7,15 +7,15 @@ var zonaSchema = new Schema({
 
     idLocation:{ type: Schema.Types.ObjectId, ref: 'Client' },
 
-    edificio: {type: String},
-    nombrePiso: {type: String  },      
-    numeroPiso: {type: Number },  
-    plano:{type:String},      
+    building: {type: String},
+    floorName: {type: String  },      
+    floorName: {type: Number },  
+    plane:{type:String},      
     
     //regiones
-    idPiso:{ type: Schema.Types.ObjectId, ref: 'zona'},
-    nombreRegion: {type: String},
-    numeroRegion:{type:Number},
+    floorId:{ type: Schema.Types.ObjectId, ref: 'zona'},
+    regionName: {type: String},
+    regionName:{type:Number},
 
     
     arrivalZone:{type:Boolean},//INDICA QUE LA REGION CREADA ES A DONDE SE DEBE DE LLEGAR EL ACTIVO [PARA LA PRESENTACION!]
@@ -30,11 +30,11 @@ var zonaSchema = new Schema({
     topRight:{type:Array, required:false},
 
     //piso
-    plano:{type:String},
-    tipo:{type:String},
-    estatus: {type:Boolean},
-    alto: {type:Number},
-    ancho: {type:Number},
+    plane:{type:String},
+    type:{type:String},
+    status: {type:Boolean},
+    height: {type:Number},
+    width: {type:Number},
 
 
     heightPixel: {type:Number},

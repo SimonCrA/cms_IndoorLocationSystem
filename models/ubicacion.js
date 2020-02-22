@@ -11,12 +11,12 @@ var ubicacionRpiSchema = new Schema({
 
 		macRpi: {type: String},
 		axis: {type: String }, 
-		ubicacion:{type: String, enum: typeubication},
+		location:{type: String, enum: typeubication},
         xpos: {type: Number},
 		ypos: {type: Number},
 		idZona:{type: Schema.Types.ObjectId, ref: 'zona'},
-		estatus: {type:Boolean, default: true},
-		compartido:{type: Schema.Types.ObjectId, ref: 'zona'},
+		status: {type:Boolean, default: true},
+		shared:{type: Schema.Types.ObjectId, ref: 'zona'},
 		
 
 	}

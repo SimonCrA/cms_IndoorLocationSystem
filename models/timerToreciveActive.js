@@ -5,14 +5,13 @@ var Schema = mongoose.Schema;
 var timerToreciveActive = new Schema(
     {
         user: {type: Schema.Types.ObjectId, ref: 'User'},
+        asset:{type: Schema.Types.ObjectId, ref: 'Activo'},
+        startRegion:{type: Schema.Types.ObjectId, ref: 'zona'},
+        arrivalregion:{type: Schema.Types.ObjectId, ref: 'zona'},
+        timeMin:{type: Number},
+        time:{type: Array}
 
-        activo:{type: Schema.Types.ObjectId, ref: 'Activo'},
-        regionPartida:{type: Schema.Types.ObjectId, ref: 'zona'},
-        regionLLegada:{type: Schema.Types.ObjectId, ref: 'zona'},
-        duracionMin:{type: Number},
-        duracion:{type: Array}
-
-	}
+    }
 );  
 
 //Export model

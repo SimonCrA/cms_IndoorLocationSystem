@@ -25,7 +25,7 @@ const TagInfo = require ('../../models/tagInfo')
 const async = require('async');
 
 /* *****************************************
-*	Buscar Activos
+*	indicadores
 *	
 /* *****************************************/
 
@@ -422,16 +422,30 @@ let getDealerTime = async (req, res) =>{
         result
     })
 
-}
+} 
 
 let getRegionTime = async (req, res) =>{
 
-        let result = await crearReporteTiempoSinMoverse();
+        let period = req.body.period;
+
+        let result = await crearReporteTiempoSinMoverse(period);
         console.log(result);
         res.status(200).json({
             ok: true,
             result
         })
+
+}
+
+/* *****************************************
+*	Alarmas
+*	
+/* *****************************************/
+
+let getLowBatteryTags = async (req, res) => {
+
+    let criticLevel = req.body.criticLevel;
+    
 
 }
 
@@ -943,7 +957,7 @@ module.exports = {
     pisos,
     searchAssets,
     activoGet,
-     getTags, 
+    getTags, 
     regionId, 
     getTopTen,
     getTopTenSales,
@@ -951,6 +965,7 @@ module.exports = {
     getServiceTime,
     getDealerTime,
     getRegionTime,
+    getLowBatteryTags,
     contador,
     getTagsfalse,
     asd,
