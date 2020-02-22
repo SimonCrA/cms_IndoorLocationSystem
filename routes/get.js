@@ -18,7 +18,7 @@ router.get('/ubicacion', apiGet.ubicacion);
 router.get('/activo', apiGet.activoGet);
 router.get('/tag_data', apiGet.getTags);
 router.get('/tag_data/false', apiGet.getTagsfalse);
-router.get('/topten/:tipo/:order/:desde/:hasta', apiGet.getTopTen);
+router.get('/topten/:tipo/:order', apiGet.getTopTen);
 router.get('/topsales/:order', apiGet.getTopTenSales); 
 router.get('/saletime', apiGet.getSaleTime);
 
