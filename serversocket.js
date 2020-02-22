@@ -17,10 +17,90 @@ const {logSistem} =  require('./controladores/write_Log')
 let {nameFile} = require('./controladores/variables')
 
 
+const Promesa = require('./controladores/database/promesas')
+
+let Variables = require('./controladores/variables')
+
 try {
 
     
+/* *****************************************
+*	Alarma Tag Lost
+*	
+/* *****************************************/
 
+let pathObtainTag = {estado:true}
+Promesa.getTag(pathObtainTag).then(obj=>{
+    console.log(`ServerSocket line 32`);
+
+    for (let index = 0; index < obj.length; index++) {
+        let js ={
+            _id:obj[index]._id,
+            mactag:obj[index].mactag
+
+        }
+        Variables.tagList.push(js)
+
+        
+    }
+
+},er=>console.log(er))
+
+let StartDatetoTagLost = new Date().getTime()
+setInterval(async () => {
+    Variables.tagLost = [];
+    let pathObtainLastTaginSystem = {date:{$gte:new Date(StartDatetoTagLost)}}
+    await Promesa.GetGraficar(pathObtainLastTaginSystem).then( async obj=>{
+
+        for (let j = 0; j < Variables.tagList.length; j++) {
+
+            let findIt = obj.findIndex(dato =>dato.idTag === Variables.tagList[j].mactag);
+            if(findIt>=0){
+                
+            }else{
+                let js={taglost:Variables.tagList[j].mactag, region:'', piso:''}
+
+                await Promesa.promise_pointXY(Variables.tagList[j].mactag).then(objPointXY=>{
+
+                    console.log(objPointXY[0]);
+                    js.region = objPointXY[0].region.nombreRegion
+                    js.piso = objPointXY[0].region.idPiso.nombrePiso
+
+                }, er=>{console.log(`ServerSocket:line66- ${er}`);})
+
+                Variables.tagLost.push(js)
+            }
+            
+            
+        }
+        if(Variables.tagLost.length != 0){
+
+            io.emit('missing-Tag-Aalarm',{msg:'the following tags are missing from the system',
+                                         Tags:Variables.tagLost})
+        }
+
+    }, er=>{console.log(er);
+        io.emit('missing-Tag-Aalarm',{msg:'Danger no target is detected in the system', Tags:Variables.tagLost})
+       
+    
+    })
+
+    console.log(Variables.tagList);
+    console.log(Variables.tagList.length);
+    console.log(`-----`);
+    console.log(Variables.tagLost.length);
+    console.log(Variables.tagLost);
+    
+    StartDatetoTagLost = new Date().getTime()
+    console.log(new Date(StartDatetoTagLost));
+}, 6000000);
+
+
+
+/* *****************************************
+*	
+*	
+/* *****************************************/
     
     var test = -1
     var test2 = -1
