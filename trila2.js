@@ -311,9 +311,17 @@ const gm = require('gm');
 
 
 
-var sizeof = require('image-size')
+// var sizeof = require('image-size')
 
-sizeof('uploads/usuarios/undefined-889.jpg', (err, dim)=>{
+// sizeof('uploads/usuarios/undefined-889.jpg', (err, dim)=>{
   
-    console.log(dim);
-})
+//     console.log(dim);
+// })
+
+
+
+
+let date = new Date().getTime()
+
+
+console.log(new Date(date));
