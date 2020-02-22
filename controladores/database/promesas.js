@@ -7,6 +7,8 @@ const Activo = require('../../models/activo');
 const Zona = require('../../models/zona');
 const {conversorM_P} = require('../variables')
 
+const Beacon = require ('../../models/tagInfo')
+
 const Reportatendidos = require('../../models/reporteatendidosperuser');
 
 try {
@@ -253,13 +255,57 @@ let PromiseRegion = (path)=>{
     })
 }
 
+
+
+let getTag = (path)=>{
+    return new Promise ((resolve, reject)=>{
+        Beacon.find(path)
+        .exec((er, response)=>{
+
+            if (er){
+                return reject(er)
+            }
+            else if(Array.isArray(response) && response.length){
+                return resolve(response)
+            }
+            else{
+                return reject ({msg:'no results were found with your search'})
+            }
+        })
+
+    })
+}
+
+
+
+let GetGraficar = (path)=>{
+    return new Promise((resolve, reject) =>{
+        Graficar.find(path)
+        .sort({_id:-1})
+        .exec((er, response)=>{
+            if (er){
+                return reject(er)
+            }else if(Array.isArray(response) && response.length){
+                return resolve(response)
+            }else{
+                return reject({msg:'no results were found with your search'})
+            }
+        })
+
+    })
+
+}
 module.exports={
-    getZona,referencialplano,
+    GetGraficar,
+    getTag,
+    getZona,
+    referencialplano,
     validarImagen,
     promise_active,
     promise_pointXY,
     buscarReporteAatendidos,
-    actualizaReporteAtendidos,PromiseRegion
+    actualizaReporteAtendidos,
+    PromiseRegion
 }
 } catch (error) {
     console.log(error);
