@@ -9,6 +9,8 @@ var apiGet = require('../controladores/database/getdb');
 const { verificartoken, verificarAdmin_Role, verificarSuper_Role ,verificarSuperAll_Role, } = require('../middlewares/autenticacion');
 
 
+const {IniciarContador } = require('../controladores/database/SaveDataToReports')
+
 router.get('/region', apiGet.region);
 router.get('/pisos', apiGet.pisos);
 router.get('/ubicacion', apiGet.ubicacion);
@@ -22,7 +24,10 @@ router.get('/servicetime', apiGet.getServiceTime);
 router.get('/dealertime', apiGet.getDealerTime);
 router.get('/timeactiverecive', apiGet.timeActiveRecive);
 router.get('/nomotionasset', apiGet.getRegionTime);
-router.get('/IniciarContador/:idactivo', apiGet.asd);
+
+
+router.get('/IniciarContador/:idactivo', IniciarContador);
+
 router.get('/counter', apiGet.contador); 
 router.get('/batterylevelalarm', apiGet.getlowBatteryTags);
 

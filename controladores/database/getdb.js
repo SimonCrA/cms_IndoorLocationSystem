@@ -231,18 +231,39 @@ let searchAssets = async (req, res) => {
 let getTopTen = (req, res) =>{
     
     try {
+        console.log(req.params);
         let tipo = req.params.tipo
         let order= req.params.order
+        let desde = req.params.desde || ''
+        let hasta =req.params.hasta || ''
         let counter
+        let path = {tipo:tipo}
         if(order==="up"){
             counter=-1;
         }else if(order==="down"){ 
             counter=1;
         }
+
+        // if(desde !='null' && hasta !='null'){
+        //     hasta = parseInt(hasta)
+        //     desde = parseInt(desde)
+
+        //     path = {tipo: tipo, $and:[{date:{$gt:desde}}, {date:{$lt:hasta}}]}
+
+
+        // }
+        // else if(hasta!=''){
+            // path = `{tipo: ${tipo}}`
+            
+            // }
+            // else if(desde !='')
+            
+            
+            console.log(path);
         let busquedaDeReporte = () =>{
             
             return new Promise((resolve, reject) => {
-                Reportetopten.find({tipo: tipo}).sort({count:counter})
+                Reportetopten.find(path).sort({count:counter})
                 .limit(10)
                 .exec((err, toptenBuscado) => {
                     
@@ -261,6 +282,7 @@ let getTopTen = (req, res) =>{
                                     }
                                 })
                         }
+                        console.log(toptenBuscado);
                             resolve(
                                 {
                                     ok: true,
@@ -426,9 +448,10 @@ let getDealerTime = async (req, res) =>{
 
 let getRegionTime = async (req, res) =>{
 
-        let period = req.body.period;
+    let period = req.body.period;
+    let desde = req.body.desde;
 
-        let result = await crearReporteTiempoSinMoverse(period);
+        let result = await crearReporteTiempoSinMoverse(period, desde);
         console.log(result);
         res.status(200).json({
             ok: true,
@@ -758,7 +781,8 @@ let contador = (req, res, next)=>{
               .exec(callback);
         },
 		tagBaterymedium: function(callback) {
-            TagInfo.find({$and: 
+            TagInfo.find({
+                $and: 
                 [ 
                   {batteryLevel:{$lt:2249}}, 
                   {batteryLevel:{$gt:1050}} 
@@ -823,17 +847,32 @@ let contador = (req, res, next)=>{
 
 
 
-let asd =async (req, res, next)=>{
+let IniciarContador =async (req, res, next)=>{
 try{
 
     
-
     let userid= req.user._id
+    let client = req.user.client
     let activo = req.params.idactivo ;
     let regionPartida
-    let regionllegada
+    let regionActual
+    let arrivalZone
     let dateStart = new Date().getTime();
     let dateEnd = new Date().getTime();
+
+
+
+    /* *****************************************
+    *	Necesito obtener la region de llegada a la que se supone que esta el usuario
+    *	
+    /* *****************************************/
+    let path= {idLocation: client, tipo:'region', arrivalZone:true}
+    await promesas.PromiseRegion(path).then( obj =>{
+        console.log(obj);
+        arrivalZone = obj._id
+
+    }, er =>console.log(`Getdb:836- ${er}`) ) //Romper la accion y emitir una alerta
+
 
     await promesas.promise_active(req.params.idactivo).then( async obj=>{
        await promesas.promise_pointXY(obj.active[0].idTag.mactag).then(obj2=>{
@@ -845,19 +884,45 @@ try{
     }, er=>{
         console.log(er);
     })
-    let path = idlocation 
-    
-    
-    // await promesas.promise_Region(path).then(obj=>{
-    //     recepcion = ?????
-    // }, er => {console.log(er)})
-
-
     let intervalAactive = setInterval( async () => {
         console.log(`scan`);
         await promesas.promise_active(req.params.idactivo).then( async obj=>{
             await promesas.promise_pointXY(obj.active[0].idTag.mactag).then(obj2=>{
-                regionllegada= obj2[0].region._id;
+                regionActual= obj2[0].region._id;
+
+
+                console.log(`${regionActual}=== ${arrivalZone}`);
+                if(`${regionActual}` ===   `${arrivalZone}`){
+                    console.log(`LLEGO A LA ZONA`);
+                    dateEnd = new Date().getTime();
+        
+                    let resta = dateEnd- dateStart;
+                    let contmin = resta/(1000*60);
+        
+        
+        
+                    let TimerToreciveActive = new timerToreciveActive({
+                        user:userid ,
+        
+                        activo:activo,
+                        regionPartida:regionPartida,
+                        regionLlegada: regionActual,
+                        duracionMin:contmin.toFixed(2),
+                        duracion:[dateStart, dateEnd, (dateEnd-dateStart)]
+                    })
+                    TimerToreciveActive.save((er, save)=>{
+                        if(er){
+                           console.log({ok:false, er})
+                        }else{
+                            console.log(save);
+                        }
+                        
+                    })
+                    console.log(`Finaliza el interval`);
+                    clearInterval(intervalAactive)
+        
+                }else{console.log(`next`);}
+
              }, er=>{
                  console.log(er);
              })
@@ -866,37 +931,7 @@ try{
              console.log(er);
          })
          
-        if(regionllegada ==   'recepcion'){
-
-
-            dateEnd = new Date().getTime();
-
-            let resta = dateEnd- dateStart;
-            let contmin = resta/(1000*60);
-
-
-
-            let TimerToreciveActive = new timerToreciveActive({
-                user:userid ,
-
-                activo:activo,
-                regionPartida:regionPartida,
-                regionLLegada: regionllegada,
-                duracionMin:contmin.toFixed(2),
-                duracion:[dateStart, dateEnd, (dateEnd-dateStart)]
-            })
-            TimerToreciveActive.save((er, save)=>{
-                if(er){
-                   console.log({ok:false, er})
-                }else{
-                    console.log(save);
-                }
-                
-            })
-
-            clearInterval(intervalAactive)
-
-        }
+         
         
     }, 10000);
 
@@ -968,7 +1003,7 @@ module.exports = {
     getLowBatteryTags,
     contador,
     getTagsfalse,
-    asd,
+    IniciarContador,
     timeActiveRecive
 }
 

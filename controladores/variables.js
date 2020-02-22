@@ -105,7 +105,15 @@ let conversorP_M = (pie)=>{
 
 let resolution = [{height:1300, width:957}]
 
+
+
+let tagList = [];
+
+let tagLost = [];
+
 module.exports = {
+    tagList,
+    tagLost,
     resolution,
     conversorM_P, conversorP_M,
     globalFilter,timeTLM,nameFile,

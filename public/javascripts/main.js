@@ -337,3 +337,27 @@ socket.on('alarmlowbatery', tagLowBattery=>{
   $("#lowBattery").show('slow');
 
 })
+
+
+
+socket.on('missing-Tag-Aalarm',alarmtaglost=>{
+
+  $("#msgTagLost").empty();
+  $("#ultest").empty();
+  $("#msgTagLost").append(alarmtaglost.msg);
+
+  if(Array.isArray(alarmtaglost.Tags) && alarmtaglost.Tags.length ){
+    console.log(`HEEEEEEEEEEEEEEEEY`);
+    for (let index = 0; index < alarmtaglost.Tags.length; index++) {
+    console.log(alarmtaglost.Tags[index].taglost);
+
+      $("#ultest").append(`<li
+                           class="list-group-item">
+                          Tag:${alarmtaglost.Tags[index].taglost}-
+                          Piso:${alarmtaglost.Tags[index].piso}|
+                          Region:${alarmtaglost.Tags[index].region}
+                          </li>`); 
+    }
+  }
+  $("#AlarmTagLost").modal("show");
+})

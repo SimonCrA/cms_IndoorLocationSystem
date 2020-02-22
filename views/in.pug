@@ -21,6 +21,25 @@ html(lang='en')
     title Configuration
   body
     #lowBattery
+
+
+
+    //- button.btn.btn-info.btn-lg(type='button', data-toggle='modal', data-target='#AlarmTagLost') Abrir Modal
+    // Modal
+    #AlarmTagLost.modal.fade(role='dialog')
+      .modal-dialog
+        // Contenido del modal
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal') ×
+          .modal-body
+            p#msgTagLost Texto del modal
+            li
+              ul#ultest.list-group.list-group-flush
+
+          .modal-footer
+            button.btn.btn-success(type='button', data-dismiss='modal') Cerrar
+
     .container
       h1(style='text-align: center;') variables settings
       hr

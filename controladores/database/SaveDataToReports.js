@@ -6,7 +6,16 @@ const Graficar = require ('../../models/graficar')
 
 const Reportetiempoventa = require('../../models/reportetiempoventa');
 
-const {buscarReporteAatendidos, actualizaReporteAtendidos} =require('./promesas') 
+
+const timerToreciveActive = require('../../models/timerToreciveActive');
+
+const promesas = require('./promesas')
+
+const {conversorM_P} = require('../variables')
+
+
+
+const async = require('async');
 
 
 let crearReporte = async (dataBusqueda) =>{
@@ -345,7 +354,19 @@ let crearReporteMasTiempoDealer = async () =>{
 
 }
 
-let crearReporteTiempoSinMoverse = async () =>{
+
+/* *****************************************
+*	INDICADRO 4
+*	
+/* *****************************************/
+
+
+let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
+
+    let actualTime = new Date().getTime();
+    let oldTime = actualTime - period*86400000;
+
+
 
         let searchTag = () => {
             try {
@@ -370,24 +391,38 @@ let crearReporteTiempoSinMoverse = async () =>{
 
     let resultSearchTag = await searchTag();
     let arrPoint = [];
-    let js={
-        contador:0,
-        region:``,
-        tag:``
-    }
-    console.log(resultSearchTag);
+    // console.log(resultSearchTag);
     for (let i = 0; i < resultSearchTag.length; i++) {
+        let js={
+            contadorE:0,
+            contadorD:0,
+            region:``,
+            tag:``,
+            id:null
+        }
         
         let searchPoint = () => {
             try {
 
                 let param = {
-                    idTag: resultSearchTag[i].mactag
+                    idTag: resultSearchTag[i].mactag, date:{$gte:new Date(desde)}
                 }
 
                 return new Promise((resolve, reject) => {
-
+                
                     Graficar.find(param)
+                    .populate([{
+                        path:'region',
+                        model:'zona',
+                        select:'nombreRegion numeroRegion idPiso',
+                        populate:{
+                            path:'idPiso',
+                            model:'zona',
+                            select:'nombrePiso numeroPiso'
+                        }
+                }
+            ])
+                    
                         .exec((err, pointDB) => {
                             err
                                 ?
@@ -405,35 +440,60 @@ let crearReporteTiempoSinMoverse = async () =>{
         }
 
         let resultSearchPoint = await searchPoint();
+        console.log(`_____________________`);
+        console.log(resultSearchPoint);
+        console.log(`_____________________`);
+
         if(Array.isArray(resultSearchPoint) && resultSearchPoint.length){
             if(resultSearchPoint.length > 1){
+
                 let StartCountTime = new Date().getTime();
-                console.log(`Procede a comparar ...`);
-                console.log(resultSearchPoint);
+                // console.log(resultSearchPoint);
                 for (let j = 0; j < (resultSearchPoint.length -1); j++) {
+                    let fechaInicio = new Date(resultSearchPoint[j].date).getTime();
+                    // console.log(`Procede a comparar ...  ${fechaInicio} ${oldTime}`);
+        
+                    // if (fechaInicio > oldTime && fechaInicio < actualTime) {
+                        
+                        console.log(`${resultSearchPoint[j].region._id} === ${resultSearchPoint[j + 1].region._id}` );
+                        
+                        if (`${resultSearchPoint[j].region._id}` === `${resultSearchPoint[j + 1].region._id}`) {
+
+                            console.log(`ENTRE ${j}`);
+                            console.log(resultSearchPoint[j].idTag);
+                            js.contadorE+=1;
+                            js.region = resultSearchPoint[j].region;
+                            js.tag = resultSearchTag[i]._id;
+                            if(js.id == null){
+                                js.id = resultSearchPoint[j]._id
+                                js.time =(actualTime - fechaInicio)/(1000*60*60) ;
+                                
+                            }
+    
+            
+                        }else{
+                            js.contadorD+=1;
+                            js.region = resultSearchPoint[j].region;
+                            js.tag = resultSearchTag[i]._id;
+                            js.time =(oldTime- fechaInicio) /(1000*60*60) ;
+                            js.id = null
+
+                        }
+        
+                    // }
+                        
+
                     
-                    console.log(`entre no?`);
-                    if (resultSearchPoint[j].region != resultSearchPoint[j + 1].region) {
-                        console.log(`ENTRE ${j}`);
-                        let StopCountTime = new Date().getTime();
-                        let resultTime = StopCountTime - StartCountTime;
-                        js.contador+=1;
-                        js.region = resultSearchPoint[j].region;
-                        js.tag = resultSearchTag[i]._id;
-                        StartCountTime = StopCountTime;
-                        js.time = resultTime;
+                }
+
 
         
-                    }
-                    
-                }
-        
-                if (js.contador <= 5) {
+                // if (js.contador <= 5) {
                     arrPoint.push(js);
-                }
+                // }
 
             }else{
-                console.log(`No procede`);
+                console.log(`Solo existe un registro de este tag o ninguno`);
                 console.log(resultSearchPoint);
                 
             }
@@ -444,14 +504,16 @@ let crearReporteTiempoSinMoverse = async () =>{
         
     };
     
+    console.log(arrPoint);
     let arrActivoRegion = [];
+
     for (let i = 0; i < arrPoint.length; i++) {
         
         let searchPointDate = (ruta) => {
             try {
 
                 return new Promise((resolve, reject) => {
-                    console.log(ruta);
+                    // console.log(ruta);
                     Activo.find(ruta)
                         .exec((err, pointDB) => {
                             err
@@ -467,23 +529,28 @@ let crearReporteTiempoSinMoverse = async () =>{
                 console.log(error);
             }
         }
+
+
         console.log(arrPoint[i].tag);
         let ta= arrPoint[i].tag
-        let path= `{"idTag":"${ta}"}`
-        console.log(path);
+        let path= `{"idTag":"${ta}", "estado": true}`
         let ruta = JSON.parse(path)
-        let resultSearchTag = await searchPointDate(ruta);
-        let objectActivoRegion = {};
+        if(arrPoint[i].id != null ){
 
-        objectActivoRegion = {
-            brand: resultSearchTag.nombre,
-            VIN: resultSearchTag.VIN,
-            model: resultSearchTag.modelo,
-            region: arrPoint[i].region,
-            time: arrPoint.time
+            let resultSearchTag = await searchPointDate(ruta);
+            let objectActivoRegion = {};
+    
+            objectActivoRegion = {
+                brand: resultSearchTag.nombre,
+                VIN: resultSearchTag.VIN,
+                model: resultSearchTag.modelo,
+                region: arrPoint[i].region,
+                timeDays: parseFloat((arrPoint[i].time).toFixed(2))
+            }
+    
+            arrActivoRegion.push(objectActivoRegion);
+
         }
-
-        arrActivoRegion.push(objectActivoRegion);
 
 
         
@@ -502,7 +569,7 @@ let crearReporteAtendidosVendedor = async (userid)=>{
         console.log("ESTO ESTA FUNCIONANDO??");
         
         let path = JSON.parse(`{userid:${userid}}`)
-        let buscaReporte = await buscarReporteAatendidos(path);
+        let buscaReporte = await promesas.buscarReporteAatendidos(path);
 
 
         
@@ -533,7 +600,7 @@ let crearReporteAtendidosVendedor = async (userid)=>{
         })
         } 
         else if (buscaReporte.ok === true) {
-            await actualizaReporteAtendidos(buscaReporte.reporteBuscado)
+            await promesas.actualizaReporteAtendidos(buscaReporte.reporteBuscado)
         }
         
     } catch (error) {
@@ -550,7 +617,129 @@ let crearReporteAtendidosVendedor = async (userid)=>{
 
 
 }
+let IniciarContador =async (req, res, next)=>{
+    try{
+    
+        
+        let userid= req.user._id
+        let client = req.user.client
+        let activo = req.params.idactivo ;
+        let regionPartida
+        let regionActual
+        let arrivalZone
+        let dateStart = new Date().getTime();
+        let dateEnd = new Date().getTime();
+    
+    
+    
+        /* *****************************************
+        *	Necesito obtener la region de llegada a la que se supone que esta el usuario
+        *	
+        /* *****************************************/
+        let path= {idLocation: client, tipo:'region', arrivalZone:true}
+        await promesas.PromiseRegion(path).then( obj =>{
+            arrivalZone = obj._id
+    
+        }, er =>{
+            console.log(`Getdb:836- ${er}`)
+            return res.status(403).jsonp({
+                ok:false,
+                msg:'there isnt test driving region, please add one first'
+                })
+    
+            } ) //Romper la accion y emitir una alerta
+    
+    
+        await promesas.promise_active(req.params.idactivo).then( async obj=>{
 
+           await promesas.promise_pointXY(obj.active[0].idTag.mactag).then(obj2=>{
+            regionPartida= obj2[0].region._id;
+            
+        
+            let intervalAactive = setInterval( async () => {
+                console.log(`scan`);
+                await promesas.promise_active(req.params.idactivo).then( async obj=>{
+                    await promesas.promise_pointXY(obj.active[0].idTag.mactag).then(obj2=>{
+                        regionActual= obj2[0].region._id;
+        
+        
+                        if(`${regionActual}` ===   `${arrivalZone}`){
+                            console.log(`LLEGO A LA ZONA`);
+                            dateEnd = new Date().getTime();
+                
+                            let resta = dateEnd- dateStart;
+                            let contmin = resta/(1000*60);
+                
+                
+                
+                            let TimerToreciveActive = new timerToreciveActive({
+                                user:userid ,
+                
+                                activo:activo,
+                                regionPartida:regionPartida,
+                                regionLlegada: regionActual,
+                                duracionMin:contmin.toFixed(2),
+                                duracion:[dateStart, dateEnd, (dateEnd-dateStart)]
+                            })
+                            TimerToreciveActive.save((er, save)=>{
+                                if(er){
+                                   console.log({ok:false, er})
+                                }else{
+                                    console.log(save);
+                                }
+                                
+                            })
+                            console.log(`Finaliza el interval`);
+                            clearInterval(intervalAactive)
+                
+                        }else{console.log(`next`);}
+        
+                     }, er=>{
+                         console.log(er);
+                     })
+             
+                 }, er=>{
+                     console.log(er);
+                 })
+                 
+                 
+                
+            }, 10000);
+        
+        
+        
+        
+        
+        
+        }, er=>{
+                // console.log(er);
+                return res.status(403).jsonp({
+                    ok:false,
+                    msg:'active hasnt a valid point '
+                    })
+            })
+    
+        }, er=>{
+            // console.log(er);
+            return res.status(403).jsonp({
+                ok:false,
+                msg:`doesn't exist this active`,
+                er
+                })
+        })
+
+
+
+    
+        console.log(regionPartida);
+    
+        // timerToreciveActive
+        return res.status(200).jsonp({ok:true})
+    }catch(e){
+        console.log(e);
+        }
+    }
+    
 
 module.exports = {
     crearReporte,
@@ -559,5 +748,6 @@ module.exports = {
     crearReporteTiempoServicio,
     crearReporteMasTiempoDealer,
     crearReporteAtendidosVendedor,
-    crearReporteTiempoSinMoverse
+    crearReporteTiempoSinMoverse,
+    IniciarContador
 }

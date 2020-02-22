@@ -66,15 +66,40 @@ let regiones = (req, res, next) => {
 
 }
 
-let regionArrival = (req, res, next) => {
+let regionArrival = async (req, res, next) => {
 
     let id = req.params.id
 
-    let body = {
-        arrivalZone: true
+    
+    
+    let searchLocation = (id)=>{
+        return new Promise((resolve,reject)=>{
+            
+            Region.find({_id:id})
+            .populate([{
+                path:'idPiso',
+                model:'zona',
+                select:'idLocation'
+            }])
+
+            .exec((er, locatio)=>{
+
+                if(er){
+                    return reject(er)
+                }
+                return resolve(locatio[0])
+            })
+            
+        })
     }
 
+    let respons = await searchLocation(id)
 
+    let body = {
+        arrivalZone: true,
+        idLocation:respons.idPiso.idLocation
+        
+    }
     Region.findByIdAndUpdate(id, body, {
         new: true,
         runValidators: true
@@ -104,11 +129,8 @@ let pisos = (req, res, next) => {
     let id = req.params.id;
 
     let body = _.pick(req.body,['idLocation','nombrePiso','numeroPiso','ancho', 'alto']) ;
-    console.log(`body`);
-    console.log(body);
     
     Region.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, regiondb)=>{
-        console.log(regiondb);
         if(err){
             return res.status(400).json({
                 ok:false,
