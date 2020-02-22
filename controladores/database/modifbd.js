@@ -129,11 +129,8 @@ let pisos = (req, res, next) => {
     let id = req.params.id;
 
     let body = _.pick(req.body,['idLocation','nombrePiso','numeroPiso','ancho', 'alto']) ;
-    console.log(`body`);
-    console.log(body);
     
     Region.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, regiondb)=>{
-        console.log(regiondb);
         if(err){
             return res.status(400).json({
                 ok:false,
