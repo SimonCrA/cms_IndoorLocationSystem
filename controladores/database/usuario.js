@@ -122,7 +122,9 @@ let postUser = (req, res) =>{
         email: body.email,
         password: body.password,
         role: body.role,
-        department: body.department
+        department: body.department,
+        client: body.idlocation
+        
     });
     usuario.save( (err, usuarioCreado) => {
 
