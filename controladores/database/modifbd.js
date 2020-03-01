@@ -210,7 +210,7 @@ let ubicacion = (req, res, next) => {
 
     let id = req.params.id;
 
-    let body = _.pick(req.body,['macRpi','axis','xpos','ypos']) ;
+    let body = _.pick(req.body,['macRpi','axis','xpos','ypos', 'compartido', 'idZona', 'ubicacion']) ;
 
     
     InfoUbicacionRpi.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, ubicacion)=>{

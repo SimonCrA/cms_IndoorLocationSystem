@@ -93,7 +93,7 @@ setInterval(async () => {
     
     StartDatetoTagLost = new Date().getTime()
     console.log(new Date(StartDatetoTagLost));
-}, 6000000);
+}, 60000000);
 
 
 
@@ -267,8 +267,9 @@ console.log(`INCIIO ESTO de gossip`);
     
     let alarmLowBatery = (tagLowBattery)=>{
 
-        io.emit('alarmlowbatery', tagLowBattery)
+        io.emit('alarm-low-batery', tagLowBattery)
     }
+
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -342,9 +343,9 @@ console.log(`INCIIO ESTO de gossip`);
             if(res.ok===true){
                 
                 console.log(`ALARMA`);
-                console.log(res.tagLowBattery);
+                console.log(res);
 
-                alarmLowBatery(res.tagLowBattery)
+                alarmLowBatery(res)
             }
     
         })

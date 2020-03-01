@@ -143,7 +143,8 @@ console.log(conversorP_M(bl));
 
         nombreRegion:req.body.nombreRegion   ,
         numeroRegion:parseInt(req.body.numeroRegion)   ,
-
+        alto:parseInt(alto),
+        ancho:parseInt(ancho),
         bottomLeft:conversorP_M(bl) ,
         bottomRigth:conversorP_M(br) ,
         topLeft:conversorP_M(tl) ,

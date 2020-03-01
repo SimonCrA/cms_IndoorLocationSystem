@@ -112,8 +112,8 @@ let dataToKalman2D = async (arrayFromValidation)=>{
     
     Xk_1 = 
     [
-        [8],
-        [4],
+        [arrayFromValidation[0].x],
+        [arrayFromValidation[0].y],
     
     ]
     
@@ -152,22 +152,22 @@ let dataToKalman2D = async (arrayFromValidation)=>{
     
         // console.log(`this is i ${i}`);
         if (i === 0) {
-            console.log("soy 0");
+            // console.log("soy 0");
             res = await doKalmanfilter(X_Before, P_Before, Z);
             // console.log(`RESBEFORE`);
-            console.log(Z());
-            console.log(res.X_Before());
-            console.log(res.P_Before());
+            // console.log(Z());
+            // console.log(res.X_Before());
+            // console.log(res.P_Before());
             // before = res.X_Before()
             // console.log(before);
     
         } else if(i > 0) {
-            console.log(`soy ${i}`);
+            // console.log(`soy ${i}`);
             res = await doKalmanfilter(res.X_Before, res.P_Before, Z);
-            console.log(Z());
+            // console.log(Z());
 
-            console.log(res.X_Before());
-            console.log(res.P_Before());
+            // console.log(res.X_Before());
+            // console.log(res.P_Before());
             
             
         }
@@ -176,9 +176,9 @@ let dataToKalman2D = async (arrayFromValidation)=>{
     }
     before = res.X_Before()
     // console.log(res);
-    console.log(res.X_Before());
+    // console.log(res.X_Before());
 
-    console.log(before[0][0], before[1][0]);
+    // console.log(before[0][0], before[1][0]);
     return {xpos:before[0][0], ypos: before[1][0]}
 
 }
