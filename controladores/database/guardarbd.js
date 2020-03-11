@@ -122,16 +122,16 @@ let ubicacion = (req, res, next)=>{
 
 
 let regiones = (req, res, next) =>{
+    console.log(req.body);
     
-    let x = req.body.xbottonleft
-    let y = req.body.ybottonleft
+    let x = parseFloat(req.body.xbottomleft)
+    let y = parseFloat(req.body.ybottomleft)
 
-    let alto = req.body.height
-    let ancho = req.body.width
-
+    let alto = parseFloat(req.body.alto)
+    let ancho = parseFloat(req.body.ancho)
 
     let bl=[ x , y ]
-   let  br=[ancho + x, y ]
+    let  br=[ancho + x, y ]
     let tl=[x, alto+y]
     let tr=[ancho+x, alto+y]
 
@@ -143,8 +143,8 @@ console.log(conversorP_M(bl));
 
         nombreRegion:req.body.nombreRegion   ,
         numeroRegion:parseInt(req.body.numeroRegion)   ,
-        alto:parseInt(alto),
-        ancho:parseInt(ancho),
+        alto:conversorP_M(parseInt(alto)),
+        ancho:conversorP_M(parseInt(ancho)),
         bottomLeft:conversorP_M(bl) ,
         bottomRigth:conversorP_M(br) ,
         topLeft:conversorP_M(tl) ,
@@ -185,14 +185,14 @@ let pisos = (req, res, next) =>{
 
     let region = new Region({
 
-        idLocation:req.body.idLocacion  ,
+        idLocation:req.body.idLocation  ,
 
         nombrePiso:req.body.nombrePiso   ,
         numeroPiso:parseInt(req.body.numeroPiso)   ,
         scale: parseInt(req.body.scale),
         plano:'',
-        alto: parseInt(req.body.alto) ,
-        ancho: parseInt(req.body.ancho) ,
+        alto: conversorP_M(parseInt(req.body.alto)) ,
+        ancho: conversorP_M(parseInt(req.body.ancho)) ,
         heightPixel:0,
         widthPixel:0,
         estatus: true,
@@ -324,12 +324,8 @@ let newConstant = async (req, res, next)=>{
         let promise_tag = ()=>{
             return new Promise ((resolve, reject)=>{
 
-                TagInfo.aggregate([{
-                    $match: {
-                        estado: true        
-                    }
-                },
-                {
+                TagInfo.aggregate([
+                   {
                     "$group": {
                         _id:"$mactag",
                         count: {
@@ -347,6 +343,7 @@ let newConstant = async (req, res, next)=>{
             });
         }
         
+
         let promise_rpi = ()=>{
             return new Promise ((resolve, reject)=>{
 

@@ -24,11 +24,12 @@ let regiones = (req, res, next) => {
     
     console.log(req.params);
     
-    let x = req.body.xbottonleft
-    let y = req.body.ybottonleft
+    console.log(req.body);
+    let x = parseFloat(req.body.xbottomleft)
+    let y = parseFloat(req.body.ybottomleft)
 
-    let alto = req.body.height
-    let ancho = req.body.width
+    let alto = parseFloat(req.body.alto)
+    let ancho = parseFloat(req.body.ancho)
 
 
     let bl=[ x , y ]
@@ -44,7 +45,9 @@ let regiones = (req, res, next) => {
         bottomLeft: conversorP_M(bl),
         bottomRigth: conversorP_M(br),
         topLeft:conversorP_M( tl),
-        topRight: conversorP_M(tr)
+        topRight: conversorP_M(tr),
+        alto:conversorP_M(alto),
+        ancho:conversorP_M(ancho)
     }
 
 
@@ -124,11 +127,15 @@ let pisos = (req, res, next) => {
 
     console.log(`SOY PISOS NO REGION STUPIDA!!`);
     console.log(req.body);
+    let body1 = req.body
+
+    body1.alto = conversorP_M(body1.alto)
+    body1.ancho = conversorP_M(body1.ancho)
 
 
     let id = req.params.id;
 
-    let body = _.pick(req.body,['idLocation','nombrePiso','numeroPiso','ancho', 'alto']) ;
+    let body = _.pick(body1,['idLocation','nombrePiso','numeroPiso','ancho', 'alto', 'scale']) ;
     
     Region.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, regiondb)=>{
         if(err){
@@ -335,6 +342,7 @@ let venderAuto = (req, res, next) =>{
 
     let idActivo = req.params.idActivo;
     let idTag = req.params.idTag;
+    console.log(`activo: ${idActivo}\nTag:${idTag}`);
 
 
     let tagStatus = {

@@ -42,8 +42,8 @@ let trilateracionMatriz = (data) =>{
     error = Math.sqrt((Math.pow( 2.10- parseFloat(z[0][0]), 2)) + ((Math.pow(2.10 - parseFloat(z[1][0]), 2))))
 
     return {
-        punto_x:(z[0][0]).toFixed(2),
-        punto_y:(z[1][0]).toFixed(2), 
+        punt_x:(z[0][0]).toFixed(2),
+        punt_y:(z[1][0]).toFixed(2), 
         error:(error).toFixed(2),
         status:true
     };

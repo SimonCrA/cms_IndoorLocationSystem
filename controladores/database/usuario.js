@@ -114,7 +114,7 @@ let postSignUp = (req, res, next) => {
 let postUser = (req, res) =>{
 
     let body = req.body;
-    // console.log(body);
+    console.log(body);
 
     let usuario =  new User({
         name: body.name,
@@ -122,7 +122,7 @@ let postUser = (req, res) =>{
         email: body.email,
         password: body.password,
         role: body.role,
-        department: body.department,
+        department: body.departament,
         client: body.idlocation
         
     });
@@ -134,7 +134,7 @@ let postUser = (req, res) =>{
                 err
             });
         };
-
+        console.log(`UserCreate:`+usuarioCreado);
         res.json({
             ok: true,
             usuarioCreado
@@ -234,6 +234,7 @@ console.log(`Update user`);
             })
         };
         if (!usuarioModificado) {
+            console.log(`there isn't an user with this id`);
             return res.status(400).json({
                 ok: false,
                 err: {

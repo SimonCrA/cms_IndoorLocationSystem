@@ -103,7 +103,7 @@ let conversorP_M = (pie)=>{
 
 }
 
-let resolution = [{height:1300, width:957}]
+let resolution = [{height:392, width: 1018}]
 
 
 

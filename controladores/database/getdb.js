@@ -8,13 +8,16 @@ const timerToreciveActive = require('../../models/timerToreciveActive');
 const promesas = require('./promesas')
 
 const Toptensales = require('../../models/reportetoptenventas');
-
+const ReporteAtendidos = require('../../models/reporteatendidosperuser')
 
 const Reportetopten = require('../../models/reportetopten');
 const {
+
+    crearReporteAtendidosVendedor,
     crearReporte, crearReporteTiempoVenta,
     crearReporteTiempoServicio,
     crearReporteMasTiempoDealer,crearReporteTiempoSinMoverse
+    
         } = require('./SaveDataToReports');
 
 const {conversorM_P} = require('../variables')
@@ -114,7 +117,7 @@ let searchAssets = async (req, res) => {
 
                             crearReporte(dataBusqueda);
 
-                            // crearReporteAtendidosVendedor(userid)
+                            crearReporteAtendidosVendedor(userid)
                             // console.log(ActivoBuscado[0]);
                             
                            
@@ -160,10 +163,22 @@ let searchAssets = async (req, res) => {
                                 }
                             });
                         };
+                        // console.log(JSON.stringify(puntoBuscado,null, 2));
                         for(let i = 0 ; i < puntoBuscado.length ; i++){
 
                             puntoBuscado[i].x = conversorM_P(puntoBuscado[i].x)
                             puntoBuscado[i].y = conversorM_P(puntoBuscado[i].y)
+
+                            puntoBuscado[i].region.bottomLeft = conversorM_P(puntoBuscado[i].region.bottomLeft)
+                            puntoBuscado[i].region.bottomRigth = conversorM_P(puntoBuscado[i].region.bottomRigth)
+                            puntoBuscado[i].region.topLeft = conversorM_P(puntoBuscado[i].region.topLeft)
+                            puntoBuscado[i].region.topRight = conversorM_P(puntoBuscado[i].region.topRight)
+                            puntoBuscado[i].region.idPiso.alto = conversorM_P(puntoBuscado[i].region.idPiso.alto)
+                            puntoBuscado[i].region.idPiso.ancho = conversorM_P(puntoBuscado[i].region.idPiso.ancho)
+                            puntoBuscado[i].region.alto = conversorM_P(puntoBuscado[i].region.alto)
+                            puntoBuscado[i].region.ancho = conversorM_P(puntoBuscado[i].region.ancho)
+                            
+                           
                         }
                         // Graficar.countDocuments({idActivo}, (err, conteo) => {
                             resolve(puntoBuscado);
@@ -629,6 +644,11 @@ let pisos = (req, res, next) =>{
                     err
                 });
             }
+            for (let index = 0; index < pisos.length; index++) {
+                pisos[index].ancho = conversorM_P(pisos[index].ancho)
+                pisos[index].alto = conversorM_P(pisos[index].alto)
+                
+            }
             
             res.json({
                 ok: true,
@@ -973,6 +993,35 @@ let timeActiveRecive = (req, res, next)=>{
 
 }
 
+
+
+let getAtendidosbySeller = (req, res, next)=>{
+
+    ReporteAtendidos.find()
+    .populate([{
+            path:'userid',
+            model:'User',
+            select:'name surname'
+        }])
+    .exec((err,attendedbyseller) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+        
+        res.status(200).json({
+            ok: true,
+            attendedbyseller
+        });
+
+    });
+
+
+}
+
 module.exports = {
     region,
     ubicacion,
@@ -991,6 +1040,7 @@ module.exports = {
     contador,
     getTagsfalse,
     IniciarContador,
-    timeActiveRecive
+    timeActiveRecive,
+    getAtendidosbySeller
 }
 

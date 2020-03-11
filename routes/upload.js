@@ -81,28 +81,29 @@
         
         let respValidarImagen = await validarImagen(`uploads/${tipo}/${ nombreArchivo }`);
         console.log(respValidarImagen);
+        console.log(resolution);
         
-        if(!(respValidarImagen.height=== resolution[0].height) &&
-             !(respValidarImagen.width===resolution[0].width) ){
+        // if(!(respValidarImagen.height=== resolution[0].height) &&
+        //      !(respValidarImagen.width===resolution[0].width) ){
 
-            borrarArchivo(nombreArchivo, tipo);
+        //     borrarArchivo(nombreArchivo, tipo);
 
-            return res.status(400).json({
-                ok:false,
-                err:{
-                    msg:'the measurements are invalid',
-                    expected:{
-                        height:resolution[0].height,
-                        width:resolution[0].width
-                    },
-                    recieved:{
-                        height:respValidarImagen.height,
-                        width:respValidarImagen.width
-                    }
-                }
-            })
+        //     return res.status(400).json({
+        //         ok:false,
+        //         err:{
+        //             msg:'the measurements are invalid',
+        //             expected:{
+        //                 height:resolution[0].height,
+        //                 width:resolution[0].width
+        //             },
+        //             recieved:{
+        //                 height:respValidarImagen.height,
+        //                 width:respValidarImagen.width
+        //             }
+        //         }
+        //     })
 
-        }
+        // }
         
         
         if (tipo === 'usuarios') {
@@ -205,12 +206,12 @@ console.log(`line 138`);
 
 }
 function guardarImgMap(id, res, nombreArchivo ,resolution) {
-console.log(resolution);
+    console.log(resolution);
     Zona.findById(id, (err, zonaDB) => {
         console.log(err);
         if (err) {
             borrarArchivo(nombreArchivo, 'maps');
-console.log(`178`);
+        console.log(`178`);
             return res.status(500).json({
                 ok: false,
                 err

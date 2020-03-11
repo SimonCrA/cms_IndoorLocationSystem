@@ -5,8 +5,7 @@ const TagInfo = require ('../../models/tagInfo')
 const Graficar = require ('../../models/graficar')
 
 const Reportetiempoventa = require('../../models/reportetiempoventa');
-
-
+const Reportatendidos = require('../../models/reporteatendidosperuser')
 const timerToreciveActive = require('../../models/timerToreciveActive');
 
 const promesas = require('./promesas')
@@ -20,11 +19,11 @@ const async = require('async');
 
 let crearReporte = async (dataBusqueda) =>{
     try {
-        console.log("ESTO ESTA FUNCIONANDO??");
+        // console.log("ESTO ESTA FUNCIONANDO??");
         let actualizaReporte = (dataToRefresh) => {
             
             return new Promise((resolve, reject) => {
-                console.log("es hora de actualizar");
+                // console.log("es hora de actualizar");
                 let date = dataToRefresh[0].date
                 date.push(dataBusqueda.date)
                 let id = dataToRefresh[0]._id
@@ -32,13 +31,13 @@ let crearReporte = async (dataBusqueda) =>{
                     count: dataToRefresh[0].count + 1,
                     date: date
                 }
-                console.log(body);
+                // console.log(body);
 
                 Reportetopten.findByIdAndUpdate(id, body, {
                     new: true,
                     runValidators: true
                 }, (err, reporteActualizado) => {
-                    console.log(reporteActualizado);
+                    // console.log(reporteActualizado);
                 err
                     ?
                     reject(err):
@@ -56,7 +55,7 @@ let crearReporte = async (dataBusqueda) =>{
             tipo = dataToFind.tipo;
             return new Promise((resolve, reject) => {
 
-                console.log("BUSCAR EL REPORTE");
+                // console.log("BUSCAR EL REPORTE");
                 
                 Reportetopten.find({
                     nombre: nombre,
@@ -71,7 +70,7 @@ let crearReporte = async (dataBusqueda) =>{
                             reporteBuscado
                         })
                     } else {
-                        console.log("ESTO ES FALSE");
+                        // console.log("ESTO ES FALSE");
 
                         return resolve({
                             ok: false
@@ -90,8 +89,8 @@ let crearReporte = async (dataBusqueda) =>{
 
         
         if (buscaReporte.ok === false) {
-            console.log('entre en false');
-            console.log(`reporte ${buscaReporte}`);
+            // console.log('entre en false');
+            // console.log(`reporte ${buscaReporte}`);
             
             let dataToSave = new Reportetopten ({
                 nombre: dataBusqueda.nombre,
@@ -105,7 +104,7 @@ let crearReporte = async (dataBusqueda) =>{
                     return err
                 };
                 if (dataGuardada) {
-                console.log(`guardó ${dataGuardada}`);
+                // console.log(`guardó ${dataGuardada}`);
 
                     return true
                 }
@@ -568,7 +567,7 @@ let crearReporteAtendidosVendedor = async (userid)=>{
     try {
         console.log("ESTO ESTA FUNCIONANDO??");
         
-        let path = JSON.parse(`{userid:${userid}}`)
+        let  path = {userid:userid}
         let buscaReporte = await promesas.buscarReporteAatendidos(path);
 
 

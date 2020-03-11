@@ -90,8 +90,8 @@ let dataToKalman2D = async (arrayFromValidation)=>{
     ]
     
     q = [
-        [0.1, 0.1],
-        [0.1, 0.1]
+        [0.01, 0.01],
+        [0.01, 0.01]
     ]
     
     h = [

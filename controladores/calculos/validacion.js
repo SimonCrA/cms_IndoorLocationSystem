@@ -490,10 +490,10 @@ let validacion_Trilateracion = async ()=>{
 
                     
                 
-                    let punto =trilateracion(r1, r2, r3, x2, y3);
+                    let punto2 =trilateracion(r1, r2, r3, x2, y3);
+                    let punto =trilateracionMatriz(datosPuntoXY);
                     
                     
-                   
 
                 
                     
@@ -515,7 +515,9 @@ let validacion_Trilateracion = async ()=>{
                     console.log(`${lista_Obj_trilaterar[k].tag[j]}`.green);
                     console.log(r1, r2, r3, x2, y3);
                     console.log(`Trilateracion_1:`);
+                    console.log(punto2);
                     console.log(punto);
+
 
                     logSistem(`${lista_Obj_trilaterar[k].region}
                     \n${lista_Obj_trilaterar[k].tag[j]}
@@ -527,33 +529,33 @@ let validacion_Trilateracion = async ()=>{
                         
                     console.log(`el punto xy es true`);
 
-                    //  let path_IdRegion = {_id:lista_Obj_trilaterar[k].region}
-                    // await Promesa.getZona(path_IdRegion).then(resp=>{
-                    //     bottomLeft  = resp.resposeZona[0].bottomLeft
+                     let path_IdRegion = {_id:lista_Obj_trilaterar[k].region}
+                    await Promesa.getZona(path_IdRegion).then(resp=>{
+                        bottomLeft  = resp.resposeZona[0].bottomLeft
                         
-                    // }, err => console.log(err))
+                    }, err => console.log(err))
 
 
-                    // let XyPlanoReal = {
-                    //     x:punto.punt_x,
-                    //     y:punto.punt_y,
-                    //     anchoR:x2,
-                    //     altoR:y3,
-                    //     ubicacionOrigen
-                    // }
-                    // await Promesa.referencialplano(XyPlanoReal).then(resp=>{
+                    let XyPlanoReal = {
+                        x:punto.punt_x,
+                        y:punto.punt_y,
+                        anchoR:x2,
+                        altoR:y3,
+                        ubicacionOrigen
+                    }
+                    await Promesa.referencialplano(XyPlanoReal).then(resp=>{
                         
-                    //     punto.punt_x = parseInt(resp.x + bottomLeft[0]);
-                    //     punto.punt_y = parseInt(resp.y + bottomLeft[1]);
+                        punto.punt_x = parseFloat(resp.x + bottomLeft[0]);
+                        punto.punt_y = parseFloat(resp.y + bottomLeft[1]);
 
 
-                    // }, er=>console.log(er))
+                    }, er=>console.log(er))
                             
 
                     
                     let PointTrilaterationCurrent =[{
-                        x: parseInt(punto.punt_x),
-                        y: parseInt(punto.punt_y)
+                        x: parseFloat(punto.punt_x),
+                        y: parseFloat(punto.punt_y)
                     }]
 
                     // console.log(punto);
@@ -585,16 +587,16 @@ let validacion_Trilateracion = async ()=>{
 
                         
 
-                        if((filtradoXY.xpos < x2 + (1.9)) && (filtradoXY.ypos < y3 + (1.9)) ){
+                        // if((filtradoXY.xpos < x2 + (1.9)) && (filtradoXY.ypos < y3 + (1.9)) ){
                             console.log(`Se guardara el xy`);
 
                         //    console.log(filtradoXY);
 
                             let guardarpuntoXY = await promesa_puntoXY(filtradoXY, lista_Obj_trilaterar[k].tag[j], lista_Obj_trilaterar[k].region);
                             
-                        }else{
+                        // }else{
                             
-                        }
+                        // }
                     
                     }
 

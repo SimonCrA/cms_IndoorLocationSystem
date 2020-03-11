@@ -30,25 +30,26 @@ try {
 /* *****************************************/
 
 let pathObtainTag = {estado:true}
-Promesa.getTag(pathObtainTag).then(obj=>{
-    console.log(`ServerSocket line 32`);
-
-    for (let index = 0; index < obj.length; index++) {
-        let js ={
-            _id:obj[index]._id,
-            mactag:obj[index].mactag
-
-        }
-        Variables.tagList.push(js)
-
-        
-    }
-
-},er=>console.log(er))
 
 let StartDatetoTagLost = new Date().getTime()
 setInterval(async () => {
+    Variables.tagList = []
     Variables.tagLost = [];
+    Promesa.getTag(pathObtainTag).then(obj=>{
+        console.log(`ServerSocket line 32`);
+    
+        for (let index = 0; index < obj.length; index++) {
+            let js ={
+                _id:obj[index]._id,
+                mactag:obj[index].mactag
+    
+            }
+            Variables.tagList.push(js)
+    
+            
+        }
+    
+    },er=>console.log(er))
     let pathObtainLastTaginSystem = {date:{$gte:new Date(StartDatetoTagLost)}}
     await Promesa.GetGraficar(pathObtainLastTaginSystem).then( async obj=>{
 
@@ -93,7 +94,7 @@ setInterval(async () => {
     
     StartDatetoTagLost = new Date().getTime()
     console.log(new Date(StartDatetoTagLost));
-}, 60000000);
+}, 950000);
 
 
 

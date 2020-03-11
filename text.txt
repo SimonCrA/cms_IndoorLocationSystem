@@ -1,0 +1,73 @@
+        {
+            "activo": {
+                "startDate": "2020-01-31T21:16:08.136Z",
+                "_id": "5e231edd48ab7e19e06f63e4",
+                "nombre": "ford",
+                "VIN": 121212,
+                "anio": "2019",
+                "modelo": "machito",
+                "color": "verde",
+                "estado": true,
+                "idTag": {
+                    "_id": "5ddeda97de8f9041902e135b",
+                    "mactag": "df:a9:ce:b7:4c:f1",
+                    "nombre": "PtX9uL",
+                    "tipo": "servicio",
+                    "estado": true,
+                    "temperature": 36.25,
+                    "batteryLevel": 99.17,
+                    "__v": 0
+                },
+                "tipo": "carro",
+                "descripcion": "carro machito",
+                "__v": 0
+            },
+            "puntoXY": {
+                "_id": "5e5adae8bc9f231cf8494c10",
+                "date": "2020-02-29T21:43:04.762Z",
+                "x": 5.19,
+                "y": 2.71,
+                "region": {
+                    "bottomLeft": [
+                        0,
+                        0
+                    ],
+                    "bottomRigth": [
+                        12.19,
+                        0
+                    ],
+                    "topLeft": [
+                        0,
+                        36.58
+                    ],
+                    "topRight": [
+                        12.19,
+                        36.58
+                    ],
+                    "_id": "5e5939ca6d2ad41454abf4be",
+                    "idPiso": {
+                        "_id": "5e35aa858afca920e07ebe52",
+                        "idLocation": "5dca07ab0d35c92ef8a88562",
+                        "nombrePiso": "galponMagiCclean33",
+                        "numeroPiso": 1,
+                        "plano": "5e35aa858afca920e07ebe52-801.jpg",
+                        "alto": 4,
+                        "ancho": 12,
+                        "estatus": true,
+                        "scale": 128,
+                        "tipo": "piso",
+                        "heightPixel": 440,
+                        "widthPixel": 1063
+                    },
+                    "nombreRegion": "Galpon 48M'2",
+                    "numeroRegion": 1,
+                    "alto": 4,
+                    "ancho": 12,
+                    "estatus": true,
+                    "tipo": "region",
+                    "__v": 0
+                },
+                "idTag": "df:a9:ce:b7:4c:f1",
+                "__v": 0
+            }
+        },
