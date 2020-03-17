@@ -94,7 +94,7 @@ setInterval(async () => {
     
     StartDatetoTagLost = new Date().getTime()
     console.log(new Date(StartDatetoTagLost));
-}, 950000);
+}, 130000);
 
 
 
