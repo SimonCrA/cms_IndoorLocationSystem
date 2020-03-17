@@ -49,5 +49,7 @@ router.get('/counter', apiGet.contador);
 /* *****************************************/
 router.get('/buscar/:item/:termino', apiGet.searchAssets)
 
+router.get('/assetsregion/:idregion', apiGet.searchAssetsRegion)
+
 
 module.exports = router;
