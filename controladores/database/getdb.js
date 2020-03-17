@@ -27,6 +27,59 @@ const TagInfo = require ('../../models/tagInfo')
 
 const async = require('async');
 
+
+/* *****************************************
+*	Buscar activos en una reigon
+*	
+/* *****************************************/
+let searchAssetsRegion = (req, res, next) =>{
+    let idRegion = req.params.idregion
+    let fechaActual = (new Date().getTime()) - 60000
+    
+    
+    let buscarAactivosenRegion = (region)=>{
+        return new Promise((resolve, reject)=>{
+            var path = [{$match:{region:'ObjectId("5e6399d13e57c93668b037ed")'}}]
+            console.log(region);
+            Graficar.aggregate(path)
+        //     Graficar.aggregate([
+        //         {
+        //         $match: {region:"5e6399d13e57c93668b037ed"}
+        //     },
+        //     // {
+        //     //     "$group": {
+        //     //         _id:"$idTag",
+        //     //         count: {
+        //     //             $sum: 1
+        //     //         }
+        //     //     }
+        //     // }
+        // ])
+            .exec((err, puntoBuscado) => {
+                console.log(puntoBuscado);
+
+                if (err) {
+                    return reject({
+                        ok: false,
+                        err
+                    })
+                }
+
+                if (!puntoBuscado) {
+                    return reject({
+                        ok: false,
+                        err: {
+                            mensaje: "there isn't any asset with that name"
+                        }
+                    });
+                }
+                return resolve(puntoBuscado);    
+                });   
+            });
+        }
+        buscarAactivosenRegion(idRegion).then(obj=>{console.log(obj);})
+        res.status(200).jsonp({ok:true})
+}
 /* *****************************************
 *	Buscar Activos
 *	
@@ -462,9 +515,9 @@ let getDealerTime = async (req, res) =>{
 }
 
 let getRegionTime = async (req, res) =>{
-
-    let period = req.body.period;
-    let desde = req.body.desde;
+console.log(req.body);
+    let period = req.body.period || 1;
+    let desde = req.body.since || 2020-2-15;
 
         let result = await crearReporteTiempoSinMoverse(period, desde);
         console.log(result);
@@ -1041,6 +1094,7 @@ module.exports = {
     getTagsfalse,
     IniciarContador,
     timeActiveRecive,
-    getAtendidosbySeller
+    getAtendidosbySeller,
+    searchAssetsRegion
 }
 
