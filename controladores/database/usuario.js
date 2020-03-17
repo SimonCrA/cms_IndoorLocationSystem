@@ -123,7 +123,7 @@ let postUser = (req, res) =>{
         password: body.password,
         role: body.role,
         department: body.departament,
-        client: body.idlocation
+        client: body.client
         
     });
     usuario.save( (err, usuarioCreado) => {
@@ -154,7 +154,7 @@ let postLogIn = (req, res, next) => {
             next(err);
         }
         if (!usuario) {
-            return res.status(408).send('Email or password are invalid')
+            return res.status(401).jsonp({ok:false,msg:'Email or password are invalid'})
         }
         req.logIn(usuario, (err) => {
             if (err) {
@@ -174,8 +174,10 @@ let postLogIn = (req, res, next) => {
         if(findIt2>=0){
 
         }else{
+            // console.log(req.user);
                 let use={
                     sessionId: req.sessionID,
+                    user:req.user,
                     constantes:{nPropagacion:1,
                                 desviacionEstandar:1,
                                 rssiProm:1},
@@ -193,7 +195,7 @@ let postLogIn = (req, res, next) => {
                 
             }
             
-            console.log(Users);
+            // console.log(Users);
             // res.send('Login Exitoso')
             res.jsonp({ok:true, sessionId:req.sessionID})
         })

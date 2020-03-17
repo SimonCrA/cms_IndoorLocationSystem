@@ -10,7 +10,7 @@ const timerToreciveActive = require('../../models/timerToreciveActive');
 
 const promesas = require('./promesas')
 
-const {conversorM_P} = require('../variables')
+const {conversorM_P, Users} = require('../variables')
 
 
 
@@ -618,10 +618,24 @@ let crearReporteAtendidosVendedor = async (userid)=>{
 }
 let IniciarContador =async (req, res, next)=>{
     try{
-    
+        // console.log(req.headers.authorization);
+        let session = req.headers.authorization.split(" ");
+
         
-        let userid= req.user._id
-        let client = req.user.client
+        let userid= ''
+        let client = ''
+        let find = Users.findIndex(obj=> obj.sessionId === session[1])
+        if(find >= 0){
+            // console.log(Users[find].user._id);
+            userid= Users[find].user._id
+            client = Users[find].user.client
+
+        }
+        else{
+            console.log(`No encontrado...`);
+            return res.status(410).jsonp({ok:false, msg:`the user's session does not coincide with the server's valid sessions`})
+        }
+        // return res.status(200).jsonp({ok:true})
         let activo = req.params.idactivo ;
         let regionPartida
         let regionActual
@@ -661,7 +675,7 @@ let IniciarContador =async (req, res, next)=>{
                     await promesas.promise_pointXY(obj.active[0].idTag.mactag).then(obj2=>{
                         regionActual= obj2[0].region._id;
         
-        
+                        console.log(`${regionActual} ===   ${arrivalZone}`);
                         if(`${regionActual}` ===   `${arrivalZone}`){
                             console.log(`LLEGO A LA ZONA`);
                             dateEnd = new Date().getTime();
