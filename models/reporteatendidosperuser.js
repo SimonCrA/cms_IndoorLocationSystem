@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var reportAatendidosperuserSchema = new Schema({
     
-    userid:{type: Schema.Types.ObjectId, ref:'user'},
+    userid:{type: Schema.Types.ObjectId, ref:'User'},
     count: {type: Number},
     date: {type: Array},
 

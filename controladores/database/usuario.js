@@ -114,7 +114,7 @@ let postSignUp = (req, res, next) => {
 let postUser = (req, res) =>{
 
     let body = req.body;
-    // console.log(body);
+    console.log(body);
 
     let usuario =  new User({
         name: body.name,
@@ -122,7 +122,9 @@ let postUser = (req, res) =>{
         email: body.email,
         password: body.password,
         role: body.role,
-        department: body.department
+        department: body.departament,
+        client: body.client
+        
     });
     usuario.save( (err, usuarioCreado) => {
 
@@ -132,7 +134,7 @@ let postUser = (req, res) =>{
                 err
             });
         };
-
+        console.log(`UserCreate:`+usuarioCreado);
         res.json({
             ok: true,
             usuarioCreado
@@ -152,7 +154,7 @@ let postLogIn = (req, res, next) => {
             next(err);
         }
         if (!usuario) {
-            return res.status(408).send('Email or password are invalid')
+            return res.status(401).jsonp({ok:false,msg:'Email or password are invalid'})
         }
         req.logIn(usuario, (err) => {
             if (err) {
@@ -172,10 +174,17 @@ let postLogIn = (req, res, next) => {
         if(findIt2>=0){
 
         }else{
+            // console.log(req.user);
                 let use={
                     sessionId: req.sessionID,
+<<<<<<< HEAD
                     constantes:{propagationN:1,
                                 standardDeviation:1,
+=======
+                    user:req.user,
+                    constantes:{nPropagacion:1,
+                                desviacionEstandar:1,
+>>>>>>> 5a1bb67d9048302f4fcdb98b2600e07e8b83ac64
                                 rssiProm:1},
                     graphRaw:[{name:'',
                                 data:[{x:1,y:1}]
@@ -191,7 +200,7 @@ let postLogIn = (req, res, next) => {
                 
             }
             
-            console.log(Users);
+            // console.log(Users);
             // res.send('Login Exitoso')
             res.jsonp({ok:true, sessionId:req.sessionID})
         })
@@ -232,6 +241,7 @@ console.log(`Update user`);
             })
         };
         if (!usuarioModificado) {
+            console.log(`there isn't an user with this id`);
             return res.status(400).json({
                 ok: false,
                 err: {

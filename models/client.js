@@ -18,7 +18,8 @@ let clientSchema = new Schema({
     },
     img: {
         type: String,
-        required: false
+        required: false,
+        default:''
     },
     state: {
         type: Boolean,

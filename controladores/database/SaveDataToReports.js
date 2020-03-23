@@ -5,13 +5,12 @@ const TagInfo = require ('../../models/tagInfo')
 const Graficar = require ('../../models/graficar')
 
 const Reportetiempoventa = require('../../models/reportetiempoventa');
-
-
+const Reportatendidos = require('../../models/reporteatendidosperuser')
 const timerToreciveActive = require('../../models/timerToreciveActive');
 
 const promesas = require('./promesas')
 
-const {conversorM_P} = require('../variables')
+const {conversorM_P, Users} = require('../variables')
 
 
 
@@ -20,11 +19,11 @@ const async = require('async');
 
 let crearReporte = async (dataBusqueda) =>{
     try {
-        console.log("ESTO ESTA FUNCIONANDO??");
+        // console.log("ESTO ESTA FUNCIONANDO??");
         let actualizaReporte = (dataToRefresh) => {
             
             return new Promise((resolve, reject) => {
-                console.log("es hora de actualizar");
+                // console.log("es hora de actualizar");
                 let date = dataToRefresh[0].date
                 date.push(dataBusqueda.date)
                 let id = dataToRefresh[0]._id
@@ -32,13 +31,13 @@ let crearReporte = async (dataBusqueda) =>{
                     count: dataToRefresh[0].count + 1,
                     date: date
                 }
-                console.log(body);
+                // console.log(body);
 
                 Reportetopten.findByIdAndUpdate(id, body, {
                     new: true,
                     runValidators: true
                 }, (err, reporteActualizado) => {
-                    console.log(reporteActualizado);
+                    // console.log(reporteActualizado);
                 err
                     ?
                     reject(err):
@@ -56,7 +55,7 @@ let crearReporte = async (dataBusqueda) =>{
             tipo = dataToFind.tipo;
             return new Promise((resolve, reject) => {
 
-                console.log("BUSCAR EL REPORTE");
+                // console.log("BUSCAR EL REPORTE");
                 
                 Reportetopten.find({
                     nombre: nombre,
@@ -71,7 +70,7 @@ let crearReporte = async (dataBusqueda) =>{
                             reporteBuscado
                         })
                     } else {
-                        console.log("ESTO ES FALSE");
+                        // console.log("ESTO ES FALSE");
 
                         return resolve({
                             ok: false
@@ -90,8 +89,8 @@ let crearReporte = async (dataBusqueda) =>{
 
         
         if (buscaReporte.ok === false) {
-            console.log('entre en false');
-            console.log(`reporte ${buscaReporte}`);
+            // console.log('entre en false');
+            // console.log(`reporte ${buscaReporte}`);
             
             let dataToSave = new Reportetopten ({
                 nombre: dataBusqueda.nombre,
@@ -105,7 +104,7 @@ let crearReporte = async (dataBusqueda) =>{
                     return err
                 };
                 if (dataGuardada) {
-                console.log(`guardó ${dataGuardada}`);
+                // console.log(`guardó ${dataGuardada}`);
 
                     return true
                 }
@@ -568,7 +567,7 @@ let crearReporteAtendidosVendedor = async (userid)=>{
     try {
         console.log("ESTO ESTA FUNCIONANDO??");
         
-        let path = JSON.parse(`{userid:${userid}}`)
+        let  path = {userid:userid}
         let buscaReporte = await promesas.buscarReporteAatendidos(path);
 
 
@@ -619,10 +618,24 @@ let crearReporteAtendidosVendedor = async (userid)=>{
 }
 let IniciarContador =async (req, res, next)=>{
     try{
-    
+        // console.log(req.headers.authorization);
+        let session = req.headers.authorization.split(" ");
+
         
-        let userid= req.user._id
-        let client = req.user.client
+        let userid= ''
+        let client = ''
+        let find = Users.findIndex(obj=> obj.sessionId === session[1])
+        if(find >= 0){
+            // console.log(Users[find].user._id);
+            userid= Users[find].user._id
+            client = Users[find].user.client
+
+        }
+        else{
+            console.log(`No encontrado...`);
+            return res.status(410).jsonp({ok:false, msg:`the user's session does not coincide with the server's valid sessions`})
+        }
+        // return res.status(200).jsonp({ok:true})
         let activo = req.params.idactivo ;
         let regionPartida
         let regionActual
@@ -662,7 +675,7 @@ let IniciarContador =async (req, res, next)=>{
                     await promesas.promise_pointXY(obj.active[0].idTag.mactag).then(obj2=>{
                         regionActual= obj2[0].region._id;
         
-        
+                        console.log(`${regionActual} ===   ${arrivalZone}`);
                         if(`${regionActual}` ===   `${arrivalZone}`){
                             console.log(`LLEGO A LA ZONA`);
                             dateEnd = new Date().getTime();

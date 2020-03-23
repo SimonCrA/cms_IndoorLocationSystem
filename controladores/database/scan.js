@@ -20,7 +20,7 @@ let dato = function(req,res,next){
 
 let processDataFromRpi = async (data) => {
 	let respuesta;
-	// console.log(data);
+	console.log(data);
 	if(Array.isArray(data) && data.length){
 		
 			let rawDataRaspi = new Array();
@@ -226,11 +226,11 @@ let processGossipFromRpi = async (data) => {
 				id = arrMactagTLM[i].tagDB._id;
 				let find = data.findIndex(obj =>obj.mactag === arrMactagTLM[i].tagDB.mactag)
 				if(find >=0){
-					if(data[find].batteryLevel < 3049){
+					if(data[find].batteryLevel <1049){
 
 						let js={
 							macTag:arrMactagTLM[i].tagDB.mactag,
-							batteryLevel: data[find].batteryLevel
+							batteryLevel:   (((data[find].batteryLevel/1000) /3) *100)   .toFixed(2)
 						}
 						tagLowBattery.push(js)
 
@@ -250,11 +250,14 @@ let processGossipFromRpi = async (data) => {
 
 			if(Array.isArray(tagLowBattery) && tagLowBattery.length){
 				return {ok:true,
+						msg:'The following targets have batteries below 30%',
 						tagLowBattery
 						}
 
 			}else{
-				return {ok:false}
+				return {ok:false,
+					msg:'Low battery tag empty',
+					tagLowBattery}
 
 			}
 

@@ -325,3 +325,31 @@ let date = new Date().getTime()
 
 
 console.log(new Date(date));
+
+
+
+// let dataTLM = [{mactag:'ab:ab'}]
+
+// let resultado2 = dataTLM.findIndex(dato => dato.mactag === 'ab:ab1');
+
+// if(resultado2 >=0){
+//     console.log(`//`);
+//     console.log(resultado2);
+// }else{
+//     console.log(resultado2);
+
+// }
+
+
+
+// // var Xi= ((x-Xmin) / (Xmax-Xmin)) * Ancho;
+// var Xi= (827) / (267.38846) * 49.21;
+
+// // var Yi= Alto - (y-Ymin) / (Ymax-Ymin) * Alto;
+// var Yi= 418- (32.81) / (132.87402) * 418;
+
+
+// console.log(Xi, Yi);
+
+
+

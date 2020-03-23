@@ -8,7 +8,7 @@ const app = express();
 
 let getAllClients = (eq,res) =>{
 
-    Client.find({})
+    Client.find({state:true})
         .exec((err, clientDB) => {
 
             if (err) {

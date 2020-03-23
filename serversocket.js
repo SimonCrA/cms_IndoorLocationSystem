@@ -30,25 +30,26 @@ try {
 /* *****************************************/
 
 let pathObtainTag = {estado:true}
-Promesa.getTag(pathObtainTag).then(obj=>{
-    console.log(`ServerSocket line 32`);
-
-    for (let index = 0; index < obj.length; index++) {
-        let js ={
-            _id:obj[index]._id,
-            mactag:obj[index].mactag
-
-        }
-        Variables.tagList.push(js)
-
-        
-    }
-
-},er=>console.log(er))
 
 let StartDatetoTagLost = new Date().getTime()
 setInterval(async () => {
+    Variables.tagList = []
     Variables.tagLost = [];
+    Promesa.getTag(pathObtainTag).then(obj=>{
+        console.log(`ServerSocket line 32`);
+    
+        for (let index = 0; index < obj.length; index++) {
+            let js ={
+                _id:obj[index]._id,
+                mactag:obj[index].mactag
+    
+            }
+            Variables.tagList.push(js)
+    
+            
+        }
+    
+    },er=>console.log(er))
     let pathObtainLastTaginSystem = {date:{$gte:new Date(StartDatetoTagLost)}}
     await Promesa.GetGraficar(pathObtainLastTaginSystem).then( async obj=>{
 
@@ -94,7 +95,7 @@ setInterval(async () => {
     
     StartDatetoTagLost = new Date().getTime()
     console.log(new Date(StartDatetoTagLost));
-}, 6000000);
+}, 130000);
 
 /* *****************************************
 *	Gateway Lost Alarm
@@ -336,8 +337,9 @@ console.log(`INCIIO ESTO de gossip`);
     
     let alarmLowBatery = (tagLowBattery)=>{
 
-        io.emit('alarmlowbatery', tagLowBattery)
+        io.emit('alarm-low-batery', tagLowBattery)
     }
+
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -411,9 +413,9 @@ console.log(`INCIIO ESTO de gossip`);
             if(res.ok===true){
                 
                 console.log(`ALARMA`);
-                console.log(res.tagLowBattery);
+                console.log(res);
 
-                alarmLowBatery(res.tagLowBattery)
+                alarmLowBatery(res)
             }
     
         })

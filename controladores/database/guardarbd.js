@@ -243,16 +243,16 @@ let ubicacion = (req, res, next)=>{
 
 
 let regiones = (req, res, next) =>{
+    console.log(req.body);
     
-    let x = req.body.xbuttonleft
-    let y = req.body.ybuttonleft
+    let x = parseFloat(req.body.xbottomleft)
+    let y = parseFloat(req.body.ybottomleft)
 
-    let alto = req.body.height
-    let ancho = req.body.width
-
+    let alto = parseFloat(req.body.alto)
+    let ancho = parseFloat(req.body.ancho)
 
     let bl=[ x , y ]
-   let  br=[ancho + x, y ]
+    let  br=[ancho + x, y ]
     let tl=[x, alto+y]
     let tr=[ancho+x, alto+y]
 
@@ -262,9 +262,10 @@ console.log(conversorP_M(bl));
 
         floorId:req.body.floorId,
 
-        regionName: req.body.regionName,
-        regionNumber: parseInt(req.body.regionNumber),
-
+        nombreRegion:req.body.nombreRegion   ,
+        numeroRegion:parseInt(req.body.numeroRegion)   ,
+        alto:conversorP_M(parseInt(alto)),
+        ancho:conversorP_M(parseInt(ancho)),
         bottomLeft:conversorP_M(bl) ,
         bottomRigth:conversorP_M(br) ,
         topLeft:conversorP_M(tl) ,
@@ -310,9 +311,9 @@ let pisos = (req, res, next) =>{
         floorName: req.body.floorName,
         floorNumber: parseInt(req.body.floorNumber),
         scale: parseInt(req.body.scale),
-        plane:'',
-        height: parseInt(req.body.height),
-        width: parseInt(req.body.width),
+        plano:'',
+        alto: conversorP_M(parseInt(req.body.alto)) ,
+        ancho: conversorP_M(parseInt(req.body.ancho)) ,
         heightPixel:0,
         widthPixel:0,
         status: true,
@@ -444,12 +445,8 @@ let newConstant = async (req, res, next)=>{
         let promise_tag = ()=>{
             return new Promise ((resolve, reject)=>{
 
-                TagInfo.aggregate([{
-                    $match: {
-                        estado: true        
-                    }
-                },
-                {
+                TagInfo.aggregate([
+                   {
                     "$group": {
                         _id:"$mactag",
                         count: {
@@ -467,6 +464,7 @@ let newConstant = async (req, res, next)=>{
             });
         }
         
+
         let promise_rpi = ()=>{
             return new Promise ((resolve, reject)=>{
 

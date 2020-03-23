@@ -123,20 +123,23 @@ try {
             
         return new Promise((resolve, reject) => {
             console.log("es hora de actualizar");
-            let date = dataToRefresh[0].date
-            date.push(dataBusqueda.date)
+            // console.log(dataToRefresh);
+            // let date = []
+            // date.push(new Date().getTime())
+            // date.push(dataToRefresh[0].date)
+            dataToRefresh[0].date.push(new Date().getTime())
             let id = dataToRefresh[0]._id
             let body = {
                 count: dataToRefresh[0].count + 1,
-                date: date
+                date: dataToRefresh[0].date
             }
-            console.log(body);
+            // console.log(body);
 
             Reportatendidos.findByIdAndUpdate(id, body, {
                 new: true,
                 runValidators: true
             }, (err, reporteActualizado) => {
-                console.log(reporteActualizado);
+                // console.log(reporteActualizado);
             err
                 ?
                 reject(err):

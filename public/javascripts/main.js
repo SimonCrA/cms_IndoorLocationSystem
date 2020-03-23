@@ -4,14 +4,14 @@
 /* *****************************************/
 
 var sessionId = sessionStorage.getItem('sessionId')
-$.getJSON('https://api.ipify.org?format=json', function(data){
-  var mcy=''
-  console.log(`esto es?`);
-  console.log(data.ip);
-  mcy=data.ip || '192.168.168.168'
-  let json={sessionId,mac:mcy, token:'3242352fewf234e23fdef234fdswefjwneirj234kj2n3kj4n23k4nk23nm4k2h3b4k2nm34kh23kj4n23k4h2k3j4k23n4i2u3i4n23d'}
-  socket.emit('libreta', json);
-});
+// $.getJSON('https://api.ipify.org?format=json', function(data){
+//   var mcy=''
+//   console.log(`esto es?`);
+//   console.log(data.ip);
+//   mcy=data.ip || '192.168.168.168'
+//   let json={sessionId,mac:mcy, token:'3242352fewf234e23fdef234fdswefjwneirj234kj2n3kj4n23k4nk23nm4k2h3b4k2nm34kh23kj4n23k4h2k3j4k23n4i2u3i4n23d'}
+//   socket.emit('libreta', json);
+// });
 
 /* *****************************************
 *	Api:
@@ -338,6 +338,26 @@ socket.on('alarmlowbatery', tagLowBattery=>{
 
 })
 
+
+
+socket.on('alarm-low-batery',alarmLowBattery=>{
+
+  $("#msgTagLost").empty();
+  $("#ultest").empty();
+  $("#msgTagLost").append(alarmLowBattery.msg);
+
+  if(Array.isArray(alarmLowBattery.tagLowBattery) && alarmLowBattery.tagLowBattery.length ){
+    for (let index = 0; index < alarmLowBattery.tagLowBattery.length; index++) {
+      $("#ultest").append(`<li
+                           class="list-group-item">
+                          Tag: ${alarmLowBattery.tagLowBattery[index].macTag} -
+                          batteryLevel: ${alarmLowBattery.tagLowBattery[index].batteryLevel}%
+                          
+                          </li>`); 
+    }
+  }
+  $("#AlarmTagLost").modal("show");
+})
 
 
 socket.on('missing-Tag-Aalarm',alarmtaglost=>{
