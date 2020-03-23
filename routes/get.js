@@ -11,10 +11,10 @@ const { verificartoken, verificarAdmin_Role, verificarSuper_Role ,verificarSuper
 
 const {IniciarContador } = require('../controladores/database/SaveDataToReports')
 
-router.get('/region', apiGet.region);
-router.get('/pisos', apiGet.pisos);
-router.get('/ubicacion', apiGet.ubicacion);
-router.get('/activo', apiGet.activoGet);
+router.get('/regions', apiGet.region);
+router.get('/floors', apiGet.pisos);
+router.get('/location', apiGet.ubicacion);
+router.get('/asset', apiGet.activoGet);
 router.get('/tag_data', apiGet.getTags);
 router.get('/tag_data/false', apiGet.getTagsfalse);
 router.get('/topten/:tipo/:order', apiGet.getTopTen);
@@ -29,16 +29,12 @@ router.get('/nomotionasset', apiGet.getRegionTime);
 router.get('/IniciarContador/:idactivo', IniciarContador);
 
 router.get('/counter', apiGet.contador); 
-router.get('/batterylevelalarm', apiGet.getlowBatteryTags);
-
-
-
 
 /* *****************************************
 *	Buscar activos
 *	
 /* *****************************************/
-router.get('/buscar/:item/:termino', apiGet.searchAssets)
+router.get('/search/:item/:term', apiGet.searchAssets)
 
 
 module.exports = router;

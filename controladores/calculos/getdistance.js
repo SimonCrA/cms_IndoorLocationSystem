@@ -19,16 +19,16 @@ let distancia =  async (req) => {
 try {
     // console.log(`Mcrpi= ${req.macrpi} && macTag= ${req.mactag}`);
     let type;
-    if(req.tipo==='tracking'){
+    if(req.type==='tracking'){
         type='established'
     }
-    else if(req.tipo==='validar'){
+    else if(req.type==='validar'){
         type='generado'
     }
 
     let getConstantes = () =>{
         return new Promise((resolve, reject)=>{
-            ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag, tipo:type}).sort({_id:-1})
+            ConstDistancia.find({macRpi:req.macrpi, macTag:req.mactag, type:type}).sort({_id:-1})
             .exec(function (err, data){
                 // console.log(`linea26: ${JSON.stringify(data)}`);
                 if(err){
@@ -56,7 +56,7 @@ try {
 
     let result = await getConstantes().then(dato=>{
         // console.log(dato);
-        let pot = (-req.rssi + dato.rssiProm + dato.desviacionEstandar) / (10 * dato.nPropagacion);
+        let pot = (-req.rssi + dato.rssiProm + dato.standardDeviation) / (10 * dato.propagationN);
                 let distancia = Math.pow(10, pot);
                 // console.log(distancia);
                 // console.log(`********************\n`);
@@ -67,7 +67,7 @@ try {
                     Distancia:distancia,
                     macRpi:req.macrpi,
                     macTag:req.mactag,
-                    tipo:req.tipo,
+                    tipo:req.type,
                     tipov:'generado',
                     region: dato.idRegion,
                     error

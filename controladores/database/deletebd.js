@@ -12,10 +12,10 @@ let regiones = (req, res, next)=>{
     // Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
 
     let cambiaEstado = {
-        estatus: false
+        status: false
     };
  
-    Region.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, usuarioBorrado) => {
+    Region.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, regionBorrado) => {
 
         if (err) {
             return res.status(400).json({
@@ -24,18 +24,18 @@ let regiones = (req, res, next)=>{
             });
         };
 
-        if (!usuarioBorrado) {
+        if (!regionBorrado) {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'Usuario no encontrado'
+                    message: "can't find this region"
                 }
             });
         }
 
         res.json({
             ok: true,
-            usuario: usuarioBorrado
+            region: regionBorrado
         });
 
     });
@@ -51,10 +51,10 @@ let pisos = (req, res, next) => {
     // Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
 
     let cambiaEstado = {
-        estatus: false
+        status: false
     };
 
-    Region.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, usuarioBorrado) => {
+    Region.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, floorBorrado) => {
 
         if (err) {
             return res.status(400).json({
@@ -63,18 +63,18 @@ let pisos = (req, res, next) => {
             });
         };
 
-        if (!usuarioBorrado) {
+        if (floorBorrado) {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'Usuario no encontrado'
+                    message: "Can't find this floor"
                 }
             });
         }
 
         res.json({
             ok: true,
-            usuario: usuarioBorrado
+            floor: floorBorrado
         });
 
     });
@@ -90,7 +90,7 @@ let deleteActivo = (req, res) => {
 
     let id = req.params.id;
     let cambiaEstado = {
-        estado: false
+        status: false
     }
 
     Activo.findByIdAndUpdate(id, cambiaEstado, {new: true,runValidators: true, useFindAndModify: false}, (err, activoInhabilitado) => {
@@ -104,7 +104,7 @@ let deleteActivo = (req, res) => {
 
         res.status(200).json({
             ok: true,
-            activoInhabilitado
+            asset: activoInhabilitado
         });
 
     });
@@ -120,7 +120,7 @@ let deleteTags = (req, res) => {
 
     let id = req.params.id;
     let cambiaEstado = {
-        estado: false
+        status: false
     }
 
     TagInfo.findByIdAndUpdate(id, cambiaEstado, {new: true, runValidators: true, useFindAndModify: false}, (err, tagInhabilitado) => {
@@ -134,7 +134,7 @@ let deleteTags = (req, res) => {
         console.log(tagInhabilitado);
         res.status(200).json({
             ok: true,
-            tagInhabilitado
+            tag: tagInhabilitado
         });
 
     });
@@ -148,10 +148,10 @@ let ubicacion = (req, res, next) => {
     // Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
 
     let cambiaEstado = {
-        estatus: false
+        status: false
     };
 
-    InfoUbicacionRpi.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, usuarioBorrado) => {
+    InfoUbicacionRpi.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, ubicacionBorrado) => {
 
         if (err) {
             return res.status(400).json({
@@ -160,18 +160,18 @@ let ubicacion = (req, res, next) => {
             });
         };
 
-        if (!usuarioBorrado) {
+        if (!ubicacionBorrado) {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'User not found'
+                    message: 'location not found'
                 }
             });
         }
 
         res.json({
             ok: true,
-            usuario: usuarioBorrado
+            location: ubicacionBorrado
         });
 
     });

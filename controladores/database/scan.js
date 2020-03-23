@@ -5,12 +5,10 @@ const Fileconfig = require('../calculos/configfile/configfile');
 const filtroKalman = require('../calculos/kalmanfilter');
 const {validacion_Trilateracion} = require('../calculos/validacion');
 const async = require('async');
-var {paramsValidacionCaract, variablel1} = require('../variables');
+var {paramsValidacionCaract, listRpisConnected} = require('../variables');
 const TagInfo = require ('../../models/tagInfo')
-
+const Alarmsettings = require('../../models/alarmSettings');
 const d = require('../calculos/timer');
-
-
 
 // let datbul = false
 let avisar = false;
@@ -20,12 +18,10 @@ let dato = function(req,res,next){
 	
 }
 
-
 let processDataFromRpi = async (data) => {
 	let respuesta;
 	// console.log(data);
 	if(Array.isArray(data) && data.length){
-		
 		
 			let rawDataRaspi = new Array();
 			const categoriaFiltrada = [];
@@ -82,8 +78,19 @@ let processDataFromRpi = async (data) => {
 
 }
 
+let saveRpisConnected = async (RpisConnected) => {
 
+	if (Array.isArray(RpisConnected) && RpisConnected.length) {
 
+		listRpisConnected = [];
+
+		for (let i = 0; i < RpisConnected.length; i++) {
+			listRpisConnected.push({macRpi: RpisConnected[i].mac})
+		}
+
+	}
+
+}
 
 let processGossipFromRpi = async (data) => {
 	//Esta función se ejecutará cada vez que el raspi envíe nueva data
@@ -185,14 +192,41 @@ let processGossipFromRpi = async (data) => {
 			// console.log(JSON.stringify(arrMactagTLM, null, 2));
 			// console.log(arrMactagTLM.	);
 			let tagLowBattery = []
-	
+
+			let searchAlarmSettings = () => {
+				try {
+
+					return new Promise((resolve, reject) => {
+
+						Alarmsettings.find({})
+							.exec((err, settingsDB) => {
+								err
+									?
+									reject(err) :
+
+									resolve(settingsDB)
+							})
+
+						})
+
+					} catch (error) {
+						console.log(error);
+					}
+			}
+
+			let alarmSettings = await searchAlarmSettings();
+			let arrAlarms = [];
+			for (let j = 0; j < alarmSettings.length; j++) {
+				arrAlarms.push(alarmSettings[j].idClient);
+			}
+
 			for (let i = 0; i < arrMactagTLM.length; i++) {
 				// console.log(`for del update!!!`);
 				// console.log(JSON.stringify(arrMactagTLM[i], null, 2));
 				id = arrMactagTLM[i].tagDB._id;
 				let find = data.findIndex(obj =>obj.mactag === arrMactagTLM[i].tagDB.mactag)
 				if(find >=0){
-					if(data[find].batteryLevel <3049){
+					if(data[find].batteryLevel < 3049){
 
 						let js={
 							macTag:arrMactagTLM[i].tagDB.mactag,
@@ -212,6 +246,7 @@ let processGossipFromRpi = async (data) => {
 				
 	
 			}
+	
 
 			if(Array.isArray(tagLowBattery) && tagLowBattery.length){
 				return {ok:true,
@@ -268,6 +303,7 @@ let cambiar = (req, res, next) =>{
 	return res.status(200)
 
 }
+
 let cambiar2 = (req, res, next) =>{
 	
 
@@ -284,6 +320,7 @@ module.exports = {
 	processDataFromRpi,
 	rpi,
 	dato, avisar,
-	processGossipFromRpi
+	processGossipFromRpi,
+	saveRpisConnected
 
 }

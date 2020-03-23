@@ -4,24 +4,23 @@ var router = express.Router();
 // Require controller modules.
 let apiModificar = require('../controladores/database/modifbd');
 
-router.put ('/regiones/:id', apiModificar.regiones);
+router.put ('/regions/:id', apiModificar.regiones);
 
+router.put('/regions/arrivalzone/:id', apiModificar.regionArrival);
 
-router.put('/regiones/arrivalzone/:id', apiModificar.regionArrival);
+router.put ('/floors/:id', apiModificar.pisos);
 
-router.put ('/pisos/:id', apiModificar.pisos);
-
-router.put ('/ubicacion/:id', apiModificar.ubicacion);
+router.put ('/location/:id', apiModificar.ubicacion);
 
 router.put ('/ubicacionrpiselect', apiModificar.ubicacionSelect);
 
-router.put ('/activo/:id', apiModificar.putActivo);
+router.put ('/asset/:id', apiModificar.putActivo);
 
 router.put ('/tag_data/:id', apiModificar.putTags);
 
-router.put ('/ventas/:idActivo/:idTag', apiModificar.venderAuto);
+router.put ('/sales/:idAsset/:idTag', apiModificar.venderAuto);
 
-router.put('/servicio/:idActivo/:idTag', apiModificar.despacharServicio);
+router.put('/service/:idAsset/:idTag', apiModificar.despacharServicio);
 
 
 

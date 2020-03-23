@@ -29,7 +29,7 @@ let validarFiltro1 = (req)=>{
         macRpi:req.macRpi,
         macTag:req.macTag,
         name:`${req.macRpi}-${req.macTag}`,
-        tipo:req.tipo,
+        tipo:req.type,
         tipov:req.tipov,
         filtrado:0,
         contador:0,
@@ -50,7 +50,7 @@ let validarFiltro1 = (req)=>{
     if(findIt>=0){
         // console.log(`%%%%%%%%%%%%%%%%%%%%%%%%%%`);
         globalFilter[findIt].distancia= req.Distancia
-        globalFilter[findIt].tipo= req.tipo
+        globalFilter[findIt].tipo= req.type
         filtradoDistance(findIt);
     
     }else{
@@ -201,7 +201,7 @@ let filtradoDistance = async ( index ) =>{
 
                     macRpi:  globalFilter[index].macRpi,
                     macTag:  globalFilter[index].macTag,
-                    distanciaTag:  globalFilter[index].Xt_s,
+                    tagDistance:  globalFilter[index].Xt_s,
                     status: true
 
                 });

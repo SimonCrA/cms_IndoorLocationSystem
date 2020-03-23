@@ -361,3 +361,24 @@ socket.on('missing-Tag-Aalarm',alarmtaglost=>{
   }
   $("#AlarmTagLost").modal("show");
 })
+
+socket.on('gateway-Aalarm', alarmGatewayDisconnected => {
+
+  $("#msgGatewayLost").empty();
+  $("#ultest").empty();
+  $("#msgGatewayLost").append(alarmGatewayDisconnected.msg);
+
+  if(Array.isArray(alarmGatewayDisconnected.gateways) && alarmGatewayDisconnected.gateways.length ){
+
+    for (let index = 0; index < alarmGatewayDisconnected.gateways.length; index++) {
+
+      $("#ultest").append(`<li
+                           class="list-group-item">
+                          Gateway:${alarmGatewayDisconnected.gateways[index].macRpi}-
+                          Floor:${alarmGatewayDisconnected.gateways[index].floor}|
+                          Region:${alarmGatewayDisconnected.gateways[index].region}
+                          </li>`); 
+    }
+  }
+  $("#AlarmGatewayLost").modal("show");
+})

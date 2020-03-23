@@ -295,6 +295,27 @@ let GetGraficar = (path)=>{
     })
 
 }
+
+let getRpis = (path) => {
+    return new Promise((resolve, reject) => {
+        InfoUbicacion.find(path)
+            .populate('idZona')
+            .sort({_id:-1})
+            .exec((err, response) => {
+                if (err) {
+                    return reject(err)
+                } else if (Array.isArray(response) && response.length) {
+                    return resolve(response)
+                } else {
+                    return reject({
+                        msg: 'no results were found with your search'
+                    })
+                }
+            });
+
+    })
+}
+
 module.exports={
     GetGraficar,
     getTag,
@@ -305,7 +326,7 @@ module.exports={
     promise_pointXY,
     buscarReporteAatendidos,
     actualizaReporteAtendidos,
-    PromiseRegion
+    PromiseRegion, getRpis
 }
 } catch (error) {
     console.log(error);

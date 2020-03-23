@@ -1,12 +1,133 @@
-
 const  ConstsDistancia = require("../../models/constantesdistancia");
 const  InfoUbicacionRpi = require("../../models/ubicacion");
 const Region = require ('../../models/zona')
 const RawMuestras = require ('../../models/rawdatamuestras')
 const TagInfo = require ('../../models/tagInfo')
 const Activo = require ('../../models/activo')
-
+const Alarmsettings = require('../../models/alarmSettings');
 const {conversorP_M} = require('../variables')
+
+/* *****************************************
+*	Alarmas
+*	
+/* *****************************************/
+
+let saveAlarmSettings = async (req, res, next) => {
+
+    try {
+        let batterymV = req.body.lowBatteryLevel*13;
+        let batteryLevel = batterymV || 0;
+        let tagLastSeen = req.body.tagLastSeen || 0;
+        let gatewayLastSeen = req.body.gatewayLastSeen || 0;
+        let idClient = req.body.idClient;
+
+        console.log("ESTO ESTA FUNCIONANDO??");
+        let refreshAlarmSettings = (dataToRefresh) => {
+
+            return new Promise((resolve, reject) => {
+                console.log("es hora de actualizar");
+
+                let id = dataToRefresh[0]._id
+                let body = {
+                    lowBatteryLevel: batteryLevel,
+                    tagLastSeen: tagLastSeen,
+                    gatewayLastSeen: gatewayLastSeen,
+                    idClient: idClient
+                }
+                console.log(body);
+
+                Alarmsettings.findByIdAndUpdate(id, body, {
+                    new: true,
+                    runValidators: true
+                }, (err, alarmSettingsUpdated) => {
+                    console.log(alarmSettingsUpdated);
+                    err
+                        ?
+                        reject(err) :
+
+                        resolve(alarmSettingsUpdated)
+                })
+
+
+            })
+
+        }
+
+        let searchClient = (idClient) => {
+
+            return new Promise((resolve, reject) => {
+
+                console.log("BUSCAR client");
+
+                Alarmsettings.find({
+                    idClient: idClient
+                }).exec((err, clientDB) => {
+                    if (err) {
+                        return reject(err)
+                    }
+                    if (Array.isArray(clientDB) && clientDB.length) {
+                        return resolve({
+                            ok: true,
+                            clientDB
+                        })
+                    } else {
+                        console.log("ESTO ES FALSE");
+
+                        return resolve({
+                            ok: false
+                        })
+                    }
+
+                })
+            })
+
+
+        }
+
+        let clientSearched = await searchClient(idClient);
+
+        if (clientSearched.ok === false) {
+
+            let alarmSettings = new Alarmsettings({
+                lowBatteryLevel: batteryLevel,
+                tagLastSeen: tagLastSeen,
+                gatewayLastSeen: gatewayLastSeen,
+                idClient: idClient
+            });
+
+            alarmSettings.save((err, DB) => {
+                if (err) {
+                    console.log(err);
+                    return err;
+                };
+                if (DB) {
+                    console.log(`guardó ${DB}`);
+                    res.status(200).jsonp({
+                        ok: true,
+                        settingsUpdated: DB
+                    })
+                    
+                }
+            });
+
+        } else if (clientSearched.ok === true) {
+            let settingsUpdated = await refreshAlarmSettings(clientSearched.clientDB)
+
+            res.status(200).jsonp({
+                ok: true,
+                settingsUpdated
+            })
+        }
+
+
+       
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
 
 
 let dataTag =  (req, res, next) =>{  
@@ -15,9 +136,9 @@ let dataTag =  (req, res, next) =>{
     let tagInfo = new TagInfo({
         
         mactag: req.body.mactag,
-        nombre: req.body.nombre,
-        tipo: req.body.tipo,
-        estado:false,
+        name: req.body.name,
+        type: req.body.type,
+        status: false,
         temperature: 0,
         batteryLevel: 0
 
@@ -51,8 +172,8 @@ let constantes =  (req, res, next) =>{
         macRpi: req.body.macrpi,
         macTag: req.body.mactag,
         rssiProm: req.body.rssiprom,
-        nPropagacion: req.body.n,
-        desviacionEstandar: req.body.desvia,
+        propagationN: req.body.n,
+        standardDeviation: req.body.desvia,
         idRegion:req.body.idregion,
         test: req.body.tests
     });
@@ -83,17 +204,17 @@ let constantes =  (req, res, next) =>{
 let ubicacion = (req, res, next)=>{
     console.log(req.body);
   
-    let ubicaciones = req.body.ubicacion.toUpperCase()
+    let location = req.body.location.toUpperCase()
 
     let ubicacion = new InfoUbicacionRpi({
 
         macRpi: req.body.macRpi,
         axis: req.body.axis,
-        ubicacion: ubicaciones,
+        location: location,
         xpos: conversorP_M(req.body.xpos),
         ypos: conversorP_M(req.body.ypos),
         idZona: req.body.idZona,
-        compartido: req.body.compartido
+        shared: req.body.shared
 
     });
 
@@ -123,8 +244,8 @@ let ubicacion = (req, res, next)=>{
 
 let regiones = (req, res, next) =>{
     
-    let x = req.body.xbottonleft
-    let y = req.body.ybottonleft
+    let x = req.body.xbuttonleft
+    let y = req.body.ybuttonleft
 
     let alto = req.body.height
     let ancho = req.body.width
@@ -139,18 +260,18 @@ console.log(conversorP_M(bl));
 
     let region = new Region({
 
-        idPiso:req.body.idPiso  ,
+        floorId:req.body.floorId,
 
-        nombreRegion:req.body.nombreRegion   ,
-        numeroRegion:parseInt(req.body.numeroRegion)   ,
+        regionName: req.body.regionName,
+        regionNumber: parseInt(req.body.regionNumber),
 
         bottomLeft:conversorP_M(bl) ,
         bottomRigth:conversorP_M(br) ,
         topLeft:conversorP_M(tl) ,
         topRight:conversorP_M(tr) ,
         
-        estatus: true,
-        tipo:'region'  
+        status: true,
+        type: 'region'
 
     });
 
@@ -184,18 +305,18 @@ let pisos = (req, res, next) =>{
 
     let region = new Region({
 
-        idLocation:req.body.idLocacion  ,
+        idLocation:req.body.idLocation  ,
 
-        nombrePiso:req.body.nombrePiso   ,
-        numeroPiso:parseInt(req.body.numeroPiso)   ,
+        floorName: req.body.floorName,
+        floorNumber: parseInt(req.body.floorNumber),
         scale: parseInt(req.body.scale),
-        plano:'',
-        alto: parseInt(req.body.alto) ,
-        ancho: parseInt(req.body.ancho) ,
+        plane:'',
+        height: parseInt(req.body.height),
+        width: parseInt(req.body.width),
         heightPixel:0,
         widthPixel:0,
-        estatus: true,
-        tipo:'piso'  
+        status: true,
+        type:'floor'  
 
     });
 
@@ -228,15 +349,15 @@ let activoPost = (req, res, next) =>{
     let idbeacon = req.body.idTag
     let activo = new Activo({
 
-        nombre: req.body.nombre,
+        name: req.body.name,
         VIN: parseInt(req.body.VIN),
-        anio: parseInt(req.body.anio),
-        modelo: req.body.modelo,
+        year: parseInt(req.body.year),
+        model: req.body.model,
         color: req.body.color,
-        estado: req.body.estado,
+        status: req.body.status,
         idTag: req.body.idTag,
-        tipo: req.body.tipo,
-        descripcion: req.body.descripcion
+        type: req.body.type,
+        description: req.body.description
 
     });
 
@@ -253,7 +374,7 @@ let activoPost = (req, res, next) =>{
         let id = idbeacon;
 
         let body = {
-            estado:true
+            condition:true
         }
        
         
@@ -281,7 +402,7 @@ let activoPost = (req, res, next) =>{
 /* *****************************************/
 
 
-let rawCaracterizacion = (data) => {
+let rawCaracterizacion = (data) => { 
 
     // console.log(req.body);
     let rawMuestras ;
@@ -292,7 +413,7 @@ let rawCaracterizacion = (data) => {
             macRpi:data[i].macrpi,
             macTag:data[i].mactag,  
             rssi:parseInt(data[i].rssi),
-            distancia:parseInt(data[i].distancia)
+            distance:parseInt(data[i].distance)
             
         });
     
@@ -401,10 +522,10 @@ let newConstant = async (req, res, next)=>{
                     macRpi: resultRPI[j].macRpi,
                     macTag: resultTag[i]._id,
                     rssiProm: resultConstants.rssiProm,
-                    nPropagacion: resultConstants.nPropagacion,
-                    desviacionEstandar: resultConstants.desviacionEstandar,
+                    propagationN: resultConstants.propagationN,
+                    standardDeviation: resultConstants.standardDeviation,
                     idRegion:body.regionid,
-                    tipo:'established'
+                    type: 'established'
 
                 });
                 console.log(constantesDeBDs);
@@ -439,5 +560,6 @@ module.exports = {
     rawCaracterizacion,
     pisos,
     activoPost,
-    newConstant
+    newConstant,
+    saveAlarmSettings
 }

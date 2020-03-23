@@ -4,7 +4,7 @@
 let client_countOld=0;
 let client_count=0
 
-const {processDataFromRpi, processGossipFromRpi} = require('./controladores/database/scan')
+const { processDataFromRpi,verificarRpis, processGossipFromRpi } = require('./controladores/database/scan')
 const {rawCaracterizacion} = require('./controladores/database/guardarbd')
 let {globalDataGraph, globalDataGraphDos, globalDataGraphDistance,jsoCanvas,
     globalDataGraphDistanceDos, DistanciaError, paramsValidacionCaract, etiqueta,Users} = require('./controladores/variables')
@@ -16,7 +16,7 @@ const {regionId} = require('./controladores/database/getdb')
 const {logSistem} =  require('./controladores/write_Log')
 let {nameFile} = require('./controladores/variables')
 
-
+const InfoUbicacionRpi = require("./models/ubicacion");
 const Promesa = require('./controladores/database/promesas')
 
 let Variables = require('./controladores/variables')
@@ -80,6 +80,7 @@ setInterval(async () => {
         }
 
     }, er=>{console.log(er);
+
         io.emit('missing-Tag-Aalarm',{msg:'Danger no target is detected in the system', Tags:Variables.tagLost})
        
     
@@ -95,7 +96,75 @@ setInterval(async () => {
     console.log(new Date(StartDatetoTagLost));
 }, 6000000);
 
+/* *****************************************
+*	Gateway Lost Alarm
+*	
+/* *****************************************/
 
+setInterval( async () => {
+    let arrRpisDB = [];
+    Variables.RpisDisconnected = [];
+    let busquedaDeRpis = () =>{
+        return new Promise((resolve, reject) => {
+            InfoUbicacionRpi.find({})
+                .exec((err, rpiDB) =>{
+                    if (err) {
+
+                        reject({
+                            ok: false,
+                            err
+                        })
+                    }
+                    if (!rpiDB) {
+                        reject({
+                            ok: false,
+                            err: {
+                                msg: 'No Rpis Found'
+                            }
+                        })
+                    }
+                    resolve({
+                        ok: true,
+                        rpiDB
+                    })
+                })
+
+        })
+    }
+    let resultRpisSearched = busquedaDeRpis();
+
+    for (let i = 0; i < resultRpisSearched.rpiDB.length; i++) {
+        arrRpisDB.push({macRpi: resultRpisSearched.rpiDB[i].macRpi})
+    };
+
+    for (let j = 0; j < arrRpisDB.length; j++) {
+        
+        let indexFound = Variables.listRpisConnected.findIndex(dato => dato.macRpi === arrRpisDB[j].macRpi);
+        if (indexFound >= 0) {
+
+        } else {
+            let dataRpiLost = {macRpi: arrRpisDB[j].macRpi, region: '', floor : ''};
+            let path = { macRpi: arrRpisDB[j].macRpi }
+            await Promesa.getRpis(path).then(async dataRpiRes => {
+
+                dataRpiLost.region = dataRpiRes.idZona.regionName;
+                dataRpiLost.floor = dataRpiRes.idZona.floorName;
+
+            }, err=>{console.log(err);})
+
+            Variables.RpisDisconnected.push(dataRpiLost);
+        }
+        
+    }
+    if (Variables.RpisDisconnected.length != 0) {
+
+        io.emit('gateway-Aalarm', {
+            msg: 'Caution Gateways disconnected',
+            gateways: Variables.RpisDisconnected
+        })
+    }
+
+}, 10000000);
 
 /* *****************************************
 *	
@@ -362,6 +431,9 @@ console.log(`INCIIO ESTO de gossip`);
             let findIt = libreta.findIndex(obj => (obj.mac === dataTracking[0].macrpi) );
             if(findIt>=0){
                 libreta[findIt].stat = true;
+
+                verificarRpis(libreta);
+
                 // console.log(libreta);
                 
             }else{

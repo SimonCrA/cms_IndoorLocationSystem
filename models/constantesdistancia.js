@@ -6,12 +6,12 @@ var constantesDistanciaSchema = new Schema({
 
 		macRpi: {type: String,  max: 100},
 		macTag: {type: String,  max: 100},
-		nPropagacion: {type: Number },        
+		propagationN: {type: Number },        
         rssiProm: {type: Number},
-		desviacionEstandar: {type: Number},
+		standardDeviation: {type: Number},
 		idRegion: {type: String},
 		test: {type: String},
-		tipo:{type: String}
+		type:{type: String}
 		
 
 	}

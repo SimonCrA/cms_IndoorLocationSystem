@@ -43,7 +43,7 @@ let ejecucionEnSerie = (req, res, next) =>{
             /* *****************************************/
 
             for (let j = 0 ; j<cantidad_Muestras; j ++){
-                let resultGauss = await gaussDesviaProm.desviacionEstandarGaussiana(muestras, j+ 1, macrpi[i].macRpi, tag,i);
+                let resultGauss = await gaussDesviaProm.gaussianStandardDeviation(muestras, j+ 1, macrpi[i].macRpi, tag,i);
                 console.log(resultGauss);
                 cont++;
                 console.log(`${cont}/${numeroFinal}`.blue);
@@ -87,10 +87,10 @@ let ejecucionEnSerie = (req, res, next) =>{
                 macRpi: macrpi[i].macRpi,
                 macTag:  tag,
                 rssiProm: RSSIprom.respRssi[i],
-                nPropagacion: calculoDeN.respN[i].totalN,
-                desviacionEstandar: gaussDesviaProm.respvgcde[i].zmgvwsd,
+                propagationN: calculoDeN.respN[i].totalN,
+                standardDeviation: gaussDesviaProm.respvgcde[i].zmgvwsd,
                 idRegion:region,
-                tipo:'generado'
+                type: 'generado'
     
             });
     
@@ -110,10 +110,10 @@ let ejecucionEnSerie = (req, res, next) =>{
                 macRpi: macrpi[i].macRpi,
                 macTag:  tag,
                 rssiProm: RSSIprom.respRssi[i],
-                nPropagacion: calculoDeN.respN[i].totalN,
-                desviacionEstandar: gaussDesviaProm.respvgcde[i].zmgvwsd,
+                propagationN: calculoDeN.respN[i].totalN,
+                standardDeviation: gaussDesviaProm.respvgcde[i].zmgvwsd,
                 idRegion:region,
-                tipo:'seleccionado'
+                type: 'seleccionado'
     
             });
     
@@ -176,8 +176,8 @@ const sleep = (milliseconds) => {
 //     "macRpi" : "b8:27:eb:bd:36:61",
 //     "macTag" : "c4:4f:33:0b:35:23",
 //     "rssiProm" : -59.13,
-//     "nPropagacion" : 4.55347085397453,
-//     "desviacionEstandar" : 13.3551,
+//     "propagationN" : 4.55347085397453,
+//     "standardDeviation" : 13.3551,
 //     "idRegion" : "5d716b1a1d173a0d68dfc699",
 //     "__v" : 0
 // }
@@ -194,8 +194,8 @@ const sleep = (milliseconds) => {
 //     "macRpi" : "b8:27:eb:bd:36:61",
 //     "macTag" : "c4:4f:33:0b:35:23",
 //     "rssiProm" : -59.13,
-//     "nPropagacion" : 4.55347085397453,
-//     "desviacionEstandar" : 13.3551,
+//     "propagationN" : 4.55347085397453,
+//     "standardDeviation" : 13.3551,
 //     "idRegion" : "5d68150b83e5ee05cc9a1eb3",
 //     "test" : "1"
 // }
@@ -206,8 +206,8 @@ const sleep = (milliseconds) => {
 //     "macRpi" : "b8:27:eb:d4:04:c9",
 //     "macTag" : "c4:4f:33:0b:35:23",
 //     "rssiProm" : -59.13,
-//     "nPropagacion" : 4.55347085397453,
-//     "desviacionEstandar" : 13.3551,
+//     "propagationN" : 4.55347085397453,
+//     "standardDeviation" : 13.3551,
 //     "idRegion" : "5d68150b83e5ee05cc9a1eb3",
 //     "test" : "1"
 // }
@@ -217,8 +217,8 @@ const sleep = (milliseconds) => {
 //     "macRpi" : "b8:27:eb:de:9f:60",
 //     "macTag" : "c4:4f:33:0b:35:23",
 //     "rssiProm" : -59.13,
-//     "nPropagacion" : 4.55347085397453,
-//     "desviacionEstandar" : 13.3551,
+//     "propagationN" : 4.55347085397453,
+//     "standardDeviation" : 13.3551,
 //     "idRegion" : "5d68150b83e5ee05cc9a1eb3",
 //     "test" : "1"
 // }

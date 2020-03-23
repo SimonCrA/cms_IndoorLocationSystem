@@ -10,7 +10,9 @@ let globalDataGraph = [
     }
 
 ];
-
+let listRpisDB = [];
+let listRpisConnected = [];
+let RpisDisconnected = [];
 
 console.log((globalDataGraph[0].data).length);
 
@@ -52,8 +54,8 @@ var paramsValidacionCaract = [{distError: 1, mostrarGrafica: false, signal:false
 let Users=[
 //     {
 //     sessionId:'',
-//     constantes:{nPropagacion:1,
-//                 desviacionEstandar:1,
+//     constantes:{propagationN:1,
+//                 standardDeviation:1,
 //                 rssiProm:1},
 //     graphRaw:[{name:'',
 //                 data:[{x:1,y:1}]
@@ -125,6 +127,8 @@ module.exports = {
     globalDataGraph,
     jsoCanvas,
     globalDataGraphDos,
-    etiqueta, startTrilateracion
+    etiqueta, startTrilateracion,
+    listRpisDB, listRpisConnected,
+    RpisDisconnected
 
 }

@@ -9,13 +9,12 @@ var zonaSchema = new Schema({
 
     building: {type: String},
     floorName: {type: String  },      
-    floorName: {type: Number },  
-    plane:{type:String},      
+    floorNumber: {type: Number },       
     
     //regiones
     floorId:{ type: Schema.Types.ObjectId, ref: 'zona'},
     regionName: {type: String},
-    regionName:{type:Number},
+    regionNumber:{type:Number},
 
     
     arrivalZone:{type:Boolean},//INDICA QUE LA REGION CREADA ES A DONDE SE DEBE DE LLEGAR EL ACTIVO [PARA LA PRESENTACION!]

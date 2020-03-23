@@ -18,8 +18,6 @@ const async = require('async');
 const _ = require('underscore');
 
 
-
-
 let regiones = (req, res, next) => {
     
     console.log(req.params);
@@ -38,9 +36,9 @@ let regiones = (req, res, next) => {
     
     let id = req.params.id;
     let body = {
-        idPiso: req.body.idPiso,
-        nombreRegion: req.body.nombreRegion,
-        numeroRegion: req.body.numeroRegion,
+        floorId: req.body.floorId,
+        regionName: req.body.regionName,
+        regionNumber: req.body.regionNumber,
         bottomLeft: conversorP_M(bl),
         bottomRigth: conversorP_M(br),
         topLeft:conversorP_M( tl),
@@ -128,7 +126,7 @@ let pisos = (req, res, next) => {
 
     let id = req.params.id;
 
-    let body = _.pick(req.body,['idLocation','nombrePiso','numeroPiso','ancho', 'alto']) ;
+    let body = _.pick(req.body, ['idLocation', 'floorName', 'floorNumber', 'width', 'height']);
     
     Region.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, regiondb)=>{
         if(err){
@@ -152,7 +150,7 @@ let putTags = (req, res, next) => {
     console.log("holaaaaa estoy aquiiiii");
     let id = req.params.id;
     console.log(id);
-    let body = _.pick(req.body, ['nombre', 'tipo', 'mactag']);
+    let body = _.pick(req.body, ['name', 'type', 'mactag']);
 
     
     TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true, useFindAndModify: false },(err, tagModificado)=>{
@@ -176,7 +174,7 @@ let putActivo = (req, res) => {
 
     let id = req.params.id;
     // let body = req.body;
-    let body = _.pick(req.body, ['nombre', 'tipo','VIN', 'anio', 'modelo', 'color', 'descripcion']);
+    let body = _.pick(req.body, ['name', 'type','VIN', 'year', 'model', 'color', 'description']);
 
     Activo.findByIdAndUpdate(id, body, {new: true,runValidators: true,useFindAndModify: false}, (err, activoModificado) => {
 
@@ -190,14 +188,14 @@ let putActivo = (req, res) => {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    mensaje: ' El id no existe'
+                    message: "Can't find this asset"
                 }
             });
         };
 
         res.status(200).json({
             ok: true,
-            activoModificado
+            asset: activoModificado
         }); 
 
     });
@@ -223,7 +221,7 @@ let ubicacion = (req, res, next) => {
         }
         res.json({
             ok:true,
-             ubicacion
+            location: ubicacion
         })
 
     })
@@ -248,7 +246,7 @@ try{
 
     let getConstantes = () =>{
         return new Promise((resolve, reject)=>{
-            ConstsDistancia.find({macRpi:req.body.macrpi, macTag:req.body.mactag, tipo:'generado'}).sort({_id:-1})
+            ConstsDistancia.find({macRpi:req.body.macrpi, macTag:req.body.mactag, type:'generado'}).sort({_id:-1})
             .exec(function (err, data){
                 err 
                 ? reject(err) 
@@ -263,7 +261,7 @@ try{
 
             ConstsDistancia.aggregate([{
             $match: {
-                tipo: 'seleccionado',
+                type: 'seleccionado',
                 idRegion:req.body.regionid
 
             }
@@ -301,7 +299,7 @@ try{
         
         let id = result2[i]._id;
     
-        let body = _.pick(result,['rssiProm','nPropagacion','desviacionEstandar']) ;
+        let body = _.pick(result,['rssiProm','propagationN','standardDeviation']) ;
         // console.log(id);
         
         ConstsDistancia.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, ubicacionS)=>{
@@ -333,17 +331,17 @@ try{
 
 let venderAuto = (req, res, next) =>{
 
-    let idActivo = req.params.idActivo;
+    let idAsset = req.params.idAsset;
     let idTag = req.params.idTag;
 
 
     let tagStatus = {
-        estado: false,
+        status: false,
         
     }
     let activoStatus = {
         // idTag: "a2a2a2a2a2a2a2a3a3a3a3a3",
-        estado: false,
+        status: false,
         $unset: {idTag:""},
         endDate: new Date().getTime()
 
@@ -353,7 +351,7 @@ let venderAuto = (req, res, next) =>{
     
     async.parallel({
         activo: function (callback) {
-            Activo.findByIdAndUpdate(idActivo, activoStatus, {
+            Activo.findByIdAndUpdate(idAsset, activoStatus, {
                     new: true,
                     runValidators: true,
                     
@@ -381,7 +379,7 @@ let venderAuto = (req, res, next) =>{
             crearReporteVentas(results.activo);
 
             res.status(200).jsonp({
-                'activo': results.activo,
+                'asset': results.activo,
                 'tag': results.tags
             });
 
@@ -392,17 +390,17 @@ let venderAuto = (req, res, next) =>{
 
 let despacharServicio = (req, res, next) =>{
 
-    let idActivo = req.params.idActivo;
+    let idAsset = req.params.idAsset;
     let idTag = req.params.idTag;
 
 
     let tagStatus = {
-        estado: false,
+        status: false,
 
     }
     let activoStatus = {
         // idTag: "a2a2a2a2a2a2a2a3a3a3a3a3", 
-        estado: false,
+        status: false,
         $unset: {
             idTag: ""
         },
@@ -414,7 +412,7 @@ let despacharServicio = (req, res, next) =>{
 
     async.parallel({
         activo: function (callback) {
-            Activo.findByIdAndUpdate(idActivo, activoStatus, {
+            Activo.findByIdAndUpdate(idAsset, activoStatus, {
                     new: true,
                     runValidators: true,
 
@@ -441,7 +439,7 @@ let despacharServicio = (req, res, next) =>{
 
 
         res.status(200).jsonp({
-            'activo': results.activo,
+            'asset': results.activo,
             'tag': results.tags
         });
 

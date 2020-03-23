@@ -10,10 +10,10 @@ var apidelete = require('../controladores/database/deletebd');
 
 
 
-router.delete('/regiones/:id',apidelete.regiones)
-router.delete('/pisos/:id',apidelete.pisos)
-router.delete('/ubicacion/:id',apidelete.ubicacion)
-router.delete('/activo/:id', apidelete.deleteActivo);
+router.delete('/regions/:id',apidelete.regiones)
+router.delete('/floors/:id',apidelete.pisos)
+router.delete('/location/:id',apidelete.ubicacion)
+router.delete('/asset/:id', apidelete.deleteActivo);
 router.delete('/tag_data/:id', apidelete.deleteTags);
 
 

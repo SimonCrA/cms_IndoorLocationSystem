@@ -6,7 +6,7 @@ var distanceTags = new Schema({
 
 		macRpi: {type: String,  max: 100},
 		macTag: {type: String,  max: 100},
-		distanciaTag: {type: Number },
+		tagDistance: {type: Number },
 
 		region: {type: String},
 		

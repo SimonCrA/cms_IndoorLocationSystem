@@ -13,12 +13,13 @@ router.post('/tag_data', apiGuardardb.dataTag);
 
 router.post('/rasp_data_c', apiGuardardb.rawCaracterizacion);
 
+router.post('/alarmSettings', apiGuardardb.saveAlarmSettings);
 
-router.post ('/regiones', apiGuardardb.regiones);
-router.post ('/pisos', apiGuardardb.pisos);
-router.post ('/constantes', apiGuardardb.constantes);
-router.post ('/ubicacion', apiGuardardb.ubicacion);
-router.post ('/activo', apiGuardardb.activoPost);
+router.post ('/regions', apiGuardardb.regiones);
+router.post ('/floors', apiGuardardb.pisos);
+router.post ('/contstants', apiGuardardb.constantes);
+router.post ('/location', apiGuardardb.ubicacion);
+router.post ('/asset', apiGuardardb.activoPost);
 router.post('/newconstant',apiGuardardb.newConstant);
 
 

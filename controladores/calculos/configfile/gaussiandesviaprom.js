@@ -15,9 +15,9 @@ let respvgcde = [{
 // respvgcde[0] ={sumatoria:0,zmgvwsd:0}
 
 
-let desviacionEstandarGaussiana = async (muestras, distancia, macrpi, mactag, iteracion) => {
+let gaussianStandardDeviation = async (muestras, distancia, macrpi, mactag, iteracion) => {
     try {
-        console.log("ENTRAMOS A CALCULO DE DesviacionEstandarGaussiana");
+        console.log("ENTRAMOS A CALCULO DE gaussianStandardDeviation");
         let promesaBusquedaGauss = ()=>{
             return new Promise((resolve, reject ) =>{
                 RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
@@ -86,6 +86,6 @@ let desviacionEstandarGaussiana = async (muestras, distancia, macrpi, mactag, it
  **************************************/
 
 module.exports = {
-    desviacionEstandarGaussiana,
+    gaussianStandardDeviation,
     respvgcde
 }

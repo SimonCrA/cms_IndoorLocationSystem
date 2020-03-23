@@ -9,7 +9,7 @@ var tagInfoSchema = new Schema({
 		batteryLevel: {type: Number},
 		name: {type: String },
 		type: {type: String },
-		state:{type: Boolean }
+		status:{type: Boolean }
 
 	}
 );  

@@ -45,35 +45,35 @@ let searchAssets = async (req, res) => {
         }
 
         let dataBusqueda = {
-                tipo: '',
-                nombre: '',
+                type: '',
+                name: '',
                 date: 0
             }
         
         let promise_Activo = () => {
             return new Promise((resolve, reject) => {
-                let termino = (req.params.termino).toLowerCase() ; 
+                let term = (req.params.term).toLowerCase() ; 
                 let item = (req.params.item).toLowerCase() 
-                let regex = new RegExp(termino, 'g')
-                if(item==='nombre'){ 
-                    var busqueda2 = {nombre:regex, estado:true};
+                let regex = new RegExp(term, 'g')
+                if(item==='name'){ 
+                    var busqueda2 = {name:regex, status:true};
                 }
                 else if(item==='color'){
-                    var busqueda2 = {color:regex, estado:true};
-                    dataBusqueda.tipo = item;
+                    var busqueda2 = {color:regex, status:true};
+                    dataBusqueda.type = item;
                 }
-                else if(item==='modelo'){
-                    var busqueda2 = {modelo:regex, estado:true};
-                    dataBusqueda.tipo = item;
+                else if(item==='model'){
+                    var busqueda2 = {model:regex, status:true};
+                    dataBusqueda.type = item;
                 }
-                else if(item==='anio'){ 
-                    var busqueda2 = {anio:regex, estado:true}
-                    dataBusqueda.tipo = item
+                else if(item==='year'){ 
+                    var busqueda2 = {year:regex, status:true}
+                    dataBusqueda.type = item
                  }
                  
                  else{
                      return res.status(400).json({ok:false, error:{
-                        mensaje: "there isn't any asset with that Item"
+                        message: "there isn't any asset with that Item"
                      }})
                  }
             
@@ -99,9 +99,9 @@ let searchAssets = async (req, res) => {
                         dataBusqueda.date = new Date().getTime();
     
                         if (item === 'color') {
-                            dataBusqueda.nombre = ActivoBuscado[0].color;
-                        }else if (item === 'modelo'){
-                            dataBusqueda.nombre = ActivoBuscado[0].modelo;
+                            dataBusqueda.name = ActivoBuscado[0].color;
+                        }else if (item === 'model'){
+                            dataBusqueda.name = ActivoBuscado[0].model;
                         }
                         resolve(ActivoBuscado)
                     }else{
@@ -135,13 +135,11 @@ let searchAssets = async (req, res) => {
                         path:'region',
                         model:'zona',
                         populate:{
-                            path:'idPiso',
+                            path: 'floorId',
                             model:'zona',
-                            select:'idLocation nombrePiso numeroPiso  scale plano alto ancho estatus tipo heightPixel widthPixel'
-                        }
-                }
-            ])
-                    // .populate('zona')
+                            select:'idLocation floorName floorNumber scale plane height width status type heightPixel widthPixel'
+                                }
+                        }])
                     .sort({_id:-1}).limit(1)
                     .exec((err, puntoBuscado) => {
 
@@ -156,7 +154,7 @@ let searchAssets = async (req, res) => {
                             reject({
                                 ok: false,
                                 err: {
-                                    mensaje: "there isn't any asset with that name"
+                                    message: "there isn't any asset with that name"
                                 }
                             });
                         };
@@ -460,17 +458,6 @@ let getRegionTime = async (req, res) =>{
 
 }
 
-/* *****************************************
-*	Alarmas
-*	
-/* *****************************************/
-
-let getLowBatteryTags = async (req, res) => {
-
-    let criticLevel = req.body.criticLevel;
-    
-
-}
 
 /* *****************************************
 *	ZONA
@@ -498,7 +485,7 @@ let findZona = (req, res, next) => {
               .exec(callback);
         },
         zona: function(callback) {
-            Region.find({tipo:'region', estatus:true}).select('nombreRegion numeroRegion')
+            Region.find({type:'region', status:true}).select('regionName regionNumber')
             .populate({
                 path:'idPiso',
                 model:'zona',
@@ -529,7 +516,7 @@ let findZona = (req, res, next) => {
 let regionId = (region) =>{
     return new Promise((resolve, reject ) =>{
 
-        InfoUbicacion.find({ estatus: true, idZona:region })
+        InfoUbicacion.find({ sstatus: true, idZona:region })
             .populate('idZona')
     
             .exec((err, region) => {
@@ -563,8 +550,8 @@ let regionId = (region) =>{
 
 let region = (req, res, next) =>{
         
-    Region.find({ estatus: true, tipo:'region' })
-        .populate('idPiso' , 'nombrePiso numeroPiso ')
+    Region.find({ status: true, type:'region' })
+        .populate('floorId' , 'floorName floorNumber ')
 
         .exec((err, region) => {
 
@@ -602,7 +589,7 @@ let region = (req, res, next) =>{
 
 let activoGet = (req, res, next) =>{
         
-    Activo.find({estado:true})
+    Activo.find({status:true})
         .populate('idTag')
         .exec((err, activoBuscado) => {
 
@@ -615,7 +602,7 @@ let activoGet = (req, res, next) =>{
             
             res.status(200).json({
                 ok: true,
-                activoBuscado
+                asset: activoBuscado
             });
 
         });
@@ -630,7 +617,7 @@ let activoGet = (req, res, next) =>{
 
 let pisos = (req, res, next) =>{
         
-    Region.find({ estatus: true, tipo:'piso' }).select('idLocation nombrePiso numeroPiso plano estatus tipo alto ancho scale')
+    Region.find({ status: true, type:'floor' }).select('idLocation floorName floorNumber plane status type height width scale')
         .populate('idLocation')
 
         .exec((err, pisos) => {
@@ -658,9 +645,9 @@ let pisos = (req, res, next) =>{
 /* *****************************************/
 let ubicacion = (req, res, next) =>{
         
-    InfoUbicacion.find({ estatus: true })
+    InfoUbicacion.find({ status: true })
         .populate('idZona')
-        .populate('compartido')
+        .populate('shared')
 
         .exec((err,infoUbicacion ) => {
 
@@ -680,7 +667,7 @@ let ubicacion = (req, res, next) =>{
 
             res.json({
                 ok: true,
-                infoUbicacion
+                location: infoUbicacion
             });
 
         });
@@ -711,7 +698,7 @@ let getTags = (req, res, next) =>{
                     // console.log(index);
                     console.log(element.batteryLevel);
                     
-                    tagGuardado[index].batteryLevel = (((element.batteryLevel/1000) /3) *100)   .toFixed(2)
+                    tagGuardado[index].batteryLevel = (((element.batteryLevel/1000) /3) *100).toFixed(2)
                     
                     console.log(element.batteryLevel);
                 }
@@ -720,7 +707,7 @@ let getTags = (req, res, next) =>{
             // console.log(tagGuardado);
             res.status(200).json({
                 ok: true,
-                tagGuardado
+                tag: tagGuardado
             });
 
         });
@@ -732,7 +719,7 @@ let getTags = (req, res, next) =>{
 /* *****************************************/
 let getTagsfalse = (req, res, next) =>{
         
-    TagInfo.find({estado: false})
+    TagInfo.find({status: false})
 
         .exec((err,tagGuardado ) => {
 
@@ -758,7 +745,7 @@ let getTagsfalse = (req, res, next) =>{
             // console.log(tagGuardado);
             res.status(200).json({
                 ok: true,
-                tagGuardado
+                tag: tagGuardado
             });
 
         });
@@ -777,21 +764,21 @@ let contador = (req, res, next)=>{
               .exec(callback);
         },
 		tagBateryhigh: function(callback) {
-            TagInfo.find({batteryLevel:{$gt:2250}}).count()
+            TagInfo.find({batteryLevel:{$gt:2275}}).count()
               .exec(callback);
         },
 		tagBaterymedium: function(callback) {
             TagInfo.find({
                 $and: 
                 [ 
-                  {batteryLevel:{$lt:2249}}, 
-                  {batteryLevel:{$gt:1050}} 
+                  {batteryLevel:{$lt:2262}}, 
+                  {batteryLevel:{$gt:1755}} 
                 ] 
             }).count()
               .exec(callback);
         },
 		tagBateryLow: function(callback) {
-            TagInfo.find({batteryLevel:{$lt:1049}}).count()
+            TagInfo.find({batteryLevel:{$lt:1742}}).count()
               .exec(callback);
         },
 		regionesTrue: function(callback) {
@@ -803,11 +790,11 @@ let contador = (req, res, next)=>{
               .exec(callback);
         },
 		pisoTrue: function(callback) {
-			Region.find({tipo:'piso', estatus: true}).count()
+			Region.find({type:'floor', estatus: true}).count()
               .exec(callback);
         },
 		pisoFalse: function(callback) {
-			Region.find({tipo:'piso', estatus: false}).count()
+			Region.find({type:'floor', estatus: false}).count()
               .exec(callback);
         },
 		gatewayTrue: function(callback) {
@@ -831,10 +818,10 @@ let contador = (req, res, next)=>{
              'tagBaterymedium':results.tagBaterymedium,
              'tagBateryLow': results.tagBateryLow,
 
-             'regionesTrue': results.regionesTrue,
-             'regionesFalse': results.regionesFalse,
-             'pisoTrue': results.pisoTrue,
-             'pisoFalse': results.pisoFalse,
+             'regionsTrue': results.regionesTrue,
+             'regionsFalse': results.regionesFalse,
+             'floorTrue': results.pisoTrue,
+             'floorFalse': results.pisoFalse,
              'gatewayTrue': results.gatewayTrue,
              'gatewayFalse': results.gatewayFalse
             
@@ -844,8 +831,6 @@ let contador = (req, res, next)=>{
 
 
 }
-
-
 
 let IniciarContador =async (req, res, next)=>{
 try{
@@ -946,7 +931,7 @@ try{
 
 let timeActiveRecive = (req, res, next)=>{
 
-    timerToreciveActive.find().select('user activo regionPartida regionLLegada duracionMin')
+    timerToreciveActive.find().select('user asset startRegion arrivalregion timeMin')
     .populate([
         {
         path:'user',
@@ -954,20 +939,20 @@ let timeActiveRecive = (req, res, next)=>{
         select:'name surname'
     },
         {
-        path:'activo',
+        path: 'asset',
         model:'Activo',
-        select:'nombre modelo color'
+        select:'name model color'
     },
         {
-        path:'regionPartida',
+        path: 'startRegion',
         model:'zona',
-        select:'nombreRegion'
+        select:'regionName'
 
     },
         {
-        path:'regionLLegada',
+        path: 'arrivalregion',
         model:'zona',
-        select:'nombreRegion'
+        select:'regionName'
 
         }
         ])
@@ -1000,7 +985,6 @@ module.exports = {
     getServiceTime,
     getDealerTime,
     getRegionTime,
-    getLowBatteryTags,
     contador,
     getTagsfalse,
     IniciarContador,

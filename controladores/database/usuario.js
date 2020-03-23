@@ -174,8 +174,8 @@ let postLogIn = (req, res, next) => {
         }else{
                 let use={
                     sessionId: req.sessionID,
-                    constantes:{nPropagacion:1,
-                                desviacionEstandar:1,
+                    constantes:{propagationN:1,
+                                standardDeviation:1,
                                 rssiProm:1},
                     graphRaw:[{name:'',
                                 data:[{x:1,y:1}]

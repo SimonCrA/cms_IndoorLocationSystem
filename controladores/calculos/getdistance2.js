@@ -29,7 +29,7 @@ try {
 
     let result = await getConstantes();
     // console.log(result);
-    let pot = (-req.rssi + result.rssiProm + result.desviacionEstandar) / (10 * result.nPropagacion);
+    let pot = (-req.rssi + result.rssiProm + result.standardDeviation) / (10 * result.propagationN);
             let distancia = Math.pow(10, pot);
             // console.log(distancia);
             // console.log(`********************\n`);
