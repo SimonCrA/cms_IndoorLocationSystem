@@ -267,7 +267,7 @@ console.log(conversorP_M(bl));
         alto:conversorP_M(parseInt(alto)),
         ancho:conversorP_M(parseInt(ancho)),
         bottomLeft:conversorP_M(bl) ,
-        bottomRigth:conversorP_M(br) ,
+        bottomRight:conversorP_M(br) ,
         topLeft:conversorP_M(tl) ,
         topRight:conversorP_M(tr) ,
         

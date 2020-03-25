@@ -32,7 +32,7 @@
                         0,
                         0
                     ],
-                    "bottomRigth": [
+                    "bottomRight": [
                         12.19,
                         0
                     ],

@@ -221,7 +221,7 @@ let searchAssets = async (req, res) => {
                             puntoBuscado[i].y = conversorM_P(puntoBuscado[i].y)
 
                             puntoBuscado[i].region.bottomLeft = conversorM_P(puntoBuscado[i].region.bottomLeft)
-                            puntoBuscado[i].region.bottomRigth = conversorM_P(puntoBuscado[i].region.bottomRigth)
+                            puntoBuscado[i].region.bottomRight = conversorM_P(puntoBuscado[i].region.bottomRight)
                             puntoBuscado[i].region.topLeft = conversorM_P(puntoBuscado[i].region.topLeft)
                             puntoBuscado[i].region.topRight = conversorM_P(puntoBuscado[i].region.topRight)
                             puntoBuscado[i].region.idPiso.alto = conversorM_P(puntoBuscado[i].region.idPiso.alto)
@@ -634,7 +634,7 @@ let region = (req, res, next) =>{
 
 
                 region[i].bottomLeft = conversorM_P(region[i].bottomLeft)
-                region[i].bottomRigth = conversorM_P(region[i].bottomRigth)
+                region[i].bottomRight = conversorM_P(region[i].bottomRight)
                 region[i].topLeft = conversorM_P(region[i].topLeft)
                 region[i].topRight = conversorM_P(region[i].topRight)
             

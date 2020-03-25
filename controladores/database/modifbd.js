@@ -41,7 +41,7 @@ let regiones = (req, res, next) => {
         regionName: req.body.regionName,
         regionNumber: req.body.regionNumber,
         bottomLeft: conversorP_M(bl),
-        bottomRigth: conversorP_M(br),
+        bottomRight: conversorP_M(br),
         topLeft:conversorP_M( tl),
         topRight: conversorP_M(tr),
         alto:conversorP_M(alto),
