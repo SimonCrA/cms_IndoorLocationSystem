@@ -21,7 +21,8 @@ var activoSchema = new Schema({
 		endDate:  {type: Date},
 		descripcion: { type: String },
 		estado: { type:Boolean },
-		idTag: { type: Schema.Types.ObjectId, ref: 'tagInfo' }
+		idTag: { type: Schema.Types.ObjectId, ref: 'tagInfo' },
+		client: { type: Schema.Types.ObjectId, ref: 'client' }
 
 
 	}

@@ -237,7 +237,8 @@ let activoPost = (req, res, next) =>{
         estado: req.body.estado,
         idTag: req.body.idTag,
         tipo: req.body.tipo,
-        descripcion: req.body.descripcion
+        descripcion: req.body.descripcion,
+        client:req.body.client
 
     });
 

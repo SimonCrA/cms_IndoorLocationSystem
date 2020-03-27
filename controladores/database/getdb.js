@@ -670,8 +670,8 @@ let getDealerTime = async (req, res) =>{
 let getRegionTime = async (req, res) =>{
 console.log(req.body);
     let period = req.body.period || 1;
-    let desde = req.body.since || 2020-2-15;
-
+    let desde = req.body.since ;
+console.log(req.body);
         let result = await crearReporteTiempoSinMoverse(period, desde);
         console.log(result);
         res.status(200).json({
@@ -810,9 +810,19 @@ let region = (req, res, next) =>{
 
 
 let activoGet = (req, res, next) =>{
-        
+    
+    // .populate('idTag')
     Activo.find({estado:true})
-        .populate('idTag')
+        .populate([
+            {
+            path:'idTag',
+            model:'tagInfo'
+            },
+            {
+            path:'client',
+            model:'Client'
+            }
+        ])
         .exec((err, activoBuscado) => {
 
             if (err) {
