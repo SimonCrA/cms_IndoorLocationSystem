@@ -94,7 +94,7 @@ setInterval(async () => {
     
     StartDatetoTagLost = new Date().getTime()
     console.log(new Date(StartDatetoTagLost));
-}, 130000);
+}, 930000);
 
 
 
@@ -361,6 +361,8 @@ console.log(`INCIIO ESTO de gossip`);
             // clg
     
             processDataFromRpi(dataTracking);
+            console.log(`Libreta=>`);
+            console.log(libreta);
             let findIt = libreta.findIndex(obj => (obj.mac === dataTracking[0].macrpi) );
             if(findIt>=0){
                 libreta[findIt].stat = true;

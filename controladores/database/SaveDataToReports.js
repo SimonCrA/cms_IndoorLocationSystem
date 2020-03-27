@@ -439,9 +439,9 @@ let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
         }
 
         let resultSearchPoint = await searchPoint();
-        console.log(`_____________________`);
-        console.log(resultSearchPoint);
-        console.log(`_____________________`);
+        // console.log(`_____________________`);
+        // console.log(resultSearchPoint);
+        // console.log(`_____________________`);
 
         if(Array.isArray(resultSearchPoint) && resultSearchPoint.length){
             if(resultSearchPoint.length > 1){
@@ -454,12 +454,12 @@ let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
         
                     // if (fechaInicio > oldTime && fechaInicio < actualTime) {
                         
-                        console.log(`${resultSearchPoint[j].region._id} === ${resultSearchPoint[j + 1].region._id}` );
+                        // console.log(`${resultSearchPoint[j].region._id} === ${resultSearchPoint[j + 1].region._id}` );
                         
                         if (`${resultSearchPoint[j].region._id}` === `${resultSearchPoint[j + 1].region._id}`) {
 
-                            console.log(`ENTRE ${j}`);
-                            console.log(resultSearchPoint[j].idTag);
+                            // console.log(`ENTRE ${j}`);
+                            // console.log(resultSearchPoint[j].idTag);
                             js.contadorE+=1;
                             js.region = resultSearchPoint[j].region;
                             js.tag = resultSearchTag[i]._id;
@@ -503,7 +503,7 @@ let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
         
     };
     
-    console.log(arrPoint);
+    // console.log(arrPoint);
     let arrActivoRegion = [];
 
     for (let i = 0; i < arrPoint.length; i++) {
@@ -530,7 +530,7 @@ let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
         }
 
 
-        console.log(arrPoint[i].tag);
+        // console.log(arrPoint[i].tag);
         let ta= arrPoint[i].tag
         let path= `{"idTag":"${ta}", "estado": true}`
         let ruta = JSON.parse(path)

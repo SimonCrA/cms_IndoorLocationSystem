@@ -38,7 +38,7 @@ router.get('/attendedbyseller', apiGet.getAtendidosbySeller);
 //***************************************** */
 
 
-
+router.get('/testing/:region', apiGet.test)
 router.get('/counter', apiGet.contador); 
 
 
