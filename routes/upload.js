@@ -61,8 +61,9 @@
     
     //Cambiar nombre del archivo.
     //el nombre se genera en este formato aseicnai31n32i9-432.jpg
-    
-    let nombreArchivo = `${id}-${ new Date().getMilliseconds() }.${extension}`
+    let date = new Date()
+    let fecha = date.getFullYear() +'-'+ date.getMonth()+'-'+ date.getDay()
+    let nombreArchivo = `${id};${ fecha}.${extension}`
     
    
     

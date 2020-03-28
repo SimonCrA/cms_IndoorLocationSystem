@@ -358,7 +358,8 @@ let activoPost = (req, res, next) =>{
         status: req.body.status,
         idTag: req.body.idTag,
         type: req.body.type,
-        description: req.body.description
+        description: req.body.description,
+        client:req.body.client
 
     });
 

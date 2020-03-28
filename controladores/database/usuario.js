@@ -228,7 +228,7 @@ let putUser =(req, res) => {
 console.log(`Update user`);
     let id = req.params.id;
 
-    let body = _.pick(req.body,['name','surname','role', 'department']) ;
+    let body = _.pick(req.body,['name','surname','role', 'department', 'client']) ;
 
 
     User.findByIdAndUpdate(id, body, {new: true, runValidators: true, useFindAndModify: false }, (err, usuarioModificado) =>{

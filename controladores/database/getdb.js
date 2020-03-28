@@ -1,10 +1,10 @@
-
+// import mongoose from 'mongoose';
+const mongoose =require('mongoose')
 const InfoUbicacion = require('../../models/ubicacion');
 const Region = require('../../models/zona')
 const Graficar = require('../../models/graficar')
 const Activo = require('../../models/activo');
 const timerToreciveActive = require('../../models/timerToreciveActive');
-
 const promesas = require('./promesas')
 
 const Toptensales = require('../../models/reportetoptenventas');
@@ -32,31 +32,27 @@ const async = require('async');
 *	Buscar activos en una reigon
 *	
 /* *****************************************/
-let searchAssetsRegion = (req, res, next) =>{
+let searchAssetsRegion = async (req, res, next) =>{
+    try{
     let idRegion = req.params.idregion
-    let fechaActual = (new Date().getTime()) - 60000
-    
-    
-    let buscarAactivosenRegion = (region)=>{
+    let fechaActual = (new Date().getTime()) - 180000
+    let arrayTags = []
+    let Active=[]
+    let buscarAactivosenRegion = (region, fecha)=>{
+        
         return new Promise((resolve, reject)=>{
-            var path = [{$match:{region:'ObjectId("5e6399d13e57c93668b037ed")'}}]
-            console.log(region);
-            Graficar.aggregate(path)
-        //     Graficar.aggregate([
-        //         {
-        //         $match: {region:"5e6399d13e57c93668b037ed"}
-        //     },
-        //     // {
-        //     //     "$group": {
-        //     //         _id:"$idTag",
-        //     //         count: {
-        //     //             $sum: 1
-        //     //         }
-        //     //     }
-        //     // }
-        // ])
+
+            // console.log(region);
+            Graficar.aggregate([
+                {$match:{
+                    region:mongoose.Types.ObjectId(region),
+                    // date:{$gte:new Date(fecha)}
+                }},
+        
+                {$group:{_id:"$idTag", cantidad_Registros:{$sum:1}}}
+        ])
             .exec((err, puntoBuscado) => {
-                console.log(puntoBuscado);
+                // console.log(puntoBuscado);
 
                 if (err) {
                     return reject({
@@ -77,9 +73,166 @@ let searchAssetsRegion = (req, res, next) =>{
                 });   
             });
         }
-        buscarAactivosenRegion(idRegion).then(obj=>{console.log(obj);})
-        res.status(200).jsonp({ok:true})
+
+
+        let buscarIdTag = (tag) =>{
+            return new Promise((resolve, reject)=>{
+
+                TagInfo.find({mactag:tag}).select('_id mactag ')
+                .exec((err, res)=>{
+                    if(err){
+                        return reject(err)
+                    }
+                    if(!res){
+                        return reject('Empty')
+                    }
+                    return resolve(res)
+                })
+                
+            })
+            
+        }
+
+        let BuscarActivos = (idTags)=>{
+            return new Promise((resolve, reject)=>{
+                Activo.find({idTag:idTags})
+                    .populate('idTag')
+
+                // .sort({_id:-1}).limit(1)
+                .exec((err, ActivoBuscado)=>{
+                    if(err){
+                        return reject(err)
+                    }
+                    if(Array.isArray(ActivoBuscado) && ActivoBuscado.length){
+
+                        for(let i = 0; i< ActivoBuscado.length ; i++){
+                            ActivoBuscado[i].idTag.batteryLevel = (((ActivoBuscado[i].idTag.batteryLevel /1000) /3) *100).toFixed(2)
+                        }
+                     
+                        return resolve(ActivoBuscado[0])
+                    }else{
+                        return reject({error:'empty'})
+
+                    }
+
+
+                })
+                
+
+            })
+        }
+
+
+        let promise_pointXY = (resultPromiseActivo)=>{
+            return new Promise((resolve, reject) => {
+
+                // console.log(resultPromiseActivo);
+                
+                let idActivo = resultPromiseActivo.idTag.mactag
+                // console.log(idActivo);
+
+                Graficar.find({idTag:idActivo})
+                    .populate([{
+                        path:'region',
+                        model:'zona',
+                        populate:{
+                            path:'idPiso',
+                            model:'zona',
+                            select:'idLocation nombrePiso numeroPiso  scale plano alto ancho estatus tipo heightPixel widthPixel'
+                        }
+                }
+            ])
+                    // .populate('zona')
+                    .sort({_id:-1}).limit(1)
+                    .exec((err, puntoBuscado) => {
+
+                        if (err) {
+                            reject({
+                                ok: false,
+                                err
+                            })
+                        };
+
+                        if (!puntoBuscado) {
+                            reject({
+                                ok: false,
+                                err: {
+                                    mensaje: "there isn't any asset with that name"
+                                }
+                            });
+                        };
+                        // console.log(JSON.stringify(puntoBuscado,null, 2));
+                        for(let i = 0 ; i < puntoBuscado.length ; i++){
+
+                            puntoBuscado[i].x = conversorM_P(puntoBuscado[i].x)
+                            puntoBuscado[i].y = conversorM_P(puntoBuscado[i].y)
+
+                            puntoBuscado[i].region.bottomLeft = conversorM_P(puntoBuscado[i].region.bottomLeft)
+                            puntoBuscado[i].region.bottomRigth = conversorM_P(puntoBuscado[i].region.bottomRigth)
+                            puntoBuscado[i].region.topLeft = conversorM_P(puntoBuscado[i].region.topLeft)
+                            puntoBuscado[i].region.topRight = conversorM_P(puntoBuscado[i].region.topRight)
+                            puntoBuscado[i].region.idPiso.alto = conversorM_P(puntoBuscado[i].region.idPiso.alto)
+                            puntoBuscado[i].region.idPiso.ancho = conversorM_P(puntoBuscado[i].region.idPiso.ancho)
+                            puntoBuscado[i].region.alto = conversorM_P(puntoBuscado[i].region.alto)
+                            puntoBuscado[i].region.ancho = conversorM_P(puntoBuscado[i].region.ancho)
+                            
+                           
+                        }
+                        // Graficar.countDocuments({idActivo}, (err, conteo) => {
+                            resolve(puntoBuscado);
+                        // });
+
+                        
+                    });  
+                
+
+
+                
+            });
+        }
+        await buscarAactivosenRegion(idRegion,fechaActual ).then( async obj=>{
+            console.log(obj);
+            
+            
+            for (let index = 0; index < obj.length; index++) {
+                await buscarIdTag(obj[index]._id).then(async obj2 =>{
+                    console.log(obj2);
+                    arrayTags.push(obj2[0])
+
+                    await BuscarActivos(obj2[0]._id).then(async obj3 =>{
+                        console.log(obj3);
+
+                        await promise_pointXY(obj3).then(obj4=>{
+                            console.log(obj4);
+                            Active.push({activo:obj3, puntoXY:obj4[0]})
+                        })
+                    })
+                })
+            }
+            
+            
+        })
+        res.status(200).jsonp({ok:true, Active})
+
+    
+        
+    } catch (error) {
+        console.log(`Catch Error:`);
+        console.log(error);
+        
+ 
+    }
 }
+
+
+
+
+
+
+
+
+
+
 /* *****************************************
 *	indicadores
 *	
@@ -515,8 +668,8 @@ let getDealerTime = async (req, res) =>{
 let getRegionTime = async (req, res) =>{
 console.log(req.body);
     let period = req.body.period || 1;
-    let desde = req.body.since || 2020-2-15;
-
+    let desde = req.body.since ;
+console.log(req.body);
         let result = await crearReporteTiempoSinMoverse(period, desde);
         console.log(result);
         res.status(200).json({
@@ -656,9 +809,19 @@ let region = (req, res, next) =>{
 
 
 let activoGet = (req, res, next) =>{
-        
-    Activo.find({status:true})
-        .populate('idTag')
+    
+    // .populate('idTag')
+    Activo.find({estado:true})
+        .populate([
+            {
+            path:'idTag',
+            model:'tagInfo'
+            },
+            {
+            path:'client',
+            model:'Client'
+            }
+        ])
         .exec((err, activoBuscado) => {
 
             if (err) {
@@ -1072,7 +1235,41 @@ let getAtendidosbySeller = (req, res, next)=>{
 
 }
 
+
+let test = (req, res, next)=>{
+    console.log(req.params);
+    let regionid = `${req.params.region}`
+    Graficar.aggregate([
+        {$match:{
+            region:mongoose.Types.ObjectId(regionid),
+            date:{$gte:new Date('2020-03-01')}}},
+
+        {$group:{_id:"$idTag", cantidad_Registros:{$sum:1}}}
+    ])
+    .exec((err, puntoBuscado) => {
+        console.log(puntoBuscado);
+        if (err) {
+            return res.status(400).jsonp({
+                ok: false,
+                err
+            })
+        }
+        if (!puntoBuscado) {
+            return res.status(403).jsonp({
+                ok: false,
+                err: {
+                    mensaje: "there isn't any asset with that name"
+                }
+            });
+        }
+        return res.status(200).jsonp({puntoBuscado});    
+        });   
+        
+}
+
+
 module.exports = {
+    test,
     region,
     ubicacion,
     findZona,
