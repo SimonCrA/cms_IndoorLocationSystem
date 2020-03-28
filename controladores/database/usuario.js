@@ -177,14 +177,9 @@ let postLogIn = (req, res, next) => {
             // console.log(req.user);
                 let use={
                     sessionId: req.sessionID,
-<<<<<<< HEAD
-                    constantes:{propagationN:1,
-                                standardDeviation:1,
-=======
                     user:req.user,
                     constantes:{nPropagacion:1,
                                 desviacionEstandar:1,
->>>>>>> 5a1bb67d9048302f4fcdb98b2600e07e8b83ac64
                                 rssiProm:1},
                     graphRaw:[{name:'',
                                 data:[{x:1,y:1}]
