@@ -78,19 +78,6 @@ let processDataFromRpi = async (data) => {
 
 }
 
-let saveRpisConnected = async (RpisConnected) => {
-
-	if (Array.isArray(RpisConnected) && RpisConnected.length) {
-
-		listRpisConnected = [];
-
-		for (let i = 0; i < RpisConnected.length; i++) {
-			listRpisConnected.push({macRpi: RpisConnected[i].mac})
-		}
-
-	}
-
-}
 
 let processGossipFromRpi = async (data) => {
 	//Esta función se ejecutará cada vez que el raspi envíe nueva data
@@ -323,7 +310,6 @@ module.exports = {
 	processDataFromRpi,
 	rpi,
 	dato, avisar,
-	processGossipFromRpi,
-	saveRpisConnected
+	processGossipFromRpi
 
 }

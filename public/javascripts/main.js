@@ -384,9 +384,9 @@ socket.on('missing-Tag-Aalarm',alarmtaglost=>{
 
 socket.on('gateway-Aalarm', alarmGatewayDisconnected => {
 
-  $("#msgGatewayLost").empty();
+  $("#msgTagLost").empty();
   $("#ultest").empty();
-  $("#msgGatewayLost").append(alarmGatewayDisconnected.msg);
+  $("#msgTagLost").append(alarmGatewayDisconnected.msg);
 
   if(Array.isArray(alarmGatewayDisconnected.gateways) && alarmGatewayDisconnected.gateways.length ){
 
@@ -400,5 +400,5 @@ socket.on('gateway-Aalarm', alarmGatewayDisconnected => {
                           </li>`); 
     }
   }
-  $("#AlarmGatewayLost").modal("show");
+  $("#AlarmTagLost").modal("show");
 })

@@ -302,7 +302,7 @@ let GetGraficar = (path)=>{
 let getRpis = (path) => {
     return new Promise((resolve, reject) => {
         InfoUbicacion.find(path)
-            .populate('idZona')
+            .populate([{path:'idZona',model:'zona',populate:{path:'floorId',model:'zona'}},])
             .sort({_id:-1})
             .exec((err, response) => {
                 if (err) {
