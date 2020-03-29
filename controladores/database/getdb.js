@@ -811,7 +811,7 @@ let region = (req, res, next) =>{
 let activoGet = (req, res, next) =>{
     
     // .populate('idTag')
-    Activo.find({estado:true})
+    Activo.find({status:true})
         .populate([
             {
             path:'idTag',
@@ -849,9 +849,9 @@ let activoGet = (req, res, next) =>{
 let pisos = (req, res, next) =>{
         
     Region.find({ status: true, type:'floor' }).select('idLocation floorName floorNumber plane status type height width scale')
-        .populate('idLocation')
+        .populate('idLocation') 
 
-        .exec((err, pisos) => {
+        .exec((err, floor) => {
 
             if (err) {
                 return res.status(400).json({
@@ -859,15 +859,15 @@ let pisos = (req, res, next) =>{
                     err
                 });
             }
-            for (let index = 0; index < pisos.length; index++) {
-                pisos[index].ancho = conversorM_P(pisos[index].ancho)
-                pisos[index].alto = conversorM_P(pisos[index].alto)
+            for (let index = 0; index < floor.length; index++) {
+                floor[index].width = conversorM_P(floor[index].width)
+                floor[index].height = conversorM_P(floor[index].height)
                 
             }
             
             res.json({
                 ok: true,
-                pisos
+                floor
             });
 
         });

@@ -26,14 +26,14 @@ let regiones = (req, res, next) => {
     let x = parseFloat(req.body.xbottomleft)
     let y = parseFloat(req.body.ybottomleft)
 
-    let alto = parseFloat(req.body.alto)
-    let ancho = parseFloat(req.body.ancho)
+    let height = parseFloat(req.body.height)
+    let width = parseFloat(req.body.width)
 
 
     let bl=[ x , y ]
-   let  br=[ancho + x, y ]
-    let tl=[x, alto+y]
-    let tr=[ancho+x, alto+y]
+   let  br=[width + x, y ]
+    let tl=[x, height+y]
+    let tr=[width+x, height+y]
     
     let id = req.params.id;
     let body = {
@@ -44,8 +44,8 @@ let regiones = (req, res, next) => {
         bottomRight: conversorP_M(br),
         topLeft:conversorP_M( tl),
         topRight: conversorP_M(tr),
-        alto:conversorP_M(alto),
-        ancho:conversorP_M(ancho)
+        height:conversorP_M(height),
+        width:conversorP_M(width)
     }
 
 
@@ -127,8 +127,8 @@ let pisos = (req, res, next) => {
     console.log(req.body);
     let body1 = req.body
 
-    body1.alto = conversorP_M(body1.alto)
-    body1.ancho = conversorP_M(body1.ancho)
+    body1.height = conversorP_M(body1.height)
+    body1.width = conversorP_M(body1.width)
 
 
     let id = req.params.id;
@@ -160,7 +160,7 @@ let putTags = (req, res, next) => {
     let body = _.pick(req.body, ['name', 'type', 'mactag']);
 
     
-    TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true, useFindAndModify: false },(err, tagModificado)=>{
+    TagInfo.findByIdAndUpdate(id, body, {new:true, runValidators:true, useFindAndModify: false },(err, tagDB)=>{
 
         if(err){
             return res.status(400).json({
@@ -170,7 +170,7 @@ let putTags = (req, res, next) => {
         }
         res.status(200).json({
             ok:true,
-            tagModificado
+            tagDB
         })
 
     })
@@ -183,7 +183,7 @@ let putActivo = (req, res) => {
     // let body = req.body;
     let body = _.pick(req.body, ['name', 'type','VIN', 'year', 'model', 'color', 'description']);
 
-    Activo.findByIdAndUpdate(id, body, {new: true,runValidators: true,useFindAndModify: false}, (err, activoModificado) => {
+    Activo.findByIdAndUpdate(id, body, {new: true,runValidators: true,useFindAndModify: false}, (err, assetDB) => {
 
         if (err) {
             return res.status(500).json({
@@ -191,7 +191,7 @@ let putActivo = (req, res) => {
                 err
             })
         };
-        if (!activoModificado) {
+        if (!assetDB) {
             return res.status(400).json({
                 ok: false,
                 err: {
@@ -202,7 +202,7 @@ let putActivo = (req, res) => {
 
         res.status(200).json({
             ok: true,
-            asset: activoModificado
+            asset: assetDB
         }); 
 
     });
@@ -211,11 +211,8 @@ let putActivo = (req, res) => {
 
 let ubicacion = (req, res, next) => {
 
-    
-
     let id = req.params.id;
-
-    let body = _.pick(req.body,['macRpi','axis','xpos','ypos', 'compartido', 'idZona', 'ubicacion']) ;
+    let body = _.pick(req.body,['macRpi','axis','xpos','ypos', 'shared', 'idZona', 'location']) ;
 
     
     InfoUbicacionRpi.findByIdAndUpdate(id, body, {new:true, runValidators:true },(err, ubicacion)=>{

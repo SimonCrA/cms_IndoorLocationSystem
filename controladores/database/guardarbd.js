@@ -208,7 +208,7 @@ let ubicacion = (req, res, next)=>{
 
     let ubicacion = new InfoUbicacionRpi({
 
-        macRpi: req.body.macRpi,
+        macRpi: req.body.macrpi,
         axis: req.body.axis,
         location: location,
         xpos: conversorP_M(req.body.xpos),
@@ -237,7 +237,7 @@ let ubicacion = (req, res, next)=>{
 }
 
 /* *****************************************
-*	Regiones
+*	Regiones 
 *	
 /* *****************************************/
 
@@ -248,13 +248,13 @@ let regiones = (req, res, next) =>{
     let x = parseFloat(req.body.xbottomleft)
     let y = parseFloat(req.body.ybottomleft)
 
-    let alto = parseFloat(req.body.alto)
-    let ancho = parseFloat(req.body.ancho)
+    let height = parseFloat(req.body.height)
+    let width = parseFloat(req.body.width)
 
     let bl=[ x , y ]
-    let  br=[ancho + x, y ]
-    let tl=[x, alto+y]
-    let tr=[ancho+x, alto+y]
+    let  br=[width + x, y ]
+    let tl=[x, height+y]
+    let tr=[width+x, height+y]
 
 console.log(conversorP_M(bl));
 
@@ -262,15 +262,14 @@ console.log(conversorP_M(bl));
 
         floorId:req.body.floorId,
 
-        nombreRegion:req.body.nombreRegion   ,
-        numeroRegion:parseInt(req.body.numeroRegion)   ,
-        alto:conversorP_M(parseInt(alto)),
-        ancho:conversorP_M(parseInt(ancho)),
+        regionName:req.body.regionName,
+        regionNumber:parseInt(req.body.regionNumber),
+        height:conversorP_M(height),
+        width:conversorP_M(width),
         bottomLeft:conversorP_M(bl) ,
         bottomRight:conversorP_M(br) ,
         topLeft:conversorP_M(tl) ,
         topRight:conversorP_M(tr) ,
-        
         status: true,
         type: 'region'
 
@@ -307,13 +306,12 @@ let pisos = (req, res, next) =>{
     let region = new Region({
 
         idLocation:req.body.idLocation  ,
-
         floorName: req.body.floorName,
         floorNumber: parseInt(req.body.floorNumber),
         scale: parseInt(req.body.scale),
-        plano:'',
-        alto: conversorP_M(parseInt(req.body.alto)) ,
-        ancho: conversorP_M(parseInt(req.body.ancho)) ,
+        plane:'',
+        height: conversorP_M(parseFloat(req.body.height)) ,
+        width: conversorP_M(parseFloat(req.body.width)) ,
         heightPixel:0,
         widthPixel:0,
         status: true,
@@ -363,7 +361,7 @@ let activoPost = (req, res, next) =>{
 
     });
 
-    activo.save((err, activoCreado) => {
+    activo.save((err, asset) => {
 
         if (err) {
             return res.status(400).json({
@@ -376,7 +374,7 @@ let activoPost = (req, res, next) =>{
         let id = idbeacon;
 
         let body = {
-            condition:true
+            status: true
         }
        
         
@@ -388,7 +386,7 @@ let activoPost = (req, res, next) =>{
             
             res.status(200).json({
                 ok: true,
-                activoCreado
+                asset
             });
         })
 
