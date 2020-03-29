@@ -4,7 +4,7 @@
 let client_countOld=0;
 let client_count=0
 
-const { processDataFromRpi,verificarRpis, processGossipFromRpi } = require('./controladores/database/scan')
+const { processDataFromRpi, processGossipFromRpi } = require('./controladores/database/scan')
 const {rawCaracterizacion} = require('./controladores/database/guardarbd')
 let {globalDataGraph, globalDataGraphDos, globalDataGraphDistance,jsoCanvas,
     globalDataGraphDistanceDos, DistanciaError, paramsValidacionCaract, etiqueta,Users} = require('./controladores/variables')
@@ -104,10 +104,11 @@ setInterval(async () => {
 
 setInterval( async () => {
     let arrRpisDB = [];
+    let dataRpiLost = {macRpi: '', region: '', floor : ''};
     Variables.RpisDisconnected = [];
     let busquedaDeRpis = () =>{
         return new Promise((resolve, reject) => {
-            InfoUbicacionRpi.find({})
+            InfoUbicacionRpi.find({status:true})
                 .exec((err, rpiDB) =>{
                     if (err) {
 
@@ -132,24 +133,26 @@ setInterval( async () => {
 
         })
     }
-    let resultRpisSearched = busquedaDeRpis();
-
+    let resultRpisSearched = await busquedaDeRpis();
+    // console.log(resultRpisSearched);
     for (let i = 0; i < resultRpisSearched.rpiDB.length; i++) {
         arrRpisDB.push({macRpi: resultRpisSearched.rpiDB[i].macRpi})
     };
 
     for (let j = 0; j < arrRpisDB.length; j++) {
-        
-        let indexFound = Variables.listRpisConnected.findIndex(dato => dato.macRpi === arrRpisDB[j].macRpi);
+        console.log(Variables.listRpisConnected);
+        let indexFound = libreta.findIndex(dato => dato.mac === arrRpisDB[j].macRpi);
         if (indexFound >= 0) {
 
         } else {
-            let dataRpiLost = {macRpi: arrRpisDB[j].macRpi, region: '', floor : ''};
             let path = { macRpi: arrRpisDB[j].macRpi }
             await Promesa.getRpis(path).then(async dataRpiRes => {
 
-                dataRpiLost.region = dataRpiRes.idZona.regionName;
-                dataRpiLost.floor = dataRpiRes.idZona.floorName;
+                console.log(dataRpiRes);
+                dataRpiLost.macRpi= arrRpisDB[j].macRpi;
+
+                dataRpiLost.region = dataRpiRes[0].idZona.regionName;
+                dataRpiLost.floor = dataRpiRes[0].idZona.floorId.floorName;
 
             }, err=>{console.log(err);})
 
@@ -159,13 +162,16 @@ setInterval( async () => {
     }
     if (Variables.RpisDisconnected.length != 0) {
 
-        io.emit('gateway-Aalarm', {
+        console.log(`ESTA DESCONECTADO.`);
+        console.log(Variables.RpisDisconnected);
+        io.emit('gateway-Aalarm', 
+        {   ok:true,
             msg: 'Caution Gateways disconnected',
             gateways: Variables.RpisDisconnected
         })
-    }
+    }else{console.log(`TODO ON`);}
 
-}, 10000000);
+}, 40000);
 
 /* *****************************************
 *	
@@ -436,7 +442,6 @@ console.log(`INCIIO ESTO de gossip`);
             if(findIt>=0){
                 libreta[findIt].stat = true;
 
-                verificarRpis(libreta);
 
                 // console.log(libreta);
                 
