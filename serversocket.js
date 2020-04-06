@@ -315,12 +315,13 @@ console.log(`INCIIO ESTO de gossip`);
         }catch(e){console.log(e);}    
     
     }
-    let stoped= () =>{
+    
+    let stopped= () =>{
         let aviso = 'detener el despliegue';
         console.log(aviso);
         startTrilateracion[0].a = false
     
-        io.emit('stoped-all', aviso);
+        io.emit('stopped-all', aviso);
     }
     
     let setlist = ()=>{
@@ -336,7 +337,7 @@ console.log(`INCIIO ESTO de gossip`);
         io.emit('Option-to-Validator', etiqueta)
     
     }
-    let stoped_caracter= (data)=>{
+    let stopped_caracter= (data)=>{
         io.emit('progressInfo',data)
     
     }
@@ -412,6 +413,7 @@ console.log(`INCIIO ESTO de gossip`);
             console.log(data);
             refresh();
         })
+
         socket.on('sendGossipToServer', async (data) => {
             console.log(`SENDGOSSIPTOSERVER`);
             console.log(data);
@@ -425,11 +427,13 @@ console.log(`INCIIO ESTO de gossip`);
             }
     
         })
+
         socket.on('sendGossipToServerEmpty', (data)=>{
             console.log(`265- gossip empty`);
             console.log(data);
     
         })
+
         socket.on('sendDataToServer', (dataTracking)=>{
             // console.log(`tracking! ${socket.id}`);
             // console.log(dataTracking.length);
@@ -451,6 +455,7 @@ console.log(`INCIIO ESTO de gossip`);
             }
             
         })
+
         socket.on('sendDataToServerEmpty',data=>{
             let findIt = libreta.findIndex(obj => (obj.mac === data.rpimac) );
             if(findIt>=0){
@@ -464,6 +469,7 @@ console.log(`INCIIO ESTO de gossip`);
     
             }
             })
+
         socket.on('sendDataCToServer', (dataCaracterizacion)=>{
             console.log(`CARACTERIZACION ${socket.id}`);
             // console.log(dataCaracterizacion.length);
@@ -472,13 +478,13 @@ console.log(`INCIIO ESTO de gossip`);
             
             
         })
+
         socket.on('test1',data=>{console.log(data);})
     
         socket.on('stop_DataCToServer',data =>{
             console.log(`FINISHED:`.green+` la recoleccion de data ha terminado ${data}`.magenta);
-            stoped_caracter(data)
+            stopped_caracter(data)
         })
-    
     
         socket.on('accions', data =>{
             console.log(data);
@@ -504,6 +510,7 @@ console.log(`INCIIO ESTO de gossip`);
                 
             }
         })
+
         socket.on('despliegue', async data =>{
 
             // let res = await validacion_de_Usuario(data.sessionId).then(respons=>{
@@ -522,15 +529,12 @@ console.log(`INCIIO ESTO de gossip`);
 
             // }, err=>console.log(err));
         })
+
         socket.on('stop-all', data =>{
             console.log(data);
-            stoped()
+            stopped()
         })
     
-        
-        
-        
-        
         socket.on("disconnect", () => {
             // sequenceNumberByClient.delete(socket);
             // libreta
