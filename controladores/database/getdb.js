@@ -224,15 +224,6 @@ let searchAssetsRegion = async (req, res, next) =>{
     }
 }
 
-
-
-
-
-
-
-
-
-
 /* *****************************************
 *	indicadores
 *	

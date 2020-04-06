@@ -138,7 +138,7 @@ function startValidacion(e) {//Se utiliza cuando se procede a validar las consta
   return false;
 }
 
-function stopedAll(e) {// Detiene la ejecucion de todas las RPIs
+function stoppedAll(e) {// Detiene la ejecucion de todas las RPIs
 
     let aviso= {aviso:'detener el tracking desde client', sessionId}
 
