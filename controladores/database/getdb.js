@@ -301,7 +301,7 @@ let searchAssets = async (req, res) => {
                     }
 
                     if(Array.isArray(ActivoBuscado) && ActivoBuscado.length){
-
+                        console.log(ActivoBuscado);
                         for(let i = 0; i< ActivoBuscado.length ; i++){
                             ActivoBuscado[i].idTag.batteryLevel = (((ActivoBuscado[i].idTag.batteryLevel /1000) /3) *100).toFixed(2)
                         }
@@ -992,11 +992,11 @@ let contador = (req, res, next)=>{
 
 	async.parallel({
 		tagTrue: function(callback) {
-            TagInfo.find({estado: true}).count()
+            TagInfo.find({status: true}).count()
               .exec(callback);
         },
 		tagFalse: function(callback) {
-            TagInfo.find({estado: false}).count()
+            TagInfo.find({status: false}).count()
               .exec(callback);
         },
 		tagBateryhigh: function(callback) {
@@ -1018,27 +1018,27 @@ let contador = (req, res, next)=>{
               .exec(callback);
         },
 		regionesTrue: function(callback) {
-			Region.find({tipo:'region', estatus: true}).count()
+			Region.find({type:'region', status: true}).count()
               .exec(callback);
         },
 		regionesFalse: function(callback) {
-			Region.find({tipo:'region', estatus: false}).count()
+			Region.find({type:'region', status: false}).count()
               .exec(callback);
         },
 		pisoTrue: function(callback) {
-			Region.find({type:'floor', estatus: true}).count()
+			Region.find({type:'floor', status: true}).count()
               .exec(callback);
         },
 		pisoFalse: function(callback) {
-			Region.find({type:'floor', estatus: false}).count()
+			Region.find({type:'floor', status: false}).count()
               .exec(callback);
         },
 		gatewayTrue: function(callback) {
-			InfoUbicacion.find({estatus:true}).count()
+			InfoUbicacion.find({status:true}).count()
               .exec(callback);
         },
 		gatewayFalse: function(callback) {
-			InfoUbicacion.find({estatus:false}).count()
+			InfoUbicacion.find({status:false}).count()
               .exec(callback);
         }
 
