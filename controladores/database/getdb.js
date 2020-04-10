@@ -358,7 +358,7 @@ let searchAssets = async (req, res) => {
                                 }
                             });
                         };
-                        // console.log(JSON.stringify(puntoBuscado,null, 2));
+                        console.log(JSON.stringify(puntoBuscado,null, 2));
                         for(let i = 0 ; i < puntoBuscado.length ; i++){
 
                             puntoBuscado[i].x = conversorM_P(puntoBuscado[i].x)
@@ -368,10 +368,10 @@ let searchAssets = async (req, res) => {
                             puntoBuscado[i].region.bottomRight = conversorM_P(puntoBuscado[i].region.bottomRight)
                             puntoBuscado[i].region.topLeft = conversorM_P(puntoBuscado[i].region.topLeft)
                             puntoBuscado[i].region.topRight = conversorM_P(puntoBuscado[i].region.topRight)
-                            puntoBuscado[i].region.idPiso.alto = conversorM_P(puntoBuscado[i].region.idPiso.alto)
-                            puntoBuscado[i].region.idPiso.ancho = conversorM_P(puntoBuscado[i].region.idPiso.ancho)
-                            puntoBuscado[i].region.alto = conversorM_P(puntoBuscado[i].region.alto)
-                            puntoBuscado[i].region.ancho = conversorM_P(puntoBuscado[i].region.ancho)
+                            puntoBuscado[i].region.floorId.height = conversorM_P(puntoBuscado[i].region.floorId.height)
+                            puntoBuscado[i].region.floorId.width = conversorM_P(puntoBuscado[i].region.floorId.width)
+                            puntoBuscado[i].region.height = conversorM_P(puntoBuscado[i].region.height)
+                            puntoBuscado[i].region.width = conversorM_P(puntoBuscado[i].region.width)
                             
                            
                         }
