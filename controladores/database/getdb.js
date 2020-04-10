@@ -368,10 +368,10 @@ let searchAssets = async (req, res) => {
                             puntoBuscado[i].region.bottomRight = conversorM_P(puntoBuscado[i].region.bottomRight)
                             puntoBuscado[i].region.topLeft = conversorM_P(puntoBuscado[i].region.topLeft)
                             puntoBuscado[i].region.topRight = conversorM_P(puntoBuscado[i].region.topRight)
-                            puntoBuscado[i].region.idPiso.alto = conversorM_P(puntoBuscado[i].region.idPiso.alto)
-                            puntoBuscado[i].region.idPiso.ancho = conversorM_P(puntoBuscado[i].region.idPiso.ancho)
-                            puntoBuscado[i].region.alto = conversorM_P(puntoBuscado[i].region.alto)
-                            puntoBuscado[i].region.ancho = conversorM_P(puntoBuscado[i].region.ancho)
+                            puntoBuscado[i].region.idPiso.height = conversorM_P(puntoBuscado[i].region.idPiso.height)
+                            puntoBuscado[i].region.idPiso.width = conversorM_P(puntoBuscado[i].region.idPiso.width)
+                            puntoBuscado[i].region.height = conversorM_P(puntoBuscado[i].region.height)
+                            puntoBuscado[i].region.width = conversorM_P(puntoBuscado[i].region.width)
                             
                            
                         }
@@ -699,9 +699,9 @@ let findZona = (req, res, next) => {
         zona: function(callback) {
             Region.find({type:'region', status:true}).select('regionName regionNumber')
             .populate({
-                path:'idPiso',
+                path:'floorId',
                 model:'zona',
-                select:'nombrePiso'
+                select:'floorNumber'
             })
             .exec(callback)
         }
@@ -711,7 +711,7 @@ let findZona = (req, res, next) => {
 		// Successful, so render.
 		
 		// console.log({'idzonas':results.idzona, 'tags':results.tags});
-		res.status(200).jsonp({ 'idzonas':results.idzona,'tags':results.tags, 'zona':results.zona});
+		res.status(200).jsonp({ 'idzones':results.idzona,'tags':results.tags, 'zone':results.zona});
 		
     });
 
