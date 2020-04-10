@@ -1041,9 +1041,9 @@ let contador = (req, res, next)=>{
 		res.status(200).jsonp({
             'tagTrue':results.tagTrue,
              'tagFalse':results.tagFalse,
-             'tagBateryhigh':results.tagBateryhigh,
-             'tagBaterymedium':results.tagBaterymedium,
-             'tagBateryLow': results.tagBateryLow,
+             'tagBatteryhigh':results.tagBateryhigh,
+             'tagBatterymedium':results.tagBaterymedium,
+             'tagBatteryLow': results.tagBateryLow,
 
              'regionsTrue': results.regionesTrue,
              'regionsFalse': results.regionesFalse,
