@@ -368,8 +368,8 @@ let searchAssets = async (req, res) => {
                             puntoBuscado[i].region.bottomRight = conversorM_P(puntoBuscado[i].region.bottomRight)
                             puntoBuscado[i].region.topLeft = conversorM_P(puntoBuscado[i].region.topLeft)
                             puntoBuscado[i].region.topRight = conversorM_P(puntoBuscado[i].region.topRight)
-                            puntoBuscado[i].region.idPiso.height = conversorM_P(puntoBuscado[i].region.idPiso.height)
-                            puntoBuscado[i].region.idPiso.width = conversorM_P(puntoBuscado[i].region.idPiso.width)
+                            puntoBuscado[i].region.floorId.height = conversorM_P(puntoBuscado[i].region.floorId.height)
+                            puntoBuscado[i].region.floorId.width = conversorM_P(puntoBuscado[i].region.floorId.width)
                             puntoBuscado[i].region.height = conversorM_P(puntoBuscado[i].region.height)
                             puntoBuscado[i].region.width = conversorM_P(puntoBuscado[i].region.width)
                             
@@ -701,7 +701,7 @@ let findZona = (req, res, next) => {
             .populate({
                 path:'floorId',
                 model:'zona',
-                select:'floorNumber'
+                select:'floorNumber floorName'
             })
             .exec(callback)
         }
