@@ -442,12 +442,12 @@ let getTopTen = (req, res) =>{
     
     try {
         console.log(req.params);
-        let tipo = req.params.tipo
+        let type = req.params.type
         let order= req.params.order
         let desde = req.params.desde || ''
         let hasta =req.params.hasta || ''
         let counter
-        let path = {type:tipo}
+        let path = {type:type}
         if(order==="up"){
             counter=-1;
         }else if(order==="down"){ 
@@ -511,7 +511,7 @@ let getTopTen = (req, res) =>{
             arrayjs.push({
                 n: i+1,
                 model: body[i].name,
-                searches:body[i].count
+                searched:body[i].count
             })
             
         }
@@ -581,7 +581,7 @@ let getTopTenSales = (req, res) =>{
                 model: body[i].model,
                 year: body[i].year,
                 color: body[i].color,
-                searches: body[i].count
+                count: body[i].count
             })
 
         }
@@ -701,7 +701,7 @@ let findZona = (req, res, next) => {
             .populate({
                 path:'floorId',
                 model:'zona',
-                select:'floorName floorNumber'
+                select:'floorNumber floorName'
             })
             .exec(callback)
         }
@@ -711,7 +711,7 @@ let findZona = (req, res, next) => {
 		// Successful, so render.
 		
 		// console.log({'idzonas':results.idzona, 'tags':results.tags});
-		res.status(200).jsonp({ 'idzonas':results.idzona,'tags':results.tags, 'zone':results.zone});
+		res.status(200).jsonp({ 'idzones':results.idzona,'tags':results.tags, 'zone':results.zone});
 		
     });
 
@@ -1115,12 +1115,11 @@ try{
         
                     let TimerToreciveActive = new timerToreciveActive({
                         user:userid ,
-        
-                        activo:activo,
-                        regionPartida:regionPartida,
-                        regionLlegada: regionActual,
-                        duracionMin:contmin.toFixed(2),
-                        duracion:[dateStart, dateEnd, (dateEnd-dateStart)]
+                        asset:activo,
+                        startRegion:regionPartida,
+                        arrivalRegion: regionActual,
+                        timeMin:contmin.toFixed(2),
+                        time:[dateStart, dateEnd, (dateEnd-dateStart)]
                     })
                     TimerToreciveActive.save((er, save)=>{
                         if(er){

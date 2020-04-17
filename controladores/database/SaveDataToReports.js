@@ -633,7 +633,7 @@ let IniciarContador =async (req, res, next)=>{
         }
         else{
             console.log(`No encontrado...`);
-            return res.status(410).jsonp({ok:false, msg:`the user's session does not coincide with the server's valid sessions`})
+            return res.status(410).jsonp({ok:false, msg:"the user's session does not coincide with the server's valid sessions"})
         }
         // return res.status(200).jsonp({ok:true})
         let activo = req.params.idactivo ;
@@ -688,11 +688,11 @@ let IniciarContador =async (req, res, next)=>{
                             let TimerToreciveActive = new timerToreciveActive({
                                 user:userid ,
                 
-                                activo:activo,
-                                regionPartida:regionPartida,
-                                regionLlegada: regionActual,
-                                duracionMin:contmin.toFixed(2),
-                                duracion:[dateStart, dateEnd, (dateEnd-dateStart)]
+                                asset:activo,
+                                startRegion:regionPartida,
+                                arrivalRegion: regionActual,
+                                timeMin:contmin.toFixed(2),
+                                time:[dateStart, dateEnd, (dateEnd-dateStart)]
                             })
                             TimerToreciveActive.save((er, save)=>{
                                 if(er){
