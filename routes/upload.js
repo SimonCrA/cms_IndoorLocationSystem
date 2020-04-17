@@ -229,10 +229,10 @@ function guardarImgMap(id, res, nombreArchivo ,resolution) {
             });
         };
 
-        console.log(zonaDB.plano);
+        console.log(zonaDB.plane);
 
 
-        zonaDB.plano = nombreArchivo;
+        zonaDB.plane = nombreArchivo;
         zonaDB.heightPixel = resolution.height
         zonaDB.widthPixel =resolution.width
 
