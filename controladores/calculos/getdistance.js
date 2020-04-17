@@ -56,23 +56,26 @@ try {
 
     let result = await getConstantes().then(dato=>{
         // console.log(dato);
+        // console.log(req.rssi);
         let pot = (-req.rssi + dato.rssiProm + dato.standardDeviation) / (10 * dato.propagationN);
+        // console.log(pot);
                 let distancia = Math.pow(10, pot);
                 // console.log(distancia);
                 // console.log(`********************\n`);
                 // console.log(paramsValidacionCaract);
                 let error = Math.sqrt((Math.pow(paramsValidacionCaract[0].distError - parseFloat(distancia), 2)) )
-                
                 let datosJson = {
                     Distancia:distancia,
                     macRpi:req.macrpi,
                     macTag:req.mactag,
-                    tipo:req.type,
+                    tipo:req.tipo,
                     tipov:'generado',
                     region: dato.idRegion,
                     error
                     
                 }
+                // console.log(req);
+                // console.log(datosJson);
                 let res = validarFiltro1(datosJson);
                 let name = `${req.macrpi}-${req.mactag}`
 

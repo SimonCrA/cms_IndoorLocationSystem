@@ -1,13 +1,13 @@
 console.log(`hey?`);
-var settings = {
-  "url": "http://localhost:3000/imagen/Usuarios/5e161078b3aa362f1cac7dd0-844.jpg",
-  "method": "GET",
-  "timeout": 0,
-};
+// var settings = {
+//   "url": "http://localhost:3000/imagen/Usuarios/5e161078b3aa362f1cac7dd0-844.jpg",
+//   "method": "GET",
+//   "timeout": 0,
+// };
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-});
+// $.ajax(settings).done(function (response) {
+//   console.log(response);
+// });
 
 var session=''
 function login(e) {

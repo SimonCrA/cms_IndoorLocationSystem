@@ -447,7 +447,7 @@ let getTopTen = (req, res) =>{
         let desde = req.params.desde || ''
         let hasta =req.params.hasta || ''
         let counter
-        let path = {tipo:tipo}
+        let path = {type:tipo}
         if(order==="up"){
             counter=-1;
         }else if(order==="down"){ 
@@ -510,8 +510,8 @@ let getTopTen = (req, res) =>{
         for (let i = 0; i < body.length; i++) {
             arrayjs.push({
                 n: i+1,
-                modelo: body[i].nombre,
-                busquedas:body[i].count
+                model: body[i].name,
+                searches:body[i].count
             })
             
         }
@@ -577,11 +577,11 @@ let getTopTenSales = (req, res) =>{
         for (let i = 0; i < body.length; i++) {
             arrayjs.push({
                 n: i + 1,
-                marca:body[i].brand,
-                modelo: body[i].model,
-                anio: body[i].year,
+                brand:body[i].brand,
+                model: body[i].model,
+                year: body[i].year,
                 color: body[i].color,
-                busquedas: body[i].count
+                searches: body[i].count
             })
 
         }
@@ -696,12 +696,12 @@ let findZona = (req, res, next) => {
 			TagInfo.find().select('mactag')
               .exec(callback);
         },
-        zona: function(callback) {
+        zone: function(callback) {
             Region.find({type:'region', status:true}).select('regionName regionNumber')
             .populate({
-                path:'idPiso',
+                path:'floorId',
                 model:'zona',
-                select:'nombrePiso'
+                select:'floorName floorNumber'
             })
             .exec(callback)
         }
@@ -711,7 +711,7 @@ let findZona = (req, res, next) => {
 		// Successful, so render.
 		
 		// console.log({'idzonas':results.idzona, 'tags':results.tags});
-		res.status(200).jsonp({ 'idzonas':results.idzona,'tags':results.tags, 'zona':results.zona});
+		res.status(200).jsonp({ 'idzonas':results.idzona,'tags':results.tags, 'zone':results.zone});
 		
     });
 
@@ -728,7 +728,7 @@ let findZona = (req, res, next) => {
 let regionId = (region) =>{
     return new Promise((resolve, reject ) =>{
 
-        InfoUbicacion.find({ sstatus: true, idZona:region })
+        InfoUbicacion.find({ status: true, idZona:region })
             .populate('idZona')
     
             .exec((err, region) => {
@@ -742,7 +742,7 @@ let regionId = (region) =>{
                         region
                     })
                 }else{
-                    return reject('Region is Empty')
+                    return reject('Region is Empty (getDB)')
 
                 }
 

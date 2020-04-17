@@ -287,7 +287,7 @@ console.log(`INCIIO ESTO de gossip`);
                     else if(resul.socketID === undefined){
                         console.log(`ERROR: result= ${resul}\n Data= ${data[i]}`);
                     }else{
-    
+                        console.log(`agregue 1`);
                         let js={id:resul.socketID, tipo:aviso.tipo, mac:region.region[i].macRpi}
                         arr.push(js)
                         // console.log(resul.socketID);  
@@ -300,13 +300,13 @@ console.log(`INCIIO ESTO de gossip`);
                     }
                     
                 }
-                if(arr.length===3){
+                // if(arr.length===3){
     
                     for (let i = 0; i < arr.length; i++) {
                         console.log(`HAY 3 MACS ${arr[i].id}|| ${arr[i].mac}`);
                         io.to(arr[i].id).emit('asset-tracking', aviso);
                     }
-                }
+                // }
                 // io.emit('asset-tracking', aviso);
         
             }, err => {console.log(err);});
@@ -440,8 +440,8 @@ console.log(`INCIIO ESTO de gossip`);
             // clg
     
             processDataFromRpi(dataTracking);
-            console.log(`Libreta=>`);
-            console.log(libreta);
+            // console.log(`Libreta=>`);
+            // console.log(libreta);
             let findIt = libreta.findIndex(obj => (obj.mac === dataTracking[0].macrpi) );
             if(findIt>=0){
                 libreta[findIt].stat = true;

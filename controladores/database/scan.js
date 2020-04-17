@@ -20,7 +20,7 @@ let dato = function(req,res,next){
 
 let processDataFromRpi = async (data) => {
 	let respuesta;
-	console.log(data);
+	// console.log(data);
 	if(Array.isArray(data) && data.length){
 		
 			let rawDataRaspi = new Array();

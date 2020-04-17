@@ -20,18 +20,18 @@ var sessionId = sessionStorage.getItem('sessionId')
 /* *****************************************/
 var consulta = $.get( "../../../api/zona", function() {
   data = consulta.responseJSON;
-  console.log(data.zona);
+  console.log(data.zone);
   
-  for (let i = 0; i < data.zona.length; i++) {
+  for (let i = 0; i < data.zone.length; i++) {
     // console.log(`data es ${i}====${JSON.stringify(data[i])}`);
     let zona = document.getElementById("List_IdZona");
     let zona2 = document.getElementById("RegionList2");
     let option = document.createElement("option");
     let option2 = document.createElement("option");
-    option.text = `${data.zona[i].idPiso.nombrePiso} - ${data.zona[i].nombreRegion} (${data.zona[i].numeroRegion})`;
-    option.value=data.zona[i]._id
-    option2.value=data.zona[i]._id
-    option2.text = `${data.zona[i].idPiso.nombrePiso} - ${data.zona[i].nombreRegion} (${data.zona[i].numeroRegion})`;
+    option.text = `${data.zone[i].floorId.floorName} - ${data.zone[i].regionName} (${data.zone[i].regionNumber})`;
+    option.value=data.zone[i]._id
+    option2.value=data.zone[i]._id
+    option2.text = `${data.zone[i].floorId.floorName} - ${data.zone[i].regionName} (${data.zone[i].regionNumber})`;
     zona.add(option);  
     zona2.add(option2); 
   }
@@ -146,12 +146,16 @@ function stoppedAll(e) {// Detiene la ejecucion de todas las RPIs
     console.log(aviso);
     return false;
 }
+
+
 function refresh(e) {//Actualiza la libreta de direcciones del  Socket
     let aviso={aviso:'Actualizar data del Server', sessionId}
     socket.emit('refresh-client', aviso); 
     console.log(aviso);
     return false;
 }
+
+
 
 /* *****************************************
 *	Modulo: Graph managment

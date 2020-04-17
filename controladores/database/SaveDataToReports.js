@@ -307,7 +307,7 @@ let crearReporteMasTiempoDealer = async () =>{
 
             return new Promise((resolve, reject) => {
 
-                Activo.find({ estado: true })
+                Activo.find({ status: true })
                     .sort({startDate:-1})
                     .exec((err, activoDB) => {
                         err
@@ -325,7 +325,7 @@ let crearReporteMasTiempoDealer = async () =>{
     }
 
     let resultSearchAsset = await searchAsset();
-    // console.log(resultSearchAsset);
+    console.log(resultSearchAsset);
 
     let dataObject = {};
     let resta = 0;
@@ -341,8 +341,8 @@ let crearReporteMasTiempoDealer = async () =>{
         dataObject = {
             VIN : resultSearchAsset[i].VIN,
             days: contdias.toFixed(2),
-            name: resultSearchAsset[i].nombre,
-            model: resultSearchAsset[i].modelo
+            name: resultSearchAsset[i].name,
+            model: resultSearchAsset[i].model
         };
 
         arrActivo.push(dataObject);
