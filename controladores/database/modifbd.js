@@ -336,10 +336,10 @@ try{
 }
 
 let venderAuto = (req, res, next) =>{
-
     let idAsset = req.params.idAsset;
     let idTag = req.params.idTag;
-    console.log(`activo: ${idActivo}\nTag:${idTag}`);
+    console.log(`activo: ${idAsset}\nTag:${idTag}`);
+    // console.log(req);
 
 
     let tagStatus = {

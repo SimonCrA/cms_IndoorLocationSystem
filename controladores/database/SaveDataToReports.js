@@ -235,7 +235,7 @@ let crearReporteTiempoVenta = async () =>{
     
             return new Promise((resolve, reject) => {
         
-                Activo.find({estado: false})
+                Activo.find({status: false})
                     .exec((err, activoDB) => {
                          err
                              ?
@@ -261,8 +261,8 @@ let crearReporteTiempoVenta = async () =>{
         let contdias = resta/(1000*60*60*24);
 
         objectActivo ={
-            brand: resultSearchAsset[i].nombre,
-            model: resultSearchAsset[i].modelo,
+            brand: resultSearchAsset[i].name,
+            model: resultSearchAsset[i].model,
             vin: resultSearchAsset[i].VIN,
             saletime: contdias.toFixed(2),
         }
@@ -288,8 +288,8 @@ let crearReporteTiempoServicio = async (activo) =>{
         let conthoras = resta / (1000 * 60 * 60);
 
         objectActiv = {
-            brand: activo[i].nombre,
-            model: activo[i].modelo,
+            brand: activo[i].name,
+            model: activo[i].model,
             vin: activo[i].VIN,
             servicetime: conthoras.toFixed(2)
         }
@@ -341,8 +341,8 @@ let crearReporteMasTiempoDealer = async () =>{
         dataObject = {
             VIN : resultSearchAsset[i].VIN,
             days: contdias.toFixed(2),
-            name: resultSearchAsset[i].nombre,
-            model: resultSearchAsset[i].modelo
+            name: resultSearchAsset[i].name,
+            model: resultSearchAsset[i].model
         };
 
         arrActivo.push(dataObject);
@@ -372,7 +372,7 @@ let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
 
                 return new Promise((resolve, reject) => {
 
-                    TagInfo.find({estado: true})
+                    TagInfo.find({status: true})
                         .exec((err, tagDB) => {
                             err
                                 ?
@@ -413,15 +413,14 @@ let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
                     .populate([{
                         path:'region',
                         model:'zona',
-                        select:'nombreRegion numeroRegion idPiso',
+                        select:'regionName regionNumber floorId',
                         populate:{
-                            path:'idPiso',
+                            path:'floorId',
                             model:'zona',
-                            select:'nombrePiso numeroPiso'
+                            select:'floorName floorNumber'
+                            }
                         }
-                }
-            ])
-                    
+                        ])
                         .exec((err, pointDB) => {
                             err
                                 ?
@@ -445,7 +444,7 @@ let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
 
         if(Array.isArray(resultSearchPoint) && resultSearchPoint.length){
             if(resultSearchPoint.length > 1){
-
+                console.log(`2do if`);
                 let StartCountTime = new Date().getTime();
                 // console.log(resultSearchPoint);
                 for (let j = 0; j < (resultSearchPoint.length -1); j++) {
@@ -532,7 +531,7 @@ let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
 
         // console.log(arrPoint[i].tag);
         let ta= arrPoint[i].tag
-        let path= `{"idTag":"${ta}", "estado": true}`
+        let path= `{"idTag":"${ta}", "status": true}`
         let ruta = JSON.parse(path)
         if(arrPoint[i].id != null ){
 
@@ -540,9 +539,9 @@ let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
             let objectActivoRegion = {};
     
             objectActivoRegion = {
-                brand: resultSearchTag.nombre,
+                brand: resultSearchTag.name,
                 VIN: resultSearchTag.VIN,
-                model: resultSearchTag.modelo,
+                model: resultSearchTag.model,
                 region: arrPoint[i].region,
                 timeDays: parseFloat((arrPoint[i].time).toFixed(2))
             }

@@ -622,7 +622,7 @@ let getServiceTime = async (req, res) =>{
 
             return new Promise((resolve, reject) => {
 
-                Activo.find({ estado: false, })
+                Activo.find({ status: false, })
                     .exec((err, activoDB) => {
                         err
                             ?
@@ -1192,7 +1192,7 @@ let timeActiveRecive = (req, res, next)=>{
             return res.status(402).jsonp({ok:false, err})
         }
         else{
-            
+            console.log(timetorecive);
             return res.jsonp({ok:true, timetorecive})
         }
     })
@@ -1272,17 +1272,23 @@ module.exports = {
     activoGet,
     getTags, 
     regionId, 
+    contador,
+    getTagsfalse,
+    IniciarContador,
+    searchAssetsRegion,
+    
+    /* *****************************************
+    *	REPORTES
+    *	
+    /* *****************************************/
+    getRegionTime,
+
+    timeActiveRecive,
+    getAtendidosbySeller,
     getTopTen,
     getTopTenSales,
     getSaleTime,
     getServiceTime,
-    getDealerTime,
-    getRegionTime,
-    contador,
-    getTagsfalse,
-    IniciarContador,
-    timeActiveRecive,
-    getAtendidosbySeller,
-    searchAssetsRegion
+    getDealerTime
 }
 
