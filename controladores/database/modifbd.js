@@ -78,7 +78,7 @@ let regionArrival = async (req, res, next) => {
             
             Region.find({_id:id})
             .populate([{
-                path:'idPiso',
+                path:'floorId',
                 model:'zona',
                 select:'idLocation'
             }])
@@ -95,10 +95,11 @@ let regionArrival = async (req, res, next) => {
     }
 
     let respons = await searchLocation(id)
+    console.log(respons);
 
     let body = {
         arrivalZone: true,
-        idLocation:respons.idPiso.idLocation
+        idLocation:respons.floorId.idLocation
         
     }
     Region.findByIdAndUpdate(id, body, {
@@ -181,7 +182,7 @@ let putActivo = (req, res) => {
 
     let id = req.params.id;
     // let body = req.body;
-    let body = _.pick(req.body, ['name', 'type','VIN', 'year', 'model', 'color', 'description']);
+    let body = _.pick(req.body, ['name', 'type','VIN', 'year', 'model', 'color', 'description', 'client']);
 
     Activo.findByIdAndUpdate(id, body, {new: true,runValidators: true,useFindAndModify: false}, (err, assetDB) => {
 
@@ -236,6 +237,7 @@ let ubicacion = (req, res, next) => {
 let ubicacionSelect = async(req, res, next) => {
 
 try{
+    console.log(`put ubicacion select`);
     globalDataGraphDos =  [
         {
             name: 'rssi',

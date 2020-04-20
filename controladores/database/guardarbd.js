@@ -208,13 +208,13 @@ let ubicacion = (req, res, next)=>{
 
     let ubicacion = new InfoUbicacionRpi({
 
-        macRpi: req.body.macrpi,
+        macRpi: req.body.macRpi,
         axis: req.body.axis,
         location: location,
         xpos: conversorP_M(req.body.xpos),
         ypos: conversorP_M(req.body.ypos),
         idZona: req.body.idZona,
-        shared: req.body.shared
+        shared: req.body.shared 
 
     });
 
@@ -308,7 +308,7 @@ let pisos = (req, res, next) =>{
         idLocation:req.body.idLocation  ,
         floorName: req.body.floorName,
         floorNumber: parseInt(req.body.floorNumber),
-        scale: parseInt(req.body.scale),
+        // scale: parseInt(req.body.scale),
         plane:'',
         height: conversorP_M(parseFloat(req.body.height)) ,
         width: conversorP_M(parseFloat(req.body.width)) ,
@@ -344,7 +344,7 @@ let pisos = (req, res, next) =>{
 
 
 let activoPost = (req, res, next) =>{
-    // console.log(req.body);
+    console.log(req.body);
     let idbeacon = req.body.idTag
     let activo = new Activo({
 
@@ -404,7 +404,7 @@ let activoPost = (req, res, next) =>{
 
 let rawCaracterizacion = (data) => { 
 
-    // console.log(req.body);
+    // console.log(data);
     let rawMuestras ;
     for (let i = 0; i < data.length; i++) {
         
@@ -413,13 +413,13 @@ let rawCaracterizacion = (data) => {
             macRpi:data[i].macrpi,
             macTag:data[i].mactag,  
             rssi:parseInt(data[i].rssi),
-            distance:parseInt(data[i].distance)
+            distance:parseInt(data[i].distancia)
             
         });
     
         rawMuestras.save(function (err) {
             if (err) {
-                console.log(err);
+                console.log('err');
                 // return next(err);
             };
             // console.log(`Saved: ${JSON.stringify(rawMuestras, null, 2)}`);

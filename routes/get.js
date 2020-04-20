@@ -24,7 +24,7 @@ router.get('/tag_data/false', apiGet.getTagsfalse);
 *	Reportes
 *	
 /* *****************************************/
-router.get('/topten/:type/:order', apiGet.getTopTen);
+router.get('/topten/:tipo/:order', apiGet.getTopTen);
 router.get('/topsales/:order', apiGet.getTopTenSales); 
 router.get('/saletime', apiGet.getSaleTime);
 router.get('/servicetime', apiGet.getServiceTime);

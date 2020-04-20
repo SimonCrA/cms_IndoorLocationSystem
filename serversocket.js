@@ -321,7 +321,7 @@ console.log(`INCIIO ESTO de gossip`);
         console.log(aviso);
         startTrilateracion[0].a = false
     
-        io.emit('stopped-all', aviso);
+        io.emit('stoped-all', aviso); // Es stopped no stoped
     }
     
     let setlist = ()=>{
@@ -384,7 +384,10 @@ console.log(`INCIIO ESTO de gossip`);
     
                 socket.emit('completeData', globalDataGraph);
                 socket.emit('completeData2', globalDataGraphDos);
-    
+                if(globalDataGraph.length >1 || globalDataGraphDos.length>1){
+                    console.log(`graph1: {${globalDataGraph.length}} Graph2: {${globalDataGraphDos.length}}`);
+
+                }
     
                 // socket.emit('completeData3', globalDataGraphDistance);
                 // socket.emit('completeData4', globalDataGraphDistanceDos);

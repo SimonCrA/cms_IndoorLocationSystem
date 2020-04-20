@@ -9,10 +9,10 @@ var sessionId = sessionStorage.getItem('sessionId')
 //   console.log(`esto es?`);
 //   console.log(data.ip);
 //   mcy=data.ip || '192.168.168.168'
-//   let json={sessionId,mac:mcy, token:'3242352fewf234e23fdef234fdswefjwneirj234kj2n3kj4n23k4nk23nm4k2h3b4k2nm34kh23kj4n23k4h2k3j4k23n4i2u3i4n23d'}
-//   socket.emit('libreta', json);
 // });
+  let json={sessionId,mac:'dc:a6:32:0b:a2:b4'}
 
+  socket.emit('libreta', json);
 /* *****************************************
 *	Api:
 * Consulta las Regiones que se encuentran en Base de datos
@@ -107,7 +107,7 @@ socket.on('progressInfo', data=>{
 
   $("#mostrar").empty();
   $("#mostrar").append("FINISHED");
-    $("#mostrar").hide("slow");
+    // $("#mostrar").hide("slow");
 
 })
 
@@ -146,16 +146,12 @@ function stoppedAll(e) {// Detiene la ejecucion de todas las RPIs
     console.log(aviso);
     return false;
 }
-
-
 function refresh(e) {//Actualiza la libreta de direcciones del  Socket
     let aviso={aviso:'Actualizar data del Server', sessionId}
     socket.emit('refresh-client', aviso); 
     console.log(aviso);
     return false;
 }
-
-
 
 /* *****************************************
 *	Modulo: Graph managment

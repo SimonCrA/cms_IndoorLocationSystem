@@ -442,12 +442,12 @@ let getTopTen = (req, res) =>{
     
     try {
         console.log(req.params);
-        let type = req.params.type
+        let tipo = req.params.tipo
         let order= req.params.order
         let desde = req.params.desde || ''
         let hasta =req.params.hasta || ''
         let counter
-        let path = {type:type}
+        let path = {type:tipo}
         if(order==="up"){
             counter=-1;
         }else if(order==="down"){ 
@@ -507,6 +507,8 @@ let getTopTen = (req, res) =>{
     busquedaDeReporte().then(data =>{
         let body = data.toptenBuscado
         let arrayjs=[]
+        console.log(`===========`);
+        console.log(body);
         for (let i = 0; i < body.length; i++) {
             arrayjs.push({
                 n: i+1,
@@ -546,7 +548,8 @@ let getTopTenSales = (req, res) =>{
          let busquedaDeReporte = () => {
             return new Promise((resolve, reject) => {
                 Toptensales.find()
-                    .sort({count: counter})
+                .sort({count: counter})
+                .limit(10)
                     .exec((err, activoEncontrado)=>{
                         if (err) {
 
@@ -577,9 +580,9 @@ let getTopTenSales = (req, res) =>{
         for (let i = 0; i < body.length; i++) {
             arrayjs.push({
                 n: i + 1,
-                brand:body[i].brand,
+                marca:body[i].brand,
                 model: body[i].model,
-                year: body[i].year,
+                anio: body[i].year,
                 color: body[i].color,
                 count: body[i].count
             })
@@ -701,7 +704,7 @@ let findZona = (req, res, next) => {
             .populate({
                 path:'floorId',
                 model:'zona',
-                select:'floorNumber floorName'
+                select:'floorName floorNumber'
             })
             .exec(callback)
         }
@@ -711,7 +714,7 @@ let findZona = (req, res, next) => {
 		// Successful, so render.
 		
 		// console.log({'idzonas':results.idzona, 'tags':results.tags});
-		res.status(200).jsonp({ 'idzones':results.idzona,'tags':results.tags, 'zone':results.zone});
+		res.status(200).jsonp({ 'idzonas':results.idzona,'tags':results.tags, 'zone':results.zone});
 		
     });
 
@@ -1115,11 +1118,12 @@ try{
         
                     let TimerToreciveActive = new timerToreciveActive({
                         user:userid ,
-                        asset:activo,
-                        startRegion:regionPartida,
-                        arrivalRegion: regionActual,
-                        timeMin:contmin.toFixed(2),
-                        time:[dateStart, dateEnd, (dateEnd-dateStart)]
+        
+                        activo:activo,
+                        regionPartida:regionPartida,
+                        regionLlegada: regionActual,
+                        duracionMin:contmin.toFixed(2),
+                        duracion:[dateStart, dateEnd, (dateEnd-dateStart)]
                     })
                     TimerToreciveActive.save((er, save)=>{
                         if(er){

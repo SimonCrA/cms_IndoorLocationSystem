@@ -325,7 +325,7 @@ let crearReporteMasTiempoDealer = async () =>{
     }
 
     let resultSearchAsset = await searchAsset();
-    console.log(resultSearchAsset);
+    // console.log(resultSearchAsset);
 
     let dataObject = {};
     let resta = 0;
@@ -341,8 +341,8 @@ let crearReporteMasTiempoDealer = async () =>{
         dataObject = {
             VIN : resultSearchAsset[i].VIN,
             days: contdias.toFixed(2),
-            name: resultSearchAsset[i].name,
-            model: resultSearchAsset[i].model
+            name: resultSearchAsset[i].nombre,
+            model: resultSearchAsset[i].modelo
         };
 
         arrActivo.push(dataObject);
@@ -633,7 +633,7 @@ let IniciarContador =async (req, res, next)=>{
         }
         else{
             console.log(`No encontrado...`);
-            return res.status(410).jsonp({ok:false, msg:"the user's session does not coincide with the server's valid sessions"})
+            return res.status(410).jsonp({ok:false, msg:`the user's session does not coincide with the server's valid sessions`})
         }
         // return res.status(200).jsonp({ok:true})
         let activo = req.params.idactivo ;
@@ -649,7 +649,7 @@ let IniciarContador =async (req, res, next)=>{
         *	Necesito obtener la region de llegada a la que se supone que esta el usuario
         *	
         /* *****************************************/
-        let path= {idLocation: client, tipo:'region', arrivalZone:true}
+        let path= {idLocation: client, type:'region', arrivalZone:true}
         await promesas.PromiseRegion(path).then( obj =>{
             arrivalZone = obj._id
     
@@ -688,11 +688,11 @@ let IniciarContador =async (req, res, next)=>{
                             let TimerToreciveActive = new timerToreciveActive({
                                 user:userid ,
                 
-                                asset:activo,
-                                startRegion:regionPartida,
-                                arrivalRegion: regionActual,
-                                timeMin:contmin.toFixed(2),
-                                time:[dateStart, dateEnd, (dateEnd-dateStart)]
+                                activo:activo,
+                                regionPartida:regionPartida,
+                                regionLlegada: regionActual,
+                                duracionMin:contmin.toFixed(2),
+                                duracion:[dateStart, dateEnd, (dateEnd-dateStart)]
                             })
                             TimerToreciveActive.save((er, save)=>{
                                 if(er){

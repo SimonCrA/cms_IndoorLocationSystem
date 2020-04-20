@@ -112,9 +112,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-app.use(cors({
-  origin: 'http://localhost:4200'
-}));
+app.use(cors());
 
 
 // validacion_Trilateracion();

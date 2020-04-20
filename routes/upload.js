@@ -15,7 +15,8 @@
     let uploadFile = async (req, res) =>{
         let tipo = (req.params.tipo).toLowerCase();
         let id = req.params.id;
-        
+        let name = req.params.name;
+
         if (!req.files){
             return res.status(400).json({
             ok: false,
@@ -63,7 +64,7 @@
     //el nombre se genera en este formato aseicnai31n32i9-432.jpg
     let date = new Date()
     let fecha = date.getFullYear() +'-'+ date.getMonth()+'-'+ date.getDay()
-    let nombreArchivo = `${id};${ fecha}.${extension}`
+    let nombreArchivo = `${name}_${ fecha}.${extension}`
     
    
     

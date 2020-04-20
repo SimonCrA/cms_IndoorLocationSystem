@@ -321,10 +321,10 @@ const gm = require('gm');
 
 
 
-let date = new Date().getTime()
+// let date = new Date().getTime()
 
 
-console.log(new Date(date));
+// console.log(new Date(date));
 
 
 
@@ -353,3 +353,9 @@ console.log(new Date(date));
 
 
 
+
+
+for (let index = 1; index < 21; index++) {
+    console.log(`${index} => ${index*3.281}`);
+    
+}

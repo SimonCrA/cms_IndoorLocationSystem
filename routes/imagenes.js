@@ -9,7 +9,7 @@ router.get('/imagen/:tipo/:img', apiImagen.getImg )
 
 router.delete('/imagen/:tipo/:img', apiImagen.deleteImg)
 
-router.put('/upload/:tipo/:id', upload.uploadFile)
+router.put('/upload/:tipo/:id/:name', upload.uploadFile)
 
 
 module.exports = router;
