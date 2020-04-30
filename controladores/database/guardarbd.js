@@ -15,6 +15,8 @@ const {conversorP_M} = require('../variables')
 let saveAlarmSettings = async (req, res, next) => {
 
     try {
+
+        console.log(req.body);
         let batterymV = req.body.lowBatteryLevel*13;
         let batteryLevel = batterymV || 0;
         let tagLastSeen = req.body.tagLastSeen || 0;

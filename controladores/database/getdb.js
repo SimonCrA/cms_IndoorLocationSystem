@@ -136,9 +136,9 @@ let searchAssetsRegion = async (req, res, next) =>{
                         path:'region',
                         model:'zona',
                         populate:{
-                            path:'idPiso',
+                            path:'floorId',
                             model:'zona',
-                            select:'idLocation nombrePiso numeroPiso  scale plano alto ancho estatus tipo heightPixel widthPixel'
+                            select:'idLocation floorName floorNumber plane height width status type heightPixel widthPixel'
                         }
                 }
             ])
@@ -171,10 +171,10 @@ let searchAssetsRegion = async (req, res, next) =>{
                             puntoBuscado[i].region.bottomRigth = conversorM_P(puntoBuscado[i].region.bottomRigth)
                             puntoBuscado[i].region.topLeft = conversorM_P(puntoBuscado[i].region.topLeft)
                             puntoBuscado[i].region.topRight = conversorM_P(puntoBuscado[i].region.topRight)
-                            puntoBuscado[i].region.idPiso.alto = conversorM_P(puntoBuscado[i].region.idPiso.alto)
-                            puntoBuscado[i].region.idPiso.ancho = conversorM_P(puntoBuscado[i].region.idPiso.ancho)
-                            puntoBuscado[i].region.alto = conversorM_P(puntoBuscado[i].region.alto)
-                            puntoBuscado[i].region.ancho = conversorM_P(puntoBuscado[i].region.ancho)
+                            puntoBuscado[i].region.floorId.height = conversorM_P(puntoBuscado[i].region.floorId.height)
+                            puntoBuscado[i].region.floorId.width = conversorM_P(puntoBuscado[i].region.floorId.width)
+                            puntoBuscado[i].region.height = conversorM_P(puntoBuscado[i].region.height)
+                            puntoBuscado[i].region.width = conversorM_P(puntoBuscado[i].region.width)
                             
                            
                         }
