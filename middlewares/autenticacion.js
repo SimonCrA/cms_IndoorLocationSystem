@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-
+let {Users} = require('../controladores/variables')
 
 //============================
 //Verificar token
@@ -54,7 +54,31 @@ let Admin_Role = (req, res, next) => {
 
 let Super_Role = (req, res, next) => {
 
+    //Desde aqui.....
+
+    let sesionId = req.headers.authorization.split(' ')
+
+    console.log(sesionId[1]);
+
+    let findIt2 = Users.findIndex(tarea =>tarea.sessionId === sesionId[1]);
+    if(findIt2>=0){
+        console.log(`este usuario esta en la libreta de users`);
+    }else{
+        res.status(401).json({
+            ok: false,
+            err: {
+                message: 'The user must have Super-User premission'
+            }
+        });
+    }
+    // Hasta aqui. es la comprobacion del sesionId contra la libreta de users
+    //esta libreta de users se actualiza cada vez que un usuario entra o sale de la sesion 
+
+
+    // console.log(Users);
+
     let usuario = req.usuario;
+    console.log(usuario);
 
     if (usuario.role === 'SUPER_ROLE') {
         next();

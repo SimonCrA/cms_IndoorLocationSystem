@@ -231,7 +231,7 @@ let searchAssetsRegion = async (req, res, next) =>{
 
 let searchAssets = async (req, res) => {
     try {
-        console.log(req.sessionID);
+        // console.log(req.sessionID);
         // let userid= req.user._id || req.headers.authorization || "5daf3de63a64441b7c1479ff"
         
         let userid= ''
@@ -292,7 +292,7 @@ let searchAssets = async (req, res) => {
                     }
 
                     if(Array.isArray(ActivoBuscado) && ActivoBuscado.length){
-                        console.log(ActivoBuscado);
+                        // console.log(ActivoBuscado);
                         for(let i = 0; i< ActivoBuscado.length ; i++){
                             ActivoBuscado[i].idTag.batteryLevel = (((ActivoBuscado[i].idTag.batteryLevel /1000) /3) *100).toFixed(2)
                         }
@@ -358,7 +358,7 @@ let searchAssets = async (req, res) => {
                                 }
                             });
                         };
-                        console.log(JSON.stringify(puntoBuscado,null, 2));
+                        // console.log(JSON.stringify(puntoBuscado,null, 2));
                         for(let i = 0 ; i < puntoBuscado.length ; i++){
 
                             puntoBuscado[i].x = conversorM_P(puntoBuscado[i].x)
