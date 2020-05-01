@@ -31,7 +31,7 @@ let verificartoken = (req, res, next) => {
 //Verificar Admin_Role
 //============================
 
-let verificarAdmin_Role = (req, res, next) => {
+let Admin_Role = (req, res, next) => {
 
     let usuario = req.usuario;
 
@@ -41,7 +41,7 @@ let verificarAdmin_Role = (req, res, next) => {
         res.status(401).json({
             ok: false,
             err: {
-                message: 'El usuario debe tener permisos de administrador'
+                message: 'The user must have Admin premission'
             }
         });
     }
@@ -52,7 +52,7 @@ let verificarAdmin_Role = (req, res, next) => {
 //Verificar Super_Role
 //============================
 
-let verificarSuper_Role = (req, res, next) => {
+let Super_Role = (req, res, next) => {
 
     let usuario = req.usuario;
 
@@ -62,7 +62,91 @@ let verificarSuper_Role = (req, res, next) => {
         res.status(401).json({
             ok: false,
             err: {
-                message: 'El usuario debe tener permisos de Super usuario'
+                message: 'The user must have Super-User premission'
+            }
+        });
+    }
+
+};
+
+//============================
+//Verificar Tech_Lead_Role
+//============================
+
+let TechLeadRole = (req, res, next) => {
+
+    let usuario = req.usuario;
+
+    if (usuario.role === 'TECH_LEAD_ROLE') {
+        next();
+    } else {
+        res.status(401).json({
+            ok: false,
+            err: {
+                message: 'The user must have Tech-Lead-Role premission'
+            }
+        });
+    }
+
+};
+
+//============================
+//Verificar Tech_Employee_Role
+//============================
+
+let TechEmployeeRole = (req, res, next) => {
+
+    let usuario = req.usuario;
+
+    if (usuario.role === 'TECH_EMPLOYEE_ROLE') {
+        next();
+    } else {
+        res.status(401).json({
+            ok: false,
+            err: {
+                message: 'The user must have Tech-Employee-Role premission'
+            }
+        });
+    }
+
+};
+
+//============================
+//Verificar Sales_Lead_Role
+//============================
+
+let SalesLeadRole = (req, res, next) => {
+
+    let usuario = req.usuario;
+
+    if (usuario.role === 'SALES_LEAD_ROLE') {
+        next();
+    } else {
+        res.status(401).json({
+            ok: false,
+            err: {
+                message: 'The user must have Sales-Lead-Role premission'
+            }
+        });
+    }
+
+};
+
+//============================
+//Verificar Sales_Employee_Role
+//============================
+
+let SalesEmployeeRole = (req, res, next) => {
+
+    let usuario = req.usuario;
+
+    if (usuario.role === 'SALES_EMPLOYEE_ROLE') {
+        next();
+    } else {
+        res.status(401).json({
+            ok: false,
+            err: {
+                message: 'The user must have Sales-Employee-Role premission'
             }
         });
     }
@@ -71,6 +155,11 @@ let verificarSuper_Role = (req, res, next) => {
 
 module.exports = {
     verificartoken,
-    verificarAdmin_Role,
-    verificarSuper_Role
+
+    Super_Role,
+    Admin_Role,
+    TechLeadRole,
+    TechEmployeeRole,
+    SalesLeadRole,
+    SalesEmployeeRole
 }
