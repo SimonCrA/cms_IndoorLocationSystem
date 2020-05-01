@@ -160,7 +160,7 @@ let postLogIn = (req, res, next) => {
             if (err) {
                 next(err)
             }
-            console.log(req.sessionID);
+            console.log(usuario);
         let findIt2 = Users.findIndex(tarea =>tarea.sessionId === req.sessionID);
         // console.log(findIt2);
         // console.log(Users.length);
@@ -197,7 +197,7 @@ let postLogIn = (req, res, next) => {
             
             // console.log(Users);
             // res.send('Login Exitoso')
-            res.jsonp({ok:true, sessionId:req.sessionID})
+            res.jsonp({ok:true, sessionId:req.sessionID, role: usuario.role})
         })
     })(req, res, next)
 }

@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt-nodejs')
 // let Client = mongoose.model('Client');
 
 let rolesValidos = {
-    values: ['SUPER_ROLE', 'ADMIN_ROLE', 'USER_ROLE'],
+    values: ['SUPER_ROLE', 'ADMIN_ROLE', 'TECH_LEAD_ROLE', 'SALES_LEAD_ROLE', 'TECH_EMPLOYEE_ROLE', 'SALES_EMPLOYEE_ROLE'],
     message: '{VALUE}, is no a valid role'
 };
 
