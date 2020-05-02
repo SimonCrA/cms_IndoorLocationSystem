@@ -20,7 +20,7 @@ const {
     
         } = require('./SaveDataToReports');
 
-const {conversorM_P} = require('../variables')
+const {conversorM_P,Users} = require('../variables')
 
 const TagInfo = require ('../../models/tagInfo')
 
@@ -234,15 +234,33 @@ let searchAssets = async (req, res) => {
         // console.log(req.sessionID);
         // let userid= req.user._id || req.headers.authorization || "5daf3de63a64441b7c1479ff"
         
-        let userid= ''
-        if(req.user === undefined){
-            userid=   "5daf3de63a64441b7c1479ff"
-            
+        let sesionId = req.headers.authorization.split(' ')
+
+        console.log(sesionId[1]);
+
+        let indice_User = Users.findIndex(tarea =>tarea.sessionId === sesionId[1]);
+        if(indice_User>=0){
+            // console.log(`este usuario esta en la libreta de users`);
         }else{
-            userid= req.user._id 
-
-
+            res.status(401).json({
+                ok: false,
+                err: {
+                    message: 'The user must have Super-User premission'
+                }
+            });
         }
+
+
+        let userid= Users[indice_User].user._id
+        console.log(userid);
+        // if(req.user === undefined){
+        //     userid=   "5daf3de63a64441b7c1479ff"
+            
+        // }else{
+        //     userid= req.user._id 
+
+
+        // }
 
         let dataBusqueda = {
                 type: '',
