@@ -5,12 +5,12 @@ var r = require('../middlewares/autenticacion');
 var apiGet = require('../controladores/database/getdb');
 const {IniciarContador } = require('../controladores/database/SaveDataToReports')
 
-router.get('/regions', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.region);
-router.get('/floors', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.pisos);
-router.get('/location', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.ubicacion);
-router.get('/asset', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.activoGet);
-router.get('/tag_data', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.getTags);
-router.get('/tag_data/false', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.getTagsfalse);
+router.get('/regions', r.Super_Role, apiGet.region);
+router.get('/floors', r.Super_Role, apiGet.pisos);
+router.get('/location', r.Super_Role, apiGet.ubicacion);
+router.get('/asset',  r.Super_Role, apiGet.activoGet);
+router.get('/tag_data', r.Super_Role, apiGet.getTags);
+router.get('/tag_data/false', r.Super_Role, apiGet.getTagsfalse);
 
 
 
@@ -19,9 +19,7 @@ router.get('/tag_data/false', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.Tec
 *	
 /* *****************************************/
 let premissions =[
-    r.Super_Role, r.Admin_Role,
-    r.TechLeadRole,r.TechEmployeeRole,
-    r.SalesLeadRole,r.SalesEmployeeRole
+    r.Super_Role
     ]
 router.get('/topten/:tipo/:order',premissions , apiGet.getTopTen);
 router.get('/topsales/:order',premissions, apiGet.getTopTenSales); 
@@ -43,9 +41,9 @@ router.get('/counter', apiGet.contador);
 *	Buscar activos
 *	
 /* *****************************************/
-router.get('/search/:item/:term', [r.Super_Role, r.Admin_Role, r.TechLeadRole], apiGet.searchAssets)
+router.get('/search/:item/:term', r.Super_Role, apiGet.searchAssets)
 
-router.get('/assetsregion/:idregion', [r.Super_Role, r.Admin_Role, r.TechLeadRole], apiGet.searchAssetsRegion)
+router.get('/assetsregion/:idregion', r.Super_Role, apiGet.searchAssetsRegion)
 
 
 module.exports = router;
