@@ -564,8 +564,7 @@ let crearReporteTiempoSinMoverse = async ( period, desde ) =>{
 let crearReporteAtendidosVendedor = async (userid)=>{
 
     try {
-        console.log("ESTO ESTA FUNCIONANDO??");
-        
+        console.log("Crear/Actualizar Reporte: Atendidos por usuarios");        
         let  path = {userid:userid}
         let buscaReporte = await promesas.buscarReporteAatendidos(path);
 
