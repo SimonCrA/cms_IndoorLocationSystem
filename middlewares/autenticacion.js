@@ -75,7 +75,7 @@ let Super_Role = (req, res, next) => {
     //esta libreta de users se actualiza cada vez que un usuario entra o sale de la sesion 
 
 
-    // console.log(Users);
+    console.log(Users);   //<----------- este console log
 
     let usuario = req.usuario;
     console.log(usuario);
