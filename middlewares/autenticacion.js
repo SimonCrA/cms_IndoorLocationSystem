@@ -33,9 +33,9 @@ let verificartoken = (req, res, next) => {
 
 let Admin_Role = (req, res, next) => {
 
-    let usuario = req.usuario;
+    let user = req.user;
 
-    if (usuario.role === 'ADMIN_ROLE') {
+    if (user.role === 'ADMIN_ROLE') {
         next();
     } else {
         res.status(401).json({
@@ -53,34 +53,33 @@ let Admin_Role = (req, res, next) => {
 //============================
 
 let Super_Role = (req, res, next) => {
+    
+    console.log(req.user.role);
+    
+    // //De alberto
+    // let sesionId = req.headers.authorization.split(' ')
 
-    //Desde aqui.....
+    // console.log(sesionId[1]);
 
-    let sesionId = req.headers.authorization.split(' ')
+    // let findIt2 = Users.findIndex(tarea =>tarea.sessionId === sesionId[1]);
+    // if(findIt2>=0){
+    //     console.log(`este usuario esta en la libreta de users`);
+    // }else{
+    //     res.status(401).json({
+    //         ok: false,
+    //         err: {
+    //             message: 'The user must have Super-User premission'
+    //         }
+    //     });
+    // }
 
-    console.log(sesionId[1]);
-
-    let findIt2 = Users.findIndex(tarea =>tarea.sessionId === sesionId[1]);
-    if(findIt2>=0){
-        console.log(`este usuario esta en la libreta de users`);
-    }else{
-        res.status(401).json({
-            ok: false,
-            err: {
-                message: 'The user must have Super-User premission'
-            }
-        });
-    }
-    // Hasta aqui. es la comprobacion del sesionId contra la libreta de users
-    //esta libreta de users se actualiza cada vez que un usuario entra o sale de la sesion 
+    // //esta libreta de users se actualiza cada vez que un usuario entra o sale de la sesion 
 
 
-    // console.log(Users);
+    let user = req.user;
+    console.log(user);
 
-    let usuario = req.usuario;
-    console.log(usuario);
-
-    if (usuario.role === 'SUPER_ROLE') {
+    if (user.role === 'SUPER_ROLE') {
         next();
     } else {
         res.status(401).json({
@@ -99,9 +98,9 @@ let Super_Role = (req, res, next) => {
 
 let TechLeadRole = (req, res, next) => {
 
-    let usuario = req.usuario;
+    let user = req.user;
 
-    if (usuario.role === 'TECH_LEAD_ROLE') {
+    if (user.role === 'TECH_LEAD_ROLE') {
         next();
     } else {
         res.status(401).json({
@@ -120,9 +119,9 @@ let TechLeadRole = (req, res, next) => {
 
 let TechEmployeeRole = (req, res, next) => {
 
-    let usuario = req.usuario;
+    let user = req.user;
 
-    if (usuario.role === 'TECH_EMPLOYEE_ROLE') {
+    if (user.role === 'TECH_EMPLOYEE_ROLE') {
         next();
     } else {
         res.status(401).json({
@@ -141,9 +140,9 @@ let TechEmployeeRole = (req, res, next) => {
 
 let SalesLeadRole = (req, res, next) => {
 
-    let usuario = req.usuario;
+    let user = req.user;
 
-    if (usuario.role === 'SALES_LEAD_ROLE') {
+    if (user.role === 'SALES_LEAD_ROLE') {
         next();
     } else {
         res.status(401).json({
@@ -162,9 +161,9 @@ let SalesLeadRole = (req, res, next) => {
 
 let SalesEmployeeRole = (req, res, next) => {
 
-    let usuario = req.usuario;
+    let user = req.user;
 
-    if (usuario.role === 'SALES_EMPLOYEE_ROLE') {
+    if (user.role === 'SALES_EMPLOYEE_ROLE') {
         next();
     } else {
         res.status(401).json({

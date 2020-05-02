@@ -8,8 +8,8 @@ const {IniciarContador } = require('../controladores/database/SaveDataToReports'
 router.get('/regions', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.region);
 router.get('/floors', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.pisos);
 router.get('/location', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.ubicacion);
-router.get('/asset', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.activoGet);
-router.get('/tag_data', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.getTags);
+router.get('/asset', [r.Admin_Role, r.Super_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.activoGet);
+router.get('/tag_data', r.Admin_Role, apiGet.getTags);
 router.get('/tag_data/false', [r.Super_Role, r.Admin_Role, r.TechLeadRole, r.TechEmployeeRole], apiGet.getTagsfalse);
 
 
