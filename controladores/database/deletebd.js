@@ -63,7 +63,7 @@ let pisos = (req, res, next) => {
             });
         };
 
-        if (floorBorrado) {
+        if (!floorBorrado) {
             return res.status(400).json({
                 ok: false,
                 err: {
