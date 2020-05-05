@@ -213,6 +213,8 @@ let putActivo = (req, res) => {
 let ubicacion = (req, res, next) => {
 
     let id = req.params.id;
+    req.body.xpos = conversorP_M(req.body.xpos)
+    req.body.ypos = conversorP_M(req.body.ypos)
     let body = _.pick(req.body,['macRpi','axis','xpos','ypos', 'shared', 'idZona', 'location']) ;
 
     
