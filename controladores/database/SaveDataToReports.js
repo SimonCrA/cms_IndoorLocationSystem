@@ -122,7 +122,7 @@ let crearReporte = async (dataBusqueda) =>{
 let crearReporteVentas = async (dataSales) =>{
 try {
     console.log(dataSales);
-    let color = dataSales.color, modelo = dataSales.modelo, anio = dataSales.anio, name = dataSales.nombre;
+    let color = dataSales.color, modelo = dataSales.model, anio = dataSales.year, name = dataSales.name;
     let date = new Date().getTime()
     console.log("ESTO ESTA FUNCIONANDO??");
     let actualizaReporte = (dataToRefresh) => {
