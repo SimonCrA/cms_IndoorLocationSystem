@@ -365,9 +365,9 @@ module.exports = {
 
     Super_Role,
     Admin_Role,
-    TechLeadRole,
-    TechEmployeeRole,
-    SalesLeadRole,
-    SalesEmployeeRole,
+    // TechLeadRole,
+    // TechEmployeeRole,
+    // SalesLeadRole,
+    // SalesEmployeeRole,
     roleAuthenticator
 }
