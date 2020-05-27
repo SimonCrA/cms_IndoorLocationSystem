@@ -4,23 +4,29 @@ var router = express.Router();
 // Require controller modules.
 let apiModificar = require('../controladores/database/modifbd');
 
-router.put ('/regions/:id', apiModificar.regiones);
+var r = require('../middlewares/autenticacion');
 
-router.put('/regions/arrivalzone/:id', apiModificar.regionArrival);
 
-router.put ('/floors/:id', apiModificar.pisos);
+router.put ('/regions/:id', r.validarUpTech, apiModificar.regiones);
 
-router.put ('/location/:id', apiModificar.ubicacion);
+router.put('/regions/arrivalzone/:id', r.validarUpTech, apiModificar.regionArrival);
 
-router.put ('/ubicacionrpiselect', apiModificar.ubicacionSelect);
+router.put ('/floors/:id', r.validarUpTech, apiModificar.pisos);
 
-router.put ('/asset/:id', apiModificar.putActivo);
+router.put ('/location/:id', r.validarUpTech, apiModificar.ubicacion);
 
-router.put ('/tag_data/:id', apiModificar.putTags);
+router.put ('/ubicacionrpiselect',r.validarUpTech, apiModificar.ubicacionSelect);
 
-router.put ('/sales/:idAsset/:idTag', apiModificar.venderAuto);
 
-router.put('/service/:idAsset/:idTag', apiModificar.despacharServicio);
+router.put ('/tag_data/:id', r.validarUpTech, apiModificar.putTags);
+
+// Asset
+
+router.put ('/asset/:id', r.validarUpAsset, apiModificar.putActivo);
+
+router.put ('/sales/:idAsset/:idTag', r.validarUpAsset,apiModificar.venderAuto); 
+
+router.put('/service/:idAsset/:idTag', r.validarUpAsset, apiModificar.despacharServicio);
 
 
 
