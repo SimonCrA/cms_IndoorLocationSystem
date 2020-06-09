@@ -10,7 +10,7 @@ let  rssiProm = async (muestras, distancia, macrpi, mactag , iteracion) => {
         let rssisum1 = 0;
         let promesaBusqueda = () =>{
             return new Promise((resolve, reject ) =>{
-                RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
+                RawDataM.find({macRpi:macrpi, macTag:mactag, distance: distancia })
                 .limit(muestras)
                 .sort({_id:-1})
                 .exec( (err,rawdata) => {

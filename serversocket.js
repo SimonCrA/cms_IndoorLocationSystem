@@ -276,11 +276,13 @@ console.log(`INCIIO ESTO de gossip`);
             await regionId(aviso.region).then(region=>{
         
                 let arr=[]
+                console.log(``);
                 console.log(region.region.length);
         
                 for (let i = 0; i < region.region.length; i++) {
                     
                     let resul = libreta.find(fin=>fin.mac === region.region[i].macRpi )
+                    console.log(resul);
                     if(!resul){
                         console.log(`No hay nada`);
                     }
@@ -364,6 +366,7 @@ console.log(`INCIIO ESTO de gossip`);
         //     socket.emit('datosGrafica2', globalDataGraphDos);
         // }, 1000);
         
+        let refrescarConst= false
         socket.on('libreta',async data=>{
             
             logSistem(`Add to libreta! serversockert.js line 84`, nameFile[0])
@@ -377,15 +380,18 @@ console.log(`INCIIO ESTO de gossip`);
             socket.emit('datosGrafica', globalDataGraph);
         })
         socket.emit('completeData', globalDataGraph);
-    
         setInterval(() => {
             
             // if(paramsValidacionCaract[0].signal === true){
     
-                socket.emit('completeData', globalDataGraph);
-                socket.emit('completeData2', globalDataGraphDos);
                 if(globalDataGraph.length >1 || globalDataGraphDos.length>1){
-                    console.log(`graph1: {${globalDataGraph.length}} Graph2: {${globalDataGraphDos.length}}`);
+                    socket.emit('completeData', globalDataGraph);
+                    socket.emit('completeData2', globalDataGraphDos);
+
+                    if(globalDataGraph.length >3  && refrescarConst ===false){
+                    refrescarConst=true
+                    refresh();
+                }
 
                 }
     
@@ -492,7 +498,7 @@ console.log(`INCIIO ESTO de gossip`);
         socket.on('accions', data =>{
             console.log(data);
     
-            for (let i = 0; i <( data.length - 1); i++) {
+            for (let i = 0; i <( data.length); i++) {
                 
                 let resul = libreta.find(fin=>fin.mac === data[i].mac )
                 if(!resul){
@@ -535,6 +541,12 @@ console.log(`INCIIO ESTO de gossip`);
 
         socket.on('stop-all', data =>{
             console.log(data);
+            refrescarConst=false
+            globalDataGraph.length = 0
+            globalDataGraphDos.length = 0
+            paramsValidacionCaract[0].mostrarGrafica = false
+            socket.emit('completeData', globalDataGraph);
+            socket.emit('completeData2', globalDataGraphDos);
             stopped()
         })
     

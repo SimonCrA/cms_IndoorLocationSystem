@@ -17,12 +17,12 @@ let distancia =  async (req) => {
 
 
 try {
-    // console.log(`Mcrpi= ${req.macrpi} && macTag= ${req.mactag}`);
-    let type;
-    if(req.type==='tracking'){
+    // console.log(req);
+    let type='';
+    if(req.tipo==='tracking'){
         type='established'
     }
-    else if(req.type==='validar'){
+    else if(req.tipo==='validar'){
         type='generado'
     }
 
@@ -59,13 +59,15 @@ try {
         // console.log(req.rssi);
         let pot = (-req.rssi + dato.rssiProm + dato.standardDeviation) / (10 * dato.propagationN);
         // console.log(pot);
-                let distancia = Math.pow(10, pot);
-                // console.log(distancia);
+                let distance = Math.pow(10, pot);
+                // console.log(distance);
                 // console.log(`********************\n`);
                 // console.log(paramsValidacionCaract);
-                let error = Math.sqrt((Math.pow(paramsValidacionCaract[0].distError - parseFloat(distancia), 2)) )
+                let error = Math.sqrt((Math.pow(paramsValidacionCaract[0].distError - parseFloat(distance), 2)) )
+                
+                // console.log(distance, req.macrpi, req.mactag);
                 let datosJson = {
-                    Distancia:distancia,
+                    Distancia:distance,
                     macRpi:req.macrpi,
                     macTag:req.mactag,
                     tipo:req.tipo,

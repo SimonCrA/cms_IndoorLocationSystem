@@ -25,7 +25,7 @@ function login(e) {
         console.log(`${data.sessionId}`);
         session = data.sessionId;
         sessionStorage.setItem('sessionId',data.sessionId)
-        location.href ="http://192.168.0.101:3000/caracterizacion";
+        location.href ="http://192.168.0.101:3000/";
         
     },
     error: function(er){

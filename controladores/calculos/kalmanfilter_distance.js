@@ -19,7 +19,7 @@ var respuesta='';
 
 let validarFiltro1 = (req)=>{
 
-    let kalmanVariance = 3.2;      //var REAL
+    let kalmanVariance = 5;      //var REAL
     let kalmanCovariance = 0.5;
 
 
@@ -112,6 +112,11 @@ let filtradoDistance = async ( index ) =>{
                 if(findIt>=0){
                     var point = {};
                     point.x = ((globalDataGraph[findIt].data).length) ;
+
+
+                    // console.log(globalFilter[index].Xt_s, globalFilter[index].name );
+
+
                     point.y = parseFloat(conversorM_P(parseFloat(globalFilter[index].Xt_s)));
                     globalDataGraph[findIt].data.push(point)
                     paramsValidacionCaract[0].signal=true

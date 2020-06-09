@@ -175,11 +175,14 @@ function setOption(e){
   js.mactag = array[1]
   js.regionid = region
   console.log(js);
-
+  console.log(sessionId);
 
   $.ajax({
     contentType: 'application/json',
     data: JSON.stringify(js),
+    headers: {
+      'authorization': `barer ${sessionId}`
+  },
     dataType: 'json',
     success: function(data){
         console.log(`"device control succeeded" ${JSON.stringify(data)}`);
@@ -322,7 +325,7 @@ let  LogOut = async (e)=>{
 
   $.get("http://192.168.0.101:3000/users/logout", function(data, status){
     sessionStorage.clear()
-      location.href ="http://192.168.0.101:3000/";
+      location.href ="http://192.168.0.101:3000/caracterizacion";
     
   });
   return false

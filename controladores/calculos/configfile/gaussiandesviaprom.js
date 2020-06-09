@@ -20,7 +20,7 @@ let gaussianStandardDeviation = async (muestras, distancia, macrpi, mactag, iter
         console.log("ENTRAMOS A CALCULO DE gaussianStandardDeviation");
         let promesaBusquedaGauss = ()=>{
             return new Promise((resolve, reject ) =>{
-                RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
+                RawDataM.find({macRpi:macrpi, macTag:mactag, distance: distancia })
                         .limit(muestras)
                         .sort({_id:-1})
                         .exec( (err,rawdata) => {

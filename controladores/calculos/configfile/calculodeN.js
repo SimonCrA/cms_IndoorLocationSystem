@@ -16,7 +16,7 @@ let  calculoDeN = async (muestras, distancia, macrpi, mactag, iteracion ) => {
         console.log("ENTRAMOS A calculo De Constante de Propagacion N");
         let promesabusquedaN = () =>{
             return new Promise((resolve, reject ) =>{
-                RawDataM.find({macRpi:macrpi, macTag:mactag, distancia: distancia })
+                RawDataM.find({macRpi:macrpi, macTag:mactag, distance: distancia })
                             .limit(muestras)
                             .sort({_id:-1})
                             .exec( (err,rawdata) => {
@@ -41,8 +41,8 @@ let  calculoDeN = async (muestras, distancia, macrpi, mactag, iteracion ) => {
             let nsum = 0;
             let totalN =0;
             for (let j = 0; j < muestras; j++) {
-                if (rawdata[j].distancia > 1) {
-                    nsum += (-(rawdata[j].rssi) + RSSIprom.respRssi[iteracion] + gaussDesviaProm.respvgcde[iteracion].zmgvwsd) / (10 * Math.log10(rawdata[j].distancia))
+                if (rawdata[j].distance > 1) {
+                    nsum += (-(rawdata[j].rssi) + RSSIprom.respRssi[iteracion] + gaussDesviaProm.respvgcde[iteracion].zmgvwsd) / (10 * Math.log10(rawdata[j].distance))
                     // console.log(`(-(${rawdata[j].rssi}) + ${RSSIprom.respRssi[iteracion]} + ${gaussDesviaProm.respvgcde[iteracion].zmgvwsd}) / (10 * ${Math.log10(rawdata[j].distancia)})`);
                 }
         

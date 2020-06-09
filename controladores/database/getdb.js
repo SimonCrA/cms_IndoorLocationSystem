@@ -802,6 +802,8 @@ let region = (req, res, next) =>{
                 region[i].bottomRight = conversorM_P(region[i].bottomRight)
                 region[i].topLeft = conversorM_P(region[i].topLeft)
                 region[i].topRight = conversorM_P(region[i].topRight)
+                region[i].height = conversorM_P(region[i].height)
+                region[i].width = conversorM_P(region[i].width)
             
             }
             

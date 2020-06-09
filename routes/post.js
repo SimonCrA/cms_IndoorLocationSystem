@@ -6,12 +6,14 @@ var apiScanner = require('../controladores/database/scan');
 var apiGuardardb = require('../controladores/database/guardarbd');
 
 
-var r = require('../middlewares/autenticacion');
+const r = require('../middlewares/autenticacion');
 
 
 // guardar en base de datos desde RASPBERRYPI
 
 // router.post('/rasp_data', apiScanner.dataRaspi);
+
+
 router.post('/tag_data', r.validarPostTech, apiGuardardb.dataTag);
 
 
@@ -20,7 +22,7 @@ router.post('/rasp_data_c', apiGuardardb.rawCaracterizacion);
 router.post('/alarmSettings', r.validarPostTech, apiGuardardb.saveAlarmSettings);
 
 router.post ('/regions', r.validarPostTech, apiGuardardb.regiones);
-router.post ('/floors',r.validarPostTech, apiGuardardb.pisos);
+router.post ('/floors', r.validarPostTech, apiGuardardb.pisos);
 router.post ('/contstants', r.validarPostTech, apiGuardardb.constantes);
 router.post ('/location',r.validarPostTech, apiGuardardb.ubicacion);
 

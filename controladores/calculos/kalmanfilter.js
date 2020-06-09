@@ -27,7 +27,7 @@ let filtrado = async ( scan ) =>{
 
     if(scan !== undefined){
         // console.log(`${}`);
-        let kalmanVariance = 8.184352498;       //var REAL
+        let kalmanVariance = 74.95 //8.184352498;       //var REAL
         let kalmanCovariance = 0.05;
         let Q = kalmanCovariance;
         let R = kalmanVariance;

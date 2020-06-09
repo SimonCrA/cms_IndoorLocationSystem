@@ -429,7 +429,7 @@ let rawCaracterizacion = (data) => {
         });
         
     }
-    console.log(`Se guardaron (${data.length})`);
+    console.log(`Se guardaron (${data.length}) ${data[0].macrpi}-${data[0].mactag}`);
     // res.status(202).jsonp({
     //     ok: true,
     //     rawMuestras

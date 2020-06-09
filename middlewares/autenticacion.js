@@ -190,6 +190,8 @@ let Super_Role = (req, res, next) => {
 
 
 let Validar_TechLead =  (req, res, next) => {
+    console.log(req.headers);
+    console.log(req.body);
 
         let sesionId = req.headers.authorization.split(' ')
     
@@ -215,9 +217,7 @@ let Validar_TechLead =  (req, res, next) => {
         });
             break;
         case 'TECH_EMPLOYEE_ROLE': 
-        res.status(401).json({
-            ok: false,err: {message: 'The user must have premission to this section'}
-        }); 
+        next() 
             break;
         case 'SALES_EMPLOYEE_ROLE': 
         res.status(401).json({
@@ -361,7 +361,7 @@ switch (role) {
 }
 }
 }
-
+//ACOMODAR ESTO ES IGUAL QUE EL VALIDAR SEARCHASSET
 let validarUpAsset =  (req, res, next) => {
 
     let sesionId = req.headers.authorization.split(' ')
@@ -459,14 +459,19 @@ switch (role) {
 
 let validarPostTech =  (req, res, next) => {
 
-    let sesionId = req.headers.authorization.split(' ')
+    console.log(`Entre aca te doy permiso`);
+    console.log(req.headers);
+    console.log(req.body);
 
+    console.log(Users);
+    let sesionId = req.headers.authorization.split(' ')
+    console.log(sesionId);
     let findIt2 = Users.findIndex(tarea => tarea.sessionId === sesionId[1]);
     if (findIt2 >= 0) {
         console.log(`este usuario esta en la libreta de users`);
 
         let role = Users[findIt2].user.role;
-
+        
 switch (role) {
     case 'SUPER_ROLE': 
         next()
@@ -503,10 +508,16 @@ switch (role) {
         });
         break;
 }
-}
+}else{
+  res.status(408).json({
+    ok: false,err: {message: 'TU MAMA'}
+});  
 }
 
 
+}
+
+//esto es igual que el primero  'Validar_TechLead'
 let validarPostAsset =  (req, res, next) => {
 
     let sesionId = req.headers.authorization.split(' ')
