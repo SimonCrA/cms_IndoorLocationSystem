@@ -11,6 +11,8 @@ var rawDataSchema = new Schema(
 		beacontype:{type:String},
 		sampleId:{type:String},
 		muestras:{type:Number}
+	},{
+		timestamps: true
 	}
 );  
 

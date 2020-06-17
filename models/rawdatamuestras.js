@@ -9,6 +9,8 @@ var rawDataMuestrasSchema = new Schema(
         rssi: {type: Number},
 		distance: {type: Number}
 		
+	},{
+		timestamps: true
 	}
 );  
 

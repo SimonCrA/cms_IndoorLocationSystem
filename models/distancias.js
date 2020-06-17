@@ -15,6 +15,8 @@ var distanceTags = new Schema({
 		setDist:{type:Number}
 		
 
+	},{
+		timestamps: true
 	}
 );  
 mongoose.set('useFindAndModify', false);

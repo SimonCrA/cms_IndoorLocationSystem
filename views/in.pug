@@ -7,6 +7,7 @@ html(lang='en')
     //- script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js', integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', crossorigin='anonymous')
     
     link(rel='stylesheet', href='../stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='../stylesheets/style.css')
     script(src='../../../javascripts/jquery-3.3.1.js')
     script(src='../../../javascripts/popper.min.js')
     script(src='../javascripts/bootstrap.min.js')
@@ -40,11 +41,11 @@ html(lang='en')
           .modal-footer
             button.btn.btn-success(type='button', data-dismiss='modal') Cerrar
 
-    .container
+    .container.fondo
       h1(style='text-align: center;') variables settings
       hr
-      .card.py-4.h-100
-        .card-body.text-center
+      .card.py-4.h-100.fondo
+        .card-body.text-center.fondo
                     
           
           .row
@@ -56,12 +57,12 @@ html(lang='en')
               // Aquí debe ir el llamado de la gráfica
           hr
 
-    .container
+    .container.fondo
       h1(style='text-align: center;') RAW DISTANCE
       hr
       
-      .card.py-4.h-100
-        .card-body.text-center
+      .card.py-4.h-100.fondo
+        .card-body.text-center.fondo
           
           h2(style='text-align: center;') Graph managment
         
@@ -74,10 +75,10 @@ html(lang='en')
             | Select target
           #downbtn.dropdown-menu.dropdown-menu-left
           hr
-          .row
+          .row.fondo
             .col-md-6
               h2 Monitoring Distance Graph
-              #hchart
+              #hchart.fondo
               // Aquí debe ir el llamado de la gráfica
             .col-md-6
               h2 Selection  DistanceGraph
@@ -86,21 +87,21 @@ html(lang='en')
           hr
       //- .card.py-4.h-100
           
-    .container
+    .container.fondo
       h2(style='text-align: center;') Interaction
-      .card.py-4.h-100(style='align-items: center;')
-        .card-body.text-center
+      .card.py-4.h-100.fondo(style='align-items: center;')
+        .card-body.text-center.fondo
           button.btn.btn-primary.mb-2(type='submit', onclick="startDespliegue(this)") Start Tracking
           button.btn.btn-primary.mb-2(type='submit', onclick="startValidacion(this)") Start Validation
           button.btn.btn-primary.mb-2(type='submit', onclick="refresh(this)") refresh booklet
           button.btn.btn-primary.mb-2(type='submit', onclick="EstablecerConstants(this)") Establecer constantes
           button.btn.btn-danger.mb-2(type='submit', onclick="stoppedAll(this)") Stop Tracking
           button.btn.btn-danger.mb-2(type='submit', onclick="LogOut(this)") LogOut
-    .container
+    .container.fondo
       h2(style='text-align: center;') Samples recolection
-      .container
-        .card.py-4.h-100(style='align-items: center;')
-          .card-body.text-center
+      .container.fondo
+        .card.py-4.h-100.fondo(style='align-items: center;')
+          .card-body.text-center.fondo
             form.form-inline(onsubmit='return Send_to_particular_rpi(this)')
               .form-group.mb-2
                 label(for='maclist1') MACs
@@ -119,11 +120,11 @@ html(lang='en')
               button.btn.btn-primary.mb-2(type='submit') Send
             a#mostrar dddddddddddddddddddddd
       hr
-    .container
+    .container.fondo
       h2(style='text-align: center;') Calcular Constantes
-      .container
-        .card.py-4.h-100(style='align-items: center;')
-          .card-body.text-center
+      .container.fondo
+        .card.py-4.h-100.fondo(style='align-items: center;')
+          .card-body.text-center.fondo
             form.form-inline(onsubmit='return GetFromPagefileconfigData(this)')
               .form-group.mb-2
                 label(for='List_IdZona') ID Zodna

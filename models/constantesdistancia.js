@@ -14,6 +14,8 @@ var constantesDistanciaSchema = new Schema({
 		type:{type: String}
 		
 
+	},{
+		timestamps: true
 	}
 );  
 

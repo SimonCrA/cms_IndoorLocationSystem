@@ -491,6 +491,7 @@ console.log(`INCIIO ESTO de gossip`);
         socket.on('test1',data=>{console.log(data);})
     
         socket.on('stop_DataCToServer',data =>{
+            console.log(data);
             console.log(`FINISHED:`.green+` la recoleccion de data ha terminado ${data}`.magenta);
             stopped_caracter(data)
         })
